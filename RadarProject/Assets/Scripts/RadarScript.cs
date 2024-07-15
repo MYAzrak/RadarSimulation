@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class RadarScript : MonoBehaviour
 {
-    [SerializeField] private int HeightRes = 2048;
-    [SerializeField] private int WidthRes = 5;
+    [SerializeField] private int HeightRes = 500;
+    [SerializeField] private int WidthRes = 500;
     // [Range(0.0f, 15f)] private float resolution = 1f;
     [Range(5f, 5000f)] public float MaxDistance = 100F;
     [Range(0.01f, 2f)] public float MinDistance = 0.1F;
-    [Range(5.0f, 90f)] public float VerticalAngle = 30f;
+    [Range(5.0f, 90f)] public float VerticalAngle = 60f;
+    [Range(0.5f, 50f)] public float HoritontalAngle = 1f;
 
     public string RadarLayer = "Radar";
     public Shader normalDepthShader;
@@ -52,12 +53,12 @@ public class RadarScript : MonoBehaviour
         }
 
         cam.usePhysicalProperties = false;
-        cam.aspect = (1) / verticalAngle;
-        cam.fieldOfView = Camera.HorizontalToVerticalFieldOfView(1, cam.aspect);
+        cam.aspect = HoritontalAngle / verticalAngle;
+        cam.fieldOfView = Camera.HorizontalToVerticalFieldOfView(HoritontalAngle, cam.aspect);
         cam.farClipPlane = MaxDistance;
         cam.nearClipPlane = MinDistance;
         cam.enabled = true;
-        cam.cullingMask = LayerMask.GetMask(RadarLayer);
+        // cam.cullingMask = LayerMask.GetMask(RadarLayer);
         Debug.Log("Created Camera");
         return cam;
     }
