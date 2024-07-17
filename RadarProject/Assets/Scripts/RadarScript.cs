@@ -1,66 +1,101 @@
 using UnityEngine;
 
-
 public class RadarScript : MonoBehaviour
 {
-    [SerializeField] private int HeightRes = 500;
-    [SerializeField] private int WidthRes = 500;
-    // [Range(0.0f, 15f)] private float resolution = 1f;
+    [SerializeField] private int HeightRes = 2048;
+    [SerializeField] private int WidthRes = 5;
+    [Range(0.0f, 15f)] private float resolution = 1f;
     [Range(5f, 5000f)] public float MaxDistance = 100F;
     [Range(0.01f, 2f)] public float MinDistance = 0.1F;
-    [Range(5.0f, 90f)] public float VerticalAngle = 60f;
-    [Range(0.5f, 50f)] public float HoritontalAngle = 1f;
-
+    [Range(5.0f, 90f)] public float VerticalAngle = 30f;
     public string RadarLayer = "Radar";
-    public Shader normalDepthShader;
-
     [HideInInspector] public Camera radarCamera;
+
+    [SerializeField] private Shader normalDepthShader;
+    [SerializeField] private float parallelThreshold = 0.1f; // Threshold for considering a surface parallel
+
+    private RenderTexture radarTexture;
+    private float currentRotation = 0f; // Track current rotation
+    private GameObject cameraObject; 
 
     void Start()
     {
-        radarCamera = SpawnCameras("DepthCamera", WidthRes, HeightRes, VerticalAngle, RenderTextureFormat.ARGBFloat);
         if (normalDepthShader == null)
         {
             normalDepthShader = Shader.Find("Custom/NormalDepthShader");
         }
-        radarCamera.SetReplacementShader(normalDepthShader, "RenderType");
+        cameraObject = SpawnCameras("DepthCamera", WidthRes, HeightRes, VerticalAngle, RenderTextureFormat.ARGBFloat);
+        radarCamera = cameraObject.GetComponent<Camera>();
+        ProcessRadarData();
     }
-    void LateUpdate()
+
+    void Update()
     {
-        RenderTexture.active = radarCamera.targetTexture;
-        Texture2D texture = new Texture2D(radarCamera.targetTexture.width, radarCamera.targetTexture.height, TextureFormat.RGBAFloat, false);
-        texture.ReadPixels(new Rect(0, 0, radarCamera.targetTexture.width, radarCamera.targetTexture.height), 0, 0);
-        texture.Apply();
-        RenderTexture.active = null;
-
-        // Process the texture data...
+        ProcessRadarData();
+        // RotateCamera();
     }
 
-    private Camera SpawnCameras(string name, int Width, int Height, float verticalAngle, RenderTextureFormat format)
+    private GameObject SpawnCameras(string name, int Width, int Height, float verticalAngle, RenderTextureFormat format)
     {
         GameObject CameraObject = new GameObject();
         CameraObject.name = name;
         CameraObject.transform.SetParent(transform);
         CameraObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
         CameraObject.transform.localPosition = new Vector3(0, 0, 0);
-
         CameraObject.AddComponent<Camera>();
         Camera cam = CameraObject.GetComponent<Camera>();
 
-        if (cam.targetTexture == null)
-        {
-            cam.targetTexture = new RenderTexture(Width, Height, 32, format);
-        }
+        radarTexture = new RenderTexture(Width, Height, 32, format);
+        cam.targetTexture = radarTexture;
 
         cam.usePhysicalProperties = false;
-        cam.aspect = HoritontalAngle / verticalAngle;
-        cam.fieldOfView = Camera.HorizontalToVerticalFieldOfView(HoritontalAngle, cam.aspect);
+        cam.aspect = (1) / verticalAngle;
+        cam.fieldOfView = Camera.HorizontalToVerticalFieldOfView(1, cam.aspect);
         cam.farClipPlane = MaxDistance;
         cam.nearClipPlane = MinDistance;
         cam.enabled = true;
-        // cam.cullingMask = LayerMask.GetMask(RadarLayer);
-        Debug.Log("Created Camera");
-        return cam;
+
+        // Set the custom shader
+        cam.SetReplacementShader(normalDepthShader, "");
+
+        return CameraObject;
+    }
+
+    private void ProcessRadarData()
+    {
+        RenderTexture.active = radarTexture;
+        Texture2D tex = new Texture2D(radarTexture.width, radarTexture.height, TextureFormat.RGBAFloat, false);
+        tex.ReadPixels(new Rect(0, 0, radarTexture.width, radarTexture.height), 0, 0);
+        tex.Apply();
+
+        for (int x = 0; x < tex.width; x++)
+        {
+            for (int y = 0; y < tex.height; y++)
+            {
+                Color pixel = tex.GetPixel(x, y);
+                Vector3 normal = new Vector3(pixel.r * 2 - 1, pixel.g * 2 - 1, pixel.b * 2 - 1);
+                float viewSpaceDepth = pixel.a;
+                
+                float distance = viewSpaceDepth;
+
+                // Check if the surface is parallel enough (blue channel > threshold)
+                if (normal.z > parallelThreshold)
+                {
+                    // This is a radar detection
+                    distance = Mathf.Clamp(distance, MinDistance, MaxDistance);
+                    // Use this distance for your radar logic
+                    // For example, you could store it in an array or use it to spawn objects
+                    Debug.Log($"Radar detection at ({x}, {y}) with distance {distance}");
+                }
+            }
+        }
+
+        Destroy(tex);
+    }
+
+    private void RotateCamera() {
+        currentRotation += 1f; // Increase rotation by 1 degree
+        if (currentRotation >= 360f) currentRotation -= 360f; // Wrap around at 360 degrees
+        cameraObject.transform.localRotation = Quaternion.Euler(0, currentRotation, 0);
     }
 }
-
