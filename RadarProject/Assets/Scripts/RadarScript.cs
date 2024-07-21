@@ -12,11 +12,13 @@ public class RadarScript : MonoBehaviour
     [HideInInspector] public Camera radarCamera;
 
     [SerializeField] private Shader normalDepthShader;
-    [SerializeField] private float parallelThreshold = 0.1f; // Threshold for considering a surface parallel
+    [SerializeField] private float parallelThreshold = 0.8f; // Threshold for considering a surface parallel
 
     private RenderTexture radarTexture;
     private float currentRotation = 0f; // Track current rotation
-    private GameObject cameraObject; 
+    private GameObject cameraObject;
+
+    public DebugSpoke debugSpoke;
 
     void Start()
     {
@@ -45,7 +47,7 @@ public class RadarScript : MonoBehaviour
         CameraObject.AddComponent<Camera>();
         Camera cam = CameraObject.GetComponent<Camera>();
 
-        radarTexture = new RenderTexture(Width, Height, 32, format);
+        radarTexture = new RenderTexture(Width, 5, 32, format);
         cam.targetTexture = radarTexture;
 
         cam.usePhysicalProperties = false;
@@ -63,37 +65,55 @@ public class RadarScript : MonoBehaviour
 
     private void ProcessRadarData()
     {
+
+        if (debugSpoke != null)
+        {
+            debugSpoke.tex.Reinitialize(1, Mathf.RoundToInt(MaxDistance), TextureFormat.RGB24, false);
+        }
         RenderTexture.active = radarTexture;
         Texture2D tex = new Texture2D(radarTexture.width, radarTexture.height, TextureFormat.RGBAFloat, false);
         tex.ReadPixels(new Rect(0, 0, radarTexture.width, radarTexture.height), 0, 0);
         tex.Apply();
+
 
         for (int x = 0; x < tex.width; x++)
         {
             for (int y = 0; y < tex.height; y++)
             {
                 Color pixel = tex.GetPixel(x, y);
-                Vector3 normal = new Vector3(pixel.r * 2 - 1, pixel.g * 2 - 1, pixel.b * 2 - 1);
+                Vector3 normal = new Vector3(pixel.r, pixel.g, pixel.b);
                 float viewSpaceDepth = pixel.a;
-                
-                float distance = viewSpaceDepth;
+                viewSpaceDepth = Mathf.Clamp(viewSpaceDepth, MinDistance, MaxDistance);
+
+                int distance = Mathf.RoundToInt(viewSpaceDepth);
 
                 // Check if the surface is parallel enough (blue channel > threshold)
                 if (normal.z > parallelThreshold)
                 {
                     // This is a radar detection
-                    distance = Mathf.Clamp(distance, MinDistance, MaxDistance);
+                    // distance = Mathf.Clamp(distance, MinDistance, MaxDistance);
                     // Use this distance for your radar logic
                     // For example, you could store it in an array or use it to spawn objects
-                    Debug.Log($"Radar detection at ({x}, {y}) with distance {distance}");
+                    // Debug.Log($"Radar detection at ({x}, {y}) with distance {distance}, rgb {normal.x}, {normal.y}, {normal.z}");
+                    if (debugSpoke != null)
+                    {
+                    
+                        debugSpoke.tex.SetPixel(x, distance, Color.red);
+                    }
                 }
             }
+
+        }
+        if (debugSpoke != null)
+        {
+            debugSpoke.tex.Apply();
         }
 
         Destroy(tex);
     }
 
-    private void RotateCamera() {
+    private void RotateCamera()
+    {
         currentRotation += 1f; // Increase rotation by 1 degree
         if (currentRotation >= 360f) currentRotation -= 360f; // Wrap around at 360 degrees
         cameraObject.transform.localRotation = Quaternion.Euler(0, currentRotation, 0);
