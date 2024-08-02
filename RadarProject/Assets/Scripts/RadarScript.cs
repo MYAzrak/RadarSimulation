@@ -1,18 +1,18 @@
 using UnityEngine;
+using System;
 
 public class RadarScript : MonoBehaviour
 {
     [SerializeField] private int HeightRes = 2048;
     [SerializeField] private int WidthRes = 5;
-    [Range(0.0f, 15f)] private float resolution = 1f;
+    [Range(0.0f, 1f)] private float resolution = 0.1f;
     [Range(5f, 5000f)] public float MaxDistance = 100F;
     [Range(0.01f, 2f)] public float MinDistance = 0.1F;
     [Range(5.0f, 90f)] public float VerticalAngle = 30f;
-    public string RadarLayer = "Radar";
     [HideInInspector] public Camera radarCamera;
 
     [SerializeField] private Shader normalDepthShader;
-    [SerializeField] private float parallelThreshold = 0.8f; // Threshold for considering a surface parallel
+    [Range(0.0f, 0.99f)] public float parallelThreshold = 0.45f; // Threshold for considering a surface parallel
 
     private RenderTexture radarTexture;
     private float currentRotation = 0f; // Track current rotation
@@ -20,8 +20,11 @@ public class RadarScript : MonoBehaviour
 
     public DebugSpoke debugSpoke;
 
+    private int[,] radarPPI;
+
     void Start()
     {
+        radarPPI = new int[Mathf.RoundToInt(360/resolution), Mathf.RoundToInt(MaxDistance)];
         if (normalDepthShader == null)
         {
             normalDepthShader = Shader.Find("Custom/NormalDepthShader");
@@ -75,6 +78,7 @@ public class RadarScript : MonoBehaviour
         tex.ReadPixels(new Rect(0, 0, radarTexture.width, radarTexture.height), 0, 0);
         tex.Apply();
 
+        Array.Clear(radarPPI, Mathf.RoundToInt(currentRotation/resolution), Mathf.RoundToInt(MaxDistance));
 
         for (int x = 0; x < tex.width; x++)
         {
@@ -88,16 +92,12 @@ public class RadarScript : MonoBehaviour
                 int distance = Mathf.RoundToInt(viewSpaceDepth);
 
                 // Check if the surface is parallel enough (blue channel > threshold)
-                if (normal.z > parallelThreshold)
+                if (normal.z > parallelThreshold && distance > 1)
                 {
-                    // This is a radar detection
-                    // distance = Mathf.Clamp(distance, MinDistance, MaxDistance);
-                    // Use this distance for your radar logic
-                    // For example, you could store it in an array or use it to spawn objects
-                    // Debug.Log($"Radar detection at ({x}, {y}) with distance {distance}, rgb {normal.x}, {normal.y}, {normal.z}");
+                    UpdateSpoke(distance);
+                    
                     if (debugSpoke != null)
                     {
-                    
                         debugSpoke.tex.SetPixel(x, distance, Color.red);
                     }
                 }
@@ -114,8 +114,14 @@ public class RadarScript : MonoBehaviour
 
     private void RotateCamera()
     {
-        currentRotation += 1f; // Increase rotation by 1 degree
+        currentRotation += resolution; // Increase rotation by 1 degree
         if (currentRotation >= 360f) currentRotation -= 360f; // Wrap around at 360 degrees
         cameraObject.transform.localRotation = Quaternion.Euler(0, currentRotation, 0);
     }
+
+    private void UpdateSpoke(int distance) {
+        radarPPI[Mathf.RoundToInt(currentRotation/resolution), distance]++;
+    }
+
+    
 }
