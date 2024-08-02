@@ -27,7 +27,6 @@ public class ShipController : MonoBehaviour
         StartCoroutine(LogShipEvents());
     }
 
-    // The ship has forward as right and right as forward for some reason
     void FixedUpdate()
     {
         if (indexOfLocationToVisit == locationsToVisit.Count) return;
@@ -38,13 +37,13 @@ public class ShipController : MonoBehaviour
         Vector3 distanceToLocation = locationsToVisit[indexOfLocationToVisit] - transform.position;
         distanceToLocation.y = 0; // Ignore elevation
         
-        float dot = Vector3.Dot(transform.right, distanceToLocation.normalized);
+        float dot = Vector3.Dot(transform.forward, distanceToLocation.normalized);
 
         // Not facing the next location
         if  (dot < 0.999f) {
-            float steerDirection = - Vector3.Dot(transform.forward, distanceToLocation.normalized); // Negative to rotate it in the correct direction
+            float steerDirection = - Vector3.Dot(transform.right, distanceToLocation.normalized); // Negative to rotate it in the correct direction
             float steerForce = rigidbody.mass * shipInformation.GetSpeedInMetersPerSecond(steerPower);
-            rigidbody.AddForceAtPosition(transform.forward * steerForce * steerDirection, motor.position, ForceMode.Force);
+            rigidbody.AddForceAtPosition(transform.right * steerForce * steerDirection, motor.position, ForceMode.Force);
         }
 
         if (distanceToLocation.magnitude < distanceThreshold)
@@ -56,7 +55,7 @@ public class ShipController : MonoBehaviour
 
         // Vector3 movementDirection = directionToLocation.normalized;
         float force = rigidbody.mass * shipInformation.GetSpeedInMetersPerSecond(shipSpeed); // f = m a
-        rigidbody.AddForce(transform.right * force, ForceMode.Force); // Always move forward for now
+        rigidbody.AddForce(transform.forward * force, ForceMode.Force); // Always move forward for now
     }
     
     IEnumerator LogShipEvents()

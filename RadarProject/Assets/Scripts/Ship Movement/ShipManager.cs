@@ -87,7 +87,7 @@ public class ShipManager : MonoBehaviour
             // The first location is the starting position of the ship
             float x = ship.Value[0].Item1;
             float z = ship.Value[0].Item2;
-            Vector3 shipLocation = new Vector3(x, 0, z);
+            Vector3 shipLocation = new(x, 0, z);
             
             // Get ship information
             string[] information = shipsInformation[ship.Key];
@@ -102,12 +102,11 @@ public class ShipManager : MonoBehaviour
             // If there are more than one location then rotate the generated ship to face the direction of the next location
             if (ship.Value.Count > 1) 
             {
-                // TODO: The Quaternion.FromToRotation is producing incorrect result
-                instance = Instantiate(
-                    shipPrefab, 
-                    shipLocation,
-                    Quaternion.FromToRotation(shipLocation, new Vector3(ship.Value[1].Item1, 0, ship.Value[1].Item2))
-                    );
+                Vector3 heading = new Vector3(ship.Value[1].Item1, 0, ship.Value[1].Item2) - shipLocation;
+                float distance = heading.magnitude;
+                Vector3 direction = heading / distance;
+                
+                instance = Instantiate(shipPrefab, shipLocation, Quaternion.LookRotation(direction));
             }
             else
                 instance = Instantiate(shipPrefab, shipLocation, Quaternion.identity);
