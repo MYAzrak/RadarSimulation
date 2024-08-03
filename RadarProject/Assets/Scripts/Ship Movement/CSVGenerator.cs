@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class CSVGenerator
 {
-    public int locationsToCreate = 10; // Number of locations the ship will visit
+    public int locationsToCreate = 10;          // Number of locations the ship will visit
     public float distanceBetweenPoints = 400f;
-    public float initialCoordinates = 2000f; // The range the ships will initially generate at
-    public float randomCoordinates = 400f; // The range added to the previous location the ship will visit
+    public float initialCoordinates = 2000f;    // The range the ships will initially generate at
+    public float randomCoordinates = 400f;      // The range added to the previous location the ship will visit
 
     int[] speed;
     public int minSpeed = 6;

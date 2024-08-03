@@ -1,25 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
-    [SerializeField] public List<Vector3> locationsToVisit;
-    [SerializeField] public List<float> speedAtEachLocation;
+    [Header("Location and Speed Attributes")]
+    public List<Vector3> locationsToVisit;
+    public List<float> speedAtEachLocation;
 
+    [Header("Ship Information")]
     // The acceleration is in knots but it is converted to m/s for Unity
-    [SerializeField] public float steerPower = 4f;
-    [SerializeField] public float shipSpeed = 5f;
+    public float steerPower = 4f;
+    public float shipSpeed = 5f;
     [SerializeField] Transform motor;
-    
-    new Rigidbody rigidbody;
-    public ShipInformation shipInformation;
 
     [Header("Debug")]
     [SerializeField] int indexOfLocationToVisit;
     [SerializeField] int distanceThreshold = 50;
     [SerializeField] float timeToWaitBeforeLogging = 5f;
+    public bool logMessages = false;
+
+    new Rigidbody rigidbody;
+    public ShipInformation shipInformation;
 
     void Start()
     {
@@ -69,11 +71,13 @@ public class ShipController : MonoBehaviour
         {
             yield return new WaitForSeconds(timeToWaitBeforeLogging);
             
-            float speed = rigidbody.velocity.magnitude * ShipInformation.METERS_PER_SECOND_TO_KNOTS;
+            float speed = rigidbody.velocity.magnitude;
             Vector3 position = rigidbody.position;
 
             shipInformation.AddToHistory(speed, position);
-            Debug.Log($"{shipInformation.GetName()} with ID {shipInformation.GetID()} has speed: {speed} Knots at position: {position}");
+
+            if (logMessages)
+                Debug.Log($"{shipInformation.GetName()} with ID {shipInformation.GetID()} has speed: {speed} Knots at position: {position}");
         }
     }
 }
