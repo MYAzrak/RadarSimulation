@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
-    [Header("Location and Speed Attributes")]
+    [Header("Location and Speed Information")]
     public List<Vector3> locationsToVisit;
     public List<float> speedAtEachLocation;
 
-    [Header("Ship Information")]
-    // The acceleration is in knots but it is converted to m/s for Unity
-    public float steerPower = 4f;
-    public float shipSpeed = 5f;
+    [Header("Ship Power")]
+    // The speed is in knots but it is converted to m/s for Unity
+    public float turnSpeed = 2f;
+    public float forwardSpeed = 5f;
     [SerializeField] Transform motor;
 
     [Header("Debug")]
@@ -34,30 +34,34 @@ public class ShipController : MonoBehaviour
         if (indexOfLocationToVisit == locationsToVisit.Count) return;
 
         if (speedAtEachLocation != null)
-            shipSpeed = speedAtEachLocation[indexOfLocationToVisit];
+            forwardSpeed = speedAtEachLocation[indexOfLocationToVisit];
         
-        Vector3 distanceToLocation = locationsToVisit[indexOfLocationToVisit] - transform.position;
-        distanceToLocation.y = 0; // Ignore elevation
+        Vector3 heading = locationsToVisit[indexOfLocationToVisit] - transform.position;
+        heading.y = 0; // Ignore elevation
         
-        float dot = Vector3.Dot(transform.forward, distanceToLocation.normalized);
+        float dot = Vector3.Dot(transform.forward, heading.normalized);
 
         // Not facing the next location
         if  (dot < 0.999f) {
-            float steerDirection = - Vector3.Dot(transform.right, distanceToLocation.normalized); // Negative to rotate it in the correct direction
-            float steerForce = rigidbody.mass * shipInformation.GetSpeedInMetersPerSecond(steerPower);
-            rigidbody.AddForceAtPosition(transform.right * steerForce * steerDirection, motor.position, ForceMode.Force);
+            float steerDirection = - Vector3.Dot(transform.right, heading.normalized); // Negative to rotate it in the correct direction
+            float counterAngularDrag = (rigidbody.angularDrag == 0) ? 1 : rigidbody.angularDrag; // Counter the angular drag to maintain the inputted speed
+
+            float steerForce = counterAngularDrag * rigidbody.mass * shipInformation.GetSpeedInMetersPerSecond(turnSpeed);
+            Vector3 turnForce = transform.right * steerForce * steerDirection;
+            rigidbody.AddForceAtPosition(turnForce, motor.position, ForceMode.Force);
         }
 
-        if (distanceToLocation.magnitude < distanceThreshold)
+        if (heading.sqrMagnitude < distanceThreshold * distanceThreshold)
         {
             // Move to the next location
             indexOfLocationToVisit += 1;
             return;
         }
 
-        // Vector3 movementDirection = directionToLocation.normalized;
-        float force = rigidbody.mass * shipInformation.GetSpeedInMetersPerSecond(shipSpeed); // f = m a
-        rigidbody.AddForce(transform.forward * force, ForceMode.Force); // Always move forward for now
+        float counterDrag = (rigidbody.drag == 0) ? 1 : rigidbody.drag; // Counter the drag to maintain the inputted speed
+        float force = counterDrag * rigidbody.mass * shipInformation.GetSpeedInMetersPerSecond(forwardSpeed); // f = m a
+        Vector3 forwardForce = Vector3.Scale(new Vector3(1, 0, 1), transform.forward) * force; // Ignore y axis
+        rigidbody.AddForce(forwardForce, ForceMode.Force); // Always move forward for now
     }
     
     IEnumerator LogShipEvents()
@@ -71,7 +75,7 @@ public class ShipController : MonoBehaviour
         {
             yield return new WaitForSeconds(timeToWaitBeforeLogging);
             
-            float speed = rigidbody.velocity.magnitude;
+            float speed = rigidbody.velocity.magnitude * ShipInformation.METERS_PER_SECOND_TO_KNOTS;
             Vector3 position = rigidbody.position;
 
             shipInformation.AddToHistory(speed, position);

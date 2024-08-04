@@ -1443,8 +1443,8 @@ Rigidbody:
   m_GameObject: {fileID: 8027784519485368452}
   serializedVersion: 4
   m_Mass: 100000000
-  m_Drag: 0.5
-  m_AngularDrag: 0.4
+  m_Drag: 0.4
+  m_AngularDrag: 0.2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1488,12 +1488,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locationsToVisit: []
   speedAtEachLocation: []
-  steerPower: 4
-  shipSpeed: 5
+  turnSpeed: 2
+  forwardSpeed: 5
   motor: {fileID: 3782186991887517583}
   indexOfLocationToVisit: 0
   distanceThreshold: 100
   timeToWaitBeforeLogging: 5
+  logMessages: 0
 --- !u!1 &8459820143145430896
 GameObject:
   m_ObjectHideFlags: 0
