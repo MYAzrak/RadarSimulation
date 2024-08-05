@@ -657,7 +657,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scenarioFileName: Scenario1
-  shipPrefab: {fileID: 8027784519485368452, guid: 7adb833d3f0b2adff98524e4a01290a3, type: 3}
+  shipPrefab: {fileID: 8746144862973224071, guid: 7adb833d3f0b2adff98524e4a01290a3, type: 3}
   resetScenario: 0
   reloadCSV: 0
   randomCSVFileName: Scenario

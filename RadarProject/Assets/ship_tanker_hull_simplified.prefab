@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &52966582589897971
+--- !u!1 &190530626959716745
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,129 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4912160637628363516}
-  - component: {fileID: 829886923157439360}
-  - component: {fileID: 8464565138411601089}
+  - component: {fileID: 8959439919317197794}
+  - component: {fileID: 1472276268438630410}
+  - component: {fileID: 8720150383586462307}
   m_Layer: 0
-  m_Name: ship_tanker_superstructure
+  m_Name: ship_tanker_pipe_fittings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4912160637628363516
+--- !u!4 &8959439919317197794
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52966582589897971}
+  m_GameObject: {fileID: 190530626959716745}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000015454312, y: 0.70710665, z: -0.000000015454305, w: 0.70710695}
-  m_LocalPosition: {x: -91.11319, y: 36.20189, z: 1.0837371}
-  m_LocalScale: {x: 11.29534, y: 25.948624, z: 32.885952}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 911927023278511398}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &829886923157439360
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52966582589897971}
-  m_Mesh: {fileID: 1325659992312114461, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &8464565138411601089
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52966582589897971}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 4904332657928487638, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &1753700287697635021
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 96345802346821936}
-  - component: {fileID: 1184180358126900297}
-  - component: {fileID: 6398833821298216256}
-  m_Layer: 0
-  m_Name: ship_tanker_railings 01
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &96345802346821936
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753700287697635021}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0.00000016858742, z: 0.00000016858743, w: 0.7071068}
-  m_LocalPosition: {x: 73.91835, y: 29.106646, z: -10.642142}
+  m_LocalRotation: {x: -0.7071068, y: 0.00000016858745, z: 0.00000016858745, w: 0.7071068}
+  m_LocalPosition: {x: -43.65052, y: 0, z: -0.6526961}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 911927023278511398}
+  m_Father: {fileID: 5788893162867204934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1184180358126900297
+--- !u!33 &1472276268438630410
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753700287697635021}
-  m_Mesh: {fileID: 1600838523627354360, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &6398833821298216256
+  m_GameObject: {fileID: 190530626959716745}
+  m_Mesh: {fileID: -4386480178771222918, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &8720150383586462307
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753700287697635021}
+  m_GameObject: {fileID: 190530626959716745}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -144,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6877316801340297574, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
+  - {fileID: -3438401820986230580, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -166,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &1798814814601198305
+--- !u!1 &305972873230090448
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,7 +91,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3782186991887517583}
+  - component: {fileID: 6732601697249296640}
   m_Layer: 0
   m_Name: Motor
   m_TagString: Untagged
@@ -182,22 +99,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3782186991887517583
+--- !u!4 &6732601697249296640
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1798814814601198305}
+  m_GameObject: {fileID: 305972873230090448}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.0407, z: -0.8901}
+  m_LocalPosition: {x: 0, y: -0.04088, z: -0.89052}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1757543681396668230}
+  m_Father: {fileID: 6572955647204576785}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2693129795307227175
+--- !u!1 &355193382304089617
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -205,46 +122,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8329312868051486916}
-  - component: {fileID: 1032112455245891127}
-  - component: {fileID: 2190865988079976519}
+  - component: {fileID: 5681300486514074583}
+  - component: {fileID: 8924201156436381263}
+  - component: {fileID: 6275300223364627232}
   m_Layer: 0
-  m_Name: ship_tanker_glass
+  m_Name: ship_tanker_superstructure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8329312868051486916
+--- !u!4 &5681300486514074583
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2693129795307227175}
+  m_GameObject: {fileID: 355193382304089617}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5000002, y: -0.49999982, z: -0.4999998, w: 0.50000024}
-  m_LocalPosition: {x: -63.683426, y: 40.80535, z: -4.6753955}
-  m_LocalScale: {x: 24.230103, y: 30.880722, z: 25.948624}
+  m_LocalRotation: {x: -0.000000026692547, y: 0.7071066, z: 0.00000002669253, w: 0.70710695}
+  m_LocalPosition: {x: -91.11319, y: 36.20189, z: 1.0837371}
+  m_LocalScale: {x: 11.29534, y: 25.948624, z: 32.885952}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 911927023278511398}
+  m_Father: {fileID: 5788893162867204934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1032112455245891127
+--- !u!33 &8924201156436381263
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2693129795307227175}
-  m_Mesh: {fileID: -1150487764791812930, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &2190865988079976519
+  m_GameObject: {fileID: 355193382304089617}
+  m_Mesh: {fileID: 1325659992312114461, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &6275300223364627232
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2693129795307227175}
+  m_GameObject: {fileID: 355193382304089617}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -258,7 +175,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6638656922070367220, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
+  - {fileID: 4904332657928487638, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -280,7 +197,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &2743571739175911515
+--- !u!1 &1330060388627222999
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -288,637 +205,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4957862951099573781}
-  - component: {fileID: 2652591637408378229}
-  - component: {fileID: 8409115262095717679}
-  m_Layer: 0
-  m_Name: ship_tanker_hull
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4957862951099573781
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2743571739175911515}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.000000015454313, y: 0.70710665, z: -0.000000015454306, w: 0.70710695}
-  m_LocalPosition: {x: 71.04985, y: 17.617973, z: 0.85698766}
-  m_LocalScale: {x: 336.94513, y: 189.44388, z: 189.44388}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 911927023278511398}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2652591637408378229
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2743571739175911515}
-  m_Mesh: {fileID: -1237226481332817812, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &8409115262095717679
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2743571739175911515}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: -3438401820986230580, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4617540428704000124
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4223856327646056008}
-  - component: {fileID: 465654686137192935}
-  - component: {fileID: 1663962665691590203}
-  m_Layer: 0
-  m_Name: ship_tanker_railings 02
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4223856327646056008
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4617540428704000124}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.051561575, y: 0.00000051672305, z: 0.9986698, w: 0.00000007021542}
-  m_LocalPosition: {x: 141.39601, y: 27.845024, z: -17.331877}
-  m_LocalScale: {x: -124.78155, y: -124.78157, z: -124.78155}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 911927023278511398}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &465654686137192935
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4617540428704000124}
-  m_Mesh: {fileID: -1064402743955181322, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &1663962665691590203
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4617540428704000124}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: -6877316801340297574, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4927544328751861804
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5210546364938848769}
-  - component: {fileID: 3291950945321121085}
-  - component: {fileID: 6519208212409970429}
-  m_Layer: 0
-  m_Name: ship_tanker_pipe_brakets
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5210546364938848769
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4927544328751861804}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.000000015454308, y: -0.70710665, z: 0.000000015454301, w: 0.70710695}
-  m_LocalPosition: {x: 5.346709, y: 30.192139, z: 1.0823004}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 911927023278511398}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3291950945321121085
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4927544328751861804}
-  m_Mesh: {fileID: 6382459268943949467, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &6519208212409970429
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4927544328751861804}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: -3438401820986230580, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &5015878618656495129
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 911927023278511398}
-  m_Layer: 0
-  m_Name: test_ship
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &911927023278511398
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5015878618656495129}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.000000015454313, y: -0.70710665, z: 0.000000015454306, w: 0.70710695}
-  m_LocalPosition: {x: 0.0025433344, y: -0.0929984, z: -0.3750444}
-  m_LocalScale: {x: 0.0052786083, y: 0.0052786083, z: 0.0029678424}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5518604203760184444}
-  - {fileID: 3481894203462443920}
-  - {fileID: 7130268257140642956}
-  - {fileID: 8329312868051486916}
-  - {fileID: 4957862951099573781}
-  - {fileID: 5210546364938848769}
-  - {fileID: 1535170498272580440}
-  - {fileID: 1300611252584053958}
-  - {fileID: 3137138193231079254}
-  - {fileID: 96345802346821936}
-  - {fileID: 4223856327646056008}
-  - {fileID: 2057899823805538117}
-  - {fileID: 6750753612012939069}
-  - {fileID: 1388897715025699622}
-  - {fileID: 4912160637628363516}
-  - {fileID: 5685672384419910308}
-  m_Father: {fileID: 1757543681396668230}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5080155383969098709
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5518604203760184444}
-  - component: {fileID: 480954012809174086}
-  - component: {fileID: 3876319877715239880}
-  m_Layer: 0
-  m_Name: ship_tanker_deck_equipment
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5518604203760184444
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5080155383969098709}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0.00000016858742, z: 0.00000016858743, w: 0.7071068}
-  m_LocalPosition: {x: 30.905748, y: 0, z: -4.893592}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 911927023278511398}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &480954012809174086
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5080155383969098709}
-  m_Mesh: {fileID: 1257329150205464021, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &3876319877715239880
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5080155383969098709}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: -3438401820986230580, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &5273929555109726521
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1388897715025699622}
-  - component: {fileID: 3304765406182778054}
-  - component: {fileID: 1403028683169371864}
-  m_Layer: 0
-  m_Name: ship_tanker_stairs
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1388897715025699622
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5273929555109726521}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.49875155, y: 0.5012443, z: -0.501244, w: 0.4987539}
-  m_LocalPosition: {x: -20.230124, y: 32.110744, z: 25.63905}
-  m_LocalScale: {x: -4.795461, y: -3.7536664, z: -5.175911}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 911927023278511398}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3304765406182778054
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5273929555109726521}
-  m_Mesh: {fileID: -7102054453916980617, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &1403028683169371864
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5273929555109726521}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: -3438401820986230580, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &5629586859581499053
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6750753612012939069}
-  - component: {fileID: 8782474258914054708}
-  - component: {fileID: 2497279297275543368}
-  m_Layer: 0
-  m_Name: ship_tanker_small_pipes
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6750753612012939069
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5629586859581499053}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.00000030626617, y: 0.7071068, z: 0.70710677, w: -0.00000030626617}
-  m_LocalPosition: {x: 4.294375, y: 28.253666, z: -1.6764807}
-  m_LocalScale: {x: 124.78155, y: 124.78155, z: 124.78155}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 911927023278511398}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8782474258914054708
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5629586859581499053}
-  m_Mesh: {fileID: -4028137558519361139, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &2497279297275543368
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5629586859581499053}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: -3438401820986230580, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &5971400830579093383
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7130268257140642956}
-  - component: {fileID: 887017186237852690}
-  - component: {fileID: 934766757299391595}
-  m_Layer: 0
-  m_Name: ship_tanker_deck_towers
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7130268257140642956
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971400830579093383}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0.00000016858742, z: 0.00000016858743, w: 0.7071068}
-  m_LocalPosition: {x: 13.11983, y: 26.573774, z: -2.8316333}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 911927023278511398}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &887017186237852690
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971400830579093383}
-  m_Mesh: {fileID: 6527794197449158843, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &934766757299391595
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971400830579093383}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 257
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: -3438401820986230580, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6021075316494242702
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5685672384419910308}
-  - component: {fileID: 7186755962468972551}
-  - component: {fileID: 7147496305916433872}
+  - component: {fileID: 342380839481753804}
+  - component: {fileID: 247547451353674123}
+  - component: {fileID: 7617532841258149784}
   m_Layer: 0
   m_Name: ship_tanker_winches
   m_TagString: Untagged
@@ -926,36 +215,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5685672384419910308
+--- !u!4 &342380839481753804
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6021075316494242702}
+  m_GameObject: {fileID: 1330060388627222999}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.70484614, y: -0.06567808, z: -0.0674109, w: 0.70308894}
+  m_LocalRotation: {x: -0.7048462, y: -0.06567808, z: -0.067410894, w: 0.703089}
   m_LocalPosition: {x: 30.555536, y: 1.068728, z: -27.992023}
   m_LocalScale: {x: 0.9999999, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 911927023278511398}
+  m_Father: {fileID: 5788893162867204934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7186755962468972551
+--- !u!33 &247547451353674123
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6021075316494242702}
-  m_Mesh: {fileID: -499948543300101335, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &7147496305916433872
+  m_GameObject: {fileID: 1330060388627222999}
+  m_Mesh: {fileID: -499948543300101335, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &7617532841258149784
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6021075316494242702}
+  m_GameObject: {fileID: 1330060388627222999}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -969,7 +258,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3438401820986230580, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
+  - {fileID: -3438401820986230580, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -991,7 +280,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6271167716042052512
+--- !u!1 &1823142950784756450
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -999,9 +288,139 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3481894203462443920}
-  - component: {fileID: 8916267044910219522}
-  - component: {fileID: 4086285350672196832}
+  - component: {fileID: 8616141687367463074}
+  - component: {fileID: 1194225268378229255}
+  - component: {fileID: 392713397611310893}
+  m_Layer: 0
+  m_Name: ship_tanker_glass
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8616141687367463074
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823142950784756450}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.5000002, y: -0.4999998, z: -0.49999976, w: 0.50000024}
+  m_LocalPosition: {x: -63.683426, y: 40.80535, z: -4.6753955}
+  m_LocalScale: {x: 24.230103, y: 30.880722, z: 25.948624}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5788893162867204934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &1194225268378229255
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823142950784756450}
+  m_Mesh: {fileID: -1150487764791812930, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &392713397611310893
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823142950784756450}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 6638656922070367220, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2039332311022361322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5788893162867204934}
+  m_Layer: 0
+  m_Name: test_ship
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5788893162867204934
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039332311022361322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000000026692547, y: -0.7071066, z: -0.00000002669253, w: 0.70710695}
+  m_LocalPosition: {x: 0.002543292, y: -0.09299835, z: -0.37504435}
+  m_LocalScale: {x: 0.00527861, y: 0.0052786083, z: 0.0029678433}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2239192996456451997}
+  - {fileID: 219172472845960850}
+  - {fileID: 9020015588349815977}
+  - {fileID: 8616141687367463074}
+  - {fileID: 806585501284173489}
+  - {fileID: 3182376836837319130}
+  - {fileID: 8959439919317197794}
+  - {fileID: 3704864438541811151}
+  - {fileID: 7199124269436017322}
+  - {fileID: 457876417431504942}
+  - {fileID: 8936119848481692638}
+  - {fileID: 5949550948003321929}
+  - {fileID: 2905277820943586794}
+  - {fileID: 7496055609436365037}
+  - {fileID: 5681300486514074583}
+  - {fileID: 342380839481753804}
+  m_Father: {fileID: 6572955647204576785}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2545642894764790762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 219172472845960850}
+  - component: {fileID: 5831587037604253943}
+  - component: {fileID: 3112519858317083699}
   m_Layer: 0
   m_Name: ship_tanker_deck_pipes
   m_TagString: Untagged
@@ -1009,36 +428,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3481894203462443920
+--- !u!4 &219172472845960850
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6271167716042052512}
+  m_GameObject: {fileID: 2545642894764790762}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.000000037748947, y: 0.00000023841855, z: -1.0485415e-15, w: 1}
+  m_LocalRotation: {x: -0.000000037748947, y: 0.00000023841855, z: 9.0000495e-15, w: 1}
   m_LocalPosition: {x: 84.61125, y: 27.256525, z: 1.9905599}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 911927023278511398}
+  m_Father: {fileID: 5788893162867204934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8916267044910219522
+--- !u!33 &5831587037604253943
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6271167716042052512}
-  m_Mesh: {fileID: 6533249846587074245, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &4086285350672196832
+  m_GameObject: {fileID: 2545642894764790762}
+  m_Mesh: {fileID: 6533249846587074245, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &3112519858317083699
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6271167716042052512}
+  m_GameObject: {fileID: 2545642894764790762}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1052,7 +471,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3438401820986230580, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
+  - {fileID: -3438401820986230580, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1074,7 +493,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6597234888931440444
+--- !u!1 &2797579864784788527
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1082,46 +501,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3137138193231079254}
-  - component: {fileID: 9082815594180780839}
-  - component: {fileID: 971407440314966048}
+  - component: {fileID: 806585501284173489}
+  - component: {fileID: 6047024238007148535}
+  - component: {fileID: 119361201456460651}
   m_Layer: 0
-  m_Name: ship_tanker_propeller
+  m_Name: ship_tanker_hull
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3137138193231079254
+--- !u!4 &806585501284173489
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6597234888931440444}
+  m_GameObject: {fileID: 2797579864784788527}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.3210196, y: -0.63003665, z: 0.3210199, w: 0.6300369}
-  m_LocalPosition: {x: -97.24781, y: 9.869019, z: 0.82922196}
-  m_LocalScale: {x: 16.7298, y: 16.7298, z: 16.729801}
+  m_LocalRotation: {x: -0.000000026692547, y: 0.7071066, z: 0.00000002669253, w: 0.70710695}
+  m_LocalPosition: {x: 71.04985, y: 17.617973, z: 0.85698766}
+  m_LocalScale: {x: 336.94513, y: 189.44388, z: 189.44388}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 911927023278511398}
+  m_Father: {fileID: 5788893162867204934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &9082815594180780839
+--- !u!33 &6047024238007148535
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6597234888931440444}
-  m_Mesh: {fileID: 8209554153544015271, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &971407440314966048
+  m_GameObject: {fileID: 2797579864784788527}
+  m_Mesh: {fileID: -1237226481332817812, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &119361201456460651
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6597234888931440444}
+  m_GameObject: {fileID: 2797579864784788527}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1135,7 +554,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 768723047098141907, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
+  - {fileID: -3438401820986230580, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1157,7 +576,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6611258011272562046
+--- !u!1 &4124954959312319085
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1165,46 +584,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2057899823805538117}
-  - component: {fileID: 4494331574692733988}
-  - component: {fileID: 2795957335798711724}
+  - component: {fileID: 457876417431504942}
+  - component: {fileID: 3727947746511097913}
+  - component: {fileID: 552593935782544482}
   m_Layer: 0
-  m_Name: ship_tanker_railings 03
+  m_Name: ship_tanker_railings 01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2057899823805538117
+--- !u!4 &457876417431504942
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6611258011272562046}
+  m_GameObject: {fileID: 4124954959312319085}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00000067154434, y: 0.000000037748976, z: 1, w: -0.000000043711417}
-  m_LocalPosition: {x: -81.37036, y: 41.87077, z: -11.2258835}
-  m_LocalScale: {x: -48.816917, y: -18.757729, z: -20.92233}
+  m_LocalRotation: {x: -0.7071068, y: 0.00000016858745, z: 0.00000016858745, w: 0.7071068}
+  m_LocalPosition: {x: 73.91835, y: 29.106646, z: -10.642142}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 911927023278511398}
+  m_Father: {fileID: 5788893162867204934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4494331574692733988
+--- !u!33 &3727947746511097913
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6611258011272562046}
-  m_Mesh: {fileID: 4363032374392019225, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &2795957335798711724
+  m_GameObject: {fileID: 4124954959312319085}
+  m_Mesh: {fileID: 1600838523627354360, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &552593935782544482
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6611258011272562046}
+  m_GameObject: {fileID: 4124954959312319085}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1218,7 +637,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4904332657928487638, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
+  - {fileID: -6877316801340297574, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1240,7 +659,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &7762077146076863328
+--- !u!1 &4623076649009343597
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1248,9 +667,507 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1300611252584053958}
-  - component: {fileID: 3059207202640780206}
-  - component: {fileID: 8041950431818520915}
+  - component: {fileID: 9020015588349815977}
+  - component: {fileID: 3964839289362226010}
+  - component: {fileID: 2922117726121162187}
+  m_Layer: 0
+  m_Name: ship_tanker_deck_towers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9020015588349815977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623076649009343597}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0.00000016858745, z: 0.00000016858745, w: 0.7071068}
+  m_LocalPosition: {x: 13.11983, y: 26.573774, z: -2.8316333}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5788893162867204934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &3964839289362226010
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623076649009343597}
+  m_Mesh: {fileID: 6527794197449158843, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &2922117726121162187
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623076649009343597}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -3438401820986230580, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5914488676747468095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2239192996456451997}
+  - component: {fileID: 5787472137909299118}
+  - component: {fileID: 8730575409130941452}
+  m_Layer: 0
+  m_Name: ship_tanker_deck_equipment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2239192996456451997
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5914488676747468095}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0.00000016858745, z: 0.00000016858745, w: 0.7071068}
+  m_LocalPosition: {x: 30.905748, y: 0, z: -4.893592}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5788893162867204934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &5787472137909299118
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5914488676747468095}
+  m_Mesh: {fileID: 1257329150205464021, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &8730575409130941452
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5914488676747468095}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -3438401820986230580, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6188164838690177550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3182376836837319130}
+  - component: {fileID: 1627109589384148962}
+  - component: {fileID: 81063058960519140}
+  m_Layer: 0
+  m_Name: ship_tanker_pipe_brakets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3182376836837319130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6188164838690177550}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000026692542, y: -0.7071066, z: -0.000000026692527, w: 0.70710695}
+  m_LocalPosition: {x: 5.346709, y: 30.192139, z: 1.0823004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5788893162867204934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &1627109589384148962
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6188164838690177550}
+  m_Mesh: {fileID: 6382459268943949467, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &81063058960519140
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6188164838690177550}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -3438401820986230580, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6329947948755832387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7496055609436365037}
+  - component: {fileID: 9060049843746911606}
+  - component: {fileID: 8447951252405301413}
+  m_Layer: 0
+  m_Name: ship_tanker_stairs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7496055609436365037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6329947948755832387}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.49875113, y: 0.5012447, z: -0.50124353, w: 0.49875438}
+  m_LocalPosition: {x: -20.230124, y: 32.110744, z: 25.63905}
+  m_LocalScale: {x: -4.795461, y: -3.7536664, z: -5.175911}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5788893162867204934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &9060049843746911606
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6329947948755832387}
+  m_Mesh: {fileID: -7102054453916980617, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &8447951252405301413
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6329947948755832387}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -3438401820986230580, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7631806309177627293
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2905277820943586794}
+  - component: {fileID: 3323200570924274923}
+  - component: {fileID: 5751792296422105611}
+  m_Layer: 0
+  m_Name: ship_tanker_small_pipes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2905277820943586794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7631806309177627293}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00000030626617, y: 0.7071068, z: 0.70710677, w: -0.00000030626617}
+  m_LocalPosition: {x: 4.294375, y: 28.253666, z: -1.6764807}
+  m_LocalScale: {x: 124.78155, y: 124.78155, z: 124.78155}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5788893162867204934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &3323200570924274923
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7631806309177627293}
+  m_Mesh: {fileID: -4028137558519361139, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &5751792296422105611
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7631806309177627293}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -3438401820986230580, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7967455619338486175
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8936119848481692638}
+  - component: {fileID: 7622563260186246393}
+  - component: {fileID: 5688554595088163624}
+  m_Layer: 0
+  m_Name: ship_tanker_railings 02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8936119848481692638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7967455619338486175}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.05156157, y: 0.0000005728967, z: 0.9986698, w: 0.00000010477528}
+  m_LocalPosition: {x: 141.39601, y: 27.845024, z: -17.331877}
+  m_LocalScale: {x: -124.781525, y: -124.78157, z: -124.781525}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5788893162867204934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &7622563260186246393
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7967455619338486175}
+  m_Mesh: {fileID: -1064402743955181322, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &5688554595088163624
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7967455619338486175}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -6877316801340297574, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8195854276197772759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3704864438541811151}
+  - component: {fileID: 9030484828057152691}
+  - component: {fileID: 7239985373577919891}
   m_Layer: 0
   m_Name: ship_tanker_pipe_support
   m_TagString: Untagged
@@ -1258,36 +1175,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1300611252584053958
+--- !u!4 &3704864438541811151
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7762077146076863328}
+  m_GameObject: {fileID: 8195854276197772759}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.49999997, w: 0.5}
+  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.49999997, w: 0.50000006}
   m_LocalPosition: {x: 18.635971, y: 27.484438, z: -13.604721}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 911927023278511398}
+  m_Father: {fileID: 5788893162867204934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3059207202640780206
+--- !u!33 &9030484828057152691
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7762077146076863328}
-  m_Mesh: {fileID: 5020218015796124672, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &8041950431818520915
+  m_GameObject: {fileID: 8195854276197772759}
+  m_Mesh: {fileID: 5020218015796124672, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &7239985373577919891
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7762077146076863328}
+  m_GameObject: {fileID: 8195854276197772759}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1301,7 +1218,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3438401820986230580, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
+  - {fileID: -3438401820986230580, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1323,7 +1240,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8027784519485368452
+--- !u!1 &8746144862973224071
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1331,13 +1248,13 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1757543681396668230}
-  - component: {fileID: 3296432185547514949}
-  - component: {fileID: 3080941474875149902}
-  - component: {fileID: 7432659340135752514}
-  - component: {fileID: 720298095231965479}
-  - component: {fileID: 7125556084102433161}
-  - component: {fileID: 1358279319234804832}
+  - component: {fileID: 6572955647204576785}
+  - component: {fileID: 8212322974797188824}
+  - component: {fileID: 8673999232080544515}
+  - component: {fileID: 8332884797560568880}
+  - component: {fileID: 1234795056132842163}
+  - component: {fileID: 7067641561064429251}
+  - component: {fileID: 4634546009046017225}
   m_Layer: 0
   m_Name: ship_tanker_hull_simplified
   m_TagString: Untagged
@@ -1345,38 +1262,38 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1757543681396668230
+--- !u!4 &6572955647204576785
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8027784519485368452}
+  m_GameObject: {fileID: 8746144862973224071}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000015454313, y: 0.70710665, z: -0.000000015454306, w: 0.70710695}
-  m_LocalPosition: {x: -514.3972, y: 0, z: -50.56655}
-  m_LocalScale: {x: 336.94513, y: 189.44388, z: 189.44388}
+  m_LocalRotation: {x: -0.000000026692547, y: 0.7071066, z: 0.00000002669253, w: 0.70710695}
+  m_LocalPosition: {x: -71.80487, y: 17.617973, z: 11.996881}
+  m_LocalScale: {x: 336.94507, y: 189.44388, z: 189.44385}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 911927023278511398}
-  - {fileID: 3782186991887517583}
+  - {fileID: 5788893162867204934}
+  - {fileID: 6732601697249296640}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3296432185547514949
+--- !u!33 &8212322974797188824
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8027784519485368452}
-  m_Mesh: {fileID: 6949540504890299830, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &3080941474875149902
+  m_GameObject: {fileID: 8746144862973224071}
+  m_Mesh: {fileID: 6949540504890299830, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &8673999232080544515
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8027784519485368452}
+  m_GameObject: {fileID: 8746144862973224071}
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1390,7 +1307,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3057078039646319180, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
+  - {fileID: -3057078039646319180, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1412,38 +1329,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7432659340135752514
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8027784519485368452}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6949540504890299830, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!54 &720298095231965479
+--- !u!54 &8332884797560568880
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8027784519485368452}
+  m_GameObject: {fileID: 8746144862973224071}
   serializedVersion: 4
   m_Mass: 100000000
-  m_Drag: 0.4
+  m_Drag: 0.3
   m_AngularDrag: 0.2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -1461,26 +1356,48 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7125556084102433161
+--- !u!64 &1234795056132842163
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746144862973224071}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6949540504890299830, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!114 &7067641561064429251
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8027784519485368452}
+  m_GameObject: {fileID: 8746144862973224071}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bb1c63a3c65659be9cafce08b9cde57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   water: {fileID: 0}
---- !u!114 &1358279319234804832
+--- !u!114 &4634546009046017225
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8027784519485368452}
+  m_GameObject: {fileID: 8746144862973224071}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b380550e41cb4169bc0a7dc5244b25d, type: 3}
@@ -1490,12 +1407,12 @@ MonoBehaviour:
   speedAtEachLocation: []
   turnSpeed: 2
   forwardSpeed: 5
-  motor: {fileID: 3782186991887517583}
+  motor: {fileID: 6732601697249296640}
   indexOfLocationToVisit: 0
-  distanceThreshold: 100
+  distanceThreshold: 50
   timeToWaitBeforeLogging: 5
   logMessages: 0
---- !u!1 &8459820143145430896
+--- !u!1 &8828478598501518047
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1503,46 +1420,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1535170498272580440}
-  - component: {fileID: 7158397701676212248}
-  - component: {fileID: 1991628770835346314}
+  - component: {fileID: 5949550948003321929}
+  - component: {fileID: 9110890141889874924}
+  - component: {fileID: 2654626441701287340}
   m_Layer: 0
-  m_Name: ship_tanker_pipe_fittings
+  m_Name: ship_tanker_railings 03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1535170498272580440
+--- !u!4 &5949550948003321929
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8459820143145430896}
+  m_GameObject: {fileID: 8828478598501518047}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0.00000016858742, z: 0.00000016858743, w: 0.7071068}
-  m_LocalPosition: {x: -43.65052, y: 0, z: -0.6526961}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.00000067154434, y: 0.00000003774894, z: 1, w: -0.00000007549792}
+  m_LocalPosition: {x: -81.37036, y: 41.87077, z: -11.2258835}
+  m_LocalScale: {x: -48.816917, y: -18.757729, z: -20.92233}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 911927023278511398}
+  m_Father: {fileID: 5788893162867204934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7158397701676212248
+--- !u!33 &9110890141889874924
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8459820143145430896}
-  m_Mesh: {fileID: -4386480178771222918, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
---- !u!23 &1991628770835346314
+  m_GameObject: {fileID: 8828478598501518047}
+  m_Mesh: {fileID: 4363032374392019225, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &2654626441701287340
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8459820143145430896}
+  m_GameObject: {fileID: 8828478598501518047}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1556,7 +1473,90 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3438401820986230580, guid: 9e182eb7d89d4217795bbfbefdc637ed, type: 3}
+  - {fileID: 4904332657928487638, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8883437737567057760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7199124269436017322}
+  - component: {fileID: 6678167200768532909}
+  - component: {fileID: 7519567332550536397}
+  m_Layer: 0
+  m_Name: ship_tanker_propeller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7199124269436017322
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8883437737567057760}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.3210196, y: -0.6300368, z: 0.3210199, w: 0.6300368}
+  m_LocalPosition: {x: -97.24781, y: 9.869019, z: 0.82922196}
+  m_LocalScale: {x: 16.7298, y: 16.7298, z: 16.729801}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5788893162867204934}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &6678167200768532909
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8883437737567057760}
+  m_Mesh: {fileID: 8209554153544015271, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
+--- !u!23 &7519567332550536397
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8883437737567057760}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 768723047098141907, guid: 3798f8a959b3c2acfbcdf77d2602b49b, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

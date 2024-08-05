@@ -7,8 +7,11 @@ public struct TriangleData
     public float distanceToSurface;
     public Vector3 normal;
     public float area;
+    public Vector3 velocity;
+    public Vector3 velocityDirection;
+    public float cosTheta;
 
-    public TriangleData(Vector3 p1, Vector3 p2, Vector3 p3)
+    public TriangleData(Vector3 p1, Vector3 p2, Vector3 p3, Rigidbody rigidbody)
     {
         center = (p1 + p2 + p3) / 3f;
 
@@ -18,5 +21,12 @@ public struct TriangleData
 
         normal = crossProduct.normalized;
         area = crossProduct.magnitude / 2;
+
+        // Stabilizing Forces
+        velocity = rigidbody.velocity + Vector3.Cross(rigidbody.angularVelocity, center - rigidbody.transform.TransformPoint(rigidbody.centerOfMass));
+
+        velocityDirection = velocity.normalized;
+
+        cosTheta = Vector3.Dot(velocity, velocityDirection);
     }
 }

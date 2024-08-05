@@ -12,6 +12,8 @@ public class ShipTriangles
     int[] shipTriangles;
     float[] allDistancesToWater;
 
+    Rigidbody shipRigidbody;
+
     public List<TriangleData> underWaterTriangleData = new();
 
     // Buffers for WaterSimulationSearchJob
@@ -22,6 +24,7 @@ public class ShipTriangles
     public ShipTriangles(GameObject ship)
     {
         shipTransform = ship.transform;
+        shipRigidbody = ship.GetComponent<Rigidbody>();
         
         shipVertices = ship.GetComponent<MeshFilter>().mesh.vertices;
         shipTriangles = ship.GetComponent<MeshFilter>().mesh.triangles;
@@ -101,7 +104,7 @@ public class ShipTriangles
                 Vector3 p2 = vertexData[1].worldSpacePosition;
                 Vector3 p3 = vertexData[2].worldSpacePosition;
                 
-                underWaterTriangleData.Add(new TriangleData(p1, p2, p3));
+                underWaterTriangleData.Add(new TriangleData(p1, p2, p3, shipRigidbody));
             }
             // Some vertices are below the water
             else
@@ -141,8 +144,8 @@ public class ShipTriangles
         Vector3 IM = (tM * (H - M)) + M;
         Vector3 IL = (tL * (H - L)) + L;
 
-        underWaterTriangleData.Add(new TriangleData(L, IM, M));
-        underWaterTriangleData.Add(new TriangleData(L, IL, M));
+        underWaterTriangleData.Add(new TriangleData(L, IM, M, shipRigidbody));
+        underWaterTriangleData.Add(new TriangleData(L, IL, M, shipRigidbody));
     }
 
     private void TwoVerticesAboveWater(List<VertexData> vertexData)
@@ -161,7 +164,7 @@ public class ShipTriangles
         Vector3 JM = (tM * (M - L)) + L;
         Vector3 JH = (tH * (H - L)) + L;
 
-        underWaterTriangleData.Add(new TriangleData(L, JM, JH));
+        underWaterTriangleData.Add(new TriangleData(L, JM, JH,shipRigidbody));
     }
 
     // Helper struct to store vertex information
