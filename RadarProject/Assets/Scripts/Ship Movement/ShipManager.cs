@@ -1,29 +1,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class ShipManager : MonoBehaviour
 {
-    readonly string filePath = Application.dataPath + "/Scenarios/";
-    
-    [SerializeField] string scenarioFileName = "Scenario1"; // There are two files, the first ends with ShipList.csv, the second ends with just .csv
+    [Header("Scenario and Ship Prefabs")]
+    [SerializeField] string scenarioFileName = "Scenario1";
+    // [SerializeField] bool readScenarioFiles = false;                    // Rereads the files stored in filePath
     [SerializeField] GameObject shipPrefab; // TODO: Create prefabs for each of the ships
 
     [Header("Scenario Options")]
     [SerializeField] bool resetScenario = false;
     [SerializeField] bool reloadCSV = false;
     
-    // Stores the ship id as the key and an array of related information as the value (for example ship name and type)
-    Dictionary<int, string[]> shipsInformation = new(); 
-    
-    // Stores the ship id as the key and a tuple of (x coordinates, z coordinates, speed) as the value
-    Dictionary<int, List<(float, float, float)>> shipLocations = new(); 
-
-    // Keep track of generated ships
-    List<GameObject> ships = new(); 
-
-    bool result; // The result of ReadScenarioCSV
+    Dictionary<int, string[]> shipsInformation = new();                 // <Ship id, array of ship info>
+    Dictionary<int, List<(float, float, float)>> shipLocations = new(); // <Ship id, (x coordinates, z coordinates, speed)>
+    List<GameObject> ships = new();                                     // Keep track of generated ships
+    string filePath = Application.dataPath + "/Scenarios/";
+    bool result;                                                        // The result of ReadScenarioCSV
+    string filePattern = @"^Scenario\d+\.csv$";                         // ScenarioX.csv where X is any number
     
     void Start()
     {
@@ -45,6 +42,26 @@ public class ShipManager : MonoBehaviour
             reloadCSV = false;
         }
     }
+
+    // Read all files in filePath and store the scenarios that match filePattern for the Unity inspector 
+    /*
+    void ReadScenarioFiles()
+    {
+        Regex myRegExp = new(filePattern);
+
+        var info = new DirectoryInfo(filePath);
+        var fileInfo = info.GetFiles();
+        foreach (var file in fileInfo) 
+        {
+            if (myRegExp.Match(file.Name).Success)
+            {
+                // scenarios.Add(file.Name[..^4]); // remove .csv
+            }
+        }
+
+        Debug.Log("Scenario files have been read.")
+    }
+    */
 
     void ResetScenario()
     {

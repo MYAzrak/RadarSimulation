@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class CSVGenerator : MonoBehaviour
 {
+    string filePath = Application.dataPath + "/Scenarios/";
+    string fileExtension = ".csv";
+    string shipListEndName = "ShipList";                 // The ship list csv ends with ShipList.csv  
+
     [Header("Random CSV Generator")]
-    [SerializeField] string randomCSVFileName = "Scenario";
+    [SerializeField] string fileName = "Scenario";
     [SerializeField] bool generateRandomCSV = false;
 
     [Header("Random CSV Parameters")]
@@ -18,13 +22,13 @@ public class CSVGenerator : MonoBehaviour
     [SerializeField] string[] typesOfShips = { "Fishing boat", "Cargo", "Tanker" };
 
     int[] speed;
-
+    
     void Update()
     {
         if (generateRandomCSV)
         {
             // .csv file extension is added in the function
-            GenerateCSV(numberOfShips, Application.dataPath + "/Scenarios/" + randomCSVFileName);
+            GenerateCSV(numberOfShips, filePath + fileName);
             generateRandomCSV = false;
         }
     }
@@ -54,13 +58,13 @@ public class CSVGenerator : MonoBehaviour
 
     public void GenerateCSV(int numberOfShips, string file)
     {
-        if (File.Exists(file + ".csv") || File.Exists(file + "ShipList.csv")) {
-            Debug.Log("csv file or shiplist.csv already exists.");
+        if (File.Exists(file + fileExtension) || File.Exists(file + fileExtension + shipListEndName)) {
+            Debug.Log($"{file + fileExtension} or {file + fileExtension + shipListEndName} already exists.");
             return;
         }
 
-        using TextWriter textWriter = new StreamWriter(file + ".csv", true);
-        using TextWriter shipListWriter = new StreamWriter(file + "ShipList.csv", true);
+        using TextWriter textWriter = new StreamWriter(file + fileExtension, true);
+        using TextWriter shipListWriter = new StreamWriter(file + fileExtension + shipListEndName, true);
 
         textWriter.WriteLine("ID, X Coordinate, Z Coordinate, Speed");
         shipListWriter.WriteLine("ID, Name, Type");

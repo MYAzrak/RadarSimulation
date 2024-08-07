@@ -688,7 +688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e6f974647688bed8d04e8468aca79b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomCSVFileName: Scenario
+  fileName: Scenario
   generateRandomCSV: 0
   numberOfShips: 5
   locationsToCreate: 10
