@@ -23,6 +23,6 @@ public struct TriangleData
 
         // Stabilizing Forces
         velocity = rigidbody.velocity + Vector3.Cross(rigidbody.angularVelocity, center - rigidbody.transform.TransformPoint(rigidbody.centerOfMass));
-        cosTheta = Vector3.Dot(velocity, velocity.normalized);
+        cosTheta = Vector3.Dot(velocity.normalized, normal);
     }
 }

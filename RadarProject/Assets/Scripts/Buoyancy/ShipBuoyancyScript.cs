@@ -82,7 +82,7 @@ public class ShipBouyancyScript : MonoBehaviour
 
     Vector3 ViscousWaterResistanceForce(float density, TriangleData triangleData)
     {
-        float reynoldsNumber = ship.velocity.magnitude * ship.GetComponent<MeshFilter>().mesh.bounds.size.z / viscosity;
+        float reynoldsNumber = density * ship.velocity.magnitude * ship.GetComponent<MeshFilter>().mesh.bounds.size.z / viscosity;
         float CF = 0.075f / math.pow(math.log10(reynoldsNumber) - 2f, 2f);
         
         Vector3 direction = - (triangleData.velocity - (Vector3.one * Vector3.Dot(triangleData.velocity, triangleData.normal))).normalized;

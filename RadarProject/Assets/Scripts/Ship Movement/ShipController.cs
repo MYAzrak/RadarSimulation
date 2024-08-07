@@ -9,9 +9,8 @@ public class ShipController : MonoBehaviour
     public List<float> speedAtEachLocation;
 
     [Header("Ship Power")]
-    // The speed is in knots but it is converted to m/s for Unity
-    public float turnSpeed = 2f;
-    public float forwardSpeed = 5f;
+    [Range(0.001f, 0.010f)] public float turnSpeedMultiplier = 0.005f; // The ship rotates very fast so keep this number low
+    public float forwardSpeed = 5f; // The speed is in knots but it is converted to m/s for Unity
     [SerializeField] Transform motor;
 
     [Header("Debug")]
@@ -43,12 +42,8 @@ public class ShipController : MonoBehaviour
 
         // Not facing the next location
         if  (dot < 0.999f) {
-            float steerDirection = - Vector3.Dot(transform.right, heading.normalized); // Negative to rotate it in the correct direction
-            float counterAngularDrag = (rigidbody.angularDrag == 0) ? 1 : rigidbody.angularDrag; // Counter the angular drag to maintain the inputted speed
-
-            float steerForce = counterAngularDrag * rigidbody.mass * shipInformation.GetSpeedInMetersPerSecond(turnSpeed);
-            Vector3 turnForce = transform.right * steerForce * steerDirection;
-            rigidbody.AddForceAtPosition(turnForce, motor.position, ForceMode.Force);
+            var newRotation = Quaternion.LookRotation (heading, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, turnSpeedMultiplier * Time.deltaTime);
         }
 
         if (heading.sqrMagnitude < distanceThreshold * distanceThreshold)
