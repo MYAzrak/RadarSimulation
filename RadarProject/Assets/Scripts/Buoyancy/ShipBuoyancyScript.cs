@@ -83,12 +83,12 @@ public class ShipBouyancyScript : MonoBehaviour
     Vector3 ViscousWaterResistanceForce(float density, TriangleData triangleData)
     {
         float reynoldsNumber = ship.velocity.magnitude * ship.GetComponent<MeshFilter>().mesh.bounds.size.z / viscosity;
-        float CF = 0.075f / math.pow(math.log10(reynoldsNumber) - 2, 2);
+        float CF = 0.075f / math.pow(math.log10(reynoldsNumber) - 2f, 2f);
         
         Vector3 direction = - (triangleData.velocity - (Vector3.one * Vector3.Dot(triangleData.velocity, triangleData.normal))).normalized;
         Vector3 relativeVelocity = direction * triangleData.velocity.magnitude;
 
-        Vector3 force = (1/2) * density * CF * triangleData.area * triangleData.velocity.magnitude * relativeVelocity;
+        Vector3 force = 0.5f * density * CF * triangleData.area * triangleData.velocity.magnitude * relativeVelocity;
         
         return force;
     }
@@ -101,11 +101,11 @@ public class ShipBouyancyScript : MonoBehaviour
         Vector3 force;
         if (triangleData.cosTheta > 0)
         {
-            force = -(CPD1 * velocity + CPD2 * math.pow(velocity, 2)) * triangleData.area * math.pow(triangleData.cosTheta, Fp) * triangleData.normal;
+            force = -(CPD1 * velocity + CPD2 * math.pow(velocity, 2f)) * triangleData.area * math.pow(triangleData.cosTheta, Fp) * triangleData.normal;
         }
         else
         {
-            force = (CSD1 * velocity + CSD2 * math.pow(velocity, 2)) * triangleData.area * math.pow(triangleData.cosTheta, Fs) * triangleData.normal;
+            force = (CSD1 * velocity + CSD2 * math.pow(velocity, 2f)) * triangleData.area * math.pow(triangleData.cosTheta, Fs) * triangleData.normal;
         }
 
         if (float.IsNaN(force.x) || float.IsNaN(force.y) || float.IsNaN(force.z))
