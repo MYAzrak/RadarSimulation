@@ -14,13 +14,16 @@ public class ShipManager : MonoBehaviour
     [Header("Scenario Options")]
     [SerializeField] bool resetScenario = false;
     [SerializeField] bool reloadCSV = false;
+    [SerializeField] bool logMessages = false;                          // Enables/Disables log messages of all ships (Results in a worse performance) 
     
+    string filePath = Application.dataPath + "/Scenarios/";
+    string filePattern = @"^Scenario\d+\.csv$";                         // ScenarioX.csv where X is any number
     Dictionary<int, string[]> shipsInformation = new();                 // <Ship id, array of ship info>
     Dictionary<int, List<(float, float, float)>> shipLocations = new(); // <Ship id, (x coordinates, z coordinates, speed)>
     List<GameObject> ships = new();                                     // Keep track of generated ships
-    string filePath = Application.dataPath + "/Scenarios/";
     bool result;                                                        // The result of ReadScenarioCSV
-    string filePattern = @"^Scenario\d+\.csv$";                         // ScenarioX.csv where X is any number
+
+    bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
     
     void Start()
     {
@@ -40,6 +43,15 @@ public class ShipManager : MonoBehaviour
         {
             result = ReadScenarioCSV();
             reloadCSV = false;
+        }
+        else if (logMessages != previousLogMessageBool)
+        {
+            foreach (var ship in ships) 
+            {
+                ship.GetComponent<ShipController>().logMessages = logMessages;
+            }
+
+            previousLogMessageBool = logMessages;
         }
     }
 
@@ -76,9 +88,13 @@ public class ShipManager : MonoBehaviour
         {
             Destroy(ship);
         }
+
+        ships.Clear();
         
         GenerateShips();
         Debug.Log("Scenario has been reset.");
+
+        logMessages = previousLogMessageBool = false;
     }
 
     void GenerateShips()

@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class CSVGenerator : MonoBehaviour
 {
-    string filePath = Application.dataPath + "/Scenarios/";
-    string fileExtension = ".csv";
-    string shipListEndName = "ShipList";                 // The ship list csv ends with ShipList.csv  
-
     [Header("Random CSV Generator")]
     [SerializeField] string fileName = "Scenario";
     [SerializeField] bool generateRandomCSV = false;
@@ -21,6 +17,9 @@ public class CSVGenerator : MonoBehaviour
     [SerializeField] int maxSpeed = 11;                   // The max value in the speed range
     [SerializeField] string[] typesOfShips = { "Fishing boat", "Cargo", "Tanker" };
 
+    string filePath = Application.dataPath + "/Scenarios/";
+    string fileExtension = ".csv";
+    string shipListEndName = "ShipList";                 // The ship list csv ends with ShipList.csv  
     int[] speed;
     
     void Update()
