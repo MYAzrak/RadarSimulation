@@ -637,8 +637,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1912275474}
   - component: {fileID: 1912275473}
+  - component: {fileID: 1912275475}
   m_Layer: 0
-  m_Name: Ship Manager
+  m_Name: Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -660,9 +661,6 @@ MonoBehaviour:
   shipPrefab: {fileID: 8746144862973224071, guid: 7adb833d3f0b2adff98524e4a01290a3, type: 3}
   resetScenario: 0
   reloadCSV: 0
-  randomCSVFileName: Scenario
-  numberOfShipsToGenerate: 5
-  generateRandomCSV: 0
 --- !u!4 &1912275474
 Transform:
   m_ObjectHideFlags: 0
@@ -678,6 +676,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1912275475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912275472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40e6f974647688bed8d04e8468aca79b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  randomCSVFileName: Scenario
+  generateRandomCSV: 0
+  numberOfShips: 5
+  locationsToCreate: 10
+  distanceBetweenPoints: 400
+  initialCoordinates: 2000
+  randomCoordinates: 400
+  minSpeed: 6
+  maxSpeed: 11
+  typesOfShips:
+  - Fishing boat
+  - Cargo
+  - Tanker
 --- !u!1 &2078303569
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,17 +1,33 @@
 using System.IO;
 using UnityEngine;
 
-public class CSVGenerator
+public class CSVGenerator : MonoBehaviour
 {
-    public int locationsToCreate = 10;          // Number of locations the ship will visit
-    public float distanceBetweenPoints = 400f;
-    public float initialCoordinates = 2000f;    // The range the ships will initially generate at
-    public float randomCoordinates = 400f;      // The range added to the previous location the ship will visit
+    [Header("Random CSV Generator")]
+    [SerializeField] string randomCSVFileName = "Scenario";
+    [SerializeField] bool generateRandomCSV = false;
+
+    [Header("Random CSV Parameters")]
+    [SerializeField] int numberOfShips = 5;               // Number of ships to generate
+    [SerializeField] int locationsToCreate = 10;          // Number of locations the ship will visit
+    [SerializeField] float distanceBetweenPoints = 400f;  // Ensures the distance between the points is at least a bit apart
+    [SerializeField] float initialCoordinates = 2000f;    // The range the ships will initially generate at
+    [SerializeField] float randomCoordinates = 400f;      // The range added to the previous location the ship will visit
+    [SerializeField] int minSpeed = 6;                    // The min value in the speed range
+    [SerializeField] int maxSpeed = 11;                   // The max value in the speed range
+    [SerializeField] string[] typesOfShips = { "Fishing boat", "Cargo", "Tanker" };
 
     int[] speed;
-    public int minSpeed = 6;
-    public int maxSpeed = 11;
-    public string[] typesOfShips = { "Fishing boat", "Cargo", "Tanker" };
+
+    void Update()
+    {
+        if (generateRandomCSV)
+        {
+            // .csv file extension is added in the function
+            GenerateCSV(numberOfShips, Application.dataPath + "/Scenarios/" + randomCSVFileName);
+            generateRandomCSV = false;
+        }
+    }
     
     public Vector3[] GeneratePath()
     {
@@ -60,5 +76,7 @@ public class CSVGenerator
 
             shipListWriter.WriteLine($"{i + 1}, TestShip{i + 1}, {typesOfShips[Random.Range(0, typesOfShips.Length)]}");
         }
+
+        Debug.Log("csv has been generated.");
     }
 }

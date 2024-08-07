@@ -13,11 +13,6 @@ public class ShipManager : MonoBehaviour
     [Header("Scenario Options")]
     [SerializeField] bool resetScenario = false;
     [SerializeField] bool reloadCSV = false;
-
-    [Header("Random csv Options")]
-    [SerializeField] string randomCSVFileName = "Scenario";
-    [SerializeField] int numberOfShipsToGenerate = 5;
-    [SerializeField] bool generateRandomCSV = false;
     
     // Stores the ship id as the key and an array of related information as the value (for example ship name and type)
     Dictionary<int, string[]> shipsInformation = new(); 
@@ -27,9 +22,6 @@ public class ShipManager : MonoBehaviour
 
     // Keep track of generated ships
     List<GameObject> ships = new(); 
-
-    const int NUMBER_OF_COL_IN_SHIP_LIST_CSV = 3;
-    const int NUMBER_OF_COL_IN_SCENARIO_CSV = 4;
 
     bool result; // The result of ReadScenarioCSV
     
@@ -51,14 +43,6 @@ public class ShipManager : MonoBehaviour
         {
             result = ReadScenarioCSV();
             reloadCSV = false;
-        }
-        else if (generateRandomCSV)
-        {
-            CSVGenerator CSVGenerator = new();
-
-            // .csv file extension is added in the function
-            CSVGenerator.GenerateCSV(numberOfShipsToGenerate, Application.dataPath + "/Scenarios/" + randomCSVFileName);
-            generateRandomCSV = false;
         }
     }
 
