@@ -14,7 +14,7 @@ public struct TriangleData
     {
         center = (p1 + p2 + p3) / 3f;
 
-        distanceToSurface = math.abs(ShipBouyancyScript.shipBouyancyScriptInstance.GetDistanceToWater(center));
+        distanceToSurface = ShipBouyancyScript.shipBouyancyScriptInstance.GetDistanceToWater(center);
 
         Vector3 crossProduct = Vector3.Cross(p2 - p1, p3 - p1);
 

@@ -20,11 +20,13 @@ public class ShipController : MonoBehaviour
     public bool logMessages = false;
 
     new Rigidbody rigidbody;
+    Transform shipTransform;
     public ShipInformation shipInformation;
 
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        shipTransform = transform;
         StartCoroutine(LogShipEvents());
     }
 
@@ -35,15 +37,15 @@ public class ShipController : MonoBehaviour
         if (speedAtEachLocation != null)
             forwardSpeed = speedAtEachLocation[indexOfLocationToVisit];
         
-        Vector3 heading = locationsToVisit[indexOfLocationToVisit] - transform.position;
+        Vector3 heading = locationsToVisit[indexOfLocationToVisit] - shipTransform.position;
         heading.y = 0; // Ignore elevation
         
-        float dot = Vector3.Dot(transform.forward, heading.normalized);
+        float dot = Vector3.Dot(shipTransform.forward, heading.normalized);
 
         // Not facing the next location
         if  (dot < 0.999f) {
             var newRotation = Quaternion.LookRotation (heading, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, turnSpeedMultiplier * Time.deltaTime);
+            shipTransform.rotation = Quaternion.Slerp(shipTransform.rotation, newRotation, turnSpeedMultiplier * Time.deltaTime);
         }
 
         if (heading.sqrMagnitude < distanceThreshold * distanceThreshold)
@@ -53,10 +55,8 @@ public class ShipController : MonoBehaviour
             return;
         }
 
-        float counterDrag = (rigidbody.drag == 0) ? 1 : rigidbody.drag; // Counter the drag to maintain the inputted speed
-        float force = counterDrag * rigidbody.mass * shipInformation.GetSpeedInMetersPerSecond(forwardSpeed); // f = m a
-        Vector3 forwardForce = Vector3.Scale(new Vector3(1, 0, 1), transform.forward) * force; // Ignore y axis
-        rigidbody.AddForce(forwardForce, ForceMode.Force); // Always move forward for now
+        Vector3 force = shipTransform.forward * rigidbody.mass * shipInformation.GetSpeedInMetersPerSecond(forwardSpeed); // f = m a
+        rigidbody.AddForce(force, ForceMode.Force); // Always move forward for now
     }
     
     IEnumerator LogShipEvents()
