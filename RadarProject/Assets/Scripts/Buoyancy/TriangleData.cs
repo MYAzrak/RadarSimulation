@@ -1,5 +1,4 @@
 using UnityEngine;
-using Unity.Mathematics;
 
 public struct TriangleData
 {

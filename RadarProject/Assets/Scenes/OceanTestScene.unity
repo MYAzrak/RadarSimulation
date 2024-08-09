@@ -448,7 +448,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 5000
+  far clip plane: 10000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -623,7 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c389d35701a4c61c7981491d1eee7d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 75
+  movementSpeed: 300
   horizontalSpeed: 75
   verticalSpeed: 75
   invertedVerticalMovement: 0
@@ -658,7 +658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scenarioFileName: Scenario1
-  shipPrefab: {fileID: 8746144862973224071, guid: 7adb833d3f0b2adff98524e4a01290a3, type: 3}
+  shipPrefab: {fileID: 8171584254837186189, guid: 8462f6070d10d235caad39dfb966003d, type: 3}
   resetScenario: 0
   reloadCSV: 0
   logMessages: 0

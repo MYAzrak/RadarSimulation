@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ShipInformation
 {
-    int id;
-    string name;
-    string type; // Fishing boat, cargo, etc
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Type { get; set; } // Fishing boat, cargo, etc
 
     public float currentSpeed = 0f;
     public Vector3 currentLocation;
@@ -20,9 +20,9 @@ public class ShipInformation
 
     public ShipInformation(int id, string name, string type)
     {
-        this.id = id;
-        this.name = name;
-        this.type = type;
+        Id = id;
+        Name = name;
+        Type = type;
     }
 
     public void SetInformation(float speed, Vector3 location)
@@ -40,15 +40,5 @@ public class ShipInformation
     public float GetSpeedInMetersPerSecond(float knot)
     {
         return knot * KNOTS_TO_METERS_PER_SECOND;
-    }
-
-    public int GetID()
-    {
-        return id;
-    }
-
-    public string GetName()
-    {
-        return name;
     }
 }

@@ -18,16 +18,19 @@ public class ShipManager : MonoBehaviour
     
     string filePath = Application.dataPath + "/Scenarios/";
     string filePattern = @"^Scenario\d+\.csv$";                         // ScenarioX.csv where X is any number
-    Dictionary<int, string[]> shipsInformation = new();                 // <Ship id, array of ship info>
-    Dictionary<int, List<(float, float, float)>> shipLocations = new(); // <Ship id, (x coordinates, z coordinates, speed)>
+    Dictionary<int, ShipInformation> shipsInformation = new();    // <Ship id, list of ship info>
+    Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
     List<GameObject> ships = new();                                     // Keep track of generated ships
     bool result;                                                        // The result of ReadScenarioCSV
 
     bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
+
+    CSVManager csvManager;
     
     void Start()
     {
-        result = ReadScenarioCSV();
+        csvManager = GetComponent<CSVManager>();
+        result = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
         if (!result) return;
         GenerateShips();
     }
@@ -41,7 +44,7 @@ public class ShipManager : MonoBehaviour
         }
         else if (reloadCSV)
         {
-            result = ReadScenarioCSV();
+            result = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
             reloadCSV = false;
         }
         else if (logMessages != previousLogMessageBool)
@@ -79,7 +82,7 @@ public class ShipManager : MonoBehaviour
     {
         // Generate ships if the csv was valid else read the csv again
         if (!result) {
-            result = ReadScenarioCSV();
+            result = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
             if (!result) return;
         }
 
@@ -102,16 +105,10 @@ public class ShipManager : MonoBehaviour
         foreach (var ship in shipLocations)
         {
             // The first location is the starting position of the ship
-            float x = ship.Value[0].Item1;
-            float z = ship.Value[0].Item2;
+            float x = ship.Value[0].x_coordinates;
+            float z = ship.Value[0].z_coordinates;
             Vector3 shipLocation = new(x, 0, z);
             
-            // Get ship information
-            string[] information = shipsInformation[ship.Key];
-
-            int id = ship.Key;
-            string name = information[0];
-            string type = information[1];
 
             // TODO: Instantiate the prefab based on the type of the ship
             GameObject instance;
@@ -119,7 +116,7 @@ public class ShipManager : MonoBehaviour
             // If there are more than one location then rotate the generated ship to face the direction of the next location
             if (ship.Value.Count > 1) 
             {
-                Vector3 heading = new Vector3(ship.Value[1].Item1, 0, ship.Value[1].Item2) - shipLocation;
+                Vector3 heading = new Vector3(ship.Value[1].x_coordinates, 0, ship.Value[1].z_coordinates) - shipLocation;
                 float distance = heading.magnitude;
                 Vector3 direction = heading / distance;
                 
@@ -129,16 +126,16 @@ public class ShipManager : MonoBehaviour
                 instance = Instantiate(shipPrefab, shipLocation, Quaternion.identity);
 
             ShipController shipController = instance.GetComponent<ShipController>();
-            shipController.shipInformation = new ShipInformation(id, name, type); // Initialize the ship information
+            shipController.shipInformation = shipsInformation[ship.Key]; // Initialize the ship information
 
             ships.Add(instance);
             
             // Start from index 1 since index 0 is the starting position
             for (int i = 1; i < ship.Value.Count; i++)
             {
-                x = ship.Value[i].Item1;
-                z = ship.Value[i].Item2;
-                float speed = ship.Value[i].Item3;
+                x = ship.Value[i].x_coordinates;
+                z = ship.Value[i].z_coordinates;
+                float speed = ship.Value[i].speed;
                 
                 // Add the location and speed to ship controller lists
                 shipController.locationsToVisit.Add(new Vector3(x, 0, z));
@@ -146,88 +143,5 @@ public class ShipManager : MonoBehaviour
             }
         }
     }
-
-    bool ReadScenarioCSV()
-    {
-        shipsInformation.Clear();
-        shipLocations.Clear();
-
-        try
-        {
-            // Read ship list information
-            StreamReader streamReader = new(filePath + scenarioFileName + "ShipList.csv");
-
-            _ = streamReader.ReadLine(); // Ignore the first line which is the headings
-            string data = streamReader.ReadLine();
-            while (data != null)
-            {
-                string[] value = data.Split(',');
-
-                // Ensure all rows do not have empty or null cells
-                if (value.Any(s => string.IsNullOrEmpty(s)))
-                {
-                    Debug.Log("Error: Invalid number of columns");
-                    shipsInformation.Clear();
-                    return false;
-                }
-                
-                int id = int.Parse(value[0]);
-
-                // In the dictionary, the key is the id and array from index 1 (without the id) is the value
-                string[] array = { value[1], value[2]};
-
-                // Keep track of ship IDs in case there are duplicate IDs in the csv
-                if (shipsInformation.ContainsKey(id))
-                {
-                    Debug.Log("Error: Ship list csv contains duplicate ID");
-                    shipsInformation.Clear();
-                    return false;
-                }
-                else
-                {
-                    shipsInformation[id] = array;
-                }
-
-                data = streamReader.ReadLine();
-            }
-
-            // Read each ship locations and speed
-            streamReader = new(filePath + scenarioFileName + ".csv");
-            _ = streamReader.ReadLine(); // Ignore the first line which is the headings
-            data = streamReader.ReadLine();
-            while (data != null)
-            {
-                string[] value = data.Split(',');
-
-                // Ensure all rows do not have empty or null cells
-                if (value.Any(s => string.IsNullOrEmpty(s)))
-                {
-                    Debug.Log("Error: Invalid number of columns");
-                    shipLocations.Clear();
-                    return false;
-                }
-                
-                int id = int.Parse(value[0]);
-
-                // x, z, speed
-                (float, float, float) list = (float.Parse(value[1]), float.Parse(value[2]), float.Parse(value[3]));
-                
-                // Save all locations for each ship in a dictionary
-                if (shipLocations.ContainsKey(id))
-                    shipLocations[id].Add(list);
-                else
-                    shipLocations[id] = new List<(float, float, float)> { list };
-
-                data = streamReader.ReadLine();
-            }
-
-            Debug.Log("csv has been successfully parsed.");
-            return true;
-        }
-        catch (FileNotFoundException e)
-        {
-            Debug.Log($"File not found: {e.Message}");
-            return false;
-        }
-    }
 }
+
