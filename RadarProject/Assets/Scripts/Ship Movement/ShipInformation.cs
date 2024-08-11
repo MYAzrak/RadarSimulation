@@ -14,9 +14,6 @@ public class ShipInformation
 
     public List<float> speedHistory = new();
     public List<Vector3> locationHistory = new();
-    
-    public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f; // 1 Meter/second = 1.943844 Knot
-    public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f; // 1 Knot = 0.5144444 Meter/second
 
     public ShipInformation(int id, string name, string type)
     {
@@ -39,6 +36,6 @@ public class ShipInformation
 
     public float GetSpeedInMetersPerSecond(float knot)
     {
-        return knot * KNOTS_TO_METERS_PER_SECOND;
+        return knot * ShipManager.KNOTS_TO_METERS_PER_SECOND;
     }
 }

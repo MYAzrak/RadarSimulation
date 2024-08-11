@@ -27,6 +27,9 @@ public class ShipManager : MonoBehaviour
     bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
 
     CSVManager csvManager;
+
+    public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f; // 1 Meter/second = 1.943844 Knot
+    public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f; // 1 Knot = 0.5144444 Meter/second
     
     void Start()
     {
@@ -36,7 +39,7 @@ public class ShipManager : MonoBehaviour
         GenerateShips();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (resetScenario) 
         {
@@ -110,8 +113,6 @@ public class ShipManager : MonoBehaviour
             float z = ship.Value[0].z_coordinates;
             Vector3 shipLocation = new(x, 0, z);
             
-
-            // TODO: Instantiate the prefab based on the type of the ship
             GameObject instance;
             GameObject prefab = null;
 
