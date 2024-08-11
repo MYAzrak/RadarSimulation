@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipManager : MonoBehaviour
@@ -9,7 +10,7 @@ public class ShipManager : MonoBehaviour
     [Header("Scenario and Ship Prefabs")]
     [SerializeField] string scenarioFileName = "Scenario1";
     // [SerializeField] bool readScenarioFiles = false;                    // Rereads the files stored in filePath
-    [SerializeField] GameObject shipPrefab; // TODO: Create prefabs for each of the ships
+    [SerializeField] List<ShipPrefab> shipPrefabs = new();
 
     [Header("Scenario Options")]
     [SerializeField] bool resetScenario = false;
@@ -112,6 +113,34 @@ public class ShipManager : MonoBehaviour
 
             // TODO: Instantiate the prefab based on the type of the ship
             GameObject instance;
+            GameObject prefab = null;
+
+            foreach (ShipPrefab shipPrefab in shipPrefabs)
+            {
+                if (shipPrefab.shipType.Equals(shipsInformation[ship.Key].Type.Trim()))
+                {
+                    prefab = shipPrefab.prefab;
+                }
+            }
+
+            if (prefab == null)
+            {
+                if (shipPrefabs.Count == 0){
+                    Debug.Log($"No prefabs found. Skipping ship with ID {shipsInformation[ship.Key].Id}");
+                    break;
+                }
+
+                prefab = shipPrefabs[0].prefab;
+
+                if (prefab == null)
+                {
+                    Debug.Log($"No prefabs found at the first index of Ship Prefabs. Skipping ship with ID {shipsInformation[ship.Key].Id}");
+                    break;
+                }
+
+                Debug.Log($"Unable to find ship prefab for ship type {shipsInformation[ship.Key].Type}. " + 
+                $"Defaulting to the first ship prefab for ship with ID {shipsInformation[ship.Key].Id}");
+            }
 
             // If there are more than one location then rotate the generated ship to face the direction of the next location
             if (ship.Value.Count > 1) 
@@ -120,10 +149,10 @@ public class ShipManager : MonoBehaviour
                 float distance = heading.magnitude;
                 Vector3 direction = heading / distance;
                 
-                instance = Instantiate(shipPrefab, shipLocation, Quaternion.LookRotation(direction));
+                instance = Instantiate(prefab, shipLocation, Quaternion.LookRotation(direction));
             }
             else
-                instance = Instantiate(shipPrefab, shipLocation, Quaternion.identity);
+                instance = Instantiate(prefab, shipLocation, Quaternion.identity);
 
             ShipController shipController = instance.GetComponent<ShipController>() ?? instance.GetComponentInChildren<ShipController>();
             if (shipController == null)
@@ -146,6 +175,19 @@ public class ShipManager : MonoBehaviour
                 shipController.locationsToVisit.Add(new Vector3(x, 0, z));
                 shipController.speedAtEachLocation.Add(speed);
             }
+        }
+    }
+
+    [System.Serializable]
+    public struct ShipPrefab
+    {
+        public string shipType;
+        public GameObject prefab;
+
+        public ShipPrefab(string shipType, GameObject prefab)
+        {
+            this.shipType = shipType;
+            this.prefab = prefab;
         }
     }
 }

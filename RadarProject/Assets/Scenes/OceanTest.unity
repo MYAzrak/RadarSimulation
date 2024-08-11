@@ -544,8 +544,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a80181dc325513f789e4d2a997d77cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scenarioFileName: Scenario1
-  shipPrefab: {fileID: 1048501746681472956, guid: 748f69b4b6dae6211bb03756c3a4f886, type: 3}
+  scenarioFileName: Scenario2
+  shipPrefabs:
+  - shipType: Cargo
+    prefab: {fileID: 1048501746681472956, guid: 748f69b4b6dae6211bb03756c3a4f886, type: 3}
   resetScenario: 0
   reloadCSV: 0
   logMessages: 0
