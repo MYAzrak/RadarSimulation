@@ -125,7 +125,12 @@ public class ShipManager : MonoBehaviour
             else
                 instance = Instantiate(shipPrefab, shipLocation, Quaternion.identity);
 
-            ShipController shipController = instance.GetComponent<ShipController>();
+            ShipController shipController = instance.GetComponent<ShipController>() ?? instance.GetComponentInChildren<ShipController>();
+            if (shipController == null)
+            {
+                Debug.Log($"Unable to find ship controller component. Ship with ID: {shipsInformation[ship.Key].Id} is uninitialized.");
+                continue;
+            }
             shipController.shipInformation = shipsInformation[ship.Key]; // Initialize the ship information
 
             ships.Add(instance);

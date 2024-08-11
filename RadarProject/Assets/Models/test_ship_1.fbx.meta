@@ -3,7 +3,37 @@ guid: 59d10e0a6c1aadd71a38763d69e64207
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ship_tanker_glass
+    second: {fileID: 2100000, guid: d4b3c1461fef155d6acf929e8d859c8c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ship_tanker_hull_deck
+    second: {fileID: 2100000, guid: 9611c66ceb4c3198a99abc5947fa9b15, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ship_tanker_hull_deck.001
+    second: {fileID: 2100000, guid: a468959e96d72a031811dd6f343efdde, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ship_tanker_propeller
+    second: {fileID: 2100000, guid: 2299af08ca11e5699ba1bbda617d2407, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ship_tanker_rails
+    second: {fileID: 2100000, guid: 10bf0d1cf0ac4cc5abb7dffc8528ba10, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ship_tanker_superstructure
+    second: {fileID: 2100000, guid: d81651beab2c71ca0b29064f6cbaa7bd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

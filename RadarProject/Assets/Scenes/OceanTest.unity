@@ -323,7 +323,7 @@ MonoBehaviour:
   _timeProvider: {fileID: 0}
   _primaryLight: {fileID: 1023794776}
   _searchForPrimaryLightOnStartup: 1
-  _material: {fileID: 2100000, guid: 9def92ac79181fe41b238e91663f0fad, type: 2}
+  _material: {fileID: 2100000, guid: cd1fd0b58097b603e9d3498ff4df5719, type: 2}
   _waterTilePrefab: {fileID: 0}
   _layerName: 
   _layer: 4
@@ -336,13 +336,13 @@ MonoBehaviour:
   _geometryDownSampleFactor: 2
   _lodCount: 7
   _extentsSizeMultiplier: 100
-  _simSettingsAnimatedWaves: {fileID: 11400000, guid: 62a7ebcba67387043b90226c6ee957b7, type: 2}
+  _simSettingsAnimatedWaves: {fileID: 11400000, guid: 61e04eb6778e52080926ec3f44e25698, type: 2}
   _createSeaFloorDepthData: 1
   _simSettingsSeaFloorDepth: {fileID: 0}
   _createFoamSim: 1
-  _simSettingsFoam: {fileID: 11400000, guid: b699a3b46fff8d340aeb6110c75cf178, type: 2}
-  _createDynamicWaveSim: 0
-  _simSettingsDynamicWaves: {fileID: 0}
+  _simSettingsFoam: {fileID: 11400000, guid: b89895b183f302c5ab1acd0e3aca4ba9, type: 2}
+  _createDynamicWaveSim: 1
+  _simSettingsDynamicWaves: {fileID: 11400000, guid: 79adf7f454f26135eb6e7f28a99efd87, type: 2}
   _createFlowSim: 0
   _simSettingsFlow: {fileID: 0}
   _createShadowData: 0
@@ -545,7 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scenarioFileName: Scenario1
-  shipPrefab: {fileID: 864152672755463379, guid: 88ba9333b57fdde25ba086a03dd87cb4, type: 3}
+  shipPrefab: {fileID: 1048501746681472956, guid: 748f69b4b6dae6211bb03756c3a4f886, type: 3}
   resetScenario: 0
   reloadCSV: 0
   logMessages: 0
@@ -558,7 +558,7 @@ Transform:
   m_GameObject: {fileID: 2106282665}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32.56818, y: 40.433254, z: 20.093395}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
