@@ -9,7 +9,7 @@ public class ShipController : MonoBehaviour
     public List<float> speedAtEachLocation;
 
     [Header("Ship Power")]
-    [Range(0.001f, 0.010f)] public float turnSpeedMultiplier = 0.005f; // The ship rotates very fast so keep this number low
+    [SerializeField, Range(0.001f, 0.010f)] float turnSpeedMultiplier = 0.005f;
     public float forwardSpeed = 5f; // The speed is in knots but it is converted to m/s for Unity
     [SerializeField] Transform motor;
 

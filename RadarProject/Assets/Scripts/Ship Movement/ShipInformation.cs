@@ -6,7 +6,7 @@ public class ShipInformation
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public string Type { get; set; } // Fishing boat, cargo, etc
+    public ShipType Type { get; set; } // Fishing boat, cargo, etc
 
     public float currentSpeed = 0f;
     public Vector3 currentLocation;
@@ -15,7 +15,7 @@ public class ShipInformation
     public List<float> speedHistory = new();
     public List<Vector3> locationHistory = new();
 
-    public ShipInformation(int id, string name, string type)
+    public ShipInformation(int id, string name, ShipType type)
     {
         Id = id;
         Name = name;

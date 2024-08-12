@@ -1,31 +1,31 @@
 ID, Name, Type
-1, TestShip1, Fishing boat
-2, TestShip2, Cargo
+1, TestShip1, Cargo
+2, TestShip2, FishingBoat
 3, TestShip3, Cargo
-4, TestShip4, Fishing boat
-5, TestShip5, Fishing boat
-6, TestShip6, Fishing boat
-7, TestShip7, Cargo
-8, TestShip8, Fishing boat
+4, TestShip4, FishingBoat
+5, TestShip5, FishingBoat
+6, TestShip6, Tanker
+7, TestShip7, FishingBoat
+8, TestShip8, Cargo
 9, TestShip9, Tanker
-10, TestShip10, Fishing boat
-11, TestShip11, Cargo
-12, TestShip12, Cargo
-13, TestShip13, Cargo
-14, TestShip14, Tanker
-15, TestShip15, Fishing boat
-16, TestShip16, Cargo
-17, TestShip17, Fishing boat
-18, TestShip18, Tanker
-19, TestShip19, Cargo
-20, TestShip20, Fishing boat
-21, TestShip21, Tanker
-22, TestShip22, Tanker
+10, TestShip10, Tanker
+11, TestShip11, Tanker
+12, TestShip12, Tanker
+13, TestShip13, FishingBoat
+14, TestShip14, FishingBoat
+15, TestShip15, FishingBoat
+16, TestShip16, FishingBoat
+17, TestShip17, Tanker
+18, TestShip18, FishingBoat
+19, TestShip19, Tanker
+20, TestShip20, FishingBoat
+21, TestShip21, Cargo
+22, TestShip22, Cargo
 23, TestShip23, Cargo
 24, TestShip24, Cargo
 25, TestShip25, Cargo
 26, TestShip26, Tanker
-27, TestShip27, Tanker
-28, TestShip28, Fishing boat
+27, TestShip27, FishingBoat
+28, TestShip28, Cargo
 29, TestShip29, Cargo
-30, TestShip30, Tanker
+30, TestShip30, Cargo

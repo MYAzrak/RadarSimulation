@@ -19,17 +19,16 @@ public class ShipManager : MonoBehaviour
     
     string filePath = Application.dataPath + "/Scenarios/";
     string filePattern = @"^Scenario\d+\.csv$";                         // ScenarioX.csv where X is any number
-    Dictionary<int, ShipInformation> shipsInformation = new();    // <Ship id, list of ship info>
+    Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
     Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
     List<GameObject> ships = new();                                     // Keep track of generated ships
     bool result;                                                        // The result of ReadScenarioCSV
-
     bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
 
     CSVManager csvManager;
 
-    public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f; // 1 Meter/second = 1.943844 Knot
-    public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f; // 1 Knot = 0.5144444 Meter/second
+    public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f;          // 1 Meter/second = 1.943844 Knot
+    public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f;         // 1 Knot = 0.5144444 Meter/second
     
     void Start()
     {
@@ -118,7 +117,7 @@ public class ShipManager : MonoBehaviour
 
             foreach (ShipPrefab shipPrefab in shipPrefabs)
             {
-                if (shipPrefab.shipType.Equals(shipsInformation[ship.Key].Type.Trim()))
+                if (shipPrefab.shipType == shipsInformation[ship.Key].Type)
                 {
                     prefab = shipPrefab.prefab;
                 }
@@ -182,10 +181,10 @@ public class ShipManager : MonoBehaviour
     [System.Serializable]
     public struct ShipPrefab
     {
-        public string shipType;
+        public ShipType shipType;
         public GameObject prefab;
 
-        public ShipPrefab(string shipType, GameObject prefab)
+        public ShipPrefab(ShipType shipType, GameObject prefab)
         {
             this.shipType = shipType;
             this.prefab = prefab;

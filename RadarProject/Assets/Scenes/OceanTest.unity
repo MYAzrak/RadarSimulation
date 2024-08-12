@@ -485,7 +485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c389d35701a4c61c7981491d1eee7d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 200
+  movementSpeed: 500
   horizontalSpeed: 75
   verticalSpeed: 75
   invertedVerticalMovement: 0
@@ -528,10 +528,6 @@ MonoBehaviour:
   randomCoordinates: 400
   minSpeed: 6
   maxSpeed: 11
-  typesOfShips:
-  - Fishing boat
-  - Cargo
-  - Tanker
 --- !u!114 &2106282667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,7 +542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scenarioFileName: Scenario2
   shipPrefabs:
-  - shipType: Cargo
+  - shipType: 0
     prefab: {fileID: 1048501746681472956, guid: 748f69b4b6dae6211bb03756c3a4f886, type: 3}
   resetScenario: 0
   reloadCSV: 0

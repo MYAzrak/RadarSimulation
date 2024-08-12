@@ -17,7 +17,6 @@ public class CSVManager : MonoBehaviour
     [SerializeField] float randomCoordinates = 400f;      // The range added to the previous location the ship will visit
     [SerializeField] int minSpeed = 6;                    // The min value in the speed range
     [SerializeField] int maxSpeed = 11;                   // The max value in the speed range
-    [SerializeField] string[] typesOfShips = { "Fishing boat", "Cargo", "Tanker" };
 
     string filePath = Application.dataPath + "/Scenarios/";
     string fileExtension = ".csv";
@@ -59,16 +58,18 @@ public class CSVManager : MonoBehaviour
 
     public void GenerateCSV(int numberOfShips, string file)
     {
-        if (File.Exists(file + fileExtension) || File.Exists(file + fileExtension + shipListEndName)) {
-            Debug.Log($"{file + fileExtension} or {file + fileExtension + shipListEndName} already exists.");
+        if (File.Exists(file + fileExtension) || File.Exists(file + shipListEndName + fileExtension)) {
+            Debug.Log($"{file + fileExtension} or {file + shipListEndName + fileExtension} already exists.");
             return;
         }
 
         using TextWriter textWriter = new StreamWriter(file + fileExtension, true);
-        using TextWriter shipListWriter = new StreamWriter(file + fileExtension + shipListEndName, true);
+        using TextWriter shipListWriter = new StreamWriter(file + shipListEndName + fileExtension, true);
 
         textWriter.WriteLine("ID, X Coordinate, Z Coordinate, Speed");
         shipListWriter.WriteLine("ID, Name, Type");
+
+        int shipTypeEnumLength = System.Enum.GetNames(typeof(ShipType)).Length;
 
         for (int i = 0; i < numberOfShips; i++)
         {
@@ -79,7 +80,7 @@ public class CSVManager : MonoBehaviour
                 textWriter.WriteLine($"{i + 1}, {locations[x].x}, {locations[x].z}, {speed[x]}");
             }
 
-            shipListWriter.WriteLine($"{i + 1}, TestShip{i + 1}, {typesOfShips[Random.Range(0, typesOfShips.Length)]}");
+            shipListWriter.WriteLine($"{i + 1}, TestShip{i + 1}, {(ShipType)Random.Range(0, shipTypeEnumLength)}");
         }
 
         Debug.Log("csv has been generated.");
@@ -123,7 +124,7 @@ public class CSVManager : MonoBehaviour
                 }
                 else
                 {
-                    shipsInformation[id] = new ShipInformation(id, value[1], value[2]);
+                    shipsInformation[id] = new ShipInformation(id, value[1], (ShipType)System.Enum.Parse(typeof(ShipType), value[2]));
                 }
 
                 data = streamReader.ReadLine();
