@@ -547,8 +547,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 500
-  horizontalSpeed: 75
-  verticalSpeed: 75
+  horizontalSpeed: 100
+  verticalSpeed: 100
   invertedVerticalMovement: 0
 --- !u!1 &2106282665
 GameObject:
@@ -584,7 +584,6 @@ MonoBehaviour:
   generateRandomCSV: 0
   numberOfShips: 5
   locationsToCreate: 10
-  distanceBetweenPoints: 400
   initialCoordinates: 2000
   randomCoordinates: 400
   minSpeed: 6

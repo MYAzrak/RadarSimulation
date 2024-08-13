@@ -53,3 +53,10 @@
     border-top-color: rgb(255, 255, 255);
     border-bottom-color: rgb(255, 255, 255);
 }
+
+.unity-base-text-field__input {
+    color: rgb(0, 0, 0);
+    align-items: stretch;
+    align-self: auto;
+    padding-right: 0;
+}

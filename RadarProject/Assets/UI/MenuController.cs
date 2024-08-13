@@ -6,6 +6,7 @@ public class MenuController : MonoBehaviour
 {
     VisualElement ui;
     ShipManager shipManager;
+    CSVManager csvManager;
 
     bool enabled = false;
     List<TabViews> tabBtns = new();
@@ -13,6 +14,7 @@ public class MenuController : MonoBehaviour
     void Awake()
     {
         shipManager = FindObjectOfType<ShipManager>();
+        csvManager = FindObjectOfType<CSVManager>();
         ui = GetComponent<UIDocument>().rootVisualElement;
 
         Visibility visibility = enabled ? Visibility.Visible : Visibility.Hidden;
@@ -27,12 +29,13 @@ public class MenuController : MonoBehaviour
         SetTabs();
         SetBtnEvents();
         SetDropdownField();
+        ViewToEnable(tabBtns[0].button);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.Tab))
         {
             Visibility visibility = enabled ? Visibility.Visible : Visibility.Hidden;
             ui.style.visibility = visibility;
@@ -60,32 +63,70 @@ public class MenuController : MonoBehaviour
         {
             if (tabView.button.name.Equals(button.name))
             {
-                tabView.visualElement.visible = true;
+                tabView.visualElement.style.display = DisplayStyle.Flex;
             }
             else
             {
-                tabView.visualElement.visible = false;
+                tabView.visualElement.style.display = DisplayStyle.None;
             }
         }
     }
 
     void SetBtnEvents()
     {
+        // Ship Mangaer
         Button resetBtn = ui.Q("ResetBtn") as Button;
         resetBtn.RegisterCallback((ClickEvent clickEvent) => shipManager.resetScenario = !shipManager.resetScenario);
-        resetBtn.focusable = false;
 
         Button reloadBtn = ui.Q("ReloadBtn") as Button;
         resetBtn.RegisterCallback((ClickEvent clickEvent) => shipManager.reloadCSV = !shipManager.reloadCSV);
-        resetBtn.focusable = false;
 
         Button loadBtn = ui.Q("LoadBtn") as Button;
         loadBtn.RegisterCallback((ClickEvent clickEvent) => shipManager.loadScenario = !shipManager.loadScenario);
-        loadBtn.focusable = false;
 
+        // TODO: Reset toggle after resetting a scenario to be inline with ship manager
         Toggle logToggle = ui.Q("LogToggle") as Toggle;
         logToggle.RegisterCallback((ClickEvent clickEvent) => shipManager.logMessages = !shipManager.logMessages);
-        logToggle.focusable = false;
+
+        // CSV manager
+        TextField fileNameTxtField = ui.Q("FileNameTxtField") as TextField;
+        csvManager.fileName = fileNameTxtField.text;
+        fileNameTxtField.RegisterValueChangedCallback(evt => {
+            csvManager.fileName = evt.newValue;
+        });
+
+        SliderInt numOfShipsSlider = ui.Q("NumOfShipsSlider") as SliderInt;
+        csvManager.numberOfShips = numOfShipsSlider.value;
+        numOfShipsSlider.RegisterValueChangedCallback(evt => {
+            csvManager.numberOfShips = evt.newValue;
+        });
+
+        SliderInt numOfLocationsSlider = ui.Q("NumOfLocationsSlider") as SliderInt;
+        csvManager.locationsToCreate = numOfLocationsSlider.value;
+        numOfLocationsSlider.RegisterValueChangedCallback(evt => {
+            csvManager.locationsToCreate = evt.newValue;
+        });
+
+        Label minMaxLabel = ui.Q("MinMaxLabel") as Label;
+
+        MinMaxSlider minMaxSlider = ui.Q("MinMaxSlider") as MinMaxSlider;
+        csvManager.minStartingCoordinates = minMaxSlider.value.x;
+        csvManager.maxStartingCoordinates = minMaxSlider.value.y;
+        minMaxLabel.text = $"Coordinate Range:\nMin Value: {minMaxSlider.value.x}\nMax Value: {minMaxSlider.value.y}";
+        minMaxSlider.RegisterValueChangedCallback(evt => {
+            
+            minMaxLabel.text = $"Coordinate Range:\nMin Value: {evt.newValue.x}\nMax Value: {evt.newValue.y}";
+
+            csvManager.minStartingCoordinates = evt.newValue.x;
+            csvManager.maxStartingCoordinates = evt.newValue.y;
+        });
+
+        Button generateRandomCSVBtn = ui.Q("GenerateCSVBtn") as Button;
+        generateRandomCSVBtn.RegisterCallback((ClickEvent clickEvent) => {
+            csvManager.generateRandomCSV = !csvManager.generateRandomCSV;
+            DropdownField dropdownField = ui.Q("ScenarioDropdown") as DropdownField;
+            dropdownField.choices.Add(fileNameTxtField.text);
+        });
     }
 
     void SetDropdownField()

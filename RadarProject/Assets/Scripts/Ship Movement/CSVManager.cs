@@ -6,21 +6,21 @@ using UnityEngine;
 public class CSVManager : MonoBehaviour
 {
     [Header("Random CSV Generator")]
-    [SerializeField] string fileName = "Scenario";
-    [SerializeField] bool generateRandomCSV = false;
+    public string fileName;
+    public bool generateRandomCSV = false;
 
     [Header("Random CSV Parameters")]
-    [SerializeField] int numberOfShips = 5;               // Number of ships to generate
-    [SerializeField] int locationsToCreate = 10;          // Number of locations the ship will visit
-    [SerializeField] float distanceBetweenPoints = 400f;  // Ensures the distance between the points is at least a bit apart
-    [SerializeField] float initialCoordinates = 2000f;    // The range the ships will initially generate at
-    [SerializeField] float randomCoordinates = 400f;      // The range added to the previous location the ship will visit
-    [SerializeField] int minSpeed = 6;                    // The min value in the speed range
-    [SerializeField] int maxSpeed = 11;                   // The max value in the speed range
+    public int numberOfShips = 5;                           // Number of ships to generate
+    public int locationsToCreate = 10;                      // Number of locations the ship will visit
+    public float minStartingCoordinates = 2000f;            // The min value in the range the ships will initially generate at
+    public float maxStartingCoordinates = 2000f;            // The max value in the range the ships will initially generate at
+    [SerializeField] float randomCoordinates = 1000f;       // The range added to the previous location the ship will visit
+    [SerializeField] int minSpeed = 11;                     // The min value in the speed range
+    [SerializeField] int maxSpeed = 21;                     // The max value in the speed range
 
     string filePath = Application.dataPath + "/Scenarios/";
     string fileExtension = ".csv";
-    string shipListEndName = "ShipList";                  // The ship list csv ends with ShipList.csv  
+    string shipListEndName = "ShipList";                    // The ship list csv ends with ShipList.csv  
     int[] speed;
     
     void Update()
@@ -40,14 +40,14 @@ public class CSVManager : MonoBehaviour
         speed = new int[locationsToCreate];
         speed[0] = Random.Range(minSpeed, maxSpeed);
 
-        float x = Random.Range(-initialCoordinates, initialCoordinates);
-        float z = Random.Range(-initialCoordinates, initialCoordinates);
+        float x = Random.Range(-minStartingCoordinates, maxStartingCoordinates);
+        float z = Random.Range(-minStartingCoordinates, maxStartingCoordinates);
         points[0] = new Vector3(x, 0, z);
 
         for (int i = 1; i < locationsToCreate; i++)
         {
-            x = points[i - 1].x + Random.Range(-randomCoordinates, randomCoordinates) + distanceBetweenPoints;
-            z = points[i - 1].z + Random.Range(-randomCoordinates, randomCoordinates) + distanceBetweenPoints;
+            x = points[i - 1].x + Random.Range(-randomCoordinates, randomCoordinates);
+            z = points[i - 1].z + Random.Range(-randomCoordinates, randomCoordinates);
             points[i] = new Vector3(x, 0, z);
             
             speed[i] = Random.Range(minSpeed, maxSpeed);
