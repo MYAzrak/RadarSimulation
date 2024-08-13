@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Only rotate the camera if the user is holding the right button
+        // Only move or rotate the camera if the user is holding the right button
         if (Input.GetButton("Fire2")) 
         {
             // Get the mouse delta, and add eulerAngles to save the last rotated values
@@ -30,12 +30,12 @@ public class CameraController : MonoBehaviour
             float v = transform.eulerAngles.x + verticalSpeed * Input.GetAxis("Mouse Y") * (invertedVerticalMovement ? 1 : -1) * Time.deltaTime;
 
             transform.rotation = Quaternion.Euler(v, h, 0);
-        }
 
-        // Camera movement
-        float verticalDirection = Input.GetAxis("Vertical") * Time.deltaTime * movementSpeed;
-        float horizontalDirection = Input.GetAxis("Horizontal") * Time.deltaTime * movementSpeed;
-        
-        transform.position += (transform.forward * verticalDirection) + (transform.right * horizontalDirection);
+            // Camera movement
+            float verticalDirection = Input.GetAxis("Vertical") * Time.deltaTime * movementSpeed;
+            float horizontalDirection = Input.GetAxis("Horizontal") * Time.deltaTime * movementSpeed;
+            
+            transform.position += (transform.forward * verticalDirection) + (transform.right * horizontalDirection);
+        }
     }
 }

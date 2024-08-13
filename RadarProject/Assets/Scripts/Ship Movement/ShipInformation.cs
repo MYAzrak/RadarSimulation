@@ -6,7 +6,7 @@ public class ShipInformation
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public ShipType Type { get; set; } // Fishing boat, cargo, etc
+    public ShipType Type { get; set; }
 
     public float currentSpeed = 0f;
     public Vector3 currentLocation;

@@ -1,21 +1,19 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipManager : MonoBehaviour
 {
     [Header("Scenario and Ship Prefabs")]
-    [SerializeField] string scenarioFileName = "Scenario1";
-    // [SerializeField] bool readScenarioFiles = false;                    // Rereads the files stored in filePath
+    public string scenarioFileName;
     [SerializeField] List<ShipPrefab> shipPrefabs = new();
 
     [Header("Scenario Options")]
-    [SerializeField] bool resetScenario = false;
-    [SerializeField] bool reloadCSV = false;
-    [SerializeField] bool logMessages = false;                          // Enables/Disables log messages of all ships (Results in a worse performance) 
+    public bool loadScenario = false;
+    public bool resetScenario = false;
+    public bool reloadCSV = false;
+    public bool logMessages = false;
     
     string filePath = Application.dataPath + "/Scenarios/";
     string filePattern = @"^Scenario\d+\.csv$";                         // ScenarioX.csv where X is any number
@@ -33,9 +31,6 @@ public class ShipManager : MonoBehaviour
     void Start()
     {
         csvManager = GetComponent<CSVManager>();
-        result = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
-        if (!result) return;
-        GenerateShips();
     }
 
     void Update()
@@ -59,12 +54,18 @@ public class ShipManager : MonoBehaviour
 
             previousLogMessageBool = logMessages;
         }
+        else if (loadScenario)
+        {
+            result = false;
+            ResetScenario();
+            loadScenario = false;
+        }
     }
 
     // Read all files in filePath and store the scenarios that match filePattern for the Unity inspector 
-    /*
-    void ReadScenarioFiles()
+    public List<string> ReadScenarioFiles()
     {
+        List<string> files = new();
         Regex myRegExp = new(filePattern);
 
         var info = new DirectoryInfo(filePath);
@@ -73,13 +74,14 @@ public class ShipManager : MonoBehaviour
         {
             if (myRegExp.Match(file.Name).Success)
             {
-                // scenarios.Add(file.Name[..^4]); // remove .csv
+                files.Add(file.Name[..^4]); // remove .csv
             }
         }
 
-        Debug.Log("Scenario files have been read.")
+        Debug.Log("Scenario files have been read.");
+
+        return files;
     }
-    */
 
     void ResetScenario()
     {

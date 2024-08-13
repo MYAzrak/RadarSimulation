@@ -1,0 +1,55 @@
+.panel {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.39);
+}
+
+.tab-btns {
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.16);
+    -unity-font-style: bold;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    height: 5%;
+    font-size: 18px;
+}
+
+.text {
+    color: rgb(255, 255, 255);
+    margin-left: 3%;
+    font-size: 18px;
+}
+
+.tab-btns:hover {
+    background-color: rgba(111, 111, 111, 0.57);
+}
+
+.btns {
+    font-size: 18px;
+    margin-right: 4%;
+    margin-top: 1%;
+    height: 5%;
+    background-color: rgba(93, 156, 255, 0.48);
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-left: 4%;
+    margin-bottom: 1%;
+    border-left-color: rgba(255, 255, 255, 0);
+    border-right-color: rgba(255, 255, 255, 0);
+    border-top-color: rgba(255, 255, 255, 0);
+    border-bottom-color: rgba(255, 255, 255, 0);
+    align-self: flex-start;
+}
+
+.unity-base-popup-field__input {
+    font-size: 18px;
+    -unity-font-style: bold;
+    color: rgb(0, 0, 0);
+    background-color: rgba(255, 255, 255, 0.59);
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+}

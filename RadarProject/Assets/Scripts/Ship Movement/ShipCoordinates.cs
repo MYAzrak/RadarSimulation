@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public struct ShipCoordinates
 {
     public float x_coordinates;
