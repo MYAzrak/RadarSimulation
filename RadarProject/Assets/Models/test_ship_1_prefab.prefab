@@ -190,7 +190,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1048501746681472956}
   serializedVersion: 4
-  m_Mass: 100000000
+  m_Mass: 100000
   m_Drag: 1
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -202,7 +202,7 @@ Rigidbody:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_ImplicitCom: 1
+  m_ImplicitCom: 0
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1048501746681472956}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebb499a376b0c094f92b8f70c0966934, type: 3}
   m_Name: 
@@ -268,23 +268,53 @@ MonoBehaviour:
   _centerOfMass: {x: 0, y: 0, z: 0}
   _forcePoints:
   - _weight: 1
-    _offsetPosition: {x: 0, y: 0, z: -0.9403}
+    _offsetPosition: {x: 0.07016, y: 0, z: 0}
   - _weight: 1
-    _offsetPosition: {x: 0, y: 0, z: 0.525}
+    _offsetPosition: {x: -0.0702, y: 0, z: 0}
   - _weight: 1
-    _offsetPosition: {x: -0.0651, y: 0, z: -0.643}
+    _offsetPosition: {x: 0.0043, y: 0, z: 0.4731}
   - _weight: 1
-    _offsetPosition: {x: 0.075, y: 0, z: -0.643}
+    _offsetPosition: {x: 0.0702, y: 0, z: 0.072}
   - _weight: 1
-    _offsetPosition: {x: -0.066, y: 0, z: -0.404}
+    _offsetPosition: {x: -0.0718, y: 0, z: 0.072}
   - _weight: 1
-    _offsetPosition: {x: 0.086, y: 0, z: -0.404}
+    _offsetPosition: {x: 0.0702, y: 0, z: 0.149}
   - _weight: 1
-    _offsetPosition: {x: -0.066, y: 0, z: -0.127}
+    _offsetPosition: {x: -0.0694, y: 0, z: 0.149}
   - _weight: 1
-    _offsetPosition: {x: 0.085, y: 0, z: -0.127}
+    _offsetPosition: {x: 0.0702, y: 0, z: -0.13}
   - _weight: 1
-    _offsetPosition: {x: 0.085, y: 0, z: 0.175}
+    _offsetPosition: {x: -0.067, y: 0, z: -0.13}
+  - _weight: 1
+    _offsetPosition: {x: 0.0702, y: 0, z: -0.234}
+  - _weight: 1
+    _offsetPosition: {x: -0.068, y: 0, z: -0.234}
+  - _weight: 1
+    _offsetPosition: {x: 0.0702, y: 0, z: -0.351}
+  - _weight: 1
+    _offsetPosition: {x: 0.0702, y: 0, z: -0.234}
+  - _weight: 1
+    _offsetPosition: {x: -0.068, y: 0, z: -0.351}
+  - _weight: 1
+    _offsetPosition: {x: 0.0702, y: 0, z: -0.473}
+  - _weight: 1
+    _offsetPosition: {x: -0.07, y: 0, z: -0.473}
+  - _weight: 1
+    _offsetPosition: {x: 0.0702, y: 0, z: -0.583}
+  - _weight: 1
+    _offsetPosition: {x: -0.0681, y: 0, z: -0.583}
+  - _weight: 1
+    _offsetPosition: {x: 0.06459, y: 0, z: -0.695}
+  - _weight: 1
+    _offsetPosition: {x: -0.066, y: 0, z: -0.695}
+  - _weight: 1
+    _offsetPosition: {x: 0.01966, y: 0, z: -0.8961}
+  - _weight: 1
+    _offsetPosition: {x: -0.01877, y: 0, z: -0.8961}
+  - _weight: 1
+    _offsetPosition: {x: 0.0558, y: 0, z: 0.2893}
+  - _weight: 1
+    _offsetPosition: {x: -0.0567, y: 0, z: 0.2893}
   _forceHeightOffset: 0
   _forceMultiplier: 100
   _minSpatialLength: 15
@@ -307,11 +337,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1048501746681472956}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bb1c63a3c65659be9cafce08b9cde57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minWaitTime: 0.01
+  maxWaitTime: 0.5
 --- !u!114 &6467199043234010225
 MonoBehaviour:
   m_ObjectHideFlags: 0

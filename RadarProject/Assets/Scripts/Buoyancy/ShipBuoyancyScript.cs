@@ -7,6 +7,10 @@ using System.Collections;
 public class ShipBouyancyScript : MonoBehaviour
 {
     public static ShipBouyancyScript shipBouyancyScriptInstance;
+    
+    [Header("Generating Underwater Mesh")]
+    [SerializeField] float minWaitTime = 0.01f;
+    [SerializeField] float maxWaitTime = 0.5f;
 
     ShipTriangles shipTriangles;
     Rigidbody ship;
@@ -61,7 +65,7 @@ public class ShipBouyancyScript : MonoBehaviour
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSecondsRealtime(UnityEngine.Random.Range(0.01f, 0.2f));
+            yield return new WaitForSecondsRealtime(UnityEngine.Random.Range(minWaitTime, maxWaitTime)); // Improves performance but lowers the accuracy
             shipTriangles.GenerateUnderwaterMesh();
         }
     }

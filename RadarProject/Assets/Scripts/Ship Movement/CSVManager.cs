@@ -14,7 +14,7 @@ public class CSVManager : MonoBehaviour
     public int locationsToCreate = 10;                      // Number of locations the ship will visit
     public float minStartingCoordinates = 2000f;            // The min value in the range the ships will initially generate at
     public float maxStartingCoordinates = 2000f;            // The max value in the range the ships will initially generate at
-    [SerializeField] float randomCoordinates = 1000f;       // The range added to the previous location the ship will visit
+    [SerializeField] float randomCoordinates = 10000f;       // The range added to the previous location the ship will visit
     [SerializeField] int minSpeed = 11;                     // The min value in the speed range
     [SerializeField] int maxSpeed = 21;                     // The max value in the speed range
 
@@ -40,8 +40,8 @@ public class CSVManager : MonoBehaviour
         speed = new int[locationsToCreate];
         speed[0] = Random.Range(minSpeed, maxSpeed);
 
-        float x = Random.Range(-minStartingCoordinates, maxStartingCoordinates);
-        float z = Random.Range(-minStartingCoordinates, maxStartingCoordinates);
+        float x = Random.Range(minStartingCoordinates, maxStartingCoordinates);
+        float z = Random.Range(minStartingCoordinates, maxStartingCoordinates);
         points[0] = new Vector3(x, 0, z);
 
         for (int i = 1; i < locationsToCreate; i++)
@@ -54,6 +54,11 @@ public class CSVManager : MonoBehaviour
         }
 
         return points;
+    }
+
+    Vector3 GetStartingPostion()
+    {
+        return new Vector3(0, 0, 0);
     }
 
     public void GenerateCSV(int numberOfShips, string file)

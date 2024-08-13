@@ -2,7 +2,7 @@
     <Style src="project://database/Assets/UI/menu.uss?fileID=7433441132597879392&amp;guid=e182473d5bba3498b8991db2f40a09eb&amp;type=3#menu" />
     <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1; height: auto; width: 450px; -unity-background-scale-mode: stretch-to-fill; margin-left: 2%; margin-top: 2%; margin-bottom: 30%; background-color: rgba(0, 0, 0, 0.63); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); align-self: flex-start; align-items: flex-start; justify-content: flex-start; flex-direction: column;">
         <ui:VisualElement name="BtnTabs" style="flex-grow: 1; height: 36px; flex-direction: row; -unity-background-scale-mode: stretch-to-fill; font-size: 14px; margin-left: 2%; margin-top: 2%; align-items: flex-start; align-self: flex-start; justify-content: flex-start;">
-            <ui:Button text="Ships" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ShipBtn" class="tab-btns" style="align-self: flex-start;" />
+            <ui:Button text="Scenario" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ShipBtn" class="tab-btns" style="align-self: flex-start;" />
             <ui:Button text="CSV" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CSVBtn" class="tab-btns" style="height: 5%;" />
         </ui:VisualElement>
         <ui:VisualElement name="ShipsView" style="flex-grow: 1; height: 120%; display: none; width: 450px;">
