@@ -1,17 +1,13 @@
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 public class CSVMenuUI
 {
     VisualElement ui;
-    ShipManager shipManager;
     CSVManager csvManager;
 
-    public CSVMenuUI(VisualElement ui, ShipManager shipManager, CSVManager csvManager)
+    public CSVMenuUI(VisualElement ui, CSVManager csvManager)
     {
         this.ui = ui;
-        this.shipManager = shipManager;
         this.csvManager = csvManager;
     }
     

@@ -11,26 +11,23 @@ public class MainMenuController : MonoBehaviour
     ScenarioMenuUI ScenarioMenuUI;
     CSVMenuUI CSVMenuUI;
 
-    bool isMenuVisible = false;
     List<TabViews> tabBtns = new();
 
-    void Awake()
+    VisualElement menuPanel;
+    
+    // Start is called before the first frame update
+    void Start()
     {
         shipManager = FindObjectOfType<ShipManager>();
         csvManager = FindObjectOfType<CSVManager>();
         ui = GetComponent<UIDocument>().rootVisualElement;
 
-        Visibility visibility = isMenuVisible ? Visibility.Visible : Visibility.Hidden;
-        ui.style.visibility = visibility;
-        isMenuVisible = !isMenuVisible;
+        menuPanel = ui.Q("Panel");
+        menuPanel.visible = false;
 
-        ScenarioMenuUI = new(ui, shipManager, csvManager);
-        CSVMenuUI = new(ui, shipManager, csvManager);
-    }
-    
-    // Start is called before the first frame update
-    void Start()
-    {
+        ScenarioMenuUI = new(ui, shipManager);
+        CSVMenuUI = new(ui, csvManager);
+
         SetTabs();
 
         ScenarioMenuUI.SetBtnEvents();
@@ -46,9 +43,7 @@ public class MainMenuController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Tab))
         {
-            Visibility visibility = isMenuVisible ? Visibility.Visible : Visibility.Hidden;
-            ui.style.visibility = visibility;
-            isMenuVisible = !isMenuVisible;
+            menuPanel.visible = !menuPanel.visible;
         }
     }
 

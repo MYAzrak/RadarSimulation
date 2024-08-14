@@ -2,17 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;   
 
-public class ScenarioMenuUI : MonoBehaviour
+public class ScenarioMenuUI
 {
     VisualElement ui;
     ShipManager shipManager;
-    CSVManager csvManager;
 
-    public ScenarioMenuUI(VisualElement ui, ShipManager shipManager, CSVManager csvManager)
+    public ScenarioMenuUI(VisualElement ui, ShipManager shipManager)
     {
         this.ui = ui;
         this.shipManager = shipManager;
-        this.csvManager = csvManager;
     }
 
     public void SetBtnEvents()

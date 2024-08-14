@@ -5,14 +5,22 @@
 
 .tab-btns {
     color: rgb(255, 255, 255);
-    background-color: rgba(0, 0, 0, 0.16);
-    -unity-font-style: bold;
+    background-color: rgb(28, 69, 168);
+    -unity-font-style: normal;
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    height: 5%;
+    height: auto;
     font-size: 18px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-top: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    margin-left: 2%;
+    align-items: auto;
+    flex-grow: 0;
 }
 
 .text {
@@ -25,7 +33,7 @@
 }
 
 .tab-btns:hover {
-    background-color: rgba(111, 111, 111, 0.57);
+    background-color: rgb(57, 137, 255);
 }
 
 .btns {
@@ -35,7 +43,7 @@
     height: 5%;
     background-color: rgba(93, 156, 255, 0.48);
     color: rgb(255, 255, 255);
-    -unity-font-style: bold;
+    -unity-font-style: normal;
     -unity-text-align: middle-center;
     margin-left: 4%;
     margin-bottom: 1%;
