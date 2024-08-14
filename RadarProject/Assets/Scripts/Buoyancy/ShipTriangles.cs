@@ -62,11 +62,11 @@ public class ShipTriangles
             }
 
             // All vertices are above the water
-            if (vertexData[0].distance > 0f && vertexData[1].distance > 0f && vertexData[2].distance > 0f)
+            if (vertexData[0].distanceToWater > 0f && vertexData[1].distanceToWater > 0f && vertexData[2].distanceToWater > 0f)
                 continue;
 
             // All vertices are underwater
-            if (vertexData[0].distance < 0f && vertexData[1].distance < 0f && vertexData[2].distance < 0f)
+            if (vertexData[0].distanceToWater < 0f && vertexData[1].distanceToWater < 0f && vertexData[2].distanceToWater < 0f)
             {
                 Vector3 p1 = vertexData[0].worldSpacePosition;
                 Vector3 p2 = vertexData[1].worldSpacePosition;
@@ -78,16 +78,16 @@ public class ShipTriangles
             else
             {
                 // Sort the vertices
-                vertexData.Sort((x, y) => x.distance.CompareTo(y.distance));
+                vertexData.Sort((x, y) => x.distanceToWater.CompareTo(y.distanceToWater));
                 vertexData.Reverse();
 
                 // Only one vertice is above the water
-                if (vertexData[0].distance >= 0f && vertexData[1].distance <= 0f && vertexData[2].distance <= 0f)
+                if (vertexData[0].distanceToWater >= 0f && vertexData[1].distanceToWater <= 0f && vertexData[2].distanceToWater <= 0f)
                 {
                     OneVertexAboveWater(vertexData);
                 }
                 // Only two vertices are above the water
-                else if (vertexData[0].distance >= 0f && vertexData[1].distance >= 0f && vertexData[2].distance <= 0f)
+                else if (vertexData[0].distanceToWater >= 0f && vertexData[1].distanceToWater >= 0f && vertexData[2].distanceToWater <= 0f)
                 {
                     TwoVerticesAboveWater(vertexData);
                 }
@@ -102,9 +102,9 @@ public class ShipTriangles
         Vector3 M = vertexData[1].worldSpacePosition;
         Vector3 L = vertexData[2].worldSpacePosition;
 
-        float hH = vertexData[0].distance;
-        float hM = vertexData[1].distance;
-        float hL = vertexData[2].distance;
+        float hH = vertexData[0].distanceToWater;
+        float hM = vertexData[1].distanceToWater;
+        float hL = vertexData[2].distanceToWater;
 
         float tM = -hM / (hH - hM);
         float tL = -hL / (hH - hL);
@@ -122,9 +122,9 @@ public class ShipTriangles
         Vector3 M = vertexData[1].worldSpacePosition;
         Vector3 L = vertexData[2].worldSpacePosition;
 
-        float hH = vertexData[0].distance;
-        float hM = vertexData[1].distance;
-        float hL = vertexData[2].distance;
+        float hH = vertexData[0].distanceToWater;
+        float hM = vertexData[1].distanceToWater;
+        float hL = vertexData[2].distanceToWater;
 
         float tM = -hL / (hM - hL);
         float tH = -hL / (hH - hL);
@@ -139,12 +139,12 @@ public class ShipTriangles
     struct VertexData
     {
         public Vector3 worldSpacePosition;
-        public float distance;
+        public float distanceToWater;
 
-        public VertexData(Vector3 worldSpacePosition, float distance)
+        public VertexData(Vector3 worldSpacePosition, float distanceToWater)
         {
             this.worldSpacePosition = worldSpacePosition;
-            this.distance = distance;
+            this.distanceToWater = distanceToWater;
         }
     }
 }

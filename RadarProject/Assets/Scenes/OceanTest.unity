@@ -580,15 +580,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e6f974647688bed8d04e8468aca79b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileName: Scenario7
-  generateRandomCSV: 1
-  numberOfShips: 20
+  fileName: 
+  generateRandomCSV: 0
+  numberOfShips: 5
   locationsToCreate: 10
   minStartingCoordinates: 2000
   maxStartingCoordinates: 2000
-  randomCoordinates: 400
-  minSpeed: 6
-  maxSpeed: 11
+  randomCoordinates: 1000
+  minSpeed: 11
+  maxSpeed: 21
 --- !u!114 &2106282667
 MonoBehaviour:
   m_ObjectHideFlags: 0

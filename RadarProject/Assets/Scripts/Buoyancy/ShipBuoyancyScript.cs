@@ -43,7 +43,7 @@ public class ShipBouyancyScript : MonoBehaviour
         shipLength = ship.GetComponent<MeshFilter>().mesh.bounds.size.z;
         shipWidth = ship.GetComponent<MeshFilter>().mesh.bounds.size.x;
 
-        StartCoroutine(Coroutine());
+        StartCoroutine(GenerateUnderwaterMeshCoroutine());
     }
 
     void Update()
@@ -57,15 +57,16 @@ public class ShipBouyancyScript : MonoBehaviour
 
         AddUnderWaterForces();
 
-        // Artifically align the ship upward to avoid it from sinking
+        // Artifically align the ship upward because sometimes it sinks for some reason
         AlignShipUpward();
     }
 
-    IEnumerator Coroutine()
+    // Improves performance but lowers the accuracy, otherwise generate water mesh can be in Update
+    IEnumerator GenerateUnderwaterMeshCoroutine()
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSecondsRealtime(UnityEngine.Random.Range(minWaitTime, maxWaitTime)); // Improves performance but lowers the accuracy
+            yield return new WaitForSecondsRealtime(UnityEngine.Random.Range(minWaitTime, maxWaitTime)); 
             shipTriangles.GenerateUnderwaterMesh();
         }
     }
@@ -97,7 +98,7 @@ public class ShipBouyancyScript : MonoBehaviour
     // A small residual torque is applied, so if the number of triangles is low the object will rotate
     Vector3 BuoyancyForce(float density, TriangleData triangleData)
     {
-        Vector3 force = density * -Physics.gravity.y * triangleData.distanceToSurface * triangleData.area * triangleData.normal;
+        Vector3 force = density * -Physics.gravity.y * triangleData.distanceToWater * triangleData.area * triangleData.normal;
 
         force.x = 0f;
         force.z = 0f;

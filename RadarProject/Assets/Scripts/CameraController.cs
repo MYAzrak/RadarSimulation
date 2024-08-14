@@ -7,7 +7,6 @@ public class CameraController : MonoBehaviour
     [Header("Camera Movement")]
     [SerializeField] int movementSpeed = 75;
 
-
     [Header("Camera Rotation")]
     [SerializeField] int horizontalSpeed = 75;
     [SerializeField] int verticalSpeed = 75;

@@ -2,11 +2,10 @@ using UnityEngine;
 using Unity.Mathematics;
 using Unity.Burst;
 
-[BurstCompile]
 public struct TriangleData
 {
     public Vector3 center;
-    public float distanceToSurface;
+    public float distanceToWater;
     public Vector3 normal;
     public float area;
     public Vector3 velocity;
@@ -16,7 +15,7 @@ public struct TriangleData
     {
         center = (p1 + p2 + p3) / 3f;
 
-        distanceToSurface = ShipBouyancyScript.shipBouyancyScriptInstance.GetDistanceToWater(center);
+        distanceToWater = ShipBouyancyScript.shipBouyancyScriptInstance.GetDistanceToWater(center);
 
         Vector3 crossProduct = Vector3.Cross(p2 - p1, p3 - p1);
 
