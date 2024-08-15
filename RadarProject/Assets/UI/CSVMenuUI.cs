@@ -1,20 +1,24 @@
+using System.Diagnostics;
 using UnityEngine.UIElements;
 
 public class CSVMenuUI
 {
     VisualElement ui;
+    MainMenuController mainMenuController;
     CSVManager csvManager;
 
-    public CSVMenuUI(VisualElement ui, CSVManager csvManager)
+    string fileName = "Scenario";
+
+    public CSVMenuUI(VisualElement ui, MainMenuController mainMenuController, CSVManager csvManager)
     {
         this.ui = ui;
+        this.mainMenuController = mainMenuController;
         this.csvManager = csvManager;
     }
     
     public void SetBtnEvents()
     {
         TextField fileNameTxtField = ui.Q("FileNameTxtField") as TextField;
-        csvManager.fileName = fileNameTxtField.text;
         fileNameTxtField.RegisterValueChangedCallback(evt => {
             csvManager.fileName = evt.newValue;
         });
@@ -48,8 +52,14 @@ public class CSVMenuUI
         Button generateRandomCSVBtn = ui.Q("GenerateCSVBtn") as Button;
         generateRandomCSVBtn.RegisterCallback((ClickEvent clickEvent) => {
             csvManager.generateRandomCSV = !csvManager.generateRandomCSV;
-            DropdownField dropdownField = ui.Q("ScenarioDropdown") as DropdownField;
-            dropdownField.choices.Add(fileNameTxtField.text);
+            mainMenuController.ResetScenarioDropdownField();
         });
+    }
+
+    public void SetFileNameTextFIeld(int numberOfNextScenario)
+    {
+        TextField fileNameTxtField = ui.Q("FileNameTxtField") as TextField;
+        fileNameTxtField.value = fileName + numberOfNextScenario;
+        csvManager.fileName = fileName + numberOfNextScenario;
     }
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ShipInformation
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public ShipType Type { get; set; }
+    public int Id { get; private set; }
+    public string Name { get; private set; }
+    public ShipType Type { get; private set; }
 
     public List<float> speedHistory = new();
     public List<Vector3> locationHistory = new();

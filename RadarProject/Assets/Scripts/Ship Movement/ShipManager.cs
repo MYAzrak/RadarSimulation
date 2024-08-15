@@ -63,18 +63,22 @@ public class ShipManager : MonoBehaviour
     }
 
     // Read all files in filePath and store the scenarios that match filePattern for the Unity inspector 
-    public List<string> ReadScenarioFiles()
+    public List<string> ReadScenarioFiles(out int numberOfNextScenario)
     {
         List<string> files = new();
         Regex myRegExp = new(filePattern);
 
-        var info = new DirectoryInfo(filePath);
+        numberOfNextScenario = -1;
+
+        DirectoryInfo info = new(filePath);
         var fileInfo = info.GetFiles();
-        foreach (var file in fileInfo) 
+        for (int i = 0; i < fileInfo.Length; i++)
         {
+            var file = fileInfo[i];
             if (myRegExp.Match(file.Name).Success)
             {
                 files.Add(file.Name[..^4]); // remove .csv
+                numberOfNextScenario = int.Parse(file.Name[8..^4]) + 1; // Scenario has a length of 8
             }
         }
 

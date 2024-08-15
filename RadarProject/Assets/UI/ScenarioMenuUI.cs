@@ -5,11 +5,13 @@ using UnityEngine.UIElements;
 public class ScenarioMenuUI
 {
     VisualElement ui;
+    MainMenuController mainMenuController;
     ShipManager shipManager;
 
-    public ScenarioMenuUI(VisualElement ui, ShipManager shipManager)
+    public ScenarioMenuUI(VisualElement ui, MainMenuController mainMenuController, ShipManager shipManager)
     {
         this.ui = ui;
+        this.mainMenuController = mainMenuController;
         this.shipManager = shipManager;
     }
 
@@ -28,18 +30,21 @@ public class ScenarioMenuUI
         // TODO: Reset toggle after resetting a scenario to be inline with ship manager
         Toggle logToggle = ui.Q("LogToggle") as Toggle;
         logToggle.RegisterCallback((ClickEvent clickEvent) => shipManager.logMessages = !shipManager.logMessages);
+
+        SetDropdownField();
     }
 
     public void SetDropdownField()
     {
         DropdownField dropdownField = ui.Q("ScenarioDropdown") as DropdownField;
         
-        List<string> files = shipManager.ReadScenarioFiles();
+        List<string> files = shipManager.ReadScenarioFiles(out int numberOfNextScenario);
+        mainMenuController.PassNextScenarioNumber(numberOfNextScenario);
 
         if (files.Count == 0)
         {
             Debug.Log("No scenario files found.");
-            return;
+            return; 
         }
 
         dropdownField.choices = files;

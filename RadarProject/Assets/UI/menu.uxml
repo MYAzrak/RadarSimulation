@@ -16,7 +16,7 @@
             <TabButton />
         </TabbedView>
         <ui:VisualElement name="CsvView" class="hide" style="flex-grow: 1; height: auto; display: flex; align-items: stretch; align-self: flex-start; width: 500px;">
-            <ui:TextField picking-mode="Ignore" label="File Name" name="FileNameTxtField" focusable="true" class="text" style="margin-right: 4%; align-self: auto; align-items: center; -unity-text-align: middle-left; justify-content: flex-start; margin-top: 2%; margin-bottom: 2%; margin-left: 4%;" />
+            <ui:TextField picking-mode="Ignore" label="File Name" name="FileNameTxtField" focusable="false" readonly="true" class="text" style="margin-right: 4%; align-self: auto; align-items: center; -unity-text-align: middle-left; justify-content: flex-start; margin-top: 2%; margin-bottom: 2%; margin-left: 4%;" />
             <ui:SliderInt label="# of ships" high-value="500" show-input-field="true" low-value="1" name="NumOfShipsSlider" focusable="false" class="text" style="margin-right: 4%; margin-top: 2%; margin-bottom: 2%; margin-left: 4%;" />
             <ui:SliderInt label="# of locations" high-value="50" show-input-field="true" low-value="2" name="NumOfLocationsSlider" focusable="false" class="text" style="margin-right: 4%; margin-top: 2%; margin-bottom: 2%; margin-left: 4%;" />
             <ui:Label tabindex="-1" text="Coordinate Range:&#10;Min value: &#10;Max value: " parse-escape-sequences="true" display-tooltip-when-elided="true" name="MinMaxLabel" class="text" style="margin-top: 2%; margin-right: 4%; margin-left: 4%; margin-bottom: 1%;" />

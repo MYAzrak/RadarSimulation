@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 
 public class MainMenuController : MonoBehaviour
 {
+    MainMenuController instance;
     VisualElement ui;
     ShipManager shipManager;
     CSVManager csvManager;
@@ -18,21 +19,21 @@ public class MainMenuController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+
         shipManager = FindObjectOfType<ShipManager>();
         csvManager = FindObjectOfType<CSVManager>();
         ui = GetComponent<UIDocument>().rootVisualElement;
 
         menuPanel = ui.Q("Panel");
-        menuPanel.visible = false;
+        menuPanel.visible = false;  
 
-        ScenarioMenuUI = new(ui, shipManager);
-        CSVMenuUI = new(ui, csvManager);
+        ScenarioMenuUI = new(ui, instance, shipManager);
+        CSVMenuUI = new(ui, instance, csvManager);
 
         SetTabs();
 
         ScenarioMenuUI.SetBtnEvents();
-        ScenarioMenuUI.SetDropdownField();
-
         CSVMenuUI.SetBtnEvents();
 
         ViewToEnable(tabBtns[0].button);
@@ -76,6 +77,16 @@ public class MainMenuController : MonoBehaviour
                 tabView.visualElement.style.display = DisplayStyle.None;
             }
         }
+    }
+
+    public void PassNextScenarioNumber(int numberOfNextScenario)
+    {
+        CSVMenuUI.SetFileNameTextFIeld(numberOfNextScenario);
+    }
+
+    public void ResetScenarioDropdownField()
+    {
+        ScenarioMenuUI.SetDropdownField();
     }
 
     struct TabViews
