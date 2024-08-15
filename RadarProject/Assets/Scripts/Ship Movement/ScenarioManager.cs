@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Crest;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScenarioManager : MonoBehaviour
 {
@@ -27,12 +29,23 @@ public class ScenarioManager : MonoBehaviour
     bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
 
     CSVManager csvManager;
+    OceanRenderer oceanRenderer;
+    TimeProviderCustom timeProviderCustom;
+    float startTime;
 
     public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f;          // 1 Meter/second = 1.943844 Knot
     public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f;         // 1 Knot = 0.5144444 Meter/second
     
     void Start()
     {
+        startTime = Time.time;
+
+        oceanRenderer = FindObjectOfType<OceanRenderer>();
+        timeProviderCustom = FindObjectOfType<TimeProviderCustom>();
+        timeProviderCustom._overrideTime = true;
+
+        oceanRenderer.PushTimeProvider(timeProviderCustom);
+
         csvManager = GetComponent<CSVManager>();
         Time.timeScale = 1f;
     }
@@ -43,6 +56,7 @@ public class ScenarioManager : MonoBehaviour
         {
             ResetScenario();
             resetScenario = false;
+            startTime = 0;
         }
         else if (reloadCSV)
         {
@@ -63,12 +77,16 @@ public class ScenarioManager : MonoBehaviour
             result = false;
             ResetScenario();
             loadScenario = false;
+            startTime = 0;
         }
         else if (updateTimeScale)
         {
             Time.timeScale = timeScale;
             updateTimeScale = false;
         }
+
+        startTime += Time.deltaTime;
+        timeProviderCustom._time = startTime;
     }
 
     // Read all files in filePath and store the scenarios that match filePattern for the Unity inspector 

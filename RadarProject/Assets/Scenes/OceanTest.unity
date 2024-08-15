@@ -357,6 +357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1059646246}
   - component: {fileID: 1059646245}
+  - component: {fileID: 1059646247}
   m_Layer: 0
   m_Name: Ocean
   m_TagString: Untagged
@@ -441,6 +442,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1059646247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059646244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f02c000dd23b95349acae40e1938c4a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _version: 0
+  _paused: 0
+  _overrideTime: 0
+  _time: 0
+  _overrideDeltaTime: 0
+  _deltaTime: 0
 --- !u!1 &1422562296
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,6 +608,7 @@ MonoBehaviour:
   randomCoordinates: 1000
   minSpeed: 11
   maxSpeed: 21
+  filePath: /home/kkp/RadarSimulation/RadarProject/Assets/Scenarios/
 --- !u!114 &2106282667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,6 +625,8 @@ MonoBehaviour:
   shipPrefabs:
   - shipType: 0
     prefab: {fileID: 1048501746681472956, guid: 748f69b4b6dae6211bb03756c3a4f886, type: 3}
+  timeScale: 1
+  updateTimeScale: 0
   loadScenario: 0
   resetScenario: 0
   reloadCSV: 0
