@@ -70,7 +70,7 @@ public class ShipController : MonoBehaviour
         {
             yield return new WaitForSeconds(timeToWaitBeforeLogging);
             
-            float speed = rigidbody.velocity.magnitude * ShipManager.METERS_PER_SECOND_TO_KNOTS;
+            float speed = rigidbody.velocity.magnitude * ScenarioManager.METERS_PER_SECOND_TO_KNOTS;
             Vector3 position = rigidbody.position;
 
             shipInformation.AddToHistory(speed, position);

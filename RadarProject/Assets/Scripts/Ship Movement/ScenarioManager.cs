@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class ShipManager : MonoBehaviour
+public class ScenarioManager : MonoBehaviour
 {
     [Header("Scenario and Ship Prefabs")]
     public string scenarioFileName;
@@ -34,7 +34,7 @@ public class ShipManager : MonoBehaviour
     void Start()
     {
         csvManager = GetComponent<CSVManager>();
-        Time.timeScale = 2f;
+        Time.timeScale = 1f;
     }
 
     void Update()

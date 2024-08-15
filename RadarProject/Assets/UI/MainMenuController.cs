@@ -6,7 +6,7 @@ public class MainMenuController : MonoBehaviour
 {
     MainMenuController instance;
     VisualElement ui;
-    ShipManager shipManager;
+    ScenarioManager scenarioManager;
     CSVManager csvManager;
 
     ScenarioMenuUI ScenarioMenuUI;
@@ -21,14 +21,14 @@ public class MainMenuController : MonoBehaviour
     {
         instance = this;
 
-        shipManager = FindObjectOfType<ShipManager>();
+        scenarioManager = FindObjectOfType<ScenarioManager>();
         csvManager = FindObjectOfType<CSVManager>();
         ui = GetComponent<UIDocument>().rootVisualElement;
 
         menuPanel = ui.Q("Panel");
         menuPanel.visible = false;  
 
-        ScenarioMenuUI = new(ui, instance, shipManager);
+        ScenarioMenuUI = new(ui, instance, scenarioManager);
         CSVMenuUI = new(ui, instance, csvManager);
 
         SetTabs();

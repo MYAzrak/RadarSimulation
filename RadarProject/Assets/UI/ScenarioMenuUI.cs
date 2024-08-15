@@ -6,13 +6,13 @@ public class ScenarioMenuUI
 {
     VisualElement ui;
     MainMenuController mainMenuController;
-    ShipManager shipManager;
+    ScenarioManager scenarioManager;
 
-    public ScenarioMenuUI(VisualElement ui, MainMenuController mainMenuController, ShipManager shipManager)
+    public ScenarioMenuUI(VisualElement ui, MainMenuController mainMenuController, ScenarioManager scenarioManager)
     {
         this.ui = ui;
         this.mainMenuController = mainMenuController;
-        this.shipManager = shipManager;
+        this.scenarioManager = scenarioManager;
     }
 
     public void SetBtnEvents()
@@ -20,22 +20,22 @@ public class ScenarioMenuUI
         SliderInt timeScaleSlider = ui.Q("TimeScaleSlider") as SliderInt;
         timeScaleSlider.value = 1;
         timeScaleSlider.RegisterCallback((ClickEvent clickEvent) => {
-            shipManager.timeScale = timeScaleSlider.value;
-            shipManager.updateTimeScale = !shipManager.updateTimeScale;
+            scenarioManager.timeScale = timeScaleSlider.value;
+            scenarioManager.updateTimeScale = !scenarioManager.updateTimeScale;
         });
 
         Button resetBtn = ui.Q("ResetBtn") as Button;
-        resetBtn.RegisterCallback((ClickEvent clickEvent) => shipManager.resetScenario = !shipManager.resetScenario);
+        resetBtn.RegisterCallback((ClickEvent clickEvent) => scenarioManager.resetScenario = !scenarioManager.resetScenario);
 
         Button reloadBtn = ui.Q("ReloadBtn") as Button;
-        resetBtn.RegisterCallback((ClickEvent clickEvent) => shipManager.reloadCSV = !shipManager.reloadCSV);
+        resetBtn.RegisterCallback((ClickEvent clickEvent) => scenarioManager.reloadCSV = !scenarioManager.reloadCSV);
 
         Button loadBtn = ui.Q("LoadBtn") as Button;
-        loadBtn.RegisterCallback((ClickEvent clickEvent) => shipManager.loadScenario = !shipManager.loadScenario);
+        loadBtn.RegisterCallback((ClickEvent clickEvent) => scenarioManager.loadScenario = !scenarioManager.loadScenario);
 
         // TODO: Reset toggle after resetting a scenario to be inline with ship manager
         Toggle logToggle = ui.Q("LogToggle") as Toggle;
-        logToggle.RegisterCallback((ClickEvent clickEvent) => shipManager.logMessages = !shipManager.logMessages);
+        logToggle.RegisterCallback((ClickEvent clickEvent) => scenarioManager.logMessages = !scenarioManager.logMessages);
 
         SetDropdownField();
     }
@@ -44,7 +44,7 @@ public class ScenarioMenuUI
     {
         DropdownField dropdownField = ui.Q("ScenarioDropdown") as DropdownField;
         
-        List<string> files = shipManager.ReadScenarioFiles(out int numberOfNextScenario);
+        List<string> files = scenarioManager.ReadScenarioFiles(out int numberOfNextScenario);
 
         if (files.Count == 0)
         {
@@ -55,12 +55,12 @@ public class ScenarioMenuUI
         mainMenuController.PassNextScenarioNumber(numberOfNextScenario);
 
         dropdownField.choices = files;
-        dropdownField.value = shipManager.scenarioFileName = files[0];
+        dropdownField.value = scenarioManager.scenarioFileName = files[0];
 
         if (!reset)
         {
             dropdownField.RegisterValueChangedCallback(evt => {
-                shipManager.scenarioFileName = evt.newValue;
+                scenarioManager.scenarioFileName = evt.newValue;
             });
         }
     }
