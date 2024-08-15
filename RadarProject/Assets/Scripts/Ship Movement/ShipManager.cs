@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -71,16 +72,19 @@ public class ShipManager : MonoBehaviour
         numberOfNextScenario = -1;
 
         DirectoryInfo info = new(filePath);
-        var fileInfo = info.GetFiles();
+        FileInfo[] fileInfo = info.GetFiles()
+                                    .Where(file => myRegExp.Match(file.Name).Success)
+                                    .OrderBy(file => int.Parse(Path.GetFileNameWithoutExtension(file.Name[8..])))
+                                    .ToArray();
         for (int i = 0; i < fileInfo.Length; i++)
         {
             var file = fileInfo[i];
-            if (myRegExp.Match(file.Name).Success)
-            {
-                files.Add(file.Name[..^4]); // remove .csv
-                numberOfNextScenario = int.Parse(file.Name[8..^4]) + 1; // Scenario has a length of 8
-            }
+            files.Add(Path.GetFileNameWithoutExtension(file.Name[..^4]));
+
+            if (i == fileInfo.Length - 1)
+                numberOfNextScenario = int.Parse(Path.GetFileNameWithoutExtension(file.Name[8..])); // "Scenario" has a length of 8
         }
+        numberOfNextScenario += 1;
 
         Debug.Log("Scenario files have been read.");
 

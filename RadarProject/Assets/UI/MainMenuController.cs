@@ -86,7 +86,7 @@ public class MainMenuController : MonoBehaviour
 
     public void ResetScenarioDropdownField()
     {
-        ScenarioMenuUI.SetDropdownField();
+        ScenarioMenuUI.SetDropdownField(true);
     }
 
     struct TabViews

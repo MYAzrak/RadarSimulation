@@ -17,7 +17,6 @@ public class ScenarioMenuUI
 
     public void SetBtnEvents()
     {
-        // Ship Mangaer
         Button resetBtn = ui.Q("ResetBtn") as Button;
         resetBtn.RegisterCallback((ClickEvent clickEvent) => shipManager.resetScenario = !shipManager.resetScenario);
 
@@ -34,12 +33,11 @@ public class ScenarioMenuUI
         SetDropdownField();
     }
 
-    public void SetDropdownField()
+    public void SetDropdownField(bool reset = false)
     {
         DropdownField dropdownField = ui.Q("ScenarioDropdown") as DropdownField;
         
         List<string> files = shipManager.ReadScenarioFiles(out int numberOfNextScenario);
-        mainMenuController.PassNextScenarioNumber(numberOfNextScenario);
 
         if (files.Count == 0)
         {
@@ -47,11 +45,17 @@ public class ScenarioMenuUI
             return; 
         }
 
+        Debug.Log(numberOfNextScenario);
+        mainMenuController.PassNextScenarioNumber(numberOfNextScenario);
+
         dropdownField.choices = files;
         dropdownField.value = shipManager.scenarioFileName = files[0];
-        dropdownField.focusable = false;
-        dropdownField.RegisterValueChangedCallback(evt => {
-            shipManager.scenarioFileName = evt.newValue;
-        });
+
+        if (!reset)
+        {
+            dropdownField.RegisterValueChangedCallback(evt => {
+                shipManager.scenarioFileName = evt.newValue;
+            });
+        }
     }
 }

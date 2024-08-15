@@ -18,7 +18,7 @@ public class CSVManager : MonoBehaviour
     [SerializeField] int minSpeed = 11;                     // The min value in the speed range
     [SerializeField] int maxSpeed = 21;                     // The max value in the speed range
 
-    string filePath = Application.dataPath + "/Scenarios/";
+    public string filePath = Application.dataPath + "/Scenarios/";
     string fileExtension = ".csv";
     string shipListEndName = "ShipList";                    // The ship list csv ends with ShipList.csv  
     int[] speed;

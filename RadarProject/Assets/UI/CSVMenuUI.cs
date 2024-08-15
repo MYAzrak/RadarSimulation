@@ -51,7 +51,9 @@ public class CSVMenuUI
 
         Button generateRandomCSVBtn = ui.Q("GenerateCSVBtn") as Button;
         generateRandomCSVBtn.RegisterCallback((ClickEvent clickEvent) => {
-            csvManager.generateRandomCSV = !csvManager.generateRandomCSV;
+            // Use the generate function instead of setting generateRandomCSV bool because the dropdownfield and next scenario file 
+            // will not update correctly since the generate function would not have finished
+            csvManager.GenerateCSV(csvManager.numberOfShips, csvManager.filePath + fileNameTxtField.value);
             mainMenuController.ResetScenarioDropdownField();
         });
     }
