@@ -25,14 +25,14 @@ public class CameraController : MonoBehaviour
         if (Input.GetButton("Fire2")) 
         {
             // Get the mouse delta, and add eulerAngles to save the last rotated values
-            float h = transform.eulerAngles.y + horizontalSpeed * Input.GetAxis("Mouse X") * Time.deltaTime;
-            float v = transform.eulerAngles.x + verticalSpeed * Input.GetAxis("Mouse Y") * (invertedVerticalMovement ? 1 : -1) * Time.deltaTime;
+            float h = transform.eulerAngles.y + horizontalSpeed * Input.GetAxis("Mouse X") * Time.unscaledDeltaTime;
+            float v = transform.eulerAngles.x + verticalSpeed * Input.GetAxis("Mouse Y") * (invertedVerticalMovement ? 1 : -1) * Time.unscaledDeltaTime;
 
             transform.rotation = Quaternion.Euler(v, h, 0);
 
             // Camera movement
-            float verticalDirection = Input.GetAxis("Vertical") * Time.deltaTime * movementSpeed;
-            float horizontalDirection = Input.GetAxis("Horizontal") * Time.deltaTime * movementSpeed;
+            float verticalDirection = Input.GetAxisRaw("Vertical") * Time.unscaledDeltaTime * movementSpeed;
+            float horizontalDirection = Input.GetAxisRaw("Horizontal") * Time.unscaledDeltaTime * movementSpeed;
             
             transform.position += (transform.forward * verticalDirection) + (transform.right * horizontalDirection);
         }

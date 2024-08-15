@@ -11,6 +11,8 @@ public class ShipManager : MonoBehaviour
     [SerializeField] List<ShipPrefab> shipPrefabs = new();
 
     [Header("Scenario Options")]
+    public int timeScale = 1;
+    public bool updateTimeScale = false;
     public bool loadScenario = false;
     public bool resetScenario = false;
     public bool reloadCSV = false;
@@ -32,6 +34,7 @@ public class ShipManager : MonoBehaviour
     void Start()
     {
         csvManager = GetComponent<CSVManager>();
+        Time.timeScale = 2f;
     }
 
     void Update()
@@ -60,6 +63,11 @@ public class ShipManager : MonoBehaviour
             result = false;
             ResetScenario();
             loadScenario = false;
+        }
+        else if (updateTimeScale)
+        {
+            Time.timeScale = timeScale;
+            updateTimeScale = false;
         }
     }
 

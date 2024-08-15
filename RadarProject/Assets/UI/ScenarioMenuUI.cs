@@ -17,6 +17,13 @@ public class ScenarioMenuUI
 
     public void SetBtnEvents()
     {
+        SliderInt timeScaleSlider = ui.Q("TimeScaleSlider") as SliderInt;
+        timeScaleSlider.value = 1;
+        timeScaleSlider.RegisterCallback((ClickEvent clickEvent) => {
+            shipManager.timeScale = timeScaleSlider.value;
+            shipManager.updateTimeScale = !shipManager.updateTimeScale;
+        });
+
         Button resetBtn = ui.Q("ResetBtn") as Button;
         resetBtn.RegisterCallback((ClickEvent clickEvent) => shipManager.resetScenario = !shipManager.resetScenario);
 
@@ -45,7 +52,6 @@ public class ScenarioMenuUI
             return; 
         }
 
-        Debug.Log(numberOfNextScenario);
         mainMenuController.PassNextScenarioNumber(numberOfNextScenario);
 
         dropdownField.choices = files;
