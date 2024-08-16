@@ -18,10 +18,9 @@ public class CSVManager : MonoBehaviour
     [SerializeField] int minSpeed = 11;                     // The min value in the speed range
     [SerializeField] int maxSpeed = 21;                     // The max value in the speed range
 
-    public string filePath = Application.dataPath + "/Scenarios/";
+    string filePath = Application.dataPath + "/Scenarios/";
     string fileExtension = ".csv";
-    string shipListEndName = "ShipList";                    // The ship list csv ends with ShipList.csv  
-    int[] speed;
+    string shipListEndName = "ShipList";                    // The ship list csv ends with ShipList.csv
     
     void Update()
     {
@@ -33,7 +32,7 @@ public class CSVManager : MonoBehaviour
         }
     }
     
-    public Vector3[] GeneratePath()
+    public Vector3[] GeneratePath(out int[] speed)
     {
         Vector3[] points = new Vector3[locationsToCreate];
 
@@ -73,7 +72,7 @@ public class CSVManager : MonoBehaviour
 
         for (int i = 0; i < numberOfShips; i++)
         {
-            Vector3[] locations = GeneratePath();
+            Vector3[] locations = GeneratePath(out int[] speed);
 
             for (int x = 0; x < locations.Length; x++)
             {
@@ -167,5 +166,10 @@ public class CSVManager : MonoBehaviour
             Debug.Log($"File not found: {e.Message}");
             return false;
         }
+    }
+
+    public string GetFilePath()
+    {
+        return filePath;
     }
 }

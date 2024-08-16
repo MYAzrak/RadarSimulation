@@ -33,10 +33,6 @@ public class ScenarioMenuUI
         Button loadBtn = ui.Q("LoadBtn") as Button;
         loadBtn.RegisterCallback((ClickEvent clickEvent) => scenarioManager.loadScenario = !scenarioManager.loadScenario);
 
-        // TODO: Reset toggle after resetting a scenario to be inline with ship manager
-        Toggle logToggle = ui.Q("LogToggle") as Toggle;
-        logToggle.RegisterCallback((ClickEvent clickEvent) => scenarioManager.logMessages = !scenarioManager.logMessages);
-
         SetDropdownField();
     }
 

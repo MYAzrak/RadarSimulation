@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Crest;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ScenarioManager : MonoBehaviour
 {
@@ -12,9 +11,11 @@ public class ScenarioManager : MonoBehaviour
     public string scenarioFileName;
     [SerializeField] List<ShipPrefab> shipPrefabs = new();
 
-    [Header("Scenario Options")]
+    [Header("Time options")]
     public int timeScale = 1;
     public bool updateTimeScale = false;
+
+    [Header("Scenario Options")]
     public bool loadScenario = false;
     public bool resetScenario = false;
     public bool reloadCSV = false;
@@ -24,21 +25,21 @@ public class ScenarioManager : MonoBehaviour
     string filePattern = @"^Scenario\d+\.csv$";                         // ScenarioX.csv where X is any number
     Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
     Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
-    List<GameObject> ships = new();                                     // Keep track of generated ships
-    bool result;                                                        // The result of ReadScenarioCSV
+    List<GameObject> generatedShips = new();
+    bool csvReadResult;
     bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
 
     CSVManager csvManager;
     OceanRenderer oceanRenderer;
     TimeProviderCustom timeProviderCustom;
-    float startTime;
+    float timeSinceScenarioStart;
 
     public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f;          // 1 Meter/second = 1.943844 Knot
     public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f;         // 1 Knot = 0.5144444 Meter/second
     
     void Start()
     {
-        startTime = Time.time;
+        timeSinceScenarioStart = Time.time;
 
         oceanRenderer = FindObjectOfType<OceanRenderer>();
         timeProviderCustom = FindObjectOfType<TimeProviderCustom>();
@@ -56,16 +57,16 @@ public class ScenarioManager : MonoBehaviour
         {
             ResetScenario();
             resetScenario = false;
-            startTime = 0;
+            timeSinceScenarioStart = 0;
         }
         else if (reloadCSV)
         {
-            result = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
+            csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
             reloadCSV = false;
         }
         else if (logMessages != previousLogMessageBool)
         {
-            foreach (var ship in ships) 
+            foreach (var ship in generatedShips) 
             {
                 ship.GetComponent<ShipController>().logMessages = logMessages;
             }
@@ -74,10 +75,10 @@ public class ScenarioManager : MonoBehaviour
         }
         else if (loadScenario)
         {
-            result = false;
+            csvReadResult = false;
             ResetScenario();
             loadScenario = false;
-            startTime = 0;
+            timeSinceScenarioStart = 0;
         }
         else if (updateTimeScale)
         {
@@ -85,8 +86,8 @@ public class ScenarioManager : MonoBehaviour
             updateTimeScale = false;
         }
 
-        startTime += Time.deltaTime;
-        timeProviderCustom._time = startTime;
+        timeSinceScenarioStart += Time.deltaTime;
+        timeProviderCustom._time = timeSinceScenarioStart;
     }
 
     // Read all files in filePath and store the scenarios that match filePattern for the Unity inspector 
@@ -120,18 +121,18 @@ public class ScenarioManager : MonoBehaviour
     void ResetScenario()
     {
         // Generate ships if the csv was valid else read the csv again
-        if (!result) {
-            result = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
-            if (!result) return;
+        if (!csvReadResult) {
+            csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
+            if (!csvReadResult) return;
         }
 
         // Destroy all generated ships
-        foreach (var ship in ships) 
+        foreach (var ship in generatedShips) 
         {
             Destroy(ship);
         }
 
-        ships.Clear();
+        generatedShips.Clear();
         
         GenerateShips();
         Debug.Log("Scenario has been reset.");
@@ -198,7 +199,7 @@ public class ScenarioManager : MonoBehaviour
             }
             shipController.shipInformation = shipsInformation[ship.Key]; // Initialize the ship information
 
-            ships.Add(instance);
+            generatedShips.Add(instance);
             
             // Start from index 1 since index 0 is the starting position
             for (int i = 1; i < ship.Value.Count; i++)
