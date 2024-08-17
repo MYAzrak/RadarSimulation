@@ -1,13 +1,17 @@
 using UnityEngine;
 using System;
+using WebSocketSharp;
+using WebSocketSharp.Server;
+using System.Text;
+using Newtonsoft.Json;
 
 public class RadarScript : MonoBehaviour
 {
     [SerializeField] private int HeightRes = 2048;
     [SerializeField] private int WidthRes = 5;
-    [Range(0.0f, 1f)] private float resolution = 0.1f;
+    [Range(0.0f, 1f)] private float resolution = 1f;
     [Range(5f, 5000f)] public float MaxDistance = 100F;
-    [Range(0.01f, 2f)] public float MinDistance = 0.1F;
+    [Range(0.01f, 2f)] public float MinDistance = 0.5F;
     [Range(5.0f, 90f)] public float VerticalAngle = 30f;
     [HideInInspector] public Camera radarCamera;
 
@@ -17,13 +21,17 @@ public class RadarScript : MonoBehaviour
     private RenderTexture radarTexture;
     private float currentRotation = 0f; // Track current rotation
     private GameObject cameraObject;
+    private WebSocketServer server;
 
     public DebugSpoke debugSpoke;
 
-    private int[,] radarPPI;
+    public int[,] radarPPI;
 
     void Start()
     {
+        server = new WebSocketServer("ws://localhost:8080");
+        server.AddWebSocketService<DataService>("/data");
+        server.Start();
         radarPPI = new int[Mathf.RoundToInt(360/resolution), Mathf.RoundToInt(MaxDistance)];
         if (normalDepthShader == null)
         {
@@ -36,8 +44,27 @@ public class RadarScript : MonoBehaviour
 
     void Update()
     {
+        if (currentRotation == 0){
+            string data = CollectData();
+            server.WebSocketServices["/data"].Sessions.Broadcast(data);
+            Debug.Log($"Sent Data: {data}");
+        }
         ProcessRadarData();
-        // RotateCamera();
+        RotateCamera();
+    }
+
+    string CollectData(){
+        var dataObject = new {
+            timestamp = 55,
+            PPI = radarPPI,
+        };            
+        
+        return JsonConvert.SerializeObject(dataObject);
+    }
+
+    void OnApplicationQuit(){
+        server.Stop();
+        Debug.Log("Stopped Server");
     }
 
     private GameObject SpawnCameras(string name, int Width, int Height, float verticalAngle, RenderTextureFormat format)
@@ -115,7 +142,7 @@ public class RadarScript : MonoBehaviour
     private void RotateCamera()
     {
         currentRotation += resolution; // Increase rotation by 1 degree
-        if (currentRotation >= 360f) currentRotation -= 360f; // Wrap around at 360 degrees
+        if (currentRotation >= 360f) currentRotation = 0f; // Wrap around at 360 degrees
         cameraObject.transform.localRotation = Quaternion.Euler(0, currentRotation, 0);
     }
 
@@ -124,4 +151,27 @@ public class RadarScript : MonoBehaviour
     }
 
     
+}
+public class DataService : WebSocketBehavior
+{
+    protected override void OnMessage(MessageEventArgs e)
+    {
+        // Handle incoming messages if needed
+        Debug.Log($"Received message: {e.Data}");
+    }
+
+    protected override void OnOpen()
+    {
+        Debug.Log("Client connected");
+    }
+
+    protected override void OnClose(CloseEventArgs e)
+    {
+        Debug.Log("Client disconnected");
+    }
+
+    protected override void OnError(ErrorEventArgs e)
+    {
+        Debug.LogError($"WebSocket error: {e.Message}");
+    }
 }
