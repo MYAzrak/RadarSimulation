@@ -30,6 +30,7 @@ public class ScenarioManager : MonoBehaviour
     bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
 
     CSVManager csvManager;
+    MainMenuController mainMenuController;
     OceanRenderer oceanRenderer;
     TimeProviderCustom timeProviderCustom;
     float timeSinceScenarioStart;
@@ -48,6 +49,7 @@ public class ScenarioManager : MonoBehaviour
         oceanRenderer.PushTimeProvider(timeProviderCustom);
 
         csvManager = GetComponent<CSVManager>();
+        mainMenuController = FindObjectOfType<MainMenuController>();
         Time.timeScale = 1f;
     }
 
@@ -79,6 +81,9 @@ public class ScenarioManager : MonoBehaviour
             ResetScenario();
             loadScenario = false;
             timeSinceScenarioStart = 0;
+
+            mainMenuController.SetScenarioLabel(scenarioFileName);
+            mainMenuController.SetShipsLabel(generatedShips.Count);
         }
         else if (updateTimeScale)
         {

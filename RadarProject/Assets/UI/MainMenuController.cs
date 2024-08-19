@@ -15,6 +15,7 @@ public class MainMenuController : MonoBehaviour
     List<TabViews> tabBtns = new();
 
     VisualElement menuPanel;
+    VisualElement simulationInfoPanel;
     
     // Start is called before the first frame update
     void Start()
@@ -28,15 +29,19 @@ public class MainMenuController : MonoBehaviour
         menuPanel = ui.Q("Panel");
         menuPanel.visible = false;  
 
+        simulationInfoPanel = ui.Q("SimulationInfoPanel");
+        simulationInfoPanel.visible = false;
+
         ScenarioMenuUI = new(ui, instance, scenarioManager);
         CSVMenuUI = new(ui, instance, csvManager);
 
         SetTabs();
+        ViewToEnable(tabBtns[0].button);
 
         ScenarioMenuUI.SetBtnEvents();
         CSVMenuUI.SetBtnEvents();
 
-        ViewToEnable(tabBtns[0].button);
+        SetDefaultSimulationInfoPanel();
     }
 
     // Update is called once per frame
@@ -45,6 +50,7 @@ public class MainMenuController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Tab))
         {
             menuPanel.visible = !menuPanel.visible;
+            simulationInfoPanel.visible = !simulationInfoPanel.visible;
         }
     }
 
@@ -87,6 +93,36 @@ public class MainMenuController : MonoBehaviour
     public void ResetScenarioDropdownField()
     {
         ScenarioMenuUI.SetDropdownField(true);
+    }
+
+    public void SetDefaultSimulationInfoPanel()
+    {
+        Label currentScenarioLabel = ui.Q("CurrentScenarioLabel") as Label;
+        currentScenarioLabel.text = "No Scenario Loaded";
+
+        Label numOfShipsLabel = ui.Q("NumOfShipsLabel") as Label;
+        numOfShipsLabel.text = "0 Ships";
+
+        Label numOfRadarsLabel = ui.Q("NumOfRadarsLabel") as Label;
+        numOfRadarsLabel.text = "0 Radars";
+    }
+
+    public void SetScenarioLabel(string scenarioName)
+    {
+        Label currentScenarioLabel = ui.Q("CurrentScenarioLabel") as Label;
+        currentScenarioLabel.text = "Currently Running: " + scenarioName;
+    }
+
+    public void SetShipsLabel(int numOfShips)
+    {
+        Label numOfShipsLabel = ui.Q("NumOfShipsLabel") as Label;
+        numOfShipsLabel.text = numOfShips + " Ships";
+    }
+
+    public void SetRadarsLabel(int numOfRadars)
+    {
+        Label numOfRadarsLabel = ui.Q("NumOfRadarsLabel") as Label;
+        numOfRadarsLabel.text = numOfRadars + " Radars";
     }
 
     struct TabViews
