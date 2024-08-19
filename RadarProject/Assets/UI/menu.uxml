@@ -10,7 +10,6 @@
             <ui:SliderInt label="Time Scale" high-value="5" low-value="0" focusable="false" name="TimeScaleSlider" show-input-field="true" class="text" />
             <ui:Button text="Load" parse-escape-sequences="true" display-tooltip-when-elided="true" name="LoadBtn" focusable="false" class="btns" style="margin-bottom: 2%; margin-top: 2%; align-items: center; align-self: flex-start;" />
             <ui:Button text="Reset" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ResetBtn" focusable="false" class="btns" style="margin-bottom: 2%; margin-top: 2%;" />
-            <ui:Button text="Reload CSV" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ReloadBtn" focusable="false" class="btns" style="margin-top: 2%; margin-bottom: 2%;" />
         </ui:VisualElement>
         <TabbedView>
             <TabButton />

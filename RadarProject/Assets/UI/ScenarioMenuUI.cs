@@ -27,9 +27,6 @@ public class ScenarioMenuUI
         Button resetBtn = ui.Q("ResetBtn") as Button;
         resetBtn.RegisterCallback((ClickEvent clickEvent) => scenarioManager.resetScenario = !scenarioManager.resetScenario);
 
-        Button reloadBtn = ui.Q("ReloadBtn") as Button;
-        resetBtn.RegisterCallback((ClickEvent clickEvent) => scenarioManager.reloadCSV = !scenarioManager.reloadCSV);
-
         Button loadBtn = ui.Q("LoadBtn") as Button;
         loadBtn.RegisterCallback((ClickEvent clickEvent) => scenarioManager.loadScenario = !scenarioManager.loadScenario);
 

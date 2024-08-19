@@ -18,7 +18,8 @@ public class ScenarioManager : MonoBehaviour
     [Header("Scenario Options")]
     public bool loadScenario = false;
     public bool resetScenario = false;
-    public bool reloadCSV = false;
+
+    [Header("Debug")]
     public bool logMessages = false;
     
     string filePath = Application.dataPath + "/Scenarios/";
@@ -55,16 +56,21 @@ public class ScenarioManager : MonoBehaviour
 
     void Update()
     {
-        if (resetScenario) 
-        {
-            ResetScenario();
-            resetScenario = false;
-            timeSinceScenarioStart = 0;
-        }
-        else if (reloadCSV)
+        if (loadScenario)
         {
             csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
-            reloadCSV = false;
+            LoadScenario();
+            loadScenario = false;
+            timeSinceScenarioStart = 0;
+
+            mainMenuController.SetScenarioLabel(scenarioFileName);
+            mainMenuController.SetShipsLabel(generatedShips.Count);
+        }
+        else if (resetScenario) 
+        {
+            LoadScenario();
+            resetScenario = false;
+            timeSinceScenarioStart = 0;
         }
         else if (logMessages != previousLogMessageBool)
         {
@@ -74,16 +80,6 @@ public class ScenarioManager : MonoBehaviour
             }
 
             previousLogMessageBool = logMessages;
-        }
-        else if (loadScenario)
-        {
-            csvReadResult = false;
-            ResetScenario();
-            loadScenario = false;
-            timeSinceScenarioStart = 0;
-
-            mainMenuController.SetScenarioLabel(scenarioFileName);
-            mainMenuController.SetShipsLabel(generatedShips.Count);
         }
         else if (updateTimeScale)
         {
@@ -123,13 +119,9 @@ public class ScenarioManager : MonoBehaviour
         return files;
     }
 
-    void ResetScenario()
+    void LoadScenario()
     {
-        // Generate ships if the csv was valid else read the csv again
-        if (!csvReadResult) {
-            csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
-            if (!csvReadResult) return;
-        }
+        if (!csvReadResult) return;
 
         // Destroy all generated ships
         foreach (var ship in generatedShips) 
