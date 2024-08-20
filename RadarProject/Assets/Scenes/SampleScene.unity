@@ -1253,7 +1253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HeightRes: 32
   WidthRes: 2048
-  MaxDistance: 200
+  MaxDistance: 500
   MinDistance: 0.15
   VerticalAngle: 30
   radarCamera: {fileID: 0}
