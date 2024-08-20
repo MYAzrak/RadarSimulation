@@ -105,7 +105,10 @@ public class RadarScript : MonoBehaviour
         tex.ReadPixels(new Rect(0, 0, radarTexture.width, radarTexture.height), 0, 0);
         tex.Apply();
 
-        Array.Clear(radarPPI, Mathf.RoundToInt(currentRotation/resolution), Mathf.RoundToInt(MaxDistance));
+        // Array.Clear(radarPPI, Mathf.RoundToInt(currentRotation/resolution), Mathf.RoundToInt(MaxDistance));
+        for (int i=0; i < Mathf.RoundToInt(MaxDistance); i++){
+            radarPPI[Mathf.RoundToInt(currentRotation/resolution), i] = 0;
+        }
 
         for (int x = 0; x < tex.width; x++)
         {
@@ -121,6 +124,10 @@ public class RadarScript : MonoBehaviour
                 // Check if the surface is parallel enough (blue channel > threshold)
                 if (normal.z > parallelThreshold && distance > 1)
                 {
+
+                    // if (currentRotation > 180){
+                    // Debug.Log($"Max: {MaxDistance}, Distance:{distance}");
+                    // }
                     UpdateSpoke(distance);
                     
                     if (debugSpoke != null)
