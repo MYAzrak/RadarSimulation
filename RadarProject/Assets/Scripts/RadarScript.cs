@@ -73,7 +73,7 @@ public class RadarScript : MonoBehaviour
         CameraObject.name = name;
         CameraObject.transform.SetParent(transform);
         CameraObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        CameraObject.transform.localPosition = new Vector3(0, 0, 0);
+        CameraObject.transform.localPosition = new Vector3(0, 1, 0);
         CameraObject.AddComponent<Camera>();
         Camera cam = CameraObject.GetComponent<Camera>();
 
