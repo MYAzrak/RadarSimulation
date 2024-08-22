@@ -18,7 +18,7 @@ def create_ppi_plot(data, azimuth, range_bins, vmin=None, vmax=None):
     
     # Plot the data
     if im is None:
-        im = ax.pcolormesh(theta, r, data, cmap='viridis', vmin=vmin, vmax=vmax)
+        im = ax.pcolormesh(theta, r, data, cmap='magma', vmin=vmin, vmax=vmax)
         
         # Customize the plot
         ax.set_theta_zero_location("N")

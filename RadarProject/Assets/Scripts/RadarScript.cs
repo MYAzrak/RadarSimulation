@@ -9,7 +9,7 @@ public class RadarScript : MonoBehaviour
 {
     [SerializeField] private int HeightRes = 2048;
     [SerializeField] private int WidthRes = 5;
-    [Range(0.0f, 1f)] private float resolution = 1f;
+    [Range(0.0f, 1f)] private float resolution = 0.5f;
     [Range(5f, 5000f)] public float MaxDistance = 100F;
     [Range(0.01f, 2f)] public float MinDistance = 0.5F;
     [Range(5.0f, 90f)] public float VerticalAngle = 30f;
@@ -121,6 +121,7 @@ public class RadarScript : MonoBehaviour
                 viewSpaceDepth = Mathf.Clamp(viewSpaceDepth, MinDistance, MaxDistance);
 
                 int distance = Mathf.RoundToInt(viewSpaceDepth) + Mathf.RoundToInt(UnityEngine.Random.Range(-noise, noise));
+                distance = Mathf.Clamp(distance, 0, Mathf.RoundToInt(MaxDistance));
 
                 // Check if the surface is parallel enough (blue channel > threshold)
                 if (normal.z > parallelThreshold && distance > 1)
