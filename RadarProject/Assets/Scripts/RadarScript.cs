@@ -14,6 +14,7 @@ public class RadarScript : MonoBehaviour
     [Range(0.01f, 2f)] public float MinDistance = 0.5F;
     [Range(5.0f, 90f)] public float VerticalAngle = 30f;
     [HideInInspector] public Camera radarCamera;
+    [Range(0.0f, 5f)] public float noise = 3.0f;
 
     [SerializeField] private Shader normalDepthShader;
     [Range(0.0f, 0.99f)] public float parallelThreshold = 0.45f; // Threshold for considering a surface parallel
@@ -119,7 +120,7 @@ public class RadarScript : MonoBehaviour
                 float viewSpaceDepth = pixel.a;
                 viewSpaceDepth = Mathf.Clamp(viewSpaceDepth, MinDistance, MaxDistance);
 
-                int distance = Mathf.RoundToInt(viewSpaceDepth);
+                int distance = Mathf.RoundToInt(viewSpaceDepth) + Mathf.RoundToInt(UnityEngine.Random.Range(-noise, noise));
 
                 // Check if the surface is parallel enough (blue channel > threshold)
                 if (normal.z > parallelThreshold && distance > 1)
