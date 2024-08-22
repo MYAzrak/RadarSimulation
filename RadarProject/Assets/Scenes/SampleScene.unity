@@ -1500,21 +1500,21 @@ MonoBehaviour:
   _centerOfMass: {x: 0, y: 0, z: 0}
   _forcePoints:
   - _weight: 1
-    _offsetPosition: {x: -1, y: -10, z: 1}
+    _offsetPosition: {x: -1, y: -20, z: 1}
   - _weight: 1
-    _offsetPosition: {x: 1, y: -10, z: 1}
+    _offsetPosition: {x: 1, y: -20, z: 1}
   - _weight: 1
-    _offsetPosition: {x: 1, y: -10, z: -1}
+    _offsetPosition: {x: 1, y: -20, z: -1}
   - _weight: 1
-    _offsetPosition: {x: -1, y: -10, z: -1}
+    _offsetPosition: {x: -1, y: -20, z: -1}
   - _weight: 1
-    _offsetPosition: {x: -3, y: -5, z: -3}
+    _offsetPosition: {x: -3, y: -10, z: -3}
   - _weight: 1
-    _offsetPosition: {x: 3, y: -5, z: -3}
+    _offsetPosition: {x: 3, y: -10, z: -3}
   - _weight: 1
-    _offsetPosition: {x: 3, y: -5, z: 3}
+    _offsetPosition: {x: 3, y: -10, z: 3}
   - _weight: 1
-    _offsetPosition: {x: -3, y: -5, z: 3}
+    _offsetPosition: {x: -3, y: -10, z: 3}
   _forceHeightOffset: 0
   _forceMultiplier: 10
   _minSpatialLength: 12
