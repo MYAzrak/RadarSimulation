@@ -144,7 +144,7 @@ public class ScenarioManager : MonoBehaviour
             // The first location is the starting position of the ship
             float x = ship.Value[0].x_coordinates;
             float z = ship.Value[0].z_coordinates;
-            Vector3 shipLocation = new(x, 0, z);
+            Vector3 shipLocation = new(x, 10, z);
             
             GameObject instance;
             GameObject prefab = null;

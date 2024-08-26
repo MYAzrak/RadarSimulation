@@ -25,7 +25,8 @@ public class ShipController : MonoBehaviour
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+
+        rigidbody = GetComponentInChildren<Rigidbody>() ?? GetComponent<Rigidbody>();
         shipTransform = transform;
         StartCoroutine(LogShipEvents());
     }

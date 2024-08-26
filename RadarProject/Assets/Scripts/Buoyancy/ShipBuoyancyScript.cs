@@ -106,25 +106,6 @@ public class ShipBouyancyScript : MonoBehaviour
         return force;
     }
 
-    Vector3 ViscousWaterResistanceForce(float density, TriangleData triangleData)
-    {
-        float reynoldsNumber = ship.velocity.magnitude * shipLength / viscosity;
-        float temp = math.log10(reynoldsNumber) - 2f;
-        float CF = 0.075f / (temp * temp);
-
-        Vector3 B = triangleData.normal;
-        Vector3 A = triangleData.velocity;
-
-        Vector3 velocityTangent = Vector3.Cross(B, Vector3.Cross(A, B) / B.magnitude) / B.magnitude;
-        Vector3 tangentialDirection = velocityTangent.normalized * -1f;
-
-        Vector3 relativeVelocity = tangentialDirection * triangleData.velocity.magnitude;
-
-        Vector3 force = 0.5f * density * CF * triangleData.area * triangleData.velocity.magnitude * relativeVelocity;
-
-        return force;
-    }
-
     Vector3 PressureDragForce(TriangleData triangleData)
     {   
         float velocity = triangleData.velocity.magnitude;

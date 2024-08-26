@@ -1,0 +1,13 @@
+Model Information:
+* title:	Gas Carrier Ship
+* source:	https://sketchfab.com/3d-models/gas-carrier-ship-0fe1b96ac2754fb59e0745443294eb50
+* author:	medialog (https://sketchfab.com/medialog)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Gas Carrier Ship" (https://sketchfab.com/3d-models/gas-carrier-ship-0fe1b96ac2754fb59e0745443294eb50) by medialog (https://sketchfab.com/medialog) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+
+Modified: Simplified model using Blender
