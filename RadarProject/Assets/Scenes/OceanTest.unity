@@ -390,7 +390,7 @@ MonoBehaviour:
   _layerName: 
   _layer: 4
   _gravityMultiplier: 1
-  _waterBodyCulling: 1
+  _waterBodyCulling: 0
   _minScale: 8
   _maxScale: 256
   _dropDetailHeightBasedOnWaves: 0.2
@@ -583,11 +583,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1385435152193360437, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.78
+      value: 2.42
       objectReference: {fileID: 0}
     - target: {fileID: 1385435152193360437, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.5778294
+      value: -33.14
       objectReference: {fileID: 0}
     - target: {fileID: 1385435152193360437, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
       propertyPath: m_LocalRotation.w
@@ -621,9 +621,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: Radar
       objectReference: {fileID: 0}
+    - target: {fileID: 2477788604964149578, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3361373733189687292, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3750575989107645988, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
       propertyPath: MaxDistance
-      value: 5000
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066331418530373458, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7673172289385941278, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
+      propertyPath: _forcePoints.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7673172289385941278, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
+      propertyPath: _forcePoints.Array.data[0]._offsetPosition.y
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7673172289385941278, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
+      propertyPath: _forcePoints.Array.data[1]._offsetPosition.y
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7673172289385941278, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
+      propertyPath: _forcePoints.Array.data[2]._offsetPosition.y
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7673172289385941278, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
+      propertyPath: _forcePoints.Array.data[3]._offsetPosition.y
+      value: -15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

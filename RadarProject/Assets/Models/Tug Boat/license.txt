@@ -1,0 +1,13 @@
+Model Information:
+* title:	Rastar 3200 tugboat
+* source:	https://sketchfab.com/3d-models/rastar-3200-tugboat-1bbadbe4ab0a4b2599cd3f450942e6fe
+* author:	Brout (https://sketchfab.com/davidbroutian)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Rastar 3200 tugboat" (https://sketchfab.com/3d-models/rastar-3200-tugboat-1bbadbe4ab0a4b2599cd3f450942e6fe) by Brout (https://sketchfab.com/davidbroutian) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+
+Modified: Simplified model using Blender
