@@ -7,10 +7,12 @@ using System.Collections;
 public class ShipBouyancyScript : MonoBehaviour
 {
     public static ShipBouyancyScript shipBouyancyScriptInstance;
+
+    [SerializeField] float amplifyForce = 0.5f;
     
     [Header("Generating Underwater Mesh")]
-    [SerializeField] float minWaitTime = 0.01f;
-    [SerializeField] float maxWaitTime = 0.5f;
+    [SerializeField] float minWaitTime = 0.1f;
+    [SerializeField] float maxWaitTime = 0.2f;
 
     ShipTriangles shipTriangles;
     Rigidbody ship;
@@ -90,6 +92,8 @@ public class ShipBouyancyScript : MonoBehaviour
 
             Vector3 pressureDragForce = PressureDragForce(triangleData);
             forces += pressureDragForce;
+
+            forces *= amplifyForce;
 
             ship.AddForceAtPosition(forces, triangleData.center);
         }
