@@ -716,7 +716,11 @@ MonoBehaviour:
   scenarioFileName: 
   shipPrefabs:
   - shipType: 0
+    prefab: {fileID: 6822851038680780235, guid: e14a80e599e6f8e33834926622231b92, type: 3}
+  - shipType: 2
     prefab: {fileID: 6254869662381877804, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
+  - shipType: 1
+    prefab: {fileID: 4016913938538879941, guid: 329461f3b6486b0848ff7e1913521c37, type: 3}
   timeScale: 1
   updateTimeScale: 0
   loadScenario: 0

@@ -2,7 +2,6 @@ public enum ShipType
 {
     GasCarrier,
     TugBoat,
+    Container,
     Cargo,
-    Tanker,
-    FishingBoat
 }

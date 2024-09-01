@@ -1,6 +1,11 @@
 ID, Name, Type
-1, TestShip1, FishingBoat
-2, TestShip2, FishingBoat
-3, TestShip3, FishingBoat
-4, TestShip4, Cargo
-5, TestShip5, Cargo
+1, TestShip1, Container
+2, TestShip2, GasCarrier
+3, TestShip3, TugBoat
+4, TestShip4, GasCarrier
+5, TestShip5, Container
+6, TestShip6, Cargo
+7, TestShip7, Cargo
+8, TestShip8, TugBoat
+9, TestShip9, Cargo
+10, TestShip10, GasCarrier

@@ -180,6 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb1c63a3c65659be9cafce08b9cde57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplifyForce: 0.004
+  amplifyForce: 0.015
   minWaitTime: 0.1
   maxWaitTime: 0.2
