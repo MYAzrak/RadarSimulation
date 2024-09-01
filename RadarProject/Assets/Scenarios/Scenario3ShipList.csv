@@ -1,0 +1,6 @@
+ID, Name, Type
+1, TestShip1, TugBoat
+2, TestShip2, Container
+3, TestShip3, Cargo
+4, TestShip4, GasCarrier
+5, TestShip5, Cargo
