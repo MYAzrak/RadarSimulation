@@ -14,9 +14,9 @@ public class CSVManager : MonoBehaviour
     public int locationsToCreate = 10;                      // Number of locations the ship will visit
     public float minStartingCoordinates = 2000f;            // The min value in the range the ships will initially generate at
     public float maxStartingCoordinates = 2000f;            // The max value in the range the ships will initially generate at
-    [SerializeField] float randomCoordinates = 1000f;       // The range added to the previous location the ship will visit
-    [SerializeField] int minSpeed = 11;                     // The min value in the speed range
-    [SerializeField] int maxSpeed = 21;                     // The max value in the speed range
+    public float randomCoordinates = 1000f;       // The range added to the previous location the ship will visit
+    public int minSpeed = 11;                     // The min value in the speed range
+    public int maxSpeed = 21;                     // The max value in the speed range
 
     string filePath = Application.dataPath + "/Scenarios/";
     string fileExtension = ".csv";
@@ -27,7 +27,7 @@ public class CSVManager : MonoBehaviour
         if (generateRandomCSV)
         {
             // .csv file extension is added in the function
-            GenerateCSV(numberOfShips, filePath + fileName);
+            GenerateCSV(filePath + fileName);
             generateRandomCSV = false;
         }
     }
@@ -55,7 +55,7 @@ public class CSVManager : MonoBehaviour
         return points;
     }
 
-    public void GenerateCSV(int numberOfShips, string file)
+    public void GenerateCSV(string file)
     {
         if (File.Exists(file + fileExtension) || File.Exists(file + shipListEndName + fileExtension)) {
             Debug.Log($"{file + fileExtension} or {file + shipListEndName + fileExtension} already exists.");

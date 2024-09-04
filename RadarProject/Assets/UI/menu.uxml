@@ -3,25 +3,17 @@
     <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1; height: auto; width: 500px; -unity-background-scale-mode: stretch-to-fill; margin-left: 2%; margin-top: 1%; margin-bottom: 0; background-color: rgba(0, 0, 0, 0.9); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); align-self: flex-start; align-items: flex-start; justify-content: flex-start; flex-direction: column; visibility: visible; overflow: visible; position: absolute; bottom: auto; top: 1px; left: -1px;">
         <ui:VisualElement name="BtnTabs" style="flex-grow: 1; height: auto; flex-direction: row; -unity-background-scale-mode: stretch-to-fill; font-size: 14px; margin-left: 4%; margin-top: 2%; align-items: flex-start; align-self: flex-start; justify-content: flex-start; margin-bottom: 2%; margin-right: 4%;">
             <ui:Button text="Scenario" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ShipBtn" class="tab-btns" style="align-self: auto; height: auto; padding-top: 3%; padding-right: 4%; padding-bottom: 3%; padding-left: 4%; align-items: auto; justify-content: flex-start; margin-left: 0; width: auto;" />
-            <ui:Button text="CSV" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CSVBtn" class="tab-btns" style="height: auto; padding-top: 3%; padding-right: 4%; padding-bottom: 3%; padding-left: 4%;" />
+            <ui:Button text="CSV" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CSVBtn" class="tab-btns" style="height: auto; padding-top: 3%; padding-right: 4%; padding-bottom: 3%; padding-left: 4%; display: none;" />
         </ui:VisualElement>
         <ui:VisualElement name="ShipsView" style="flex-grow: 1; height: auto; display: flex; width: 500px;">
-            <ui:DropdownField label="Scenario" name="ScenarioDropdown" focusable="false" class="text" style="margin-right: 4%; margin-bottom: 2%; margin-top: 2%; margin-left: 4%; -unity-text-align: middle-left; height: auto; align-self: auto; align-items: center;" />
-            <ui:SliderInt label="Time Scale" high-value="5" low-value="0" focusable="false" name="TimeScaleSlider" show-input-field="true" class="text" />
-            <ui:Button text="Load" parse-escape-sequences="true" display-tooltip-when-elided="true" name="LoadBtn" focusable="false" class="btns" style="margin-bottom: 2%; margin-top: 2%; align-items: center; align-self: flex-start;" />
-            <ui:Button text="Reset" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ResetBtn" focusable="false" class="btns" style="margin-bottom: 2%; margin-top: 2%;" />
+            <ui:Label tabindex="-1" text="Found {Num} Scenarios" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NumOfScenariosLabel" class="text" style="align-items: stretch; justify-content: flex-start; -unity-text-align: upper-center;" />
+            <ui:Button text="Run All Scenarios" parse-escape-sequences="true" display-tooltip-when-elided="true" name="RunScenariosBtn" focusable="false" class="btns" style="align-items: stretch; align-self: center; margin-bottom: 5%;" />
+            <ui:IntegerField label="Scenarios to Generate:&#x9;&#x9;&#x9;&#x9;" value="0" name="GenerateScenariosInt" focusable="true" class="text" style="height: 44px;" />
+            <ui:Button text="Generate Scenarios" parse-escape-sequences="true" display-tooltip-when-elided="true" name="GenerateScenariosBtn" focusable="false" class="btns" style="align-items: stretch; align-self: center;" />
         </ui:VisualElement>
         <TabbedView>
             <TabButton />
         </TabbedView>
-        <ui:VisualElement name="CsvView" class="hide" style="flex-grow: 1; height: auto; display: flex; align-items: stretch; align-self: flex-start; width: 500px;">
-            <ui:TextField picking-mode="Ignore" label="Next file:" name="FileNameTxtField" focusable="false" readonly="true" class="text" style="margin-right: 4%; align-self: auto; align-items: center; -unity-text-align: middle-left; justify-content: flex-start; margin-top: 2%; margin-bottom: 2%; margin-left: 4%;" />
-            <ui:SliderInt label="# of ships" high-value="500" show-input-field="true" low-value="1" name="NumOfShipsSlider" focusable="false" class="text" style="margin-right: 4%; margin-top: 2%; margin-bottom: 2%; margin-left: 4%;" />
-            <ui:SliderInt label="# of locations" high-value="50" show-input-field="true" low-value="2" name="NumOfLocationsSlider" focusable="false" class="text" style="margin-right: 4%; margin-top: 2%; margin-bottom: 2%; margin-left: 4%;" />
-            <ui:Label tabindex="-1" text="Coordinate Range:&#10;Min value: &#10;Max value: " parse-escape-sequences="true" display-tooltip-when-elided="true" name="MinMaxLabel" class="text" style="margin-top: 2%; margin-right: 4%; margin-left: 4%; margin-bottom: 1%;" />
-            <ui:MinMaxSlider min-value="-10000" max-value="10000" low-limit="-100000" high-limit="100000" name="MinMaxSlider" class="text" style="margin-left: 4%; margin-right: 4%; margin-top: 0; margin-bottom: 2%;" />
-            <ui:Button text="Generate Random CSV" parse-escape-sequences="true" display-tooltip-when-elided="true" name="GenerateCSVBtn" focusable="false" class="btns" style="align-items: stretch; align-self: center;" />
-        </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="SimulationInfoPanel" class="panel" style="flex-grow: 1; position: absolute; left: 80%; top: auto; right: 0; bottom: auto; margin-top: 1%; margin-right: 2%; background-color: rgba(0, 0, 0, 0.9);">
         <ui:Label tabindex="-1" text="No Scenario Loaded" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CurrentScenarioLabel" enable-rich-text="true" class="text" style="-unity-font-style: bold; font-size: 20px; margin-bottom: 1%;" />

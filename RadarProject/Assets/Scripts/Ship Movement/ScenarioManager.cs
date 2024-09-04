@@ -92,12 +92,10 @@ public class ScenarioManager : MonoBehaviour
     }
 
     // Read all files in filePath and store the scenarios that match filePattern for the Unity inspector 
-    public List<string> ReadScenarioFiles(out int numberOfNextScenario)
+    public List<string> ReadScenarioFiles()
     {
         List<string> files = new();
         Regex myRegExp = new(filePattern);
-
-        numberOfNextScenario = -1;
 
         DirectoryInfo info = new(filePath);
         FileInfo[] fileInfo = info.GetFiles()
@@ -108,11 +106,7 @@ public class ScenarioManager : MonoBehaviour
         {
             var file = fileInfo[i];
             files.Add(Path.GetFileNameWithoutExtension(file.Name[..^4]));
-
-            if (i == fileInfo.Length - 1)
-                numberOfNextScenario = int.Parse(Path.GetFileNameWithoutExtension(file.Name[8..])); // "Scenario" has a length of 8
         }
-        numberOfNextScenario += 1;
 
         Debug.Log("Scenario files have been read.");
 

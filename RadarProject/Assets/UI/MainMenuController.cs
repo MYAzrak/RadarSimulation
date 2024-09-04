@@ -10,7 +10,6 @@ public class MainMenuController : MonoBehaviour
     CSVManager csvManager;
 
     ScenarioMenuUI ScenarioMenuUI;
-    CSVMenuUI CSVMenuUI;
 
     List<TabViews> tabBtns = new();
 
@@ -32,14 +31,12 @@ public class MainMenuController : MonoBehaviour
         simulationInfoPanel = ui.Q("SimulationInfoPanel");
         simulationInfoPanel.visible = false;
 
-        ScenarioMenuUI = new(ui, instance, scenarioManager);
-        CSVMenuUI = new(ui, instance, csvManager);
+        ScenarioMenuUI = new(ui, instance, scenarioManager, csvManager);
 
         SetTabs();
         ViewToEnable(tabBtns[0].button);
 
         ScenarioMenuUI.SetBtnEvents();
-        CSVMenuUI.SetBtnEvents();
 
         SetDefaultSimulationInfoPanel();
     }
@@ -67,7 +64,7 @@ public class MainMenuController : MonoBehaviour
     void AddTabBtnsToList()
     {
         tabBtns.Add(new TabViews(ui.Q("ShipBtn") as Button, ui.Q("ShipsView")));
-        tabBtns.Add(new TabViews(ui.Q("CSVBtn") as Button, ui.Q("CsvView")));
+        //tabBtns.Add(new TabViews(ui.Q("CSVBtn") as Button, ui.Q("CsvView")));
     }
 
     void ViewToEnable(Button button)
@@ -83,16 +80,6 @@ public class MainMenuController : MonoBehaviour
                 tabView.visualElement.style.display = DisplayStyle.None;
             }
         }
-    }
-
-    public void PassNextScenarioNumber(int numberOfNextScenario)
-    {
-        CSVMenuUI.SetFileNameTextFIeld(numberOfNextScenario);
-    }
-
-    public void ResetScenarioDropdownField()
-    {
-        ScenarioMenuUI.SetDropdownField(true);
     }
 
     public void SetDefaultSimulationInfoPanel()

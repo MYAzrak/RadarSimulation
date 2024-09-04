@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;   
 
@@ -7,54 +8,66 @@ public class ScenarioMenuUI
     VisualElement ui;
     MainMenuController mainMenuController;
     ScenarioManager scenarioManager;
+    CSVManager csvManager;
 
-    public ScenarioMenuUI(VisualElement ui, MainMenuController mainMenuController, ScenarioManager scenarioManager)
+    int randomShipNumberMin = 1;
+    int randomShipNumberMax = 100;
+
+    public ScenarioMenuUI(VisualElement ui, MainMenuController mainMenuController, ScenarioManager scenarioManager, CSVManager csvManager)
     {
         this.ui = ui;
         this.mainMenuController = mainMenuController;
         this.scenarioManager = scenarioManager;
+        this.csvManager = csvManager;
     }
 
     public void SetBtnEvents()
     {
-        SliderInt timeScaleSlider = ui.Q("TimeScaleSlider") as SliderInt;
-        timeScaleSlider.value = 1;
-        timeScaleSlider.RegisterCallback((ClickEvent clickEvent) => {
-            scenarioManager.timeScale = timeScaleSlider.value;
-            scenarioManager.updateTimeScale = !scenarioManager.updateTimeScale;
-        });
+        ReadScenarios();
 
-        Button resetBtn = ui.Q("ResetBtn") as Button;
-        resetBtn.RegisterCallback((ClickEvent clickEvent) => scenarioManager.resetScenario = !scenarioManager.resetScenario);
-
-        Button loadBtn = ui.Q("LoadBtn") as Button;
-        loadBtn.RegisterCallback((ClickEvent clickEvent) => scenarioManager.loadScenario = !scenarioManager.loadScenario);
-
-        SetDropdownField();
+        SetGenerateBtn();
     }
 
-    public void SetDropdownField(bool reset = false)
+    public void ReadScenarios()
     {
-        DropdownField dropdownField = ui.Q("ScenarioDropdown") as DropdownField;
-        
-        List<string> files = scenarioManager.ReadScenarioFiles(out int numberOfNextScenario);
+        Label numOfScenariosLabel = ui.Q("NumOfScenariosLabel") as Label;
 
-        if (files.Count == 0)
-        {
-            Debug.Log("No scenario files found.");
-            return; 
-        }
+        List<string> files = scenarioManager.ReadScenarioFiles();
+        int numOfScenarios = files.Count;
 
-        mainMenuController.PassNextScenarioNumber(numberOfNextScenario);
+        numOfScenariosLabel.text = $"Found {numOfScenarios} Scenarios";
+    }
 
-        dropdownField.choices = files;
-        dropdownField.value = scenarioManager.scenarioFileName = files[0];
+    public void SetGenerateBtn()
+    {
+        Button generateScenariosBtn = ui.Q("GenerateScenariosBtn") as Button;
 
-        if (!reset)
-        {
-            dropdownField.RegisterValueChangedCallback(evt => {
-                scenarioManager.scenarioFileName = evt.newValue;
-            });
-        }
+        generateScenariosBtn.RegisterCallback((ClickEvent clickEvent) => {
+
+            IntegerField generateScenariosInt = ui.Q("GenerateScenariosInt") as IntegerField;
+            int numOfScenarios = int.Parse(generateScenariosInt.text);
+
+            // TODO: Add error messages
+            if (numOfScenarios < 0)
+            {
+                return;
+            }
+            
+            string filePath = csvManager.GetFilePath();
+
+            // Delete the file path and all scenarios in it
+            if (Directory.Exists(filePath)) { Directory.Delete(filePath, true); }
+                Directory.CreateDirectory(filePath);
+
+            for(int i = 0; i < numOfScenarios; i++)
+            {
+                string file = filePath + "Scenario" + i;
+                csvManager.numberOfShips = Random.Range(randomShipNumberMin, randomShipNumberMax);
+                // TODO: randomize all parameters
+                csvManager.GenerateCSV(file);
+            }
+
+            ReadScenarios();
+        });
     }
 }
