@@ -4,6 +4,7 @@ using WebSocketSharp;
 using WebSocketSharp.Server;
 using System.Text;
 using Newtonsoft.Json;
+using System.IO;
 
 public class RadarScript : MonoBehaviour
 {
@@ -54,13 +55,48 @@ public class RadarScript : MonoBehaviour
         RotateCamera();
     }
 
-    string CollectData(){
+    string CollectData()
+    {
+        /* 
         var dataObject = new {
             timestamp = 55,
             PPI = radarPPI,
         };            
         
         return JsonConvert.SerializeObject(dataObject);
+        */
+
+        // Manual Serialize Similar to JsonConvert.SerializeObject but has better performance
+        // Source: https://www.newtonsoft.com/json/help/html/Performance.htm 
+        StringWriter sw = new();
+        JsonTextWriter writer = new(sw);
+
+        writer.WriteStartObject();
+
+        writer.WritePropertyName("timestamp");
+        writer.WriteValue(55);
+
+        writer.WritePropertyName("PPI");
+        writer.WriteStartArray();
+
+        for (int i = 0; i < radarPPI.GetLength(0); i++) // Iterate over rows
+        {
+            writer.WriteStartArray();
+
+            for (int j = 0; j < radarPPI.GetLength(1); j++) // Iterate over columns
+            {
+                writer.WriteValue(radarPPI[i, j]);
+            }
+
+            writer.WriteEndArray();
+        }
+
+        writer.WriteEndArray();
+
+        // }
+        writer.WriteEndObject();
+
+        return sw.ToString();
     }
 
     void OnApplicationQuit(){
@@ -179,7 +215,7 @@ public class DataService : WebSocketBehavior
         Debug.Log("Client disconnected");
     }
 
-    protected override void OnError(ErrorEventArgs e)
+    protected override void OnError(WebSocketSharp.ErrorEventArgs e)
     {
         Debug.LogError($"WebSocket error: {e.Message}");
     }
