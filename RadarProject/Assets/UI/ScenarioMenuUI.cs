@@ -10,8 +10,11 @@ public class ScenarioMenuUI
     ScenarioManager scenarioManager;
     CSVManager csvManager;
 
-    int randomShipNumberMin = 1;
-    int randomShipNumberMax = 100;
+    MinMaxValue<int> randomShipNumber = new(1, 100);
+    MinMaxValue<int> locationsToCreate = new(5, 10);
+    MinMaxValue<float> startingCoordinates = new(-10000, 10000);
+    MinMaxValue<float> randomCoordinates = new(-2000, 2000);
+    MinMaxValue<int> speed = new(11, 20);
 
     public ScenarioMenuUI(VisualElement ui, MainMenuController mainMenuController, ScenarioManager scenarioManager, CSVManager csvManager)
     {
@@ -62,12 +65,33 @@ public class ScenarioMenuUI
             for(int i = 0; i < numOfScenarios; i++)
             {
                 string file = filePath + "Scenario" + i;
-                csvManager.numberOfShips = Random.Range(randomShipNumberMin, randomShipNumberMax);
-                // TODO: randomize all parameters
+
+                csvManager.numberOfShips = Random.Range(randomShipNumber.Min, randomShipNumber.Max);
+                csvManager.locationsToCreate = Random.Range(locationsToCreate.Min, locationsToCreate.Max);
+                csvManager.minStartingCoordinates = startingCoordinates.Min;
+                csvManager.maxStartingCoordinates = startingCoordinates.Max;
+                csvManager.randomCoordinates = Random.Range(randomCoordinates.Min, randomCoordinates.Max);
+                csvManager.minSpeed = speed.Min;
+                csvManager.maxSpeed = speed.Max;
+                
                 csvManager.GenerateCSV(file);
             }
 
+            Debug.Log("All scenarios have been generated.");
+
             ReadScenarios();
         });
+    }
+
+    public struct MinMaxValue<T>
+    {
+        public T Min { get; set; }
+        public T Max { get; set; }
+
+        public MinMaxValue(T min, T max)
+        {
+            Min = min;
+            Max = max;
+        }
     }
 }

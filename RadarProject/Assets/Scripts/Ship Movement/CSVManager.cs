@@ -10,13 +10,13 @@ public class CSVManager : MonoBehaviour
     public bool generateRandomCSV = false;
 
     [Header("Random CSV Parameters")]
-    public int numberOfShips = 5;                           // Number of ships to generate
-    public int locationsToCreate = 10;                      // Number of locations the ship will visit
-    public float minStartingCoordinates = 2000f;            // The min value in the range the ships will initially generate at
-    public float maxStartingCoordinates = 2000f;            // The max value in the range the ships will initially generate at
-    public float randomCoordinates = 1000f;       // The range added to the previous location the ship will visit
-    public int minSpeed = 11;                     // The min value in the speed range
-    public int maxSpeed = 21;                     // The max value in the speed range
+    public int numberOfShips;                           // Number of ships to generate
+    public int locationsToCreate;                      // Number of locations the ship will visit
+    public float minStartingCoordinates;            // The min value in the range the ships will initially generate at
+    public float maxStartingCoordinates;            // The max value in the range the ships will initially generate at
+    public float randomCoordinates;       // The range added to the previous location the ship will visit
+    public int minSpeed;                     // The min value in the speed range
+    public int maxSpeed;                     // The max value in the speed range
 
     string filePath = Application.dataPath + "/Scenarios/";
     string fileExtension = ".csv";
@@ -82,7 +82,7 @@ public class CSVManager : MonoBehaviour
             shipListWriter.WriteLine($"{i + 1}, TestShip{i + 1}, {(ShipType)Random.Range(0, shipTypeEnumLength)}");
         }
 
-        Debug.Log("csv has been generated.");
+        // Debug.Log("csv has been generated.");
     }
 
     public bool ReadScenarioCSV(

@@ -19,5 +19,8 @@
         <ui:Label tabindex="-1" text="No Scenario Loaded" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CurrentScenarioLabel" enable-rich-text="true" class="text" style="-unity-font-style: bold; font-size: 20px; margin-bottom: 1%;" />
         <ui:Label tabindex="-1" text="0 Ships" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NumOfShipsLabel" class="text" style="-unity-font-style: bold; font-size: 16px; margin-top: 0; margin-bottom: 0;" />
         <ui:Label tabindex="-1" text="0 Radars" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NumOfRadarsLabel" class="text" style="-unity-font-style: bold; font-size: 16px; margin-top: 0;" />
+        <ui:Label tabindex="-1" text="Scenario Running... (WIP)" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScenarioRunningLabel" enable-rich-text="true" class="text" style="-unity-font-style: bold; font-size: 18px; margin-bottom: 1%; display: flex;" />
+        <ui:Button text="Pause" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PauseSimulation" focusable="false" class="btns" style="align-items: stretch; align-self: center; margin-bottom: 2%; margin-top: 4%;" />
+        <ui:Button text="Terminate" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TerminateSimulation" focusable="false" class="btns" style="align-items: stretch; align-self: center; margin-top: 2%; margin-bottom: 0;" />
     </ui:VisualElement>
 </ui:UXML>
