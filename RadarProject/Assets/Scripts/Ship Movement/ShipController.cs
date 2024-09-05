@@ -22,12 +22,15 @@ public class ShipController : MonoBehaviour
     new Rigidbody rigidbody;
     Transform shipTransform;
     public ShipInformation shipInformation;
+    ScenarioManager scenarioManager;
+    bool reportedCompletion = false;
 
     void Start()
     {
 
         rigidbody = GetComponentInChildren<Rigidbody>() ?? GetComponent<Rigidbody>();
         shipTransform = transform;
+        scenarioManager = FindObjectOfType<ScenarioManager>();
         StartCoroutine(LogShipEvents());
     }
 
@@ -78,6 +81,13 @@ public class ShipController : MonoBehaviour
 
             if (logMessages)
                 Debug.Log($"{shipInformation.Name} with ID {shipInformation.Id} has speed: {speed} Knots at position: {position}");
+
+            // Report to scenario manager that it has completed
+            if (!reportedCompletion && indexOfLocationToVisit >= locationsToVisit.Count)
+            {
+                scenarioManager.ReportCompletion();
+                reportedCompletion = true;
+            }
         }
     }
 }

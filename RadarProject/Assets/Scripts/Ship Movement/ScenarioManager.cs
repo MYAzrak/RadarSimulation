@@ -17,6 +17,7 @@ public class ScenarioManager : MonoBehaviour
 
     [Header("Scenario Options")]
     public bool loadScenario = false;
+    bool scenarioCurrentlyRunning = false;
     public bool resetScenario = false;
 
     [Header("Debug")]
@@ -27,6 +28,7 @@ public class ScenarioManager : MonoBehaviour
     Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
     Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
     List<GameObject> generatedShips = new();
+    int completedShips = 0;                                             // Ships that have completed their path
     bool csvReadResult;
     bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
 
@@ -61,6 +63,7 @@ public class ScenarioManager : MonoBehaviour
             csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
             LoadScenario();
             loadScenario = false;
+            scenarioCurrentlyRunning = true;
             timeSinceScenarioStart = 0;
 
             mainMenuController.SetScenarioLabel(scenarioFileName);
@@ -70,6 +73,7 @@ public class ScenarioManager : MonoBehaviour
         {
             LoadScenario();
             resetScenario = false;
+            scenarioCurrentlyRunning = true;
             timeSinceScenarioStart = 0;
         }
         else if (logMessages != previousLogMessageBool)
@@ -89,6 +93,12 @@ public class ScenarioManager : MonoBehaviour
 
         timeSinceScenarioStart += Time.deltaTime;
         timeProviderCustom._time = timeSinceScenarioStart;
+
+        if (scenarioCurrentlyRunning && completedShips == generatedShips.Count)
+        {
+            scenarioCurrentlyRunning = false;
+            Debug.Log("Scenario has finished");
+        }
     }
 
     // Read all files in filePath and store the scenarios that match filePattern for the Unity inspector 
@@ -124,6 +134,7 @@ public class ScenarioManager : MonoBehaviour
         }
 
         generatedShips.Clear();
+        completedShips = 0;
         
         GenerateShips();
         Debug.Log("Scenario has been reset.");
@@ -204,6 +215,11 @@ public class ScenarioManager : MonoBehaviour
                 shipController.speedAtEachLocation.Add(speed);
             }
         }
+    }
+
+    public void ReportCompletion()
+    {
+        completedShips += 1;
     }
 
     [System.Serializable]
