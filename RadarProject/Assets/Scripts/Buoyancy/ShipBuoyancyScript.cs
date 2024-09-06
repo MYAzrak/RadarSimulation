@@ -20,9 +20,6 @@ public class ShipBouyancyScript : MonoBehaviour
 
     // Stabilizing Forces
 
-    // For ViscousWaterResistanceForce
-    float viscosity = 0.00087f; // viscosity of the ocean at 30°C
-
     // For PressureDragForce
     float CPD1 = 10f;
     float CPD2 = 10f;
@@ -85,10 +82,6 @@ public class ShipBouyancyScript : MonoBehaviour
             Vector3 forces = Vector3.zero;
             Vector3 buoyancyForce = BuoyancyForce(waterDensity, triangleData);
             forces += buoyancyForce;
-
-            // Currently causes issues with waves and can cause the ship to fly
-            //Vector3 viscousWaterResistanceForce = ViscousWaterResistanceForce(waterDensity, triangleData);
-            //forces += viscousWaterResistanceForce;
 
             Vector3 pressureDragForce = PressureDragForce(triangleData);
             forces += pressureDragForce;

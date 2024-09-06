@@ -71,3 +71,7 @@
     align-self: auto;
     padding-right: 0;
 }
+
+.btns:hover {
+    background-color: rgba(0, 96, 255, 0.59);
+}
