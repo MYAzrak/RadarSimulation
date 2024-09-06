@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -57,6 +58,9 @@ public class ScenarioManager : MonoBehaviour
         csvManager = GetComponent<CSVManager>();
         mainMenuController = FindObjectOfType<MainMenuController>();
         Time.timeScale = 1f;
+
+        StartCoroutine(UpdateScenarioLabelAnimation());
+        StartCoroutine(RunNextScenario());
     }
 
     void Update()
@@ -65,7 +69,8 @@ public class ScenarioManager : MonoBehaviour
         {
             LoadScenario(scenarios[currentScenarioIndex]);
             loadScenario = false;
-            scenarioCurrentlyRunning = true;
+
+            mainMenuController.SetscenarioRunningLabelVisibility(true);
         }
         /*
         else if (resetScenario) 
@@ -93,20 +98,6 @@ public class ScenarioManager : MonoBehaviour
 
         timeSinceScenarioStart += Time.deltaTime;
         timeProviderCustom._time = timeSinceScenarioStart;
-
-        if (scenarioCurrentlyRunning && completedShips == generatedShips.Count)
-        {
-            scenarioCurrentlyRunning = false;
-            Debug.Log("Scenario has finished");
-
-            if (loadAllScenarios)
-            {
-                currentScenarioIndex++;
-                string scenario = scenarios[currentScenarioIndex];
-                LoadScenario(scenario);
-                Debug.Log($"{scenario} has been loaded");
-            }
-        }
     }
 
     // Read all files in filePath and store the scenarios that match filePattern for the Unity inspector 
@@ -138,6 +129,8 @@ public class ScenarioManager : MonoBehaviour
         csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenario);
         if (!csvReadResult) return;
 
+
+
         // Destroy all generated ships
         foreach (var ship in generatedShips) 
         {
@@ -148,13 +141,15 @@ public class ScenarioManager : MonoBehaviour
         completedShips = 0;
         
         GenerateShips();
-        Debug.Log("Scenario has been reset.");
 
         logMessages = previousLogMessageBool = false;
         timeSinceScenarioStart = 0;
+        scenarioCurrentlyRunning = true;
 
         mainMenuController.SetScenarioLabel(scenario);
         mainMenuController.SetShipsLabel(generatedShips.Count);
+
+        Debug.Log($"{scenario} has been loaded");
     }
 
     void GenerateShips()
@@ -235,6 +230,52 @@ public class ScenarioManager : MonoBehaviour
     public void ReportCompletion()
     {
         completedShips += 1;
+    }
+
+
+    IEnumerator UpdateScenarioLabelAnimation()
+    {
+        string[] scenarioLabels = {".", "..", "..."};
+        while (Application.isPlaying) 
+        {
+            yield return new WaitForSeconds(1);
+            if (scenarioCurrentlyRunning)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    mainMenuController.SetScenarioRunningLabel($"Scenario Running{scenarioLabels[i]}");
+                    yield return new WaitForSeconds(1);
+                }
+            }
+        }
+    }
+
+    IEnumerator RunNextScenario()
+    {
+        while (Application.isPlaying) 
+        {
+            yield return new WaitForSeconds(1);
+            if (scenarioCurrentlyRunning && completedShips == generatedShips.Count)
+            {
+                scenarioCurrentlyRunning = false;
+                Debug.Log("Scenario has finished");
+
+                for (int i = 5; i > 0; i--)
+                {
+                    mainMenuController.SetScenarioRunningLabel($"Scenario has completed.\nRunning next scenario in {i}.");
+                    yield return new WaitForSeconds(1);
+                }
+
+                if (loadAllScenarios)
+                {
+                    currentScenarioIndex++;
+                    string scenario = scenarios[currentScenarioIndex];
+                    LoadScenario(scenario);
+                }
+
+                mainMenuController.SetScenarioRunningLabel("Scenario Running.");
+            }
+        }
     }
 
     [System.Serializable]

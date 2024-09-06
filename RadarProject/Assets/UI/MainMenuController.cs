@@ -91,7 +91,9 @@ public class MainMenuController : MonoBehaviour
         numOfShipsLabel.text = "0 Ships";
 
         Label numOfRadarsLabel = ui.Q("NumOfRadarsLabel") as Label;
-        numOfRadarsLabel.text = "0 Radars";
+        numOfRadarsLabel.text = "0 Radars (WIP)";
+
+        SetscenarioRunningLabelVisibility(false);
     }
 
     public void SetScenarioLabel(string scenarioName)
@@ -110,6 +112,21 @@ public class MainMenuController : MonoBehaviour
     {
         Label numOfRadarsLabel = ui.Q("NumOfRadarsLabel") as Label;
         numOfRadarsLabel.text = numOfRadars + " Radars";
+    }
+
+    public void SetScenarioRunningLabel(string label)
+    {
+        Label scenarioRunningLabel = ui.Q("ScenarioRunningLabel") as Label;
+        scenarioRunningLabel.text = label;
+    }
+
+    public void SetscenarioRunningLabelVisibility(bool visible)
+    {
+        Label scenarioRunningLabel = ui.Q("ScenarioRunningLabel") as Label;
+        if (visible)
+            scenarioRunningLabel.style.display = DisplayStyle.Flex;
+        else
+            scenarioRunningLabel.style.display = DisplayStyle.None;
     }
 
     struct TabViews

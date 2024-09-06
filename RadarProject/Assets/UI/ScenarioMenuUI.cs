@@ -76,6 +76,7 @@ public class ScenarioMenuUI
             if (Directory.Exists(filePath)) { Directory.Delete(filePath, true); }
                 Directory.CreateDirectory(filePath);
 
+            // Generate scenarios
             for(int i = 0; i < numOfScenarios; i++)
             {
                 string file = filePath + "Scenario" + i;
