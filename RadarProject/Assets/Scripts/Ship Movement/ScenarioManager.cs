@@ -37,6 +37,9 @@ public class ScenarioManager : MonoBehaviour
     OceanRenderer oceanRenderer;
     TimeProviderCustom timeProviderCustom;
     float timeSinceScenarioStart;
+    public bool loadAllScenarios = false;
+    int currentScenarioIndex = 0;
+    List<string> scenarios = new();
 
     public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f;          // 1 Meter/second = 1.943844 Knot
     public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f;         // 1 Knot = 0.5144444 Meter/second
@@ -60,15 +63,11 @@ public class ScenarioManager : MonoBehaviour
     {
         if (loadScenario)
         {
-            csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenarioFileName);
-            LoadScenario();
+            LoadScenario(scenarios[currentScenarioIndex]);
             loadScenario = false;
             scenarioCurrentlyRunning = true;
-            timeSinceScenarioStart = 0;
-
-            mainMenuController.SetScenarioLabel(scenarioFileName);
-            mainMenuController.SetShipsLabel(generatedShips.Count);
         }
+        /*
         else if (resetScenario) 
         {
             LoadScenario();
@@ -76,6 +75,7 @@ public class ScenarioManager : MonoBehaviour
             scenarioCurrentlyRunning = true;
             timeSinceScenarioStart = 0;
         }
+        */
         else if (logMessages != previousLogMessageBool)
         {
             foreach (var ship in generatedShips) 
@@ -98,6 +98,14 @@ public class ScenarioManager : MonoBehaviour
         {
             scenarioCurrentlyRunning = false;
             Debug.Log("Scenario has finished");
+
+            if (loadAllScenarios)
+            {
+                currentScenarioIndex++;
+                string scenario = scenarios[currentScenarioIndex];
+                LoadScenario(scenario);
+                Debug.Log($"{scenario} has been loaded");
+            }
         }
     }
 
@@ -119,12 +127,15 @@ public class ScenarioManager : MonoBehaviour
         }
 
         Debug.Log("Scenario files have been read.");
+        
+        scenarios = files;
 
         return files;
     }
 
-    void LoadScenario()
+    void LoadScenario(string scenario)
     {
+        csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenario);
         if (!csvReadResult) return;
 
         // Destroy all generated ships
@@ -140,6 +151,10 @@ public class ScenarioManager : MonoBehaviour
         Debug.Log("Scenario has been reset.");
 
         logMessages = previousLogMessageBool = false;
+        timeSinceScenarioStart = 0;
+
+        mainMenuController.SetScenarioLabel(scenario);
+        mainMenuController.SetShipsLabel(generatedShips.Count);
     }
 
     void GenerateShips()

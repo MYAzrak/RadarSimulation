@@ -28,6 +28,7 @@ public class ScenarioMenuUI
     {
         ReadScenarios();
 
+        SetLoadScenariosBtn();
         SetGenerateBtn();
     }
 
@@ -39,6 +40,19 @@ public class ScenarioMenuUI
         int numOfScenarios = files.Count;
 
         numOfScenariosLabel.text = $"Found {numOfScenarios} Scenarios";
+    }
+
+    public void SetLoadScenariosBtn()
+    {
+        Button runScenariosBtn = ui.Q("RunScenariosBtn") as Button;
+
+        runScenariosBtn.RegisterCallback((ClickEvent clickEvent) => {
+            
+            Debug.Log("Running scenarios");
+
+            scenarioManager.loadAllScenarios = true;
+            scenarioManager.loadScenario = true;
+        });
     }
 
     public void SetGenerateBtn()
