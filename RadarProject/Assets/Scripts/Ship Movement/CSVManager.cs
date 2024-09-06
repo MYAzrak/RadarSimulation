@@ -10,17 +10,17 @@ public class CSVManager : MonoBehaviour
     public bool generateRandomCSV = false;
 
     [Header("Random CSV Parameters")]
-    public int numberOfShips;                           // Number of ships to generate
-    public int locationsToCreate;                      // Number of locations the ship will visit
+    public int numberOfShips;                       // Number of ships to generate
+    public int locationsToCreate;                   // Number of locations the ship will visit
     public float minStartingCoordinates;            // The min value in the range the ships will initially generate at
     public float maxStartingCoordinates;            // The max value in the range the ships will initially generate at
-    public float randomCoordinates;       // The range added to the previous location the ship will visit
-    public int minSpeed;                     // The min value in the speed range
-    public int maxSpeed;                     // The max value in the speed range
+    public float randomCoordinates;                 // The range added to the previous location the ship will visit
+    public int minSpeed;                            // The min value in the speed range
+    public int maxSpeed;                            // The max value in the speed range
 
     string filePath = Application.dataPath + "/Scenarios/";
     string fileExtension = ".csv";
-    string shipListEndName = "ShipList";                    // The ship list csv ends with ShipList.csv
+    string shipListEndName = "ShipList";            // The ship list csv ends with ShipList.csv
     
     void Update()
     {

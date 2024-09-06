@@ -27,7 +27,6 @@ public class ShipController : MonoBehaviour
 
     void Start()
     {
-
         rigidbody = GetComponentInChildren<Rigidbody>() ?? GetComponent<Rigidbody>();
         shipTransform = transform;
         scenarioManager = FindObjectOfType<ScenarioManager>();

@@ -129,8 +129,6 @@ public class ScenarioManager : MonoBehaviour
         csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenario);
         if (!csvReadResult) return;
 
-
-
         // Destroy all generated ships
         foreach (var ship in generatedShips) 
         {
