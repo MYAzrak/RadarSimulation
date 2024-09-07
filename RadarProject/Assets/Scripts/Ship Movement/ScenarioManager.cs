@@ -57,7 +57,7 @@ public class ScenarioManager : MonoBehaviour
 
         csvManager = GetComponent<CSVManager>();
         mainMenuController = FindObjectOfType<MainMenuController>();
-        Time.timeScale = 1f;
+        Time.timeScale = 2f;
 
         StartCoroutine(UpdateScenarioLabelAnimation());
         StartCoroutine(RunNextScenario());
@@ -239,7 +239,7 @@ public class ScenarioManager : MonoBehaviour
             yield return new WaitForSeconds(1);
             if (scenarioCurrentlyRunning)
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < scenarioLabels.Length; i++)
                 {
                     mainMenuController.SetScenarioRunningLabel($"Scenario Running{scenarioLabels[i]}");
                     yield return new WaitForSeconds(1);
@@ -267,8 +267,17 @@ public class ScenarioManager : MonoBehaviour
                 if (loadAllScenarios)
                 {
                     currentScenarioIndex++;
-                    string scenario = scenarios[currentScenarioIndex];
-                    LoadScenario(scenario);
+
+                    if (currentScenarioIndex < scenarios.Count)
+                    {
+                        string scenario = scenarios[currentScenarioIndex];
+                        LoadScenario(scenario);
+                    }
+                    else
+                    {
+                        loadAllScenarios = false;
+                        currentScenarioIndex = 0;
+                    }
                 }
 
                 mainMenuController.SetScenarioRunningLabel("Scenario Running.");
