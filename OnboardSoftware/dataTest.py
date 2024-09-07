@@ -45,6 +45,7 @@ def on_message(ws, message):
     if ppi == "NA":
         return
     ppi = np.array(ppi)
+    print(np.unravel_index(ppi.argmax(), ppi.shape))
     
     with data_lock:
         latest_data = ppi

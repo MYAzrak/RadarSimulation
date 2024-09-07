@@ -17,7 +17,8 @@ public class RadarScript : MonoBehaviour
     [Range(0.01f, 2f)] public float MinDistance = 0.5F;
     [Range(5.0f, 90f)] public float VerticalAngle = 30f;
     [HideInInspector] public Camera radarCamera;
-    [Range(0.0f, 5f)] public float noise = 3.0f;
+    [Range(0.0f, 5f)] public float noise = 10.0f;
+    [Range(200, 2000)] public int ImageRadius = 1000;
 
     [SerializeField] private Shader normalDepthShader;
     [Range(0.0f, 0.99f)] public float parallelThreshold = 0.45f; // Threshold for considering a surface parallel
@@ -36,7 +37,7 @@ public class RadarScript : MonoBehaviour
         server = new WebSocketServer("ws://localhost:8080");
         server.AddWebSocketService<DataService>("/data");
         server.Start();
-        radarPPI = new int[Mathf.RoundToInt(360/resolution), Mathf.RoundToInt(MaxDistance)];
+        radarPPI = new int[Mathf.RoundToInt(360/resolution), ImageRadius];
         if (normalDepthShader == null)
         {
             normalDepthShader = Shader.Find("Custom/NormalDepthShader");
@@ -72,6 +73,7 @@ public class RadarScript : MonoBehaviour
     {
         var dataObject = new {
             timestamp = 55,
+            range = MaxDistance,
             PPI = radarPPI,
         };        
 
@@ -130,7 +132,7 @@ public class RadarScript : MonoBehaviour
         tex.Apply();
 
         // Array.Clear(radarPPI, Mathf.RoundToInt(currentRotation/resolution), Mathf.RoundToInt(MaxDistance));
-        for (int i=0; i < Mathf.RoundToInt(MaxDistance); i++){
+        for (int i=0; i < ImageRadius; i++){
             radarPPI[Mathf.RoundToInt(currentRotation/resolution), i] = 0;
         }
 
@@ -144,10 +146,11 @@ public class RadarScript : MonoBehaviour
                 viewSpaceDepth = Mathf.Clamp(viewSpaceDepth, MinDistance, MaxDistance);
 
                 int distance = Mathf.RoundToInt(viewSpaceDepth) + Mathf.RoundToInt(UnityEngine.Random.Range(-noise, noise));
-                distance = Mathf.Clamp(distance, 0, Mathf.RoundToInt(MaxDistance));
+                // distance = Mathf.Clamp(distance, 0, Mathf.RoundToInt(999));
+                distance = ScaleValue(distance, Mathf.RoundToInt(MaxDistance), ImageRadius-1);
 
                 // Check if the surface is parallel enough (blue channel > threshold)
-                if (normal.z > parallelThreshold && distance > 1)
+                if (normal.z > parallelThreshold && distance > 15)
                 {
 
                     // if (currentRotation > 180){
@@ -180,6 +183,11 @@ public class RadarScript : MonoBehaviour
 
     private void UpdateSpoke(int distance) {
         radarPPI[Mathf.RoundToInt(currentRotation/resolution), distance]++;
+    }
+
+    public static int ScaleValue(int originalValue, int originalMax, int newMax)
+    {
+        return (int)Math.Round((double)originalValue / originalMax * newMax);
     }
 
     
