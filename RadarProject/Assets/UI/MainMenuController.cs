@@ -15,6 +15,8 @@ public class MainMenuController : MonoBehaviour
 
     VisualElement menuPanel;
     VisualElement simulationInfoPanel;
+
+    bool paused = false;
     
     // Start is called before the first frame update
     void Start()
@@ -37,6 +39,7 @@ public class MainMenuController : MonoBehaviour
         ViewToEnable(tabBtns[0].button);
 
         ScenarioMenuUI.SetBtnEvents();
+        SetPauseBtn();
 
         SetDefaultSimulationInfoPanel();
     }
@@ -110,6 +113,29 @@ public class MainMenuController : MonoBehaviour
     {
         Label scenarioRunningLabel = ui.Q("ScenarioRunningLabel") as Label;
         scenarioRunningLabel.text = label;
+    }
+
+    public void SetPauseBtn()
+    {
+        Button pauseSimulation = ui.Q("PauseSimulation") as Button;
+
+        pauseSimulation.RegisterCallback((ClickEvent clickEvent) => {
+
+            if (paused)
+            {
+                scenarioManager.timeScale = 1;
+                pauseSimulation.text = "Pause";
+                paused = false;
+            }
+            else
+            {
+                scenarioManager.timeScale = 0;
+                pauseSimulation.text = "Resume";
+                paused = true;
+            }
+            
+            scenarioManager.updateTimeScale = true;
+        });
     }
 
     struct TabViews
