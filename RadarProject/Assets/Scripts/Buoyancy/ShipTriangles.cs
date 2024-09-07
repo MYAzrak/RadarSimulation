@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Crest;
 
 public class ShipTriangles
 {
@@ -13,8 +12,6 @@ public class ShipTriangles
     Vector3[] samplePoints;
 
     public List<TriangleData> underWaterTriangleData = new();
-
-    SampleHeightHelper sampleHeightHelper = new();
 
     public ShipTriangles(GameObject ship)
     {
@@ -36,10 +33,24 @@ public class ShipTriangles
         {
             Vector3 worldSpacePosition = shipTransform.TransformPoint(shipVertices[i]);
             samplePoints[i] = worldSpacePosition;
-            heights[i] = ShipBouyancyScript.shipBouyancyScriptInstance.GetDistanceToWater(worldSpacePosition);
         }
 
+        heights = ShipBouyancyScript.shipBouyancyScriptInstance.GetDistanceToWater(samplePoints);
+
         AddTriangles();
+
+        Vector3[] points = new Vector3[underWaterTriangleData.Count];
+        for (int i = 0; i < underWaterTriangleData.Count; i++)
+        {
+            points[i] = underWaterTriangleData[i].center;
+        }
+
+        var newHeights = ShipBouyancyScript.shipBouyancyScriptInstance.GetDistanceToWater(points);
+        
+        for (int i = 0; i < underWaterTriangleData.Count; i++)
+        {
+            underWaterTriangleData[i].distanceToWater = newHeights[i];
+        }
     }
 
     void AddTriangles()

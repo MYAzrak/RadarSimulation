@@ -10,10 +10,10 @@ public class ScenarioMenuUI
     ScenarioManager scenarioManager;
     CSVManager csvManager;
 
-    MinMaxValue<int> randomShipNumber = new(1, 2);
-    MinMaxValue<int> locationsToCreate = new(2, 4);
-    MinMaxValue<float> startingCoordinates = new(-1000, 1000);
-    MinMaxValue<float> randomCoordinates = new(-1000, 1000);
+    MinMaxValue<int> randomShipNumber = new(50, 100);
+    MinMaxValue<int> locationsToCreate = new(3, 5);
+    MinMaxValue<float> startingCoordinates = new(-10000, 10000);
+    MinMaxValue<float> randomCoordinates = new(-2000, 2000);
     MinMaxValue<int> speed = new(11, 20);
 
     public ScenarioMenuUI(VisualElement ui, MainMenuController mainMenuController, ScenarioManager scenarioManager, CSVManager csvManager)

@@ -566,8 +566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 500
-  horizontalSpeed: 100
-  verticalSpeed: 100
+  rotationSpeed: 100
   invertedVerticalMovement: 0
 --- !u!1001 &1918623248
 PrefabInstance:
@@ -726,6 +725,7 @@ MonoBehaviour:
   loadScenario: 0
   resetScenario: 0
   logMessages: 0
+  loadAllScenarios: 0
 --- !u!4 &2106282668
 Transform:
   m_ObjectHideFlags: 0

@@ -57,7 +57,7 @@ public class ScenarioManager : MonoBehaviour
 
         csvManager = GetComponent<CSVManager>();
         mainMenuController = FindObjectOfType<MainMenuController>();
-        Time.timeScale = 2f;
+        Time.timeScale = 1f;
 
         StartCoroutine(UpdateScenarioLabelAnimation());
         StartCoroutine(RunNextScenario());

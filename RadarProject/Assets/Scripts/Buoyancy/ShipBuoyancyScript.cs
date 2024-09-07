@@ -130,14 +130,22 @@ public class ShipBouyancyScript : MonoBehaviour
         ship.transform.rotation = Quaternion.Slerp(ship.transform.rotation, newRotation, Time.deltaTime);
     }
 
-    public float GetDistanceToWater(Vector3 position)
+    public float[] GetDistanceToWater(Vector3[] _queryPoints)
     {   
-        sampleHeightHelper.Init(position, shipWidth, true);
-        if (sampleHeightHelper.Sample(out float waterHeight))
+        Vector3[] _queryResultDisps = new Vector3[_queryPoints.Length];
+
+        var collProvider = OceanRenderer.Instance.CollisionProvider;
+
+        collProvider.Query(GetHashCode(), shipWidth, _queryPoints, _queryResultDisps, null, null);
+
+        float[] heightDiff = new float[_queryPoints.Length];
+
+        for(int i = 0; i < _queryPoints.Length; i++)
         {
-            return position.y - waterHeight;
+            var waterHeight = OceanRenderer.Instance.SeaLevel + _queryResultDisps[i].y;
+            heightDiff[i] = _queryPoints[i].y - waterHeight;
         }
 
-        return position.y;
+        return heightDiff;
     }
 }

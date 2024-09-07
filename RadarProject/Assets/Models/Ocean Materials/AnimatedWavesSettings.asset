@@ -17,7 +17,7 @@ MonoBehaviour:
   _attenuationInShallows: 0.85
   _shallowsMaxDepth: 1000
   _collisionSource: 2
-  _maxQueryCount: 8192
+  _maxQueryCount: 32768
   _pingPongCombinePass: 1
   _renderTextureGraphicsFormat: 48
   _bakedFFTData: {fileID: 0}

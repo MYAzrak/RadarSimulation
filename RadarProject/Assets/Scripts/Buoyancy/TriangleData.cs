@@ -1,8 +1,6 @@
 using UnityEngine;
-using Unity.Mathematics;
-using Unity.Burst;
 
-public struct TriangleData
+public class TriangleData
 {
     public Vector3 center;
     public float distanceToWater;
@@ -15,7 +13,7 @@ public struct TriangleData
     {
         center = (p1 + p2 + p3) / 3f;
 
-        distanceToWater = ShipBouyancyScript.shipBouyancyScriptInstance.GetDistanceToWater(center);
+        distanceToWater = 0;
 
         Vector3 crossProduct = Vector3.Cross(p2 - p1, p3 - p1);
 
