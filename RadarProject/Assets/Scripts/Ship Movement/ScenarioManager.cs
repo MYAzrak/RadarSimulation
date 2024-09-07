@@ -23,13 +23,14 @@ public class ScenarioManager : MonoBehaviour
 
     [Header("Debug")]
     public bool logMessages = false;
+    public int completedShips = 0;                                      // Ships that have completed their path
     
     string filePath = Application.dataPath + "/Scenarios/";
     string filePattern = @"^Scenario\d+\.csv$";                         // ScenarioX.csv where X is any number
     Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
     Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
     List<GameObject> generatedShips = new();
-    int completedShips = 0;                                             // Ships that have completed their path
+    
     bool csvReadResult;
     bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
 
@@ -41,6 +42,8 @@ public class ScenarioManager : MonoBehaviour
     public bool loadAllScenarios = false;
     int currentScenarioIndex = 0;
     List<string> scenarios = new();
+    string scenario = "Scenario";
+    string[] scenarioLabels = new string[3];
 
     public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f;          // 1 Meter/second = 1.943844 Knot
     public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f;         // 1 Knot = 0.5144444 Meter/second
@@ -69,8 +72,6 @@ public class ScenarioManager : MonoBehaviour
         {
             LoadScenario(scenarios[currentScenarioIndex]);
             loadScenario = false;
-
-            mainMenuController.SetscenarioRunningLabelVisibility(true);
         }
         /*
         else if (resetScenario) 
@@ -129,6 +130,8 @@ public class ScenarioManager : MonoBehaviour
         csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenario);
         if (!csvReadResult) return;
 
+        this.scenario = scenario;
+
         // Destroy all generated ships
         foreach (var ship in generatedShips) 
         {
@@ -140,12 +143,16 @@ public class ScenarioManager : MonoBehaviour
         
         GenerateShips();
 
+        mainMenuController.SetShipsLabel(generatedShips.Count);
+
+        // Set the label for the animation
+        scenarioLabels[0] = $"{scenario} Running.";
+        scenarioLabels[1] = $"{scenario} Running..";
+        scenarioLabels[2] = $"{scenario} Running...";
+
         logMessages = previousLogMessageBool = false;
         timeSinceScenarioStart = 0;
         scenarioCurrentlyRunning = true;
-
-        mainMenuController.SetScenarioLabel(scenario);
-        mainMenuController.SetShipsLabel(generatedShips.Count);
 
         Debug.Log($"{scenario} has been loaded");
     }
@@ -233,7 +240,6 @@ public class ScenarioManager : MonoBehaviour
 
     IEnumerator UpdateScenarioLabelAnimation()
     {
-        string[] scenarioLabels = {".", "..", "..."};
         while (Application.isPlaying) 
         {
             yield return new WaitForSeconds(1);
@@ -241,7 +247,7 @@ public class ScenarioManager : MonoBehaviour
             {
                 for (int i = 0; i < scenarioLabels.Length; i++)
                 {
-                    mainMenuController.SetScenarioRunningLabel($"Scenario Running{scenarioLabels[i]}");
+                    mainMenuController.SetScenarioRunningLabel(scenarioLabels[i]);
                     yield return new WaitForSeconds(1);
                 }
             }
@@ -253,7 +259,7 @@ public class ScenarioManager : MonoBehaviour
         while (Application.isPlaying) 
         {
             yield return new WaitForSeconds(1);
-            if (scenarioCurrentlyRunning && completedShips == generatedShips.Count)
+            if (scenarioCurrentlyRunning && completedShips >= generatedShips.Count)
             {
                 scenarioCurrentlyRunning = false;
                 Debug.Log("Scenario has finished");
@@ -270,7 +276,7 @@ public class ScenarioManager : MonoBehaviour
 
                     if (currentScenarioIndex < scenarios.Count)
                     {
-                        string scenario = scenarios[currentScenarioIndex];
+                        scenario = scenarios[currentScenarioIndex];
                         LoadScenario(scenario);
                     }
                     else

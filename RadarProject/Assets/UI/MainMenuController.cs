@@ -84,7 +84,7 @@ public class MainMenuController : MonoBehaviour
 
     public void SetDefaultSimulationInfoPanel()
     {
-        Label currentScenarioLabel = ui.Q("CurrentScenarioLabel") as Label;
+        Label currentScenarioLabel = ui.Q("ScenarioRunningLabel") as Label;
         currentScenarioLabel.text = "No Scenario Loaded";
 
         Label numOfShipsLabel = ui.Q("NumOfShipsLabel") as Label;
@@ -92,14 +92,6 @@ public class MainMenuController : MonoBehaviour
 
         Label numOfRadarsLabel = ui.Q("NumOfRadarsLabel") as Label;
         numOfRadarsLabel.text = "0 Radars (WIP)";
-
-        SetscenarioRunningLabelVisibility(false);
-    }
-
-    public void SetScenarioLabel(string scenarioName)
-    {
-        Label currentScenarioLabel = ui.Q("CurrentScenarioLabel") as Label;
-        currentScenarioLabel.text = "Currently Running: " + scenarioName;
     }
 
     public void SetShipsLabel(int numOfShips)
@@ -118,15 +110,6 @@ public class MainMenuController : MonoBehaviour
     {
         Label scenarioRunningLabel = ui.Q("ScenarioRunningLabel") as Label;
         scenarioRunningLabel.text = label;
-    }
-
-    public void SetscenarioRunningLabelVisibility(bool visible)
-    {
-        Label scenarioRunningLabel = ui.Q("ScenarioRunningLabel") as Label;
-        if (visible)
-            scenarioRunningLabel.style.display = DisplayStyle.Flex;
-        else
-            scenarioRunningLabel.style.display = DisplayStyle.None;
     }
 
     struct TabViews
