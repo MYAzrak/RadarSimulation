@@ -629,8 +629,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3750575989107645988, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
+      propertyPath: ImageRadius
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3750575989107645988, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
       propertyPath: MaxDistance
-      value: 3000
+      value: 5000
       objectReference: {fileID: 0}
     - target: {fileID: 5066331418530373458, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
       propertyPath: m_Enabled
