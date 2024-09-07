@@ -5,6 +5,8 @@ using WebSocketSharp.Server;
 using System.Text;
 using Newtonsoft.Json;
 using System.IO;
+using System.Threading.Tasks;
+using System.Collections;
 
 public class RadarScript : MonoBehaviour
 {
@@ -42,59 +44,44 @@ public class RadarScript : MonoBehaviour
         cameraObject = SpawnCameras("DepthCamera", WidthRes, HeightRes, VerticalAngle, RenderTextureFormat.ARGBFloat);
         radarCamera = cameraObject.GetComponent<Camera>();
         ProcessRadarData();
+
+        StartCoroutine(ProcessRadar());
     }
 
-    void Update()
+    IEnumerator ProcessRadar()
     {
-        if (currentRotation == 0){
-            string data = CollectData();
-            server.WebSocketServices["/data"].Sessions.Broadcast(data);
-            Debug.Log($"Sent Data: {data}");
+        while (Application.isPlaying) 
+        {
+            if (currentRotation == 0){
+                var task = CollectData();
+
+                yield return new WaitUntil(()=> task.IsCompleted);
+                
+                server.WebSocketServices["/data"].Sessions.Broadcast(task.Result);
+                Debug.Log($"Sent Data: {task.Result}");
+            }
+
+            ProcessRadarData();
+            RotateCamera();
+
+            yield return new WaitForFixedUpdate();
         }
-        ProcessRadarData();
-        RotateCamera();
     }
 
-    string CollectData()
+    async Task<string> CollectData()
     {
-        /* 
         var dataObject = new {
             timestamp = 55,
             PPI = radarPPI,
-        };            
-        
-        return JsonConvert.SerializeObject(dataObject);
-        */
+        };        
 
-        // Manual Serialize Similar to JsonConvert.SerializeObject but has better performance
-        // Source: https://www.newtonsoft.com/json/help/html/Performance.htm 
-        StringWriter sw = new();
-        JsonTextWriter writer = new(sw);
+        JsonSerializer serializer = new();
 
-        writer.WriteStartObject();
-
-        writer.WritePropertyName("timestamp");
-        writer.WriteValue(55);
-
-        writer.WritePropertyName("PPI");
-        writer.WriteStartArray();
-
-        for (int i = 0; i < radarPPI.GetLength(0); i++) // Iterate over rows
+        using StringWriter sw = new();
+        using (JsonWriter writer = new JsonTextWriter(sw))
         {
-            writer.WriteStartArray();
-
-            for (int j = 0; j < radarPPI.GetLength(1); j++) // Iterate over columns
-            {
-                writer.WriteValue(radarPPI[i, j]);
-            }
-
-            writer.WriteEndArray();
+            await Task.Run(() => serializer.Serialize(writer, dataObject));
         }
-
-        writer.WriteEndArray();
-
-        // }
-        writer.WriteEndObject();
 
         return sw.ToString();
     }
