@@ -6,6 +6,8 @@ Shader "Custom/NormalDepthShader"
 
         Pass
         {
+            Cull Off
+            ZTest Always
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
