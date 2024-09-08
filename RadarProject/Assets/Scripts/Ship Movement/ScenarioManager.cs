@@ -43,6 +43,7 @@ public class ScenarioManager : MonoBehaviour
     int currentScenarioIndex = 0;
     List<string> scenarios = new();
     string scenario = "Scenario";
+    bool endScenario = false;
     string[] scenarioLabels = new string[3];
 
     public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f;          // 1 Meter/second = 1.943844 Knot
@@ -131,6 +132,7 @@ public class ScenarioManager : MonoBehaviour
         if (!csvReadResult) return;
 
         this.scenario = scenario;
+        endScenario = false;
 
         // Destroy all generated ships
         foreach (var ship in generatedShips) 
@@ -237,7 +239,20 @@ public class ScenarioManager : MonoBehaviour
         completedShips += 1;
     }
 
+    public void EndScenario()
+    {
+        if (scenarioCurrentlyRunning)
+            endScenario = true;
+    }
 
+    public void EndAllScenarios()
+    {
+        if (scenarioCurrentlyRunning)
+        {
+            loadAllScenarios = false;
+            endScenario = true;
+        }
+    }
     IEnumerator UpdateScenarioLabelAnimation()
     {
         while (Application.isPlaying) 
@@ -247,6 +262,9 @@ public class ScenarioManager : MonoBehaviour
             {
                 for (int i = 0; i < scenarioLabels.Length; i++)
                 {
+                    // TODO: Find a better solution since it is possible for SetDefaultSimulationInfoPanel() to be replaced
+                    if (!scenarioCurrentlyRunning) break; 
+
                     mainMenuController.SetScenarioRunningLabel(scenarioLabels[i]);
                     yield return new WaitForSeconds(1);
                 }
@@ -259,34 +277,38 @@ public class ScenarioManager : MonoBehaviour
         while (Application.isPlaying) 
         {
             yield return new WaitForSeconds(1);
-            if (scenarioCurrentlyRunning && completedShips >= generatedShips.Count)
+            if (scenarioCurrentlyRunning && (completedShips >= generatedShips.Count || endScenario))
             {
                 scenarioCurrentlyRunning = false;
                 Debug.Log("Scenario has finished");
 
+                if (!loadAllScenarios)
+                {
+                    endScenario = false;
+                    mainMenuController.SetDefaultSimulationInfoPanel();
+                    continue;
+                }
+    
                 for (int i = 5; i > 0; i--)
                 {
                     mainMenuController.SetScenarioRunningLabel($"Scenario has completed.\nRunning next scenario in {i}.");
                     yield return new WaitForSeconds(1);
                 }
 
-                if (loadAllScenarios)
+                currentScenarioIndex++;
+
+                if (currentScenarioIndex < scenarios.Count)
                 {
-                    currentScenarioIndex++;
-
-                    if (currentScenarioIndex < scenarios.Count)
-                    {
-                        scenario = scenarios[currentScenarioIndex];
-                        LoadScenario(scenario);
-                    }
-                    else
-                    {
-                        loadAllScenarios = false;
-                        currentScenarioIndex = 0;
-                    }
+                    scenario = scenarios[currentScenarioIndex];
+                    LoadScenario(scenario);
                 }
-
-                mainMenuController.SetScenarioRunningLabel("Scenario Running.");
+                else
+                {
+                    loadAllScenarios = false;
+                    currentScenarioIndex = 0;
+                    endScenario = false;
+                    mainMenuController.SetDefaultSimulationInfoPanel();
+                }
             }
         }
     }

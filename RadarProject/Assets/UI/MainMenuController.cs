@@ -40,6 +40,7 @@ public class MainMenuController : MonoBehaviour
 
         ScenarioMenuUI.SetBtnEvents();
         SetPauseBtn();
+        SetEndBtns();
 
         SetDefaultSimulationInfoPanel();
     }
@@ -95,6 +96,12 @@ public class MainMenuController : MonoBehaviour
 
         Label numOfRadarsLabel = ui.Q("NumOfRadarsLabel") as Label;
         numOfRadarsLabel.text = "0 Radars (WIP)";
+
+        Label waveConditionLabel = ui.Q("WaveConditionLabel") as Label;
+        waveConditionLabel.text = "Waves: None (WIP)";
+
+        Label weatherConditionLabel = ui.Q("WeatherConditionLabel") as Label;
+        weatherConditionLabel.text = "Weather: None (WIP)";
     }
 
     public void SetShipsLabel(int numOfShips)
@@ -135,6 +142,19 @@ public class MainMenuController : MonoBehaviour
             }
             
             scenarioManager.updateTimeScale = true;
+        });
+    }
+
+    public void SetEndBtns()
+    {
+        Button endScenarioBtn = ui.Q("EndScenarioBtn") as Button; 
+        endScenarioBtn.RegisterCallback((ClickEvent clickEvent) => {
+            scenarioManager.EndScenario();
+        });
+
+        Button terminateSimulation = ui.Q("TerminateSimulation") as Button;
+        terminateSimulation.RegisterCallback((ClickEvent clickEvent) => {
+            scenarioManager.EndAllScenarios();
         });
     }
 
