@@ -105,7 +105,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5000001
   m_Height: 2
@@ -125,11 +125,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HeightRes: 32
   WidthRes: 2048
-  MaxDistance: 1000
+  MaxDistance: 5000
   MinDistance: 0.15
   VerticalAngle: 30
   radarCamera: {fileID: 0}
   noise: 3
+  ImageRadius: 500
   normalDepthShader: {fileID: 0}
   parallelThreshold: 0.1
   debugSpoke: {fileID: 0}
@@ -176,21 +177,13 @@ MonoBehaviour:
   _centerOfMass: {x: 0, y: 0, z: 0}
   _forcePoints:
   - _weight: 1
-    _offsetPosition: {x: -1, y: -20, z: 1}
+    _offsetPosition: {x: -1, y: -15, z: 1}
   - _weight: 1
-    _offsetPosition: {x: 1, y: -20, z: 1}
+    _offsetPosition: {x: 1, y: -15, z: 1}
   - _weight: 1
-    _offsetPosition: {x: 1, y: -20, z: -1}
+    _offsetPosition: {x: 1, y: -15, z: -1}
   - _weight: 1
-    _offsetPosition: {x: -1, y: -20, z: -1}
-  - _weight: 1
-    _offsetPosition: {x: -3, y: -10, z: -3}
-  - _weight: 1
-    _offsetPosition: {x: 3, y: -10, z: -3}
-  - _weight: 1
-    _offsetPosition: {x: 3, y: -10, z: 3}
-  - _weight: 1
-    _offsetPosition: {x: -3, y: -10, z: 3}
+    _offsetPosition: {x: -1, y: -15, z: -1}
   _forceHeightOffset: 0
   _forceMultiplier: 10
   _minSpatialLength: 12
@@ -199,9 +192,9 @@ MonoBehaviour:
   _dragInWaterUp: 3
   _dragInWaterRight: 2
   _dragInWaterForward: 1
-  _enginePower: 7
-  _turnPower: 0.5
-  _playerControlled: 1
+  _enginePower: 0
+  _turnPower: 0
+  _playerControlled: 0
   _engineBias: 0
   _turnBias: 0
   _debug:

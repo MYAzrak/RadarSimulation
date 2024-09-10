@@ -122,6 +122,18 @@ public class MainMenuController : MonoBehaviour
         scenarioRunningLabel.text = label;
     }
 
+    public void SetWaveLabel(string waveCondition)
+    {
+        Label waveConditionLabel = ui.Q("WaveConditionLabel") as Label;
+        waveConditionLabel.text = "Waves: " + waveCondition;
+    }
+
+    public void SetWeatherLabel(string weatherCondition)
+    {
+        Label weatherConditionLabel = ui.Q("WeatherConditionLabel") as Label;
+        weatherConditionLabel.text = "Weather: " + weatherCondition;
+    }
+
     public void SetPauseBtn()
     {
         Button pauseSimulation = ui.Q("PauseSimulation") as Button;

@@ -89,7 +89,7 @@ public class ScenarioMenuUI
                 csvManager.minSpeed = speed.Min;
                 csvManager.maxSpeed = speed.Max;
                 
-                csvManager.GenerateCSV(file);
+                csvManager.GenerateScenario(file);
             }
 
             Debug.Log("All scenarios have been generated.");

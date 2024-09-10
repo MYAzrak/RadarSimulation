@@ -21,13 +21,14 @@ public class CSVManager : MonoBehaviour
     string filePath = Application.dataPath + "/Scenarios/";
     string fileExtension = ".csv";
     string shipListEndName = "ShipList";            // The ship list csv ends with ShipList.csv
+    string scenarioSettingsEndName = "Settings.json";
     
     void Update()
     {
         if (generateRandomCSV)
         {
             // .csv file extension is added in the function
-            GenerateCSV(filePath + fileName);
+            GenerateScenario(filePath + fileName);
             generateRandomCSV = false;
         }
     }
@@ -55,17 +56,17 @@ public class CSVManager : MonoBehaviour
         return points;
     }
 
-    public void GenerateCSV(string file)
+    public void GenerateScenario(string file)
     {
         if (File.Exists(file + fileExtension) || File.Exists(file + shipListEndName + fileExtension)) {
             Debug.Log($"{file + fileExtension} or {file + shipListEndName + fileExtension} already exists.");
             return;
         }
 
-        using TextWriter textWriter = new StreamWriter(file + fileExtension, true);
+        using TextWriter scenarioWriter = new StreamWriter(file + fileExtension, true);
         using TextWriter shipListWriter = new StreamWriter(file + shipListEndName + fileExtension, true);
 
-        textWriter.WriteLine("ID, X Coordinate, Z Coordinate, Speed");
+        scenarioWriter.WriteLine("ID, X Coordinate, Z Coordinate, Speed");
         shipListWriter.WriteLine("ID, Name, Type");
 
         int shipTypeEnumLength = System.Enum.GetNames(typeof(ShipType)).Length;
@@ -76,11 +77,20 @@ public class CSVManager : MonoBehaviour
 
             for (int x = 0; x < locations.Length; x++)
             {
-                textWriter.WriteLine($"{i + 1}, {locations[x].x}, {locations[x].z}, {speed[x]}");
+                scenarioWriter.WriteLine($"{i + 1}, {locations[x].x}, {locations[x].z}, {speed[x]}");
             }
 
             shipListWriter.WriteLine($"{i + 1}, TestShip{i + 1}, {(ShipType)Random.Range(0, shipTypeEnumLength)}");
         }
+
+        // Save the settings to a json file
+        ScenarioSettings settings = new()
+        {
+            waves = (ScenarioManager.Waves)Random.Range(0, System.Enum.GetNames(typeof(ScenarioManager.Waves)).Length)
+        };
+
+        string json = JsonUtility.ToJson(settings, true);
+        File.WriteAllText(file + scenarioSettingsEndName, json);
 
         // Debug.Log("csv has been generated.");
     }
@@ -88,6 +98,7 @@ public class CSVManager : MonoBehaviour
     public bool ReadScenarioCSV(
         ref Dictionary<int, ShipInformation> shipsInformation, 
         ref Dictionary<int, List<ShipCoordinates>> shipLocations, 
+        ref ScenarioSettings scenarioSettings,
         string scenarioFileName)
     {
         shipsInformation.Clear();
@@ -96,66 +107,76 @@ public class CSVManager : MonoBehaviour
         try
         {
             // Read ship list information
-            StreamReader streamReader = new(filePath + scenarioFileName + "ShipList.csv");
-
-            _ = streamReader.ReadLine(); // Ignore the first line which is the headings
-            string data = streamReader.ReadLine();
-            while (data != null)
+            using (StreamReader streamReader = new(filePath + scenarioFileName + shipListEndName + fileExtension))
             {
-                string[] value = data.Split(',');
-
-                // Ensure all rows do not have empty or null cells
-                if (value.Any(s => string.IsNullOrEmpty(s)))
+                _ = streamReader.ReadLine(); // Ignore the first line which is the headings
+                string data = streamReader.ReadLine();
+                while (data != null)
                 {
-                    Debug.Log("Error: Invalid number of columns");
-                    shipsInformation.Clear();
-                    return false;
-                }
-                
-                int id = int.Parse(value[0]);
+                    string[] value = data.Split(',');
 
-                // Keep track of ship IDs in case there are duplicate IDs in the csv
-                if (shipsInformation.ContainsKey(id))
-                {
-                    Debug.Log("Error: Ship list csv contains duplicate ID");
-                    shipsInformation.Clear();
-                    return false;
-                }
-                else
-                {
-                    shipsInformation[id] = new ShipInformation(id, value[1], (ShipType)System.Enum.Parse(typeof(ShipType), value[2]));
-                }
+                    // Ensure all rows do not have empty or null cells
+                    if (value.Any(s => string.IsNullOrEmpty(s)))
+                    {
+                        Debug.Log("Error: Invalid number of columns");
+                        shipsInformation.Clear();
+                        return false;
+                    }
+                    
+                    int id = int.Parse(value[0]);
 
-                data = streamReader.ReadLine();
+                    // Keep track of ship IDs in case there are duplicate IDs in the csv
+                    if (shipsInformation.ContainsKey(id))
+                    {
+                        Debug.Log("Error: Ship list csv contains duplicate ID");
+                        shipsInformation.Clear();
+                        return false;
+                    }
+                    else
+                    {
+                        shipsInformation[id] = new ShipInformation(id, value[1], (ShipType)System.Enum.Parse(typeof(ShipType), value[2]));
+                    }
+
+                    data = streamReader.ReadLine();
+                }
+            }
+            
+            // Read each ship locations and speed
+            using (StreamReader streamReader = new(filePath + scenarioFileName + fileExtension))
+            {
+                _ = streamReader.ReadLine(); // Ignore the first line which is the headings
+                string data = streamReader.ReadLine();
+                while (data != null)
+                {
+                    string[] value = data.Split(',');
+
+                    // Ensure all rows do not have empty or null cells
+                    if (value.Any(s => string.IsNullOrEmpty(s)))
+                    {
+                        Debug.Log("Error: Invalid number of columns");
+                        shipLocations.Clear();
+                        return false;
+                    }
+                    
+                    int id = int.Parse(value[0]);
+
+                    ShipCoordinates shipCoordinates = new(float.Parse(value[1]), float.Parse(value[2]), float.Parse(value[3]));
+                    
+                    // Save all locations for each ship in a dictionary
+                    if (shipLocations.ContainsKey(id))
+                        shipLocations[id].Add(shipCoordinates);
+                    else
+                        shipLocations[id] = new List<ShipCoordinates>() { shipCoordinates };
+
+                    data = streamReader.ReadLine();
+                }
             }
 
-            // Read each ship locations and speed
-            streamReader = new(filePath + scenarioFileName + ".csv");
-            _ = streamReader.ReadLine(); // Ignore the first line which is the headings
-            data = streamReader.ReadLine();
-            while (data != null)
+            // Read scenario settings
+            using (StreamReader streamReader = new(filePath + scenarioFileName + scenarioSettingsEndName))
             {
-                string[] value = data.Split(',');
-
-                // Ensure all rows do not have empty or null cells
-                if (value.Any(s => string.IsNullOrEmpty(s)))
-                {
-                    Debug.Log("Error: Invalid number of columns");
-                    shipLocations.Clear();
-                    return false;
-                }
-                
-                int id = int.Parse(value[0]);
-
-                ShipCoordinates shipCoordinates = new(float.Parse(value[1]), float.Parse(value[2]), float.Parse(value[3]));
-                
-                // Save all locations for each ship in a dictionary
-                if (shipLocations.ContainsKey(id))
-                    shipLocations[id].Add(shipCoordinates);
-                else
-                    shipLocations[id] = new List<ShipCoordinates>() { shipCoordinates };
-
-                data = streamReader.ReadLine();
+                string json = streamReader.ReadToEnd();
+                scenarioSettings = JsonUtility.FromJson<ScenarioSettings>(json);
             }
 
             Debug.Log("csv has been successfully parsed.");

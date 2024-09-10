@@ -12,6 +12,9 @@ public class ScenarioManager : MonoBehaviour
     public string scenarioFileName;
     [SerializeField] List<ShipPrefab> shipPrefabs = new();
 
+    [Header("Wave Prefabs")]
+    [SerializeField] List<WavePrefab> wavePrefabs = new();
+
     [Header("Time options")]
     public int timeScale = 1;
     public bool updateTimeScale = false;
@@ -23,29 +26,47 @@ public class ScenarioManager : MonoBehaviour
 
     [Header("Debug")]
     public bool logMessages = false;
+    bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
+    float timeSinceScenarioStart;
     public int completedShips = 0;                                      // Ships that have completed their path
+    public bool loadAllScenarios = false;
     
+    // -------------------------------------------------
+    // --------- Scenario Files Path and Names ---------
+    // -------------------------------------------------
     string filePath = Application.dataPath + "/Scenarios/";
     string filePattern = @"^Scenario\d+\.csv$";                         // ScenarioX.csv where X is any number
+
+    // -------------------------------------------------
+    // ------- Stored Scenario File Information --------
+    // -------------------------------------------------
     Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
     Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
+    GameObject wave = null; 
     List<GameObject> generatedShips = new();
-    
+    ScenarioSettings scenarioSettings;
     bool csvReadResult;
-    bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
-
+    
+    // -------------------------------------------------
+    // ----- Other Classes the Script Makes Use of -----
+    // -------------------------------------------------
     CSVManager csvManager;
     MainMenuController mainMenuController;
     OceanRenderer oceanRenderer;
     TimeProviderCustom timeProviderCustom;
-    float timeSinceScenarioStart;
-    public bool loadAllScenarios = false;
+    
+    // -------------------------------------------------
+    // -------- Current Scenario Information -----------
+    // -------------------------------------------------
+    string scenario = "Scenario";                                       // Scenario File name
     int currentScenarioIndex = 0;
-    List<string> scenarios = new();
-    string scenario = "Scenario";
-    bool endScenario = false;
-    string[] scenarioLabels = new string[3];
-
+    List<string> scenarios = new();                                     // All scenarios loaded
+    bool endScenario = false;                                           // Forcefully ends a scenario
+    string[] scenarioLabels = new string[3];                            // Use to animate the scenario label
+    
+    // -------------------------------------------------
+    // --------------- Speed Conversions ---------------
+    // -------------------------------------------------
     public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f;          // 1 Meter/second = 1.943844 Knot
     public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f;         // 1 Knot = 0.5144444 Meter/second
     
@@ -128,21 +149,17 @@ public class ScenarioManager : MonoBehaviour
 
     void LoadScenario(string scenario)
     {
-        csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, scenario);
+        csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, ref scenarioSettings, scenario);
         if (!csvReadResult) return;
 
         this.scenario = scenario;
         endScenario = false;
 
-        // Destroy all generated ships
-        foreach (var ship in generatedShips) 
-        {
-            Destroy(ship);
-        }
-
-        generatedShips.Clear();
+        UnloadAllObjects();
+        
         completedShips = 0;
         
+        GenerateWaves(scenarioSettings.waves);
         GenerateShips();
 
         mainMenuController.SetShipsLabel(generatedShips.Count);
@@ -157,6 +174,37 @@ public class ScenarioManager : MonoBehaviour
         scenarioCurrentlyRunning = true;
 
         Debug.Log($"{scenario} has been loaded");
+    }
+
+    void UnloadAllObjects()
+    {
+        // Destroy all generated ships
+        foreach (var ship in generatedShips) 
+        {
+            Destroy(ship);
+        }
+
+        // Destroy wave
+        Destroy(wave);
+
+        generatedShips.Clear();
+    }
+
+    void GenerateWaves(Waves scenarioWave)
+    {
+        GameObject prefab = null;
+
+        foreach (WavePrefab wavePrefab in wavePrefabs)
+        {
+            if (wavePrefab.waves == scenarioWave)
+            {
+                prefab = wavePrefab.prefab;
+            }
+        }
+
+        wave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+
+        mainMenuController.SetWaveLabel(scenarioWave.ToString());
     }
 
     void GenerateShips()
@@ -242,17 +290,18 @@ public class ScenarioManager : MonoBehaviour
     public void EndScenario()
     {
         if (scenarioCurrentlyRunning)
+        {
+            UnloadAllObjects();
             endScenario = true;
+        }
     }
 
     public void EndAllScenarios()
     {
-        if (scenarioCurrentlyRunning)
-        {
-            loadAllScenarios = false;
-            endScenario = true;
-        }
+        loadAllScenarios = false;
+        EndScenario();
     }
+
     IEnumerator UpdateScenarioLabelAnimation()
     {
         while (Application.isPlaying) 
@@ -324,6 +373,25 @@ public class ScenarioManager : MonoBehaviour
             this.shipType = shipType;
             this.prefab = prefab;
         }
+    }
+
+    [System.Serializable]
+    struct WavePrefab
+    {
+        public Waves waves;
+        public GameObject prefab;
+
+        public WavePrefab(Waves waves, GameObject prefab)
+        {
+            this.waves = waves;
+            this.prefab = prefab;
+        }
+    }
+
+    public enum Waves 
+    {
+        Calm,
+        Moderate,
     }
 }
 

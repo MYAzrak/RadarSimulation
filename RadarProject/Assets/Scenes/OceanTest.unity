@@ -122,76 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &483246648
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 483246650}
-  - component: {fileID: 483246649}
-  m_Layer: 0
-  m_Name: Waves
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &483246649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 483246648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a57126133720c243a7af00a156c9ee8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spectrum: {fileID: 11400000, guid: 454d1b08383f089479cf6794620926f4, type: 2}
-  _spectrumFixedAtRuntime: 1
-  _waveDirectionHeadingAngle: 0
-  _overrideGlobalWindSpeed: 0
-  _windSpeed: 20
-  _respectShallowWaterAttenuation: 1
-  _weight: 1
-  _blendMode: 0
-  _queue: 0
-  _resolution: 128
-  _featherWidth: 0
-  _overrideSplineSettings: 0
-  _radius: 50
-  _subdivisions: 1
-  _featherWaveStart: 0.1
-  _version: 0
-  _windTurbulence: 0.145
-  _maxVerticalDisplacement: 10
-  _maxHorizontalDisplacement: 15
-  _enableBakedCollision: 0
-  _timeResolution: 4
-  _smallestWavelengthRequired: 2
-  _timeLoopLength: 32
-  _debug:
-    _drawBounds: 0
-    _drawSlicesInEditor: 0
---- !u!4 &483246650
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 483246648}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &801338831
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,11 +654,17 @@ MonoBehaviour:
     prefab: {fileID: 6254869662381877804, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
   - shipType: 1
     prefab: {fileID: 4016913938538879941, guid: 329461f3b6486b0848ff7e1913521c37, type: 3}
+  wavePrefabs:
+  - waves: 0
+    prefab: {fileID: 6028083280660833559, guid: 3cf08a18537caccdd93a049e92c57149, type: 3}
+  - waves: 1
+    prefab: {fileID: 6911877509165313841, guid: de48c47023fba1ffd9722fc9cecc369d, type: 3}
   timeScale: 1
   updateTimeScale: 0
   loadScenario: 0
   resetScenario: 0
   logMessages: 0
+  completedShips: 0
   loadAllScenarios: 0
 --- !u!4 &2106282668
 Transform:
@@ -752,7 +688,6 @@ SceneRoots:
   - {fileID: 1422562299}
   - {fileID: 1023794777}
   - {fileID: 1059646246}
-  - {fileID: 483246650}
   - {fileID: 2106282668}
   - {fileID: 801338833}
   - {fileID: 1918623248}
