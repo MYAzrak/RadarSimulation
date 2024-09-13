@@ -2,7 +2,6 @@ using UnityEngine;
 using System;
 using WebSocketSharp;
 using WebSocketSharp.Server;
-using System.Text;
 using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,6 +9,9 @@ using System.Collections;
 
 public class RadarScript : MonoBehaviour
 {
+    public int radarID;
+    [SerializeField] string path = "radar";
+
     [SerializeField] private int HeightRes = 2048;
     [SerializeField] private int WidthRes = 5;
     [Range(0.0f, 1f)] private float resolution = 0.5f;
@@ -34,9 +36,11 @@ public class RadarScript : MonoBehaviour
 
     void Start()
     {
-        server = new WebSocketServer("ws://localhost:8080");
-        server.AddWebSocketService<DataService>("/data");
-        server.Start();
+        path += radarID;
+
+        server = Server.serverInstance.server;
+        server.AddWebSocketService<DataService>($"/{path}");
+        
         radarPPI = new int[Mathf.RoundToInt(360/resolution), ImageRadius];
         if (normalDepthShader == null)
         {
@@ -58,7 +62,13 @@ public class RadarScript : MonoBehaviour
 
                 yield return new WaitUntil(()=> task.IsCompleted);
                 
-                server.WebSocketServices["/data"].Sessions.Broadcast(task.Result);
+                // If server is not listening then do not process the radar
+                if (!server.IsListening)
+                {
+                    continue;
+                }
+
+                server.WebSocketServices[$"/{path}"].Sessions.Broadcast(task.Result);
                 Debug.Log($"Sent Data: {task.Result}");
             }
 
@@ -72,6 +82,7 @@ public class RadarScript : MonoBehaviour
     async Task<string> CollectData()
     {
         var dataObject = new {
+            id = radarID,
             timestamp = 55,
             range = MaxDistance,
             PPI = radarPPI,
@@ -86,11 +97,6 @@ public class RadarScript : MonoBehaviour
         }
 
         return sw.ToString();
-    }
-
-    void OnApplicationQuit(){
-        server.Stop();
-        Debug.Log("Stopped Server");
     }
 
     private GameObject SpawnCameras(string name, int Width, int Height, float verticalAngle, RenderTextureFormat format)
@@ -191,27 +197,4 @@ public class RadarScript : MonoBehaviour
     }
 
     
-}
-public class DataService : WebSocketBehavior
-{
-    protected override void OnMessage(MessageEventArgs e)
-    {
-        // Handle incoming messages if needed
-        Debug.Log($"Received message: {e.Data}");
-    }
-
-    protected override void OnOpen()
-    {
-        Debug.Log("Client connected");
-    }
-
-    protected override void OnClose(CloseEventArgs e)
-    {
-        Debug.Log("Client disconnected");
-    }
-
-    protected override void OnError(WebSocketSharp.ErrorEventArgs e)
-    {
-        Debug.LogError($"WebSocket error: {e.Message}");
-    }
 }

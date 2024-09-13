@@ -4,10 +4,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import threading
+import argparse
 
 fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(projection='polar'))
 im = None
 cbar = None
+
+radarID = None
 
 def create_ppi_plot(data, azimuth, range_bins, vmin=None, vmax=None):
     global im, cbar
@@ -46,7 +49,7 @@ def on_message(ws, message):
         return
     ppi = np.array(ppi)
     print(np.unravel_index(ppi.argmax(), ppi.shape))
-    
+
     with data_lock:
         latest_data = ppi
 
@@ -60,7 +63,7 @@ def on_open(ws):
     print("Connection opened")
 
 def run_websocket():
-    ws = websocket.WebSocketApp("ws://localhost:8080/data",
+    ws = websocket.WebSocketApp("ws://localhost:8080/radar" + str(radarID),
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close,
@@ -78,6 +81,19 @@ def update_plot(frame):
             return create_ppi_plot(latest_data, azimuth, range_bins, vmin=latest_data.min(), vmax=latest_data.max())
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+
+    # Add arguments
+    parser.add_argument('-r', type=int, default=0, help='Radar ID')
+    args = parser.parse_args()
+
+    if isinstance(args.r, int):
+        radarID = args.r
+        print(radarID)
+    else:
+        print("Invalid Radar ID")
+
     # Start WebSocket connection in a separate thread
     websocket_thread = threading.Thread(target=run_websocket)
     websocket_thread.daemon = True

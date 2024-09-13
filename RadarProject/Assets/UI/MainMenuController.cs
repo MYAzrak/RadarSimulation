@@ -98,7 +98,7 @@ public class MainMenuController : MonoBehaviour
         numOfRadarsLabel.text = "0 Radars (WIP)";
 
         Label waveConditionLabel = ui.Q("WaveConditionLabel") as Label;
-        waveConditionLabel.text = "Waves: None (WIP)";
+        waveConditionLabel.text = "Waves: None";
 
         Label weatherConditionLabel = ui.Q("WeatherConditionLabel") as Label;
         weatherConditionLabel.text = "Weather: None (WIP)";
