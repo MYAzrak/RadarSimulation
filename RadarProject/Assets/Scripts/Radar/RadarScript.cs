@@ -36,7 +36,6 @@ public class RadarScript : MonoBehaviour
     public RenderTexture inputTexture;
     private int[] tempBuffer;
 
-    public DebugSpoke debugSpoke;
 
     public int[,] radarPPI;
 
@@ -196,20 +195,6 @@ public class RadarScript : MonoBehaviour
             radarPPI[rotationIndex, i] = tempBuffer[i];
         }
 
-    }
-
-    private void UpdateDebugSpoke()
-    {
-        debugSpoke.tex.Reinitialize(1, Mathf.RoundToInt(MaxDistance), TextureFormat.RGB24, false);
-        int rotationIndex = Mathf.RoundToInt(currentRotation / resolution);
-        for (int i = 0; i < ImageRadius; i++)
-        {
-            if (radarPPI[rotationIndex, i] > 0)
-            {
-                debugSpoke.tex.SetPixel(0, i, Color.red);
-            }
-        }
-        debugSpoke.tex.Apply();
     }
 
     void OnDestroy()
