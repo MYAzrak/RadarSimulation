@@ -13,6 +13,7 @@ public class RadarScript : MonoBehaviour
     [SerializeField] string path = "radar";
 
     [SerializeField] private int HeightRes = 2048;
+
     [SerializeField] private int WidthRes = 5;
     [Range(0.0f, 1f)] private float resolution = 0.5f;
     [Range(5f, 5000f)] public float MaxDistance = 100F;
@@ -30,6 +31,11 @@ public class RadarScript : MonoBehaviour
     private GameObject cameraObject;
     private WebSocketServer server;
 
+    [SerializeField] private ComputeShader radarComputeShader;
+    private ComputeBuffer radarBuffer;
+    public RenderTexture inputTexture;
+    private int[] tempBuffer;
+
     public DebugSpoke debugSpoke;
 
     public int[,] radarPPI;
@@ -40,28 +46,49 @@ public class RadarScript : MonoBehaviour
 
         server = Server.serverInstance.server;
         server.AddWebSocketService<DataService>($"/{path}");
-        
-        radarPPI = new int[Mathf.RoundToInt(360/resolution), ImageRadius];
+
+        radarPPI = new int[Mathf.RoundToInt(360 / resolution), ImageRadius];
         if (normalDepthShader == null)
         {
             normalDepthShader = Shader.Find("Custom/NormalDepthShader");
         }
+
+        if (radarComputeShader == null)
+        {
+            radarComputeShader = (ComputeShader)Resources.Load("ProcessRadarData");
+        }
         cameraObject = SpawnCameras("DepthCamera", WidthRes, HeightRes, VerticalAngle, RenderTextureFormat.ARGBFloat);
         radarCamera = cameraObject.GetComponent<Camera>();
-        ProcessRadarData();
+
+        // Initialize compute shader resources
+        inputTexture = new RenderTexture(WidthRes, HeightRes, 24, RenderTextureFormat.ARGBFloat);
+        inputTexture.enableRandomWrite = true;
+        inputTexture.Create();
+
+        // Set up the radar camera
+        radarCamera.targetTexture = inputTexture;
+        radarCamera.depthTextureMode = DepthTextureMode.Depth;
+
+        // Create a buffer to hold a single rotation
+        radarBuffer = new ComputeBuffer(ImageRadius, sizeof(int));
+        tempBuffer = new int[ImageRadius];
 
         StartCoroutine(ProcessRadar());
     }
 
     IEnumerator ProcessRadar()
     {
-        while (Application.isPlaying) 
+
+        int kernelIndex = radarComputeShader.FindKernel("ProcessRadarData");
+
+        while (Application.isPlaying)
         {
-            if (currentRotation == 0){
+            if (currentRotation == 0)
+            {
                 var task = CollectData();
 
-                yield return new WaitUntil(()=> task.IsCompleted);
-                
+                yield return new WaitUntil(() => task.IsCompleted);
+
                 // If server is not listening then do not process the radar
                 if (!server.IsListening)
                 {
@@ -72,7 +99,7 @@ public class RadarScript : MonoBehaviour
                 Debug.Log($"Sent Data: {task.Result}");
             }
 
-            ProcessRadarData();
+            ProcessRadarDataGPU(kernelIndex);
             RotateCamera();
 
             yield return new WaitForFixedUpdate();
@@ -81,12 +108,13 @@ public class RadarScript : MonoBehaviour
 
     async Task<string> CollectData()
     {
-        var dataObject = new {
+        var dataObject = new
+        {
             id = radarID,
             timestamp = 55,
             range = MaxDistance,
             PPI = radarPPI,
-        };        
+        };
 
         JsonSerializer serializer = new();
 
@@ -97,6 +125,12 @@ public class RadarScript : MonoBehaviour
         }
 
         return sw.ToString();
+    }
+
+    void OnApplicationQuit()
+    {
+        server.Stop();
+        Debug.Log("Stopped Server");
     }
 
     private GameObject SpawnCameras(string name, int Width, int Height, float verticalAngle, RenderTextureFormat format)
@@ -125,61 +159,70 @@ public class RadarScript : MonoBehaviour
         return CameraObject;
     }
 
-    private void ProcessRadarData()
+
+    private void ProcessRadarDataGPU(int kernelIndex)
     {
+        // Clear the buffer for the new rotation
+        radarBuffer.SetData(new int[ImageRadius]);
 
-        if (debugSpoke != null)
+        // Render the camera to the input texture
+        radarCamera.targetTexture = inputTexture;
+        radarCamera.Render();
+
+        // Set compute shader parameters
+        radarComputeShader.SetTexture(kernelIndex, "InputTexture", inputTexture);
+        radarComputeShader.SetBuffer(kernelIndex, "RadarBuffer", radarBuffer);
+        radarComputeShader.SetFloat("MaxDistance", MaxDistance);
+        radarComputeShader.SetFloat("MinDistance", MinDistance);
+        radarComputeShader.SetFloat("ParallelThreshold", parallelThreshold);
+        radarComputeShader.SetFloat("Noise", noise);
+        radarComputeShader.SetFloat("Resolution", resolution);
+        radarComputeShader.SetInt("ImageRadius", ImageRadius);
+        radarComputeShader.SetFloat("CurrentRotation", currentRotation);
+
+        // Dispatch the compute shader
+        int threadGroupsX = Mathf.CeilToInt(WidthRes / 8.0f);
+        int threadGroupsY = Mathf.CeilToInt(HeightRes / 8.0f);
+        radarComputeShader.Dispatch(kernelIndex, threadGroupsX, threadGroupsY, 1);
+
+        // Read back the results into the temporary buffer
+        radarBuffer.GetData(tempBuffer);
+
+        // Copy the data back into the 2D radarPPI array for the current rotation
+        int rotationIndex = Mathf.RoundToInt(currentRotation / resolution);
+
+        for (int i = 0; i < ImageRadius; i++)
         {
-            debugSpoke.tex.Reinitialize(1, Mathf.RoundToInt(MaxDistance), TextureFormat.RGB24, false);
-        }
-        RenderTexture.active = radarTexture;
-        Texture2D tex = new Texture2D(radarTexture.width, radarTexture.height, TextureFormat.RGBAFloat, false);
-        tex.ReadPixels(new Rect(0, 0, radarTexture.width, radarTexture.height), 0, 0);
-        tex.Apply();
-
-        // Array.Clear(radarPPI, Mathf.RoundToInt(currentRotation/resolution), Mathf.RoundToInt(MaxDistance));
-        for (int i=0; i < ImageRadius; i++){
-            radarPPI[Mathf.RoundToInt(currentRotation/resolution), i] = 0;
+            radarPPI[rotationIndex, i] = tempBuffer[i];
         }
 
-        for (int x = 0; x < tex.width; x++)
-        {
-            for (int y = 0; y < tex.height; y++)
-            {
-                Color pixel = tex.GetPixel(x, y);
-                Vector3 normal = new Vector3(pixel.r, pixel.g, pixel.b);
-                float viewSpaceDepth = pixel.a;
-                viewSpaceDepth = Mathf.Clamp(viewSpaceDepth, MinDistance, MaxDistance);
-
-                int distance = Mathf.RoundToInt(viewSpaceDepth) + Mathf.RoundToInt(UnityEngine.Random.Range(-noise, noise));
-                // distance = Mathf.Clamp(distance, 0, Mathf.RoundToInt(999));
-                distance = ScaleValue(distance, Mathf.RoundToInt(MaxDistance), ImageRadius-1);
-
-                // Check if the surface is parallel enough (blue channel > threshold)
-                if (normal.z > parallelThreshold && distance > 15)
-                {
-
-                    // if (currentRotation > 180){
-                    // Debug.Log($"Max: {MaxDistance}, Distance:{distance}");
-                    // }
-                    UpdateSpoke(distance);
-                    
-                    if (debugSpoke != null)
-                    {
-                        debugSpoke.tex.SetPixel(x, distance, Color.red);
-                    }
-                }
-            }
-
-        }
-        if (debugSpoke != null)
-        {
-            debugSpoke.tex.Apply();
-        }
-
-        Destroy(tex);
     }
 
+    private void UpdateDebugSpoke()
+    {
+        debugSpoke.tex.Reinitialize(1, Mathf.RoundToInt(MaxDistance), TextureFormat.RGB24, false);
+        int rotationIndex = Mathf.RoundToInt(currentRotation / resolution);
+        for (int i = 0; i < ImageRadius; i++)
+        {
+            if (radarPPI[rotationIndex, i] > 0)
+            {
+                debugSpoke.tex.SetPixel(0, i, Color.red);
+            }
+        }
+        debugSpoke.tex.Apply();
+    }
+
+    void OnDestroy()
+    {
+        if (radarBuffer != null)
+        {
+            radarBuffer.Release();
+        }
+        if (inputTexture != null)
+        {
+            inputTexture.Release();
+        }
+    }
     private void RotateCamera()
     {
         currentRotation += resolution; // Increase rotation by 1 degree
@@ -187,14 +230,4 @@ public class RadarScript : MonoBehaviour
         cameraObject.transform.localRotation = Quaternion.Euler(0, currentRotation, 0);
     }
 
-    private void UpdateSpoke(int distance) {
-        radarPPI[Mathf.RoundToInt(currentRotation/resolution), distance]++;
-    }
-
-    public static int ScaleValue(int originalValue, int originalMax, int newMax)
-    {
-        return (int)Math.Round((double)originalValue / originalMax * newMax);
-    }
-
-    
 }

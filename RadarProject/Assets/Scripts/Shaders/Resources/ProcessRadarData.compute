@@ -1,0 +1,58 @@
+#pragma kernel ProcessRadarData
+
+// Define constants
+#define THREAD_GROUP_SIZE 8
+
+// Input textures and buffers
+Texture2D<float4> InputTexture;
+RWStructuredBuffer<int> RadarBuffer;
+
+// Parameters
+float MaxDistance;
+float MinDistance;
+float ParallelThreshold;
+float Noise;
+float Resolution;
+int ImageRadius;
+float CurrentRotation;
+
+// Utility function to scale value
+int ScaleValue(int originalValue, int originalMax, int newMax)
+{
+    return (int)round((float)originalValue / originalMax * newMax);
+}
+
+[numthreads(THREAD_GROUP_SIZE, THREAD_GROUP_SIZE, 1)]
+void ProcessRadarData(uint3 id : SV_DispatchThreadID)
+{
+    // Get the dimensions of the input texture
+    uint width, height;
+    InputTexture.GetDimensions(width, height);
+
+    // Check if the current thread is within the texture bounds
+    if (id.x < width && id.y < height)
+    {
+        // Sample the input texture
+        float4 pixel = InputTexture[id.xy];
+        
+        // Extract normal and depth information
+        float3 normal = pixel.rgb * 2 - 1; // Convert from [0,1] to [-1,1] range
+        float viewSpaceDepth = pixel.a;
+        
+        // Clamp depth to valid range
+        viewSpaceDepth = clamp(viewSpaceDepth, MinDistance, MaxDistance);
+
+        // Calculate distance with noise
+        int distance = (int)round(viewSpaceDepth);
+        
+        // Scale distance to image radius
+        distance = ScaleValue(distance, (int)MaxDistance, ImageRadius - 1);
+
+        // Check if the surface is parallel enough
+        if (distance > 15)
+        {
+            // Atomic increment of the RadarBuffer value
+            InterlockedAdd(RadarBuffer[distance], 1);
+        }
+    }
+}
