@@ -18,10 +18,15 @@ public class CSVManager : MonoBehaviour
     public int minSpeed;                            // The min value in the speed range
     public int maxSpeed;                            // The max value in the speed range
 
-    string filePath = Application.dataPath + "/Scenarios/";
+    string filePath;
     string fileExtension = ".csv";
     string shipListEndName = "ShipList";            // The ship list csv ends with ShipList.csv
     string scenarioSettingsEndName = "Settings.json";
+
+    void Awake()
+    {
+        filePath = Application.persistentDataPath +  "/Scenarios/";
+    }
     
     void Update()
     {

@@ -34,7 +34,7 @@ public class ScenarioManager : MonoBehaviour
     // -------------------------------------------------
     // --------- Scenario Files Path and Names ---------
     // -------------------------------------------------
-    string filePath = Application.dataPath + "/Scenarios/";
+    string filePath;
     string filePattern = @"^Scenario\d+\.csv$";                         // ScenarioX.csv where X is any number
 
     // -------------------------------------------------
@@ -69,9 +69,17 @@ public class ScenarioManager : MonoBehaviour
     // -------------------------------------------------
     public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f;          // 1 Meter/second = 1.943844 Knot
     public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f;         // 1 Knot = 0.5144444 Meter/second
-    
+
+    void Awake()
+    {
+        filePath = Application.persistentDataPath +  "/Scenarios/";
+        if (!Directory.Exists(filePath))
+            Directory.CreateDirectory(filePath);
+    }
+
     void Start()
     {
+
         timeSinceScenarioStart = Time.time;
 
         oceanRenderer = FindObjectOfType<OceanRenderer>();
