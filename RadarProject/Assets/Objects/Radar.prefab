@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7355555965540813741}
   - component: {fileID: 2343841357998920659}
   - component: {fileID: 5066331418530373458}
-  - component: {fileID: 3750575989107645988}
   - component: {fileID: 2477788604964149578}
   - component: {fileID: 7673172289385941278}
+  - component: {fileID: 5634487000444351169}
   m_Layer: 0
   m_Name: Radar
   m_TagString: Untagged
@@ -111,29 +111,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &3750575989107645988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2164017005429563707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63eaf56621f76ef4bad48ac634b919e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HeightRes: 32
-  WidthRes: 2048
-  MaxDistance: 5000
-  MinDistance: 0.15
-  VerticalAngle: 30
-  radarCamera: {fileID: 0}
-  noise: 3
-  ImageRadius: 500
-  normalDepthShader: {fileID: 0}
-  parallelThreshold: 0.1
-  debugSpoke: {fileID: 0}
 --- !u!54 &2477788604964149578
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -199,6 +176,32 @@ MonoBehaviour:
   _turnBias: 0
   _debug:
     _drawQueries: 0
+--- !u!114 &5634487000444351169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2164017005429563707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00bffb968d1fb3fc2bdb345b1dc4a003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radarID: 0
+  path: radar
+  HeightRes: 2048
+  WidthRes: 5
+  MaxDistance: 5000
+  MinDistance: 0.5
+  VerticalAngle: 30
+  radarCamera: {fileID: 0}
+  noise: 5
+  ImageRadius: 500
+  normalDepthShader: {fileID: 4800000, guid: 80276a72e6457210a8488c7156a96948, type: 3}
+  parallelThreshold: 0.45
+  radarComputeShader: {fileID: 7200000, guid: d7843e87c99ec997aa589a355eb3fa87, type: 3}
+  inputTexture: {fileID: 0}
 --- !u!1 &3824348441722823428
 GameObject:
   m_ObjectHideFlags: 0
