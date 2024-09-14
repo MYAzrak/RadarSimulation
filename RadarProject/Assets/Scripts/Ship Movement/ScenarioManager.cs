@@ -293,6 +293,8 @@ public class ScenarioManager : MonoBehaviour
         {
             UnloadAllObjects();
             endScenario = true;
+            currentScenarioIndex = 0;
+            mainMenuController.SetDefaultSimulationInfoPanel();
         }
     }
 
@@ -353,10 +355,7 @@ public class ScenarioManager : MonoBehaviour
                 }
                 else
                 {
-                    loadAllScenarios = false;
-                    currentScenarioIndex = 0;
-                    endScenario = false;
-                    mainMenuController.SetDefaultSimulationInfoPanel();
+                    EndAllScenarios();
                 }
             }
         }

@@ -7,11 +7,8 @@ using WebSocketSharp.Server;
 public class Server : MonoBehaviour
 {
     public static Server serverInstance;
-    public bool start = false;
-
     public WebSocketServer server;
 
-    // Start is called before the first frame update
     void Awake()
     {
         serverInstance = this;
@@ -20,22 +17,8 @@ public class Server : MonoBehaviour
             server = new WebSocketServer("ws://localhost:8080");
     }
 
+    // Start is called before the first frame update
     void Start()
-    {
-        //server.Start();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (start)
-        {
-            StartServer();
-            start = false;
-        }
-    }
-
-    void StartServer()
     {
         server.Start();
     }

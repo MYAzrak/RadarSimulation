@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class RadarManager : MonoBehaviour
 {
+    [Header("Radars Information")]
     [SerializeField] GameObject radarPrefab;
     [SerializeField] int rows = 1;
     [SerializeField] bool generateRadars = false;
@@ -13,7 +14,7 @@ public class RadarManager : MonoBehaviour
     [Header("Debug")]
     [SerializeField] int newRadarID = 0;
 
-    GameObject parentEmptyObject;
+    GameObject parentEmptyObject;                   // Parent Object of the radars to easily rotate and move them
     List<List<int>> radarIDAtRow;
     Dictionary<int, GameObject> radars = new();
 

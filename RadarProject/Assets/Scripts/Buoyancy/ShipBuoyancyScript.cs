@@ -28,10 +28,7 @@ public class ShipBouyancyScript : MonoBehaviour
     float Fp = 0.5f;
     float Fs = 0.5f;
 
-    float shipLength;
     float shipWidth;
-
-    SampleHeightHelper sampleHeightHelper = new();
 
     void Start()
     {
@@ -39,15 +36,9 @@ public class ShipBouyancyScript : MonoBehaviour
         shipTriangles = new ShipTriangles(gameObject);
         shipBouyancyScriptInstance = this;
 
-        shipLength = ship.GetComponent<MeshFilter>().mesh.bounds.size.z;
         shipWidth = ship.GetComponent<MeshFilter>().mesh.bounds.size.x;
 
         StartCoroutine(GenerateUnderwaterMeshCoroutine());
-    }
-
-    void Update()
-    {
-        //shipTriangles.GenerateUnderwaterMesh();
     }
 
     void FixedUpdate()
