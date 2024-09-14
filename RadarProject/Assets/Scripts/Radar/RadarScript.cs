@@ -126,11 +126,6 @@ public class RadarScript : MonoBehaviour
         return sw.ToString();
     }
 
-    void OnApplicationQuit()
-    {
-        server.Stop();
-        Debug.Log("Stopped Server");
-    }
 
     private GameObject SpawnCameras(string name, int Width, int Height, float verticalAngle, RenderTextureFormat format)
     {
