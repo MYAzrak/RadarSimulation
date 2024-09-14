@@ -22,6 +22,24 @@ int ScaleValue(int originalValue, int originalMax, int newMax)
     return (int)round((float)originalValue / originalMax * newMax);
 }
 
+//Radar Equation Parameters
+float TransmittedPower;
+float AntennaGain;
+float Wavelength;
+float SystemLosses;
+
+float CalculateSignalStrength(float distance, float radarCrossSection)
+{
+    float G = pow(10.0, AntennaGain / 10.0);
+    float Ls = pow(10.0, SystemLosses / 10.0);
+    float lambda = Wavelength;
+    
+    float Pr = (TransmittedPower * pow(G, 2) * pow(lambda, 2) * radarCrossSection) /
+               (pow((4 * 3.14159), 3) * pow(distance, 4) * Ls);
+    
+    return 10 * log10(Pr);
+}
+
 [numthreads(THREAD_GROUP_SIZE, THREAD_GROUP_SIZE, 1)]
 void ProcessRadarData(uint3 id : SV_DispatchThreadID)
 {
@@ -46,13 +64,14 @@ void ProcessRadarData(uint3 id : SV_DispatchThreadID)
         int distance = (int)round(viewSpaceDepth);
         
         // Scale distance to image radius
-        distance = ScaleValue(distance, (int)MaxDistance, ImageRadius - 1);
+        distance = ScaleValue(distance, (int)MaxDistance, ImageRadius);
 
         // Check if the surface is parallel enough
-        if (distance > 15)
+        if (distance > 15 && pixel.b > ParallelThreshold)
         {
-            // Atomic increment of the RadarBuffer value
-            InterlockedAdd(RadarBuffer[distance], 1);
+            float signalStrength = CalculateSignalStrength(viewSpaceDepth, 1.0); // Assuming RCS of 1 for now
+            int scaledSignalStrength = (int)((signalStrength + 200) * 2); // Scale to 0-200 range assuming -100 to 0 dB
+            InterlockedAdd(RadarBuffer[distance], scaledSignalStrength);
         }
     }
 }

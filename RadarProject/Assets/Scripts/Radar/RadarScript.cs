@@ -33,8 +33,14 @@ public class RadarScript : MonoBehaviour
 
     [SerializeField] private ComputeShader radarComputeShader;
     private ComputeBuffer radarBuffer;
-    public RenderTexture inputTexture;
+    private RenderTexture inputTexture;
     private int[] tempBuffer;
+
+    [Header("Radar Equation Parameters")]
+    public float transmittedPowerW = 1000f; // Watts
+    public float antennaGainDBi = 30f; // dBi
+    public float wavelengthM = 0.03f; // meters (for 10 GHz)
+    public float systemLossesDB = 3f; // dB
 
 
     public int[,] radarPPI;
@@ -158,6 +164,7 @@ public class RadarScript : MonoBehaviour
     {
         // Clear the buffer for the new rotation
         radarBuffer.SetData(new int[ImageRadius]);
+        tempBuffer = new int[ImageRadius];
 
         // Render the camera to the input texture
         radarCamera.targetTexture = inputTexture;
@@ -173,6 +180,10 @@ public class RadarScript : MonoBehaviour
         radarComputeShader.SetFloat("Resolution", resolution);
         radarComputeShader.SetInt("ImageRadius", ImageRadius);
         radarComputeShader.SetFloat("CurrentRotation", currentRotation);
+        radarComputeShader.SetFloat("TransmittedPower", transmittedPowerW);
+        radarComputeShader.SetFloat("AntennaGain", antennaGainDBi);
+        radarComputeShader.SetFloat("Wavelength", wavelengthM);
+        radarComputeShader.SetFloat("SystemLosses", systemLossesDB);
 
         // Dispatch the compute shader
         int threadGroupsX = Mathf.CeilToInt(WidthRes / 8.0f);
