@@ -222,7 +222,6 @@ public class ScenarioManager : MonoBehaviour
             // The first location is the starting position of the ship
             float x = ship.Value[0].x_coordinates;
             float z = ship.Value[0].z_coordinates;
-            Vector3 shipLocation = new(x, 10, z);
             
             GameObject instance;
             GameObject prefab = null;
@@ -254,10 +253,13 @@ public class ScenarioManager : MonoBehaviour
                 $"Defaulting to the first ship prefab for ship with ID {shipsInformation[ship.Key].Id}");
             }
 
+            float shipHeight = prefab.transform.position.y;
+            Vector3 shipLocation = new(x, shipHeight, z);
+
             // If there are more than one location then rotate the generated ship to face the direction of the next location
             if (ship.Value.Count > 1) 
             {
-                Vector3 heading = new Vector3(ship.Value[1].x_coordinates, 0, ship.Value[1].z_coordinates) - shipLocation;
+                Vector3 heading = new Vector3(ship.Value[1].x_coordinates, shipHeight, ship.Value[1].z_coordinates) - shipLocation;
                 float distance = heading.magnitude;
                 Vector3 direction = heading / distance;
                 
