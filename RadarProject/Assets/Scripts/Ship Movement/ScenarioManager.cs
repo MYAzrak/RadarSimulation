@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -131,7 +132,7 @@ public class ScenarioManager : MonoBehaviour
         timeProviderCustom._time = timeSinceScenarioStart;
     }
 
-    // Read all files in filePath and store the scenarios that match filePattern for the Unity inspector 
+    // Read all files in filePath 
     public List<string> ReadScenarioFiles()
     {
         List<string> files = new();
@@ -157,14 +158,17 @@ public class ScenarioManager : MonoBehaviour
 
     void LoadScenario(string scenario)
     {
+        // Read csv
         csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, ref scenarioSettings, scenario);
         if (!csvReadResult) return;
 
+        // set scenario name
         this.scenario = scenario;
         endScenario = false;
 
         UnloadAllObjects();
         
+        // Reset ships that completed their path
         completedShips = 0;
         
         GenerateWaves(scenarioSettings.waves);
@@ -177,6 +181,7 @@ public class ScenarioManager : MonoBehaviour
         scenarioLabels[1] = $"{scenario} Running..";
         scenarioLabels[2] = $"{scenario} Running...";
 
+        // Reset variables and start scenario
         logMessages = previousLogMessageBool = false;
         timeSinceScenarioStart = 0;
         scenarioCurrentlyRunning = true;
@@ -371,7 +376,7 @@ public class ScenarioManager : MonoBehaviour
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct ShipPrefab
     {
         public ShipType shipType;
@@ -384,7 +389,7 @@ public class ScenarioManager : MonoBehaviour
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     struct WavePrefab
     {
         public Waves waves;

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using WebSocketSharp;
 using WebSocketSharp.Server;
@@ -48,7 +46,7 @@ public class DataService : WebSocketBehavior
         Debug.Log("Client disconnected");
     }
 
-    protected override void OnError(WebSocketSharp.ErrorEventArgs e)
+    protected override void OnError(ErrorEventArgs e)
     {
         Debug.LogError($"WebSocket error: {e.Message}");
     }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
@@ -45,13 +44,16 @@ public class RadarManager : MonoBehaviour
     {
         if (radarPrefab != null)
         {
+            // Create Radar
             GameObject instance = Instantiate(radarPrefab);
 
+            // Update Radar ID for the radar
             RadarScript radarScript = instance.GetComponent<RadarScript>();
             radarScript.radarID = newRadarID;
 
             float diameter = radarScript.MaxDistance * 2;
 
+            // Get the row with the least radars and its index
             float min = math.INFINITY;
             int index = 0;
             for (int k = 0; k < radarIDAtRow.Count; k++)
@@ -63,6 +65,7 @@ public class RadarManager : MonoBehaviour
                 }
             }
 
+            // Create radar at the row with least radars
             int latestRadarID = radarIDAtRow[index].LastOrDefault();
             if (radars.Keys.Contains(latestRadarID))
             {
@@ -80,6 +83,7 @@ public class RadarManager : MonoBehaviour
             // Make the new radar a child of parentEmptyObject
             instance.transform.parent = parentEmptyObject.transform;
 
+            // Keep track of created radars
             radars[newRadarID] = instance;
 
             newRadarID++; // Update for the next radar generated to use

@@ -10,12 +10,6 @@ public class ScenarioMenuUI
     ScenarioManager scenarioManager;
     CSVManager csvManager;
 
-    MinMaxValue<int> randomShipNumber = new(50, 100);
-    MinMaxValue<int> locationsToCreate = new(3, 5);
-    MinMaxValue<float> startingCoordinates = new(-10000, 10000);
-    MinMaxValue<float> randomCoordinates = new(-2000, 2000);
-    MinMaxValue<int> speed = new(11, 20);
-
     public ScenarioMenuUI(VisualElement ui, MainMenuController mainMenuController, ScenarioManager scenarioManager, CSVManager csvManager)
     {
         this.ui = ui;
@@ -73,22 +67,15 @@ public class ScenarioMenuUI
             string filePath = csvManager.GetFilePath();
 
             // Delete the file path and all scenarios in it
-            if (Directory.Exists(filePath)) { Directory.Delete(filePath, true); }
-                Directory.CreateDirectory(filePath);
+            if (Directory.Exists(filePath)) 
+                Directory.Delete(filePath, true);
+                
+            Directory.CreateDirectory(filePath);
 
             // Generate scenarios
             for(int i = 0; i < numOfScenarios; i++)
             {
                 string file = filePath + "Scenario" + i;
-
-                csvManager.numberOfShips = Random.Range(randomShipNumber.Min, randomShipNumber.Max);
-                csvManager.locationsToCreate = Random.Range(locationsToCreate.Min, locationsToCreate.Max);
-                csvManager.minStartingCoordinates = startingCoordinates.Min;
-                csvManager.maxStartingCoordinates = startingCoordinates.Max;
-                csvManager.randomCoordinates = Random.Range(randomCoordinates.Min, randomCoordinates.Max);
-                csvManager.minSpeed = speed.Min;
-                csvManager.maxSpeed = speed.Max;
-                
                 csvManager.GenerateScenario(file);
             }
 
@@ -96,17 +83,5 @@ public class ScenarioMenuUI
 
             ReadScenarios();
         });
-    }
-
-    public struct MinMaxValue<T>
-    {
-        public T Min { get; set; }
-        public T Max { get; set; }
-
-        public MinMaxValue(T min, T max)
-        {
-            Min = min;
-            Max = max;
-        }
     }
 }

@@ -27,6 +27,18 @@ public class CSVManager : MonoBehaviour
     {
         filePath = Application.persistentDataPath +  "/Scenarios/";
     }
+
+    void Start()
+    {
+        // Initialize the parameters with random values
+        numberOfShips = Random.Range(50, 100);
+        locationsToCreate = Random.Range(3, 5);
+        minStartingCoordinates = -10000;
+        maxStartingCoordinates = 10000;
+        randomCoordinates = Random.Range(-2000, 2000);
+        minSpeed = 11;
+        maxSpeed = 20;
+    }
     
     void Update()
     {
