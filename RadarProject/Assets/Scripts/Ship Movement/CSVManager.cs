@@ -103,7 +103,7 @@ public class CSVManager : MonoBehaviour
         // Save the settings to a json file
         ScenarioSettings settings = new()
         {
-            waves = (ScenarioManager.Waves)Random.Range(0, System.Enum.GetNames(typeof(ScenarioManager.Waves)).Length)
+            waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length)
         };
 
         string json = JsonUtility.ToJson(settings, true);

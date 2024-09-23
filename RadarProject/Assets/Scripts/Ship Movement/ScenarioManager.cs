@@ -401,11 +401,5 @@ public class ScenarioManager : MonoBehaviour
             this.prefab = prefab;
         }
     }
-
-    public enum Waves 
-    {
-        Calm,
-        Moderate,
-    }
 }
 

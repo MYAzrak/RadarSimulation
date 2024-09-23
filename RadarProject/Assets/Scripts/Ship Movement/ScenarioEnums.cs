@@ -5,3 +5,9 @@ public enum ShipType
     Container,
     Cargo,
 }
+
+public enum Waves 
+{
+    Calm,
+    Moderate,
+}
