@@ -9,7 +9,7 @@ public class MainMenuController : MonoBehaviour
     ScenarioController scenarioController;
     CSVController csvController;
 
-    ScenarioMenuUI ScenarioMenuUI;
+    public ScenarioMenuUI ScenarioMenuUI;
 
     List<TabViews> tabBtns = new();
 

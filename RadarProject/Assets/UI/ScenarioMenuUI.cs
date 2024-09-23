@@ -43,9 +43,7 @@ public class ScenarioMenuUI
         runScenariosBtn.RegisterCallback((ClickEvent clickEvent) => {
             
             Debug.Log("Running scenarios");
-
-            scenarioController.loadAllScenarios = true;
-            scenarioController.loadScenario = true;
+            scenarioController.LoadAllScenarios();
         });
     }
 
@@ -54,34 +52,13 @@ public class ScenarioMenuUI
         Button generateScenariosBtn = ui.Q("GenerateScenariosBtn") as Button;
 
         generateScenariosBtn.RegisterCallback((ClickEvent clickEvent) => {
-
+            
+            // Get the number of scenarios from the UI
             IntegerField generateScenariosInt = ui.Q("GenerateScenariosInt") as IntegerField;
             int numOfScenarios = int.Parse(generateScenariosInt.text);
 
-            // TODO: Add error messages
-            if (numOfScenarios < 0)
-            {
-                return;
-            }
-            
-            string filePath = csvController.GetFilePath();
-
-            // Delete the file path and all scenarios in it
-            if (Directory.Exists(filePath)) 
-                Directory.Delete(filePath, true);
-                
-            Directory.CreateDirectory(filePath);
-
-            // Generate scenarios
-            for(int i = 0; i < numOfScenarios; i++)
-            {
-                string file = filePath + "Scenario" + i;
-                csvController.GenerateScenario(file);
-            }
-
-            Debug.Log("All scenarios have been generated.");
-
-            ReadScenarios();
+            // Generate the scenarios
+            csvController.GenerateScenarios(numOfScenarios);
         });
     }
 }

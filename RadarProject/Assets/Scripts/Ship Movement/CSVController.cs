@@ -25,6 +25,8 @@ public class CSVController : MonoBehaviour
     string shipListEndName = "ShipList";            // The ship list csv ends with ShipList.csv
     string scenarioSettingsEndName = "Settings.json";
 
+    MainMenuController mainMenuController;
+
     void Awake()
     {
         filePath = Application.persistentDataPath + "/Scenarios/";
@@ -32,6 +34,7 @@ public class CSVController : MonoBehaviour
 
     void Start()
     {
+        mainMenuController = FindObjectOfType<MainMenuController>();
     }
 
     public void GenerateParameters()
@@ -121,6 +124,31 @@ public class CSVController : MonoBehaviour
         File.WriteAllText(file + scenarioSettingsEndName, json);
 
         // Debug.Log("csv has been generated.");
+    }
+
+    public void GenerateScenarios(int numOfScenarios = 1)
+    {
+        // TODO: Add error messages
+        if (numOfScenarios < 0)
+        {
+            return;
+        }
+
+        // Delete the file path and all scenarios in it
+        if (Directory.Exists(filePath)) 
+            Directory.Delete(filePath, true);
+            
+        Directory.CreateDirectory(filePath);
+
+        for (int i = 0; i < numOfScenarios; i++)
+        {
+            string file = filePath + "Scenario" + i;
+            GenerateScenario(file);
+        }
+
+        Debug.Log("All scenarios have been generated.");
+        
+        mainMenuController.ScenarioMenuUI.ReadScenarios();
     }
 
     public bool ReadScenarioCSV(

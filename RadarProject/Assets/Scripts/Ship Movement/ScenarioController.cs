@@ -189,6 +189,12 @@ public class ScenarioController : MonoBehaviour
         Debug.Log($"{scenario} has been loaded");
     }
 
+    public void LoadAllScenarios()
+    {
+        loadAllScenarios = true;
+        loadScenario = true;
+    }
+    
     void UnloadAllObjects()
     {
         // Destroy all generated ships
