@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using Crest;
 using UnityEngine;
 
-public class ScenarioManager : MonoBehaviour
+public class ScenarioController : MonoBehaviour
 {
     [Header("Scenario and Ship Prefabs")]
     public string scenarioFileName;
@@ -51,7 +51,7 @@ public class ScenarioManager : MonoBehaviour
     // -------------------------------------------------
     // ----- Other Classes the Script Makes Use of -----
     // -------------------------------------------------
-    CSVManager csvManager;
+    CSVController csvController;
     MainMenuController mainMenuController;
     OceanRenderer oceanRenderer;
     TimeProviderCustom timeProviderCustom;
@@ -89,7 +89,7 @@ public class ScenarioManager : MonoBehaviour
 
         oceanRenderer.PushTimeProvider(timeProviderCustom);
 
-        csvManager = GetComponent<CSVManager>();
+        csvController = GetComponent<CSVController>();
         mainMenuController = FindObjectOfType<MainMenuController>();
         Time.timeScale = 1f;
 
@@ -159,7 +159,7 @@ public class ScenarioManager : MonoBehaviour
     void LoadScenario(string scenario)
     {
         // Read csv
-        csvReadResult = csvManager.ReadScenarioCSV(ref shipsInformation, ref shipLocations, ref scenarioSettings, scenario);
+        csvReadResult = csvController.ReadScenarioCSV(ref shipsInformation, ref shipLocations, ref scenarioSettings, scenario);
         if (!csvReadResult) return;
 
         // set scenario name

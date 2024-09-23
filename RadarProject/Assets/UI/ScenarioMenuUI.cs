@@ -7,15 +7,15 @@ public class ScenarioMenuUI
 {
     VisualElement ui;
     MainMenuController mainMenuController;
-    ScenarioManager scenarioManager;
-    CSVManager csvManager;
+    ScenarioController scenarioController;
+    CSVController csvController;
 
-    public ScenarioMenuUI(VisualElement ui, MainMenuController mainMenuController, ScenarioManager scenarioManager, CSVManager csvManager)
+    public ScenarioMenuUI(VisualElement ui, MainMenuController mainMenuController, ScenarioController scenarioController, CSVController csvController)
     {
         this.ui = ui;
         this.mainMenuController = mainMenuController;
-        this.scenarioManager = scenarioManager;
-        this.csvManager = csvManager;
+        this.scenarioController = scenarioController;
+        this.csvController = csvController;
     }
 
     public void SetBtnEvents()
@@ -30,7 +30,7 @@ public class ScenarioMenuUI
     {
         Label numOfScenariosLabel = ui.Q("NumOfScenariosLabel") as Label;
 
-        List<string> files = scenarioManager.ReadScenarioFiles();
+        List<string> files = scenarioController.ReadScenarioFiles();
         int numOfScenarios = files.Count;
 
         numOfScenariosLabel.text = $"Found {numOfScenarios} Scenarios";
@@ -44,8 +44,8 @@ public class ScenarioMenuUI
             
             Debug.Log("Running scenarios");
 
-            scenarioManager.loadAllScenarios = true;
-            scenarioManager.loadScenario = true;
+            scenarioController.loadAllScenarios = true;
+            scenarioController.loadScenario = true;
         });
     }
 
@@ -64,7 +64,7 @@ public class ScenarioMenuUI
                 return;
             }
             
-            string filePath = csvManager.GetFilePath();
+            string filePath = csvController.GetFilePath();
 
             // Delete the file path and all scenarios in it
             if (Directory.Exists(filePath)) 
@@ -76,7 +76,7 @@ public class ScenarioMenuUI
             for(int i = 0; i < numOfScenarios; i++)
             {
                 string file = filePath + "Scenario" + i;
-                csvManager.GenerateScenario(file);
+                csvController.GenerateScenario(file);
             }
 
             Debug.Log("All scenarios have been generated.");

@@ -3,7 +3,7 @@ using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class RadarManager : MonoBehaviour
+public class RadarController : MonoBehaviour
 {
     [Header("Radars Information")]
     [SerializeField] GameObject radarPrefab;

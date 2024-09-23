@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class CSVManager : MonoBehaviour
+public class CSVController : MonoBehaviour
 {
     [Header("Random CSV Generator")]
     public string fileName;
