@@ -7,13 +7,6 @@ using UnityEngine;
 // Values that define our map
 public class MapGenerator : MonoBehaviour
 {
-    // Wether we want to see the NoiseMap or the ColorMap
-    public enum DrawMode
-    {
-        NoiseMap,
-        ColorMap,
-        Mesh
-    };
     public DrawMode drawMode;
 
     public int mapWidth;
