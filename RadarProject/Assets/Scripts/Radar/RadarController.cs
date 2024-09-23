@@ -7,7 +7,7 @@ public class RadarController : MonoBehaviour
 {
     [Header("Radars Information")]
     [SerializeField] GameObject radarPrefab;
-    [SerializeField] int rows = 1;
+    [SerializeField] public int rows = 1;
     [SerializeField] bool generateRadars = false;
 
     [Header("Debug")]
@@ -23,8 +23,8 @@ public class RadarController : MonoBehaviour
         parentEmptyObject = new("Radars");
 
         radarIDAtRow = new();
-        
-        for(int i = 0; i < rows; i++)
+
+        for (int i = 0; i < rows; i++)
         {
             radarIDAtRow.Add(new());
         }
@@ -40,7 +40,7 @@ public class RadarController : MonoBehaviour
         }
     }
 
-    void GenerateRadar()
+    public void GenerateRadar()
     {
         if (radarPrefab != null)
         {

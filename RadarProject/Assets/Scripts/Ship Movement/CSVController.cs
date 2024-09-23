@@ -9,6 +9,8 @@ public class CSVController : MonoBehaviour
     public string fileName;
     public bool generateRandomCSV = false;
 
+    public bool generateRandomParameters = true;
+
     [Header("Random CSV Parameters")]
     public int numberOfShips;                       // Number of ships to generate
     public int locationsToCreate;                   // Number of locations the ship will visit
@@ -25,21 +27,29 @@ public class CSVController : MonoBehaviour
 
     void Awake()
     {
-        filePath = Application.persistentDataPath +  "/Scenarios/";
+        filePath = Application.persistentDataPath + "/Scenarios/";
     }
 
     void Start()
     {
-        // Initialize the parameters with random values
-        numberOfShips = Random.Range(50, 100);
-        locationsToCreate = Random.Range(3, 5);
-        minStartingCoordinates = -10000;
-        maxStartingCoordinates = 10000;
-        randomCoordinates = Random.Range(-2000, 2000);
-        minSpeed = 11;
-        maxSpeed = 20;
     }
-    
+
+    public void GenerateParameters()
+    {
+        if (generateRandomParameters)
+        {
+            // Initialize the parameters with random values
+            numberOfShips = Random.Range(50, 100);
+            locationsToCreate = Random.Range(3, 5);
+            minStartingCoordinates = -10000;
+            maxStartingCoordinates = 10000;
+            randomCoordinates = Random.Range(-2000, 2000);
+            minSpeed = 11;
+            maxSpeed = 20;
+        }
+
+    }
+
     void Update()
     {
         if (generateRandomCSV)
@@ -49,7 +59,7 @@ public class CSVController : MonoBehaviour
             generateRandomCSV = false;
         }
     }
-    
+
     public Vector3[] GeneratePath(out int[] speed)
     {
         Vector3[] points = new Vector3[locationsToCreate];
@@ -66,7 +76,7 @@ public class CSVController : MonoBehaviour
             x = points[i - 1].x + Random.Range(-randomCoordinates, randomCoordinates);
             z = points[i - 1].z + Random.Range(-randomCoordinates, randomCoordinates);
             points[i] = new Vector3(x, 0, z);
-            
+
             speed[i] = Random.Range(minSpeed, maxSpeed);
         }
 
@@ -75,7 +85,8 @@ public class CSVController : MonoBehaviour
 
     public void GenerateScenario(string file)
     {
-        if (File.Exists(file + fileExtension) || File.Exists(file + shipListEndName + fileExtension)) {
+        if (File.Exists(file + fileExtension) || File.Exists(file + shipListEndName + fileExtension))
+        {
             Debug.Log($"{file + fileExtension} or {file + shipListEndName + fileExtension} already exists.");
             return;
         }
@@ -113,8 +124,8 @@ public class CSVController : MonoBehaviour
     }
 
     public bool ReadScenarioCSV(
-        ref Dictionary<int, ShipInformation> shipsInformation, 
-        ref Dictionary<int, List<ShipCoordinates>> shipLocations, 
+        ref Dictionary<int, ShipInformation> shipsInformation,
+        ref Dictionary<int, List<ShipCoordinates>> shipLocations,
         ref ScenarioSettings scenarioSettings,
         string scenarioFileName)
     {
@@ -139,7 +150,7 @@ public class CSVController : MonoBehaviour
                         shipsInformation.Clear();
                         return false;
                     }
-                    
+
                     int id = int.Parse(value[0]);
 
                     // Keep track of ship IDs in case there are duplicate IDs in the csv
@@ -157,7 +168,7 @@ public class CSVController : MonoBehaviour
                     data = streamReader.ReadLine();
                 }
             }
-            
+
             // Read each ship locations and speed
             using (StreamReader streamReader = new(filePath + scenarioFileName + fileExtension))
             {
@@ -174,11 +185,11 @@ public class CSVController : MonoBehaviour
                         shipLocations.Clear();
                         return false;
                     }
-                    
+
                     int id = int.Parse(value[0]);
 
                     ShipCoordinates shipCoordinates = new(float.Parse(value[1]), float.Parse(value[2]), float.Parse(value[3]));
-                    
+
                     // Save all locations for each ship in a dictionary
                     if (shipLocations.ContainsKey(id))
                         shipLocations[id].Add(shipCoordinates);
