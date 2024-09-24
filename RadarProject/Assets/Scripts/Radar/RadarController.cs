@@ -9,6 +9,7 @@ public class RadarController : MonoBehaviour
     [SerializeField] GameObject radarPrefab;
     public int rows = 1;
     public int cols = 1;
+    public int distanceBetweenRadars = 50;
 
     [Header("Generate Radars")]
     [SerializeField] bool generateRadars = false;
@@ -21,6 +22,8 @@ public class RadarController : MonoBehaviour
     List<List<int>> radarIDAtRow;
     Dictionary<int, GameObject> radars = new();
 
+    MainMenuController mainMenuController;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +35,8 @@ public class RadarController : MonoBehaviour
         {
             radarIDAtRow.Add(new());
         }
+
+        mainMenuController = FindObjectOfType<MainMenuController>();
     }
 
     // Update is called once per frame
@@ -61,8 +66,6 @@ public class RadarController : MonoBehaviour
         RadarScript radarScript = instance.GetComponent<RadarScript>();
         radarScript.radarID = newRadarID;
 
-        float diameter = radarScript.MaxDistance * 2;
-
         // Get the row with the least radars and its index
         float min = math.INFINITY;
         int index = 0;
@@ -81,11 +84,11 @@ public class RadarController : MonoBehaviour
         {
             Vector3 latestRadarPosition = radars[latestRadarID].transform.position;
 
-            // TODO: Replace 20 with diameter
+            // If min == 0 then the radar is on the same row
             if (min == 0)
-                instance.transform.position = new Vector3(latestRadarPosition.x, 0, latestRadarPosition.z + (20 * index));
+                instance.transform.position = new Vector3(latestRadarPosition.x, 0, latestRadarPosition.z + (distanceBetweenRadars * index));
             else
-                instance.transform.position = new Vector3(latestRadarPosition.x + 20, 0, latestRadarPosition.z);
+                instance.transform.position = new Vector3(latestRadarPosition.x + distanceBetweenRadars, 0, latestRadarPosition.z);
         }
 
         radarIDAtRow[index].Add(newRadarID);
@@ -99,12 +102,27 @@ public class RadarController : MonoBehaviour
         newRadarID++; // Update for the next radar generated to use
     }
 
-    public void GenerateRadars(int numOfRadars)
+    public void GenerateRadars(int numOfRadars = 1)
     {
+        UnloadRadars();
+
+        // Generate the new radars
         for (int i = 0; i < numOfRadars; i++)
         {
             GenerateRadar();
         }
-        Debug.Log($"{numOfRadars} radars have been generated");
+
+        mainMenuController.SetRadarsLabel(numOfRadars);
+        //Debug.Log($"{numOfRadars} radars have been generated");
+    }
+
+    public void UnloadRadars()
+    {
+        foreach (KeyValuePair<int, GameObject> entry in radars)
+        {
+            Destroy(entry.Value);
+        }
+
+        newRadarID = 0;
     }
 }
