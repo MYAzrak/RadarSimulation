@@ -7,8 +7,12 @@ public class RadarController : MonoBehaviour
 {
     [Header("Radars Information")]
     [SerializeField] GameObject radarPrefab;
-    [SerializeField] public int rows = 1;
+    public int rows = 1;
+    public int cols = 1;
+
+    [Header("Generate Radars")]
     [SerializeField] bool generateRadars = false;
+    [SerializeField] bool generateOneRadar = false;
 
     [Header("Debug")]
     [SerializeField] int newRadarID = 0;
@@ -33,60 +37,74 @@ public class RadarController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (generateRadars)
+        if (generateOneRadar)
         {
             GenerateRadar();
+            generateOneRadar = false;
+        }
+        else if (generateRadars)
+        {
+            int numOfRadars = rows * cols;
+            GenerateRadars(numOfRadars);
             generateRadars = false;
         }
     }
 
     public void GenerateRadar()
     {
-        if (radarPrefab != null)
+        if (radarPrefab == null) return;
+        
+        // Create Radar
+        GameObject instance = Instantiate(radarPrefab);
+
+        // Update Radar ID for the radar
+        RadarScript radarScript = instance.GetComponent<RadarScript>();
+        radarScript.radarID = newRadarID;
+
+        float diameter = radarScript.MaxDistance * 2;
+
+        // Get the row with the least radars and its index
+        float min = math.INFINITY;
+        int index = 0;
+        for (int k = 0; k < radarIDAtRow.Count; k++)
         {
-            // Create Radar
-            GameObject instance = Instantiate(radarPrefab);
-
-            // Update Radar ID for the radar
-            RadarScript radarScript = instance.GetComponent<RadarScript>();
-            radarScript.radarID = newRadarID;
-
-            float diameter = radarScript.MaxDistance * 2;
-
-            // Get the row with the least radars and its index
-            float min = math.INFINITY;
-            int index = 0;
-            for (int k = 0; k < radarIDAtRow.Count; k++)
+            if (radarIDAtRow[k].Count < min)
             {
-                if (radarIDAtRow[k].Count < min)
-                {
-                    min = radarIDAtRow[k].Count;
-                    index = k;
-                }
+                min = radarIDAtRow[k].Count;
+                index = k;
             }
-
-            // Create radar at the row with least radars
-            int latestRadarID = radarIDAtRow[index].LastOrDefault();
-            if (radars.Keys.Contains(latestRadarID))
-            {
-                Vector3 latestRadarPosition = radars[latestRadarID].transform.position;
-
-                // TODO: Replace 20 with diameter
-                if (min == 0)
-                    instance.transform.position = new Vector3(latestRadarPosition.x, 0, latestRadarPosition.z + (20 * index));
-                else
-                    instance.transform.position = new Vector3(latestRadarPosition.x + 20, 0, latestRadarPosition.z);
-            }
-
-            radarIDAtRow[index].Add(newRadarID);
-
-            // Make the new radar a child of parentEmptyObject
-            instance.transform.parent = parentEmptyObject.transform;
-
-            // Keep track of created radars
-            radars[newRadarID] = instance;
-
-            newRadarID++; // Update for the next radar generated to use
         }
+
+        // Create radar at the row with least radars
+        int latestRadarID = radarIDAtRow[index].LastOrDefault();
+        if (radars.Keys.Contains(latestRadarID))
+        {
+            Vector3 latestRadarPosition = radars[latestRadarID].transform.position;
+
+            // TODO: Replace 20 with diameter
+            if (min == 0)
+                instance.transform.position = new Vector3(latestRadarPosition.x, 0, latestRadarPosition.z + (20 * index));
+            else
+                instance.transform.position = new Vector3(latestRadarPosition.x + 20, 0, latestRadarPosition.z);
+        }
+
+        radarIDAtRow[index].Add(newRadarID);
+
+        // Make the new radar a child of parentEmptyObject
+        instance.transform.parent = parentEmptyObject.transform;
+
+        // Keep track of created radars
+        radars[newRadarID] = instance;
+
+        newRadarID++; // Update for the next radar generated to use
+    }
+
+    public void GenerateRadars(int numOfRadars)
+    {
+        for (int i = 0; i < numOfRadars; i++)
+        {
+            GenerateRadar();
+        }
+        Debug.Log($"{numOfRadars} radars have been generated");
     }
 }
