@@ -91,6 +91,9 @@ public class ShipBouyancyScript : MonoBehaviour
         force.x = 0f;
         force.z = 0f;
 
+        if (float.IsNaN(force.x) || float.IsNaN(force.y) || float.IsNaN(force.z))
+            return Vector3.zero;
+
         return force;
     }
 

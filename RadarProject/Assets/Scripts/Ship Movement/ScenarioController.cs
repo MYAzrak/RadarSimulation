@@ -314,7 +314,6 @@ public class ScenarioController : MonoBehaviour
         {
             UnloadAllObjects();
             endScenario = true;
-            currentScenarioIndex = 0;
             mainMenuController.SetDefaultSimulationInfoPanel();
         }
     }
@@ -335,7 +334,11 @@ public class ScenarioController : MonoBehaviour
                 for (int i = 0; i < scenarioLabels.Length; i++)
                 {
                     // TODO: Find a better solution since it is possible for SetDefaultSimulationInfoPanel() to be replaced
-                    if (!scenarioCurrentlyRunning) break; 
+                    if (!scenarioCurrentlyRunning) 
+                    {
+                        mainMenuController.SetDefaultSimulationInfoPanel();
+                        break;
+                    } 
 
                     mainMenuController.SetScenarioRunningLabel(scenarioLabels[i]);
                     yield return new WaitForSeconds(1);
@@ -360,23 +363,24 @@ public class ScenarioController : MonoBehaviour
                     mainMenuController.SetDefaultSimulationInfoPanel();
                     continue;
                 }
-    
-                for (int i = 5; i > 0; i--)
-                {
-                    mainMenuController.SetScenarioRunningLabel($"Scenario has completed.\nRunning next scenario in {i}.");
-                    yield return new WaitForSeconds(1);
-                }
 
                 currentScenarioIndex++;
 
                 if (currentScenarioIndex < scenarios.Count)
                 {
+                    for (int i = 5; i > 0; i--)
+                    {
+                        mainMenuController.SetScenarioRunningLabel($"Scenario has completed.\nRunning next scenario in {i}.");
+                        yield return new WaitForSeconds(1);
+                    }
+
                     scenario = scenarios[currentScenarioIndex];
                     LoadScenario(scenario);
                 }
                 else
                 {
                     EndAllScenarios();
+                    currentScenarioIndex = 0;
                 }
             }
         }

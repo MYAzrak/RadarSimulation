@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c389d35701a4c61c7981491d1eee7d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 500
+  movementSpeed: 100
   rotationSpeed: 100
   invertedVerticalMovement: 0
 --- !u!114 &1422562301
@@ -547,6 +547,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: 
   generateRandomCSV: 0
+  generateRandomParameters: 1
   numberOfShips: 5
   locationsToCreate: 10
   minStartingCoordinates: 2000
@@ -625,9 +626,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8096b70869107c48ebcf034ed2b67d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radarPrefab: {fileID: 2164017005429563707, guid: 110a713ae6e389da29fb921b89c79845, type: 3}
+  radarPrefab: {fileID: 1562314535405687953, guid: 3b15d8a37689cf3cdb0844e0ea411b03, type: 3}
   rows: 4
+  cols: 1
+  distanceBetweenRadars: 50
   generateRadars: 0
+  generateOneRadar: 0
   newRadarID: 0
 --- !u!114 &2106282671
 MonoBehaviour:

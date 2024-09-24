@@ -63,7 +63,7 @@ public class RadarController : MonoBehaviour
         GameObject instance = Instantiate(radarPrefab);
 
         // Update Radar ID for the radar
-        RadarScript radarScript = instance.GetComponent<RadarScript>();
+        RadarScript radarScript = instance.GetComponentInChildren<RadarScript>();
         radarScript.radarID = newRadarID;
 
         // Get the row with the least radars and its index
@@ -121,6 +121,14 @@ public class RadarController : MonoBehaviour
         foreach (KeyValuePair<int, GameObject> entry in radars)
         {
             Destroy(entry.Value);
+        }
+        radars.Clear();
+        
+        radarIDAtRow.Clear();
+
+        for (int i = 0; i < rows; i++)
+        {
+            radarIDAtRow.Add(new());
         }
 
         newRadarID = 0;
