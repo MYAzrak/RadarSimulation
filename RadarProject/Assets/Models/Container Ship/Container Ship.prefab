@@ -106,7 +106,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6254869662381877804}
   serializedVersion: 4
-  m_Mass: 10000000
+  m_Mass: 40000000
   m_Drag: 1
   m_AngularDrag: 0.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -180,6 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb1c63a3c65659be9cafce08b9cde57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplifyForce: 0.015
-  minWaitTime: 0.1
-  maxWaitTime: 0.2
+  amplifyForce: 0.02
+  timeToWait: 0.1
+  rotationSpeed: 2

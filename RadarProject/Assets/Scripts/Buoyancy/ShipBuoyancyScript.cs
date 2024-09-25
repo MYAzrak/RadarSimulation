@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Crest;
 using System.Collections;
+using UnityEngine.Profiling;
 
 public class ShipBouyancyScript : MonoBehaviour
 {
     public static ShipBouyancyScript shipBouyancyScriptInstance;
 
     [SerializeField] float amplifyForce = 0.5f;
-    
-    [Header("Generating Underwater Mesh")]
-    [SerializeField] float minWaitTime = 0.1f;
-    [SerializeField] float maxWaitTime = 0.2f;
+    public float timeToWait = 0.1f;
+    public float rotationSpeed = 2.0f;
 
     ShipTriangles shipTriangles;
     Rigidbody ship;
     float waterDensity = 1025f; // Density of the UAE water
 
-    // Stabilizing Forces
+    Vector3[] forces;               // Forces to apply
+    bool recalculateForces = false; // Recaulate forces when needed for performances
 
+    // Stabilizing Forces
     // For PressureDragForce
     float CPD1 = 10f;
     float CPD2 = 10f;
@@ -47,7 +48,7 @@ public class ShipBouyancyScript : MonoBehaviour
 
         AddUnderWaterForces();
 
-        // Artifically align the ship upward because sometimes it sinks for some reason
+        // Align the ship upward to avoid sinking
         AlignShipUpward();
     }
 
@@ -56,8 +57,31 @@ public class ShipBouyancyScript : MonoBehaviour
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSecondsRealtime(UnityEngine.Random.Range(minWaitTime, maxWaitTime)); 
+            yield return new WaitForSeconds(timeToWait); 
             shipTriangles.GenerateUnderwaterMesh();
+            recalculateForces = true;
+        }
+    }
+
+    void RecalculateForces()
+    {
+        List<TriangleData> underWaterTriangleData = shipTriangles.underWaterTriangleData;
+        forces = new Vector3[shipTriangles.underWaterTriangleData.Count];
+
+        for (int i = 0; i < underWaterTriangleData.Count; i++)
+        {
+            TriangleData triangleData = underWaterTriangleData[i];
+
+            Vector3 force = Vector3.zero;
+            Vector3 buoyancyForce = BuoyancyForce(waterDensity, triangleData);
+            force += buoyancyForce;
+
+            Vector3 pressureDragForce = PressureDragForce(triangleData);
+            force += pressureDragForce;
+
+            force *= amplifyForce;
+
+            forces[i] = force;
         }
     }
 
@@ -70,16 +94,16 @@ public class ShipBouyancyScript : MonoBehaviour
         {
             TriangleData triangleData = underWaterTriangleData[i];
 
-            Vector3 forces = Vector3.zero;
+            Vector3 force = Vector3.zero;
             Vector3 buoyancyForce = BuoyancyForce(waterDensity, triangleData);
-            forces += buoyancyForce;
+            force += buoyancyForce;
 
             Vector3 pressureDragForce = PressureDragForce(triangleData);
-            forces += pressureDragForce;
+            force += pressureDragForce;
 
-            forces *= amplifyForce;
+            force *= amplifyForce;
 
-            ship.AddForceAtPosition(forces, triangleData.center);
+            ship.AddForceAtPosition(force, triangleData.center);
         }
     }
 
@@ -90,6 +114,9 @@ public class ShipBouyancyScript : MonoBehaviour
 
         force.x = 0f;
         force.z = 0f;
+
+        if (float.IsNaN(force.x) || float.IsNaN(force.y) || float.IsNaN(force.z))
+            return Vector3.zero;
 
         return force;
     }
@@ -118,7 +145,7 @@ public class ShipBouyancyScript : MonoBehaviour
     void AlignShipUpward()
     {
         Quaternion newRotation = Quaternion.LookRotation(ship.transform.forward, Vector3.up);
-        ship.transform.rotation = Quaternion.Slerp(ship.transform.rotation, newRotation, Time.deltaTime);
+        ship.transform.rotation = Quaternion.Slerp(ship.transform.rotation, newRotation, Time.deltaTime * rotationSpeed);
     }
 
     public float[] GetDistanceToWater(Vector3[] _queryPoints)

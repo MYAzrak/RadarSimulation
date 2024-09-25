@@ -5,12 +5,14 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import threading
 import argparse
+import time
 
 fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(projection='polar'))
 im = None
 cbar = None
 
 radarID = None
+reconnect_delay = 5  # Delay in seconds before attempting to reconnect
 
 def create_ppi_plot(data, azimuth, range_bins, vmin=None, vmax=None):
     global im, cbar
@@ -63,12 +65,19 @@ def on_open(ws):
     print("Connection opened")
 
 def run_websocket():
-    ws = websocket.WebSocketApp("ws://localhost:8080/radar" + str(radarID),
-                                on_message=on_message,
-                                on_error=on_error,
-                                on_close=on_close,
-                                on_open=on_open)
-    ws.run_forever()
+    while True:
+        try:
+            ws = websocket.WebSocketApp(f"ws://localhost:8080/radar{radarID}",
+                                        on_message=on_message,
+                                        on_error=on_error,
+                                        on_close=on_close,
+                                        on_open=on_open)
+            ws.run_forever()
+        except Exception as e:
+            print(f"WebSocket error: {e}")
+        
+        print(f"Connection lost. Reconnecting in {reconnect_delay} seconds...")
+        time.sleep(reconnect_delay)
 
 def update_plot(frame):
     global latest_data

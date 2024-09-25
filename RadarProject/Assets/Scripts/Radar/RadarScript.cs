@@ -50,7 +50,13 @@ public class RadarScript : MonoBehaviour
         path += radarID;
 
         server = Server.serverInstance.server;
-        server.AddWebSocketService<DataService>($"/{path}");
+        
+        // If service not found then add it 
+        // Allows us to reuse it for different radars when loading and unloading them
+        if (!server.WebSocketServices.TryGetServiceHost($"/{path}", out _))
+        {
+            server.AddWebSocketService<DataService>($"/{path}");
+        }
 
         radarPPI = new int[Mathf.RoundToInt(360 / resolution), ImageRadius];
         if (normalDepthShader == null)
@@ -139,7 +145,7 @@ public class RadarScript : MonoBehaviour
         CameraObject.name = name;
         CameraObject.transform.SetParent(transform);
         CameraObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        CameraObject.transform.localPosition = new Vector3(0, 1, 0);
+        CameraObject.transform.localPosition = new Vector3(0, 0.1f, 0);
         CameraObject.AddComponent<Camera>();
         Camera cam = CameraObject.GetComponent<Camera>();
 

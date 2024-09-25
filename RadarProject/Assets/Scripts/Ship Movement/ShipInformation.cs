@@ -27,6 +27,6 @@ public class ShipInformation
 
     public float GetSpeedInMetersPerSecond(float knot)
     {
-        return knot * ScenarioManager.KNOTS_TO_METERS_PER_SECOND;
+        return knot * ScenarioController.KNOTS_TO_METERS_PER_SECOND;
     }
 }

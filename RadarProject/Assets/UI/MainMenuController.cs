@@ -6,10 +6,10 @@ public class MainMenuController : MonoBehaviour
 {
     MainMenuController instance;
     VisualElement ui;
-    ScenarioManager scenarioManager;
-    CSVManager csvManager;
+    ScenarioController scenarioController;
+    CSVController csvController;
 
-    ScenarioMenuUI ScenarioMenuUI;
+    public ScenarioMenuUI ScenarioMenuUI;
 
     List<TabViews> tabBtns = new();
 
@@ -23,8 +23,8 @@ public class MainMenuController : MonoBehaviour
     {
         instance = this;
 
-        scenarioManager = FindObjectOfType<ScenarioManager>();
-        csvManager = FindObjectOfType<CSVManager>();
+        scenarioController = FindObjectOfType<ScenarioController>();
+        csvController = FindObjectOfType<CSVController>();
         ui = GetComponent<UIDocument>().rootVisualElement;
 
         menuPanel = ui.Q("Panel");
@@ -33,7 +33,7 @@ public class MainMenuController : MonoBehaviour
         simulationInfoPanel = ui.Q("SimulationInfoPanel");
         simulationInfoPanel.visible = false;
 
-        ScenarioMenuUI = new(ui, instance, scenarioManager, csvManager);
+        ScenarioMenuUI = new(ui, instance, scenarioController, csvController);
 
         SetTabs();
         ViewToEnable(tabBtns[0].button);
@@ -95,7 +95,7 @@ public class MainMenuController : MonoBehaviour
         numOfShipsLabel.text = "0 Ships";
 
         Label numOfRadarsLabel = ui.Q("NumOfRadarsLabel") as Label;
-        numOfRadarsLabel.text = "0 Radars (WIP)";
+        numOfRadarsLabel.text = "0 Radars";
 
         Label waveConditionLabel = ui.Q("WaveConditionLabel") as Label;
         waveConditionLabel.text = "Waves: None";
@@ -142,18 +142,18 @@ public class MainMenuController : MonoBehaviour
 
             if (paused)
             {
-                scenarioManager.timeScale = 1;
+                scenarioController.timeScale = 1;
                 pauseSimulation.text = "Pause";
                 paused = false;
             }
             else
             {
-                scenarioManager.timeScale = 0;
+                scenarioController.timeScale = 0;
                 pauseSimulation.text = "Resume";
                 paused = true;
             }
             
-            scenarioManager.updateTimeScale = true;
+            scenarioController.updateTimeScale = true;
         });
     }
 
@@ -161,12 +161,12 @@ public class MainMenuController : MonoBehaviour
     {
         Button endScenarioBtn = ui.Q("EndScenarioBtn") as Button; 
         endScenarioBtn.RegisterCallback((ClickEvent clickEvent) => {
-            scenarioManager.EndScenario();
+            scenarioController.EndScenario();
         });
 
         Button terminateSimulation = ui.Q("TerminateSimulation") as Button;
         terminateSimulation.RegisterCallback((ClickEvent clickEvent) => {
-            scenarioManager.EndAllScenarios();
+            scenarioController.EndAllScenarios();
         });
     }
 

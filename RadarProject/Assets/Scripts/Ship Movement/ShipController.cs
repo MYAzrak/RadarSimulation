@@ -22,14 +22,14 @@ public class ShipController : MonoBehaviour
     new Rigidbody rigidbody;
     Transform shipTransform;
     public ShipInformation shipInformation;
-    ScenarioManager scenarioManager;
+    ScenarioController scenarioController;
     bool reportedCompletion = false;
 
     void Start()
     {
         rigidbody = GetComponentInChildren<Rigidbody>() ?? GetComponent<Rigidbody>();
         shipTransform = transform;
-        scenarioManager = FindObjectOfType<ScenarioManager>();
+        scenarioController = FindObjectOfType<ScenarioController>();
         StartCoroutine(LogShipEvents());
     }
 
@@ -73,7 +73,7 @@ public class ShipController : MonoBehaviour
         {
             yield return new WaitForSeconds(timeToWaitBeforeLogging);
             
-            float speed = rigidbody.velocity.magnitude * ScenarioManager.METERS_PER_SECOND_TO_KNOTS;
+            float speed = rigidbody.velocity.magnitude * ScenarioController.METERS_PER_SECOND_TO_KNOTS;
             Vector3 position = rigidbody.position;
 
             shipInformation.AddToHistory(speed, position);
@@ -84,7 +84,7 @@ public class ShipController : MonoBehaviour
             // Report to scenario manager that it has completed
             if (!reportedCompletion && indexOfLocationToVisit >= locationsToVisit.Count)
             {
-                scenarioManager.ReportCompletion();
+                scenarioController.ReportCompletion();
                 reportedCompletion = true;
             }
         }

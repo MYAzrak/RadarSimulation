@@ -1,0 +1,13 @@
+Model Information:
+* title:	Ocean Buoy (wo Branding)
+* source:	https://sketchfab.com/3d-models/ocean-buoy-wo-branding-7eb4fef6a87649a6a3d01391ebd1cac2
+* author:	ucdavisterc (https://sketchfab.com/ucdavisterc)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Ocean Buoy (wo Branding)" (https://sketchfab.com/3d-models/ocean-buoy-wo-branding-7eb4fef6a87649a6a3d01391ebd1cac2) by ucdavisterc (https://sketchfab.com/ucdavisterc) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+
+Modified: Removed the top part of the buoy
