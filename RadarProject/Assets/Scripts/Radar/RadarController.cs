@@ -1,7 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Crest;
+using Crest.Examples;
 using Unity.Mathematics;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class RadarController : MonoBehaviour
 {
@@ -10,6 +15,7 @@ public class RadarController : MonoBehaviour
     public int rows = 1;
     public int cols = 1;
     public int distanceBetweenRadars = 50;
+    public int numOfRadars;
 
     [Header("Generate Radars")]
     [SerializeField] bool generateRadars = false;
@@ -20,9 +26,10 @@ public class RadarController : MonoBehaviour
 
     GameObject parentEmptyObject;                   // Parent Object of the radars to easily rotate and move them
     List<List<int>> radarIDAtRow;
-    Dictionary<int, GameObject> radars = new();
+    public Dictionary<int, GameObject> radars = new();
 
     MainMenuController mainMenuController;
+    SampleHeightHelper sampleHeightHelper = new();
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +56,8 @@ public class RadarController : MonoBehaviour
         }
         else if (generateRadars)
         {
-            int numOfRadars = rows * cols;
+            if (numOfRadars == 0)
+                numOfRadars = rows * cols;
             GenerateRadars(numOfRadars);
             generateRadars = false;
         }
@@ -114,6 +122,37 @@ public class RadarController : MonoBehaviour
 
         mainMenuController.SetRadarsLabel(numOfRadars);
         //Debug.Log($"{numOfRadars} radars have been generated");
+    }
+
+    public async void UpdateRadarsPositions()
+    {
+        foreach (KeyValuePair<int, GameObject> entry in radars)
+        {
+            Rigidbody rb = entry.Value.GetComponent<Rigidbody>();
+            rb.isKinematic = true;
+
+            Vector3 position = entry.Value.transform.position;
+            sampleHeightHelper.Init(position, 0, true);
+
+            float o_height = await WaitForSampleAsync();
+
+            entry.Value.transform.position = new Vector3(position.x, o_height, position.z);
+
+            rb.isKinematic = false;
+        }
+    }
+
+    async Task<float> WaitForSampleAsync()
+    {
+        float o_height;
+        
+        // Wait until we get a valid sample height
+        while (!sampleHeightHelper.Sample(out o_height))
+        {
+            await Task.Delay(2);
+        }
+
+        return o_height;
     }
 
     public void UnloadRadars()

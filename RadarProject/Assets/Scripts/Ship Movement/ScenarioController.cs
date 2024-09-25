@@ -51,6 +51,7 @@ public class ScenarioController : MonoBehaviour
     // -------------------------------------------------
     // ----- Other Classes the Script Makes Use of -----
     // -------------------------------------------------
+    RadarController radarController;
     CSVController csvController;
     MainMenuController mainMenuController;
     OceanRenderer oceanRenderer;
@@ -90,6 +91,7 @@ public class ScenarioController : MonoBehaviour
         oceanRenderer.PushTimeProvider(timeProviderCustom);
 
         csvController = GetComponent<CSVController>();
+        radarController = GetComponent<RadarController>();
         mainMenuController = FindObjectOfType<MainMenuController>();
         Time.timeScale = 1f;
 
@@ -170,8 +172,9 @@ public class ScenarioController : MonoBehaviour
         
         // Reset ships that completed their path
         completedShips = 0;
-        
+
         GenerateWaves(scenarioSettings.waves);
+        radarController.UpdateRadarsPositions();
         GenerateShips();
 
         mainMenuController.SetShipsLabel(generatedShips.Count);
@@ -204,7 +207,7 @@ public class ScenarioController : MonoBehaviour
         }
 
         // Destroy wave
-        Destroy(wave);
+        Destroy(wave);  
 
         generatedShips.Clear();
     }
