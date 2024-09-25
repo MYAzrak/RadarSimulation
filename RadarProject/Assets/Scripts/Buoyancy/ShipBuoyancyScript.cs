@@ -10,6 +10,8 @@ public class ShipBouyancyScript : MonoBehaviour
     public static ShipBouyancyScript shipBouyancyScriptInstance;
 
     [SerializeField] float amplifyForce = 0.5f;
+    public float timeToWait = 0.1f;
+    public float rotationSpeed = 2.0f;
 
     ShipTriangles shipTriangles;
     Rigidbody ship;
@@ -44,14 +46,9 @@ public class ShipBouyancyScript : MonoBehaviour
     {
         if (shipTriangles.underWaterTriangleData.Count == 0) return;
 
-        if (recalculateForces)
-        {
-            RecalculateForces();
-            recalculateForces = false;
-        }
         AddUnderWaterForces();
 
-        // Artifically align the ship upward because sometimes it sinks for some reason
+        // Align the ship upward to avoid sinking
         AlignShipUpward();
     }
 
@@ -60,7 +57,7 @@ public class ShipBouyancyScript : MonoBehaviour
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSecondsRealtime(0.1f); 
+            yield return new WaitForSeconds(timeToWait); 
             shipTriangles.GenerateUnderwaterMesh();
             recalculateForces = true;
         }
@@ -96,7 +93,17 @@ public class ShipBouyancyScript : MonoBehaviour
         for (int i = 0; i < underWaterTriangleData.Count; i++)
         {
             TriangleData triangleData = underWaterTriangleData[i];
-            ship.AddForceAtPosition(forces[i], triangleData.center);
+
+            Vector3 force = Vector3.zero;
+            Vector3 buoyancyForce = BuoyancyForce(waterDensity, triangleData);
+            force += buoyancyForce;
+
+            Vector3 pressureDragForce = PressureDragForce(triangleData);
+            force += pressureDragForce;
+
+            force *= amplifyForce;
+
+            ship.AddForceAtPosition(force, triangleData.center);
         }
     }
 
@@ -138,7 +145,7 @@ public class ShipBouyancyScript : MonoBehaviour
     void AlignShipUpward()
     {
         Quaternion newRotation = Quaternion.LookRotation(ship.transform.forward, Vector3.up);
-        ship.transform.rotation = Quaternion.Slerp(ship.transform.rotation, newRotation, Time.deltaTime);
+        ship.transform.rotation = Quaternion.Slerp(ship.transform.rotation, newRotation, Time.deltaTime * rotationSpeed);
     }
 
     public float[] GetDistanceToWater(Vector3[] _queryPoints)
