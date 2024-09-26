@@ -31,7 +31,7 @@ public class ScenarioController : MonoBehaviour
     float timeSinceScenarioStart;
     public int completedShips = 0;                                      // Ships that have completed their path
     public bool loadAllScenarios = false;
-    
+
     // -------------------------------------------------
     // --------- Scenario Files Path and Names ---------
     // -------------------------------------------------
@@ -43,11 +43,11 @@ public class ScenarioController : MonoBehaviour
     // -------------------------------------------------
     Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
     Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
-    GameObject wave = null; 
-    List<GameObject> generatedShips = new();
+    GameObject wave = null;
+    public List<GameObject> generatedShips = new();
     ScenarioSettings scenarioSettings;
     bool csvReadResult;
-    
+
     // -------------------------------------------------
     // ----- Other Classes the Script Makes Use of -----
     // -------------------------------------------------
@@ -56,7 +56,7 @@ public class ScenarioController : MonoBehaviour
     MainMenuController mainMenuController;
     OceanRenderer oceanRenderer;
     TimeProviderCustom timeProviderCustom;
-    
+
     // -------------------------------------------------
     // -------- Current Scenario Information -----------
     // -------------------------------------------------
@@ -65,7 +65,7 @@ public class ScenarioController : MonoBehaviour
     List<string> scenarios = new();                                     // All scenarios loaded
     bool endScenario = false;                                           // Forcefully ends a scenario
     string[] scenarioLabels = new string[3];                            // Use to animate the scenario label
-    
+
     // -------------------------------------------------
     // --------------- Speed Conversions ---------------
     // -------------------------------------------------
@@ -74,7 +74,7 @@ public class ScenarioController : MonoBehaviour
 
     void Awake()
     {
-        filePath = Application.persistentDataPath +  "/Scenarios/";
+        filePath = Application.persistentDataPath + "/Scenarios/";
         if (!Directory.Exists(filePath))
             Directory.CreateDirectory(filePath);
     }
@@ -117,7 +117,7 @@ public class ScenarioController : MonoBehaviour
         */
         else if (logMessages != previousLogMessageBool)
         {
-            foreach (var ship in generatedShips) 
+            foreach (var ship in generatedShips)
             {
                 ship.GetComponent<ShipController>().logMessages = logMessages;
             }
@@ -152,7 +152,7 @@ public class ScenarioController : MonoBehaviour
         }
 
         Debug.Log("Scenario files have been read.");
-        
+
         scenarios = files;
 
         return files;
@@ -169,7 +169,7 @@ public class ScenarioController : MonoBehaviour
         endScenario = false;
 
         UnloadAllObjects();
-        
+
         // Reset ships that completed their path
         completedShips = 0;
 
@@ -197,17 +197,17 @@ public class ScenarioController : MonoBehaviour
         loadAllScenarios = true;
         loadScenario = true;
     }
-    
+
     void UnloadAllObjects()
     {
         // Destroy all generated ships
-        foreach (var ship in generatedShips) 
+        foreach (var ship in generatedShips)
         {
             Destroy(ship);
         }
 
         // Destroy wave
-        Destroy(wave);  
+        Destroy(wave);
 
         generatedShips.Clear();
     }
@@ -236,7 +236,7 @@ public class ScenarioController : MonoBehaviour
             // The first location is the starting position of the ship
             float x = ship.Value[0].x_coordinates;
             float z = ship.Value[0].z_coordinates;
-            
+
             GameObject instance;
             GameObject prefab = null;
 
@@ -250,7 +250,8 @@ public class ScenarioController : MonoBehaviour
 
             if (prefab == null)
             {
-                if (shipPrefabs.Count == 0){
+                if (shipPrefabs.Count == 0)
+                {
                     Debug.Log($"No prefabs found. Skipping ship with ID {shipsInformation[ship.Key].Id}");
                     break;
                 }
@@ -263,7 +264,7 @@ public class ScenarioController : MonoBehaviour
                     break;
                 }
 
-                Debug.Log($"Unable to find ship prefab for ship type {shipsInformation[ship.Key].Type}. " + 
+                Debug.Log($"Unable to find ship prefab for ship type {shipsInformation[ship.Key].Type}. " +
                 $"Defaulting to the first ship prefab for ship with ID {shipsInformation[ship.Key].Id}");
             }
 
@@ -271,12 +272,12 @@ public class ScenarioController : MonoBehaviour
             Vector3 shipLocation = new(x, shipHeight, z);
 
             // If there are more than one location then rotate the generated ship to face the direction of the next location
-            if (ship.Value.Count > 1) 
+            if (ship.Value.Count > 1)
             {
                 Vector3 heading = new Vector3(ship.Value[1].x_coordinates, shipHeight, ship.Value[1].z_coordinates) - shipLocation;
                 float distance = heading.magnitude;
                 Vector3 direction = heading / distance;
-                
+
                 instance = Instantiate(prefab, shipLocation, Quaternion.LookRotation(direction));
             }
             else
@@ -291,14 +292,14 @@ public class ScenarioController : MonoBehaviour
             shipController.shipInformation = shipsInformation[ship.Key]; // Initialize the ship information
 
             generatedShips.Add(instance);
-            
+
             // Start from index 1 since index 0 is the starting position
             for (int i = 1; i < ship.Value.Count; i++)
             {
                 x = ship.Value[i].x_coordinates;
                 z = ship.Value[i].z_coordinates;
                 float speed = ship.Value[i].speed;
-                
+
                 // Add the location and speed to ship controller lists
                 shipController.locationsToVisit.Add(new Vector3(x, 0, z));
                 shipController.speedAtEachLocation.Add(speed);
@@ -329,7 +330,7 @@ public class ScenarioController : MonoBehaviour
 
     IEnumerator UpdateScenarioLabelAnimation()
     {
-        while (Application.isPlaying) 
+        while (Application.isPlaying)
         {
             yield return new WaitForSeconds(1);
             if (scenarioCurrentlyRunning)
@@ -337,11 +338,11 @@ public class ScenarioController : MonoBehaviour
                 for (int i = 0; i < scenarioLabels.Length; i++)
                 {
                     // TODO: Find a better solution since it is possible for SetDefaultSimulationInfoPanel() to be replaced
-                    if (!scenarioCurrentlyRunning) 
+                    if (!scenarioCurrentlyRunning)
                     {
                         mainMenuController.SetDefaultSimulationInfoPanel();
                         break;
-                    } 
+                    }
 
                     mainMenuController.SetScenarioRunningLabel(scenarioLabels[i]);
                     yield return new WaitForSeconds(1);
@@ -352,7 +353,7 @@ public class ScenarioController : MonoBehaviour
 
     IEnumerator RunNextScenario()
     {
-        while (Application.isPlaying) 
+        while (Application.isPlaying)
         {
             yield return new WaitForSeconds(1);
             if (scenarioCurrentlyRunning && (completedShips >= generatedShips.Count || endScenario))

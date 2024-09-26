@@ -27,7 +27,7 @@ public class RadarScript : MonoBehaviour
     [Range(0.0f, 0.99f)] public float parallelThreshold = 0.45f; // Threshold for considering a surface parallel
 
     private RenderTexture radarTexture;
-    private float currentRotation = 0f; // Track current rotation
+    private float currentRotation = 1f; // Track current rotation
     private GameObject cameraObject;
     private WebSocketServer server;
 
@@ -44,13 +44,16 @@ public class RadarScript : MonoBehaviour
 
 
     public int[,] radarPPI;
+    private ScenarioController scenario;
 
     void Start()
     {
         path += radarID;
 
         server = Server.serverInstance.server;
-        
+
+        scenario = FindObjectOfType<ScenarioController>();
+
         // If service not found then add it 
         // Allows us to reuse it for different radars when loading and unloading them
         if (!server.WebSocketServices.TryGetServiceHost($"/{path}", out _))
@@ -125,6 +128,9 @@ public class RadarScript : MonoBehaviour
             timestamp = 55,
             range = MaxDistance,
             PPI = radarPPI,
+            //TODO: add lat long of radar
+            ships = scenario.generatedShips.ToArray(),
+            radarLocation = cameraObject.transform.position.ToString()
         };
 
         JsonSerializer serializer = new();

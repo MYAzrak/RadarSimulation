@@ -66,7 +66,7 @@ public class RadarController : MonoBehaviour
     public void GenerateRadar()
     {
         if (radarPrefab == null) return;
-        
+
         // Create Radar
         GameObject instance = Instantiate(radarPrefab);
 
@@ -145,7 +145,7 @@ public class RadarController : MonoBehaviour
     async Task<float> WaitForSampleAsync()
     {
         float o_height;
-        
+
         // Wait until we get a valid sample height
         while (!sampleHeightHelper.Sample(out o_height))
         {
@@ -162,7 +162,7 @@ public class RadarController : MonoBehaviour
             Destroy(entry.Value);
         }
         radars.Clear();
-        
+
         radarIDAtRow.Clear();
 
         for (int i = 0; i < rows; i++)
