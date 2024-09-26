@@ -2,11 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Crest;
-using Crest.Examples;
 using Unity.Mathematics;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class RadarController : MonoBehaviour
 {
