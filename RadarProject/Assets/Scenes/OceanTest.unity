@@ -599,6 +599,8 @@ MonoBehaviour:
   loadScenario: 0
   resetScenario: 0
   logMessages: 0
+  timeSinceScenarioStart: 0
+  timeLimit: 300
   completedShips: 0
   loadAllScenarios: 0
   generatedShips: []

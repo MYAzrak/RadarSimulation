@@ -27,7 +27,8 @@ public class ScenarioController : MonoBehaviour
     [Header("Debug")]
     public bool logMessages = false;
     bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
-    float timeSinceScenarioStart;
+    public float timeSinceScenarioStart;
+    public float timeLimit = 300;                                       // A time limit for the scenario (in seconds)
     public int completedShips = 0;                                      // Ships that have completed their path
     public bool loadAllScenarios = false;
 
@@ -121,6 +122,9 @@ public class ScenarioController : MonoBehaviour
             Time.timeScale = timeScale;
             updateTimeScale = false;
         }
+        
+        if (timeSinceScenarioStart > timeLimit)
+            endScenario = true;
 
         timeSinceScenarioStart += Time.deltaTime;
         wavesTracker.SetTimeProvider(timeSinceScenarioStart);
@@ -291,12 +295,9 @@ public class ScenarioController : MonoBehaviour
 
     public void EndScenario()
     {
-        if (scenarioCurrentlyRunning)
-        {
-            UnloadAllObjects();
-            endScenario = true;
-            mainMenuController.SetDefaultSimulationInfoPanel();
-        }
+        UnloadAllObjects();
+        endScenario = true;
+        mainMenuController.SetDefaultSimulationInfoPanel();
     }
 
     public void EndAllScenarios()
