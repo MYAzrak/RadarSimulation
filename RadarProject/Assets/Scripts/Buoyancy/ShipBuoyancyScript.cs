@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Crest;
 using System.Collections;
-using UnityEngine.Profiling;
 
 public class ShipBouyancyScript : MonoBehaviour
 {

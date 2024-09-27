@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Crest;
 using UnityEngine;
 
 public class ScenarioController : MonoBehaviour
@@ -14,7 +13,7 @@ public class ScenarioController : MonoBehaviour
     [SerializeField] List<ShipPrefab> shipPrefabs = new();
 
     [Header("Wave Prefabs")]
-    [SerializeField] List<WavePrefab> wavePrefabs = new();
+    public List<WavePrefab> wavePrefabs = new();
 
     [Header("Time options")]
     public int timeScale = 1;
@@ -43,7 +42,6 @@ public class ScenarioController : MonoBehaviour
     // -------------------------------------------------
     Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
     Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
-    GameObject wave = null;
     public List<GameObject> generatedShips = new();
     ScenarioSettings scenarioSettings;
     bool csvReadResult;
@@ -54,8 +52,7 @@ public class ScenarioController : MonoBehaviour
     RadarController radarController;
     CSVController csvController;
     MainMenuController mainMenuController;
-    OceanRenderer oceanRenderer;
-    TimeProviderCustom timeProviderCustom;
+    WavesTracker wavesTracker;
 
     // -------------------------------------------------
     // -------- Current Scenario Information -----------
@@ -81,14 +78,9 @@ public class ScenarioController : MonoBehaviour
 
     void Start()
     {
-
         timeSinceScenarioStart = Time.time;
 
-        oceanRenderer = FindObjectOfType<OceanRenderer>();
-        timeProviderCustom = FindObjectOfType<TimeProviderCustom>();
-        timeProviderCustom._overrideTime = true;
-
-        oceanRenderer.PushTimeProvider(timeProviderCustom);
+        wavesTracker = FindObjectOfType<WavesTracker>();
 
         csvController = GetComponent<CSVController>();
         radarController = GetComponent<RadarController>();
@@ -131,7 +123,7 @@ public class ScenarioController : MonoBehaviour
         }
 
         timeSinceScenarioStart += Time.deltaTime;
-        timeProviderCustom._time = timeSinceScenarioStart;
+        wavesTracker.SetTimeProvider(timeSinceScenarioStart);
     }
 
     // Read all files in filePath 
@@ -173,7 +165,9 @@ public class ScenarioController : MonoBehaviour
         // Reset ships that completed their path
         completedShips = 0;
 
-        GenerateWaves(scenarioSettings.waves);
+        wavesTracker.GenerateWaves(scenarioSettings.waves);
+        mainMenuController.SetWaveLabel(scenarioSettings.waves.ToString());
+
         radarController.UpdateRadarsPositions();
         GenerateShips();
 
@@ -206,27 +200,10 @@ public class ScenarioController : MonoBehaviour
             Destroy(ship);
         }
 
-        // Destroy wave
-        Destroy(wave);
+        // Reset Wave
+        wavesTracker.ResetToDefaultWave();
 
         generatedShips.Clear();
-    }
-
-    void GenerateWaves(Waves scenarioWave)
-    {
-        GameObject prefab = null;
-
-        foreach (WavePrefab wavePrefab in wavePrefabs)
-        {
-            if (wavePrefab.waves == scenarioWave)
-            {
-                prefab = wavePrefab.prefab;
-            }
-        }
-
-        wave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-
-        mainMenuController.SetWaveLabel(scenarioWave.ToString());
     }
 
     void GenerateShips()
@@ -372,7 +349,7 @@ public class ScenarioController : MonoBehaviour
 
                 if (currentScenarioIndex < scenarios.Count)
                 {
-                    for (int i = 5; i > 0; i--)
+                    for (int i = 3; i > 0; i--)
                     {
                         mainMenuController.SetScenarioRunningLabel($"Scenario has completed.\nRunning next scenario in {i}.");
                         yield return new WaitForSeconds(1);
@@ -404,7 +381,7 @@ public class ScenarioController : MonoBehaviour
     }
 
     [Serializable]
-    struct WavePrefab
+    public struct WavePrefab
     {
         public Waves waves;
         public GameObject prefab;

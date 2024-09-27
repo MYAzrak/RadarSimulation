@@ -288,6 +288,7 @@ GameObject:
   - component: {fileID: 1059646246}
   - component: {fileID: 1059646245}
   - component: {fileID: 1059646247}
+  - component: {fileID: 1059646248}
   m_Layer: 0
   m_Name: Ocean
   m_TagString: Untagged
@@ -390,6 +391,19 @@ MonoBehaviour:
   _time: 0
   _overrideDeltaTime: 0
   _deltaTime: 0
+--- !u!114 &1059646248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059646244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdb7bf0dcd6d58c4d8c729e1f828ea13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWave: {fileID: 0}
 --- !u!1 &1422562296
 GameObject:
   m_ObjectHideFlags: 0
