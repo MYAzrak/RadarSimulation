@@ -10,7 +10,7 @@ public class ShipBouyancyScript : MonoBehaviour
     public static ShipBouyancyScript shipBouyancyScriptInstance;
 
     [SerializeField] float amplifyForce = 0.5f;
-    public float timeToWait = 0.1f;
+    public float timeToWait = 0.5f;
     public float rotationSpeed = 2.0f;
 
     ShipTriangles shipTriangles;
@@ -57,7 +57,7 @@ public class ShipBouyancyScript : MonoBehaviour
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSeconds(timeToWait); 
+            yield return new WaitForSeconds(timeToWait);
             shipTriangles.GenerateUnderwaterMesh();
             recalculateForces = true;
         }
@@ -122,7 +122,7 @@ public class ShipBouyancyScript : MonoBehaviour
     }
 
     Vector3 PressureDragForce(TriangleData triangleData)
-    {   
+    {
         float velocity = triangleData.velocity.magnitude;
         velocity /= velocity; // Assume velocity reference is the same as velocity
 
@@ -149,7 +149,7 @@ public class ShipBouyancyScript : MonoBehaviour
     }
 
     public float[] GetDistanceToWater(Vector3[] _queryPoints)
-    {   
+    {
         Vector3[] _queryResultDisps = new Vector3[_queryPoints.Length];
 
         var collProvider = OceanRenderer.Instance.CollisionProvider;
@@ -158,7 +158,7 @@ public class ShipBouyancyScript : MonoBehaviour
 
         float[] heightDiff = new float[_queryPoints.Length];
 
-        for(int i = 0; i < _queryPoints.Length; i++)
+        for (int i = 0; i < _queryPoints.Length; i++)
         {
             var waterHeight = OceanRenderer.Instance.SeaLevel + _queryResultDisps[i].y;
             heightDiff[i] = _queryPoints[i].y - waterHeight;

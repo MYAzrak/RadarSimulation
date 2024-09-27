@@ -506,7 +506,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422562296}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36b9b603a66ebd0fb9665b99c026c752, type: 3}
   m_Name: 
@@ -587,6 +587,7 @@ MonoBehaviour:
   logMessages: 0
   completedShips: 0
   loadAllScenarios: 0
+  generatedShips: []
 --- !u!4 &2106282668
 Transform:
   m_ObjectHideFlags: 0
