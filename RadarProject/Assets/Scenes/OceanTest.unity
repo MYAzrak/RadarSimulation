@@ -635,6 +635,11 @@ MonoBehaviour:
   generateRadars: 0
   generateOneRadar: 0
   newRadarID: 0
+  transmittedPowerW: 1000
+  antennaGainDBi: 30
+  wavelengthM: 0.03
+  systemLossesDB: 3
+  ImageRadius: 1000
 --- !u!114 &2106282671
 MonoBehaviour:
   m_ObjectHideFlags: 0

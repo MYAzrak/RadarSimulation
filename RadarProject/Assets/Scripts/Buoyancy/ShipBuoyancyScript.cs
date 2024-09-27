@@ -46,6 +46,9 @@ public class ShipBouyancyScript : MonoBehaviour
     {
         if (shipTriangles.underWaterTriangleData.Count == 0) return;
 
+        if (recalculateForces)
+            RecalculateForces();
+
         AddUnderWaterForces();
 
         // Align the ship upward to avoid sinking
@@ -63,6 +66,7 @@ public class ShipBouyancyScript : MonoBehaviour
         }
     }
 
+    // Only recalculate forces when needed to improve performance
     void RecalculateForces()
     {
         List<TriangleData> underWaterTriangleData = shipTriangles.underWaterTriangleData;
@@ -83,6 +87,8 @@ public class ShipBouyancyScript : MonoBehaviour
 
             forces[i] = force;
         }
+
+        recalculateForces = false;
     }
 
     // Add all forces that act on the squares below the water
@@ -93,17 +99,7 @@ public class ShipBouyancyScript : MonoBehaviour
         for (int i = 0; i < underWaterTriangleData.Count; i++)
         {
             TriangleData triangleData = underWaterTriangleData[i];
-
-            Vector3 force = Vector3.zero;
-            Vector3 buoyancyForce = BuoyancyForce(waterDensity, triangleData);
-            force += buoyancyForce;
-
-            Vector3 pressureDragForce = PressureDragForce(triangleData);
-            force += pressureDragForce;
-
-            force *= amplifyForce;
-
-            ship.AddForceAtPosition(force, triangleData.center);
+            ship.AddForceAtPosition(forces[i], triangleData.center);
         }
     }
 

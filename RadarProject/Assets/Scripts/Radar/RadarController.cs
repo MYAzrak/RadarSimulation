@@ -139,6 +139,7 @@ public class RadarController : MonoBehaviour
     {
         foreach (KeyValuePair<int, GameObject> entry in radars)
         {
+            // Disable kinematic to avoid unwanted forces being applied
             Rigidbody rb = entry.Value.GetComponent<Rigidbody>();
             rb.isKinematic = true;
 
@@ -160,7 +161,7 @@ public class RadarController : MonoBehaviour
         // Wait until we get a valid sample height
         while (!sampleHeightHelper.Sample(out o_height))
         {
-            await Task.Delay(2);
+            await Task.Yield();
         }
 
         return o_height;
