@@ -65,7 +65,7 @@ public class ShipController : MonoBehaviour
     IEnumerator LogShipEvents()
     {
         if (shipInformation == null) {
-            Debug.Log("Error: shipInformation is not initialized");
+            //Debug.Log("Error: shipInformation is not initialized");
             yield break;
         }
 
@@ -79,7 +79,7 @@ public class ShipController : MonoBehaviour
             shipInformation.AddToHistory(speed, position);
 
             if (logMessages)
-                Debug.Log($"{shipInformation.Name} with ID {shipInformation.Id} has speed: {speed} Knots at position: {position}");
+                //Debug.Log($"{shipInformation.Name} with ID {shipInformation.Id} has speed: {speed} Knots at position: {position}");
 
             // Report to scenario manager that it has completed
             if (!reportedCompletion && indexOfLocationToVisit >= locationsToVisit.Count)

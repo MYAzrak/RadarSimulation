@@ -189,7 +189,7 @@ public class ScenarioController : MonoBehaviour
         timeSinceScenarioStart = 0;
         scenarioCurrentlyRunning = true;
 
-        Debug.Log($"{scenario} has been loaded");
+        //Debug.Log($"{scenario} has been loaded");
     }
 
     public void LoadAllScenarios()
@@ -252,7 +252,7 @@ public class ScenarioController : MonoBehaviour
             {
                 if (shipPrefabs.Count == 0)
                 {
-                    Debug.Log($"No prefabs found. Skipping ship with ID {shipsInformation[ship.Key].Id}");
+                    //Debug.Log($"No prefabs found. Skipping ship with ID {shipsInformation[ship.Key].Id}");
                     break;
                 }
 
@@ -260,12 +260,12 @@ public class ScenarioController : MonoBehaviour
 
                 if (prefab == null)
                 {
-                    Debug.Log($"No prefabs found at the first index of Ship Prefabs. Skipping ship with ID {shipsInformation[ship.Key].Id}");
+                    //Debug.Log($"No prefabs found at the first index of Ship Prefabs. Skipping ship with ID {shipsInformation[ship.Key].Id}");
                     break;
                 }
 
-                Debug.Log($"Unable to find ship prefab for ship type {shipsInformation[ship.Key].Type}. " +
-                $"Defaulting to the first ship prefab for ship with ID {shipsInformation[ship.Key].Id}");
+                //Debug.Log($"Unable to find ship prefab for ship type {shipsInformation[ship.Key].Type}. " +
+                //$"Defaulting to the first ship prefab for ship with ID {shipsInformation[ship.Key].Id}");
             }
 
             float shipHeight = prefab.transform.position.y;
@@ -286,7 +286,7 @@ public class ScenarioController : MonoBehaviour
             ShipController shipController = instance.GetComponent<ShipController>() ?? instance.GetComponentInChildren<ShipController>();
             if (shipController == null)
             {
-                Debug.Log($"Unable to find ship controller component. Ship with ID: {shipsInformation[ship.Key].Id} is uninitialized.");
+                //Debug.Log($"Unable to find ship controller component. Ship with ID: {shipsInformation[ship.Key].Id} is uninitialized.");
                 continue;
             }
             shipController.shipInformation = shipsInformation[ship.Key]; // Initialize the ship information
@@ -359,7 +359,7 @@ public class ScenarioController : MonoBehaviour
             if (scenarioCurrentlyRunning && (completedShips >= generatedShips.Count || endScenario))
             {
                 scenarioCurrentlyRunning = false;
-                Debug.Log("Scenario has finished");
+                //Debug.Log("Scenario has finished");
 
                 if (!loadAllScenarios)
                 {
