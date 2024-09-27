@@ -315,6 +315,8 @@ public class ScenarioController : MonoBehaviour
             {
                 for (int i = 0; i < scenarioLabels.Length; i++)
                 {
+                    mainMenuController.SetTimeRemainingLabel(timeLimit - timeSinceScenarioStart);
+                    
                     // TODO: Find a better solution since it is possible for SetDefaultSimulationInfoPanel() to be replaced
                     if (!scenarioCurrentlyRunning)
                     {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -17,7 +18,15 @@ public class MainMenuController : MonoBehaviour
     VisualElement simulationInfoPanel;
 
     bool paused = false;
-    
+
+    // Labels
+    Label currentScenarioLabel;
+    Label numOfShipsLabel;
+    Label numOfRadarsLabel;
+    Label waveConditionLabel;
+    Label weatherConditionLabel;
+    Label timeLimitLabel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +43,8 @@ public class MainMenuController : MonoBehaviour
         simulationInfoPanel.visible = false;
 
         ScenarioMenuUI = new(ui, instance, scenarioController, csvController);
+
+        InitializeLabels();
 
         SetTabs();
         ViewToEnable(tabBtns[0].button);
@@ -54,6 +65,16 @@ public class MainMenuController : MonoBehaviour
             simulationInfoPanel.visible = !simulationInfoPanel.visible;
         }
     }
+
+    void InitializeLabels()
+    {
+        currentScenarioLabel = ui.Q("ScenarioRunningLabel") as Label;
+        numOfShipsLabel = ui.Q("NumOfShipsLabel") as Label;
+        numOfRadarsLabel = ui.Q("NumOfRadarsLabel") as Label;
+        waveConditionLabel = ui.Q("WaveConditionLabel") as Label;
+        weatherConditionLabel = ui.Q("WeatherConditionLabel") as Label;
+        timeLimitLabel = ui.Q("TimeLimitLabel") as Label;
+    } 
 
     void SetTabs()
     {
@@ -88,31 +109,21 @@ public class MainMenuController : MonoBehaviour
 
     public void SetDefaultSimulationInfoPanel()
     {
-        Label currentScenarioLabel = ui.Q("ScenarioRunningLabel") as Label;
         currentScenarioLabel.text = "No Scenario Loaded";
-
-        Label numOfShipsLabel = ui.Q("NumOfShipsLabel") as Label;
         numOfShipsLabel.text = "0 Ships";
-
-        Label numOfRadarsLabel = ui.Q("NumOfRadarsLabel") as Label;
         numOfRadarsLabel.text = "0 Radars";
-
-        Label waveConditionLabel = ui.Q("WaveConditionLabel") as Label;
         waveConditionLabel.text = "Waves: None";
-
-        Label weatherConditionLabel = ui.Q("WeatherConditionLabel") as Label;
         weatherConditionLabel.text = "Weather: None (WIP)";
+        timeLimitLabel.text = "Time Remaining: None";
     }
 
     public void SetShipsLabel(int numOfShips)
     {
-        Label numOfShipsLabel = ui.Q("NumOfShipsLabel") as Label;
         numOfShipsLabel.text = numOfShips + " Ships";
     }
 
     public void SetRadarsLabel(int numOfRadars)
     {
-        Label numOfRadarsLabel = ui.Q("NumOfRadarsLabel") as Label;
         numOfRadarsLabel.text = numOfRadars + " Radars";
     }
 
@@ -124,14 +135,20 @@ public class MainMenuController : MonoBehaviour
 
     public void SetWaveLabel(string waveCondition)
     {
-        Label waveConditionLabel = ui.Q("WaveConditionLabel") as Label;
         waveConditionLabel.text = "Waves: " + waveCondition;
     }
 
     public void SetWeatherLabel(string weatherCondition)
     {
-        Label weatherConditionLabel = ui.Q("WeatherConditionLabel") as Label;
         weatherConditionLabel.text = "Weather: " + weatherCondition;
+    }
+
+    public void SetTimeRemainingLabel(float timeRemaining)
+    {
+        float minutes = (int) (timeRemaining / 60);  
+        float seconds = (int) (timeRemaining % 60);
+
+        timeLimitLabel.text = $"Time Remaining: {minutes}:{seconds}";
     }
 
     public void SetPauseBtn()
