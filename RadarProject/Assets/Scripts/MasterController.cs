@@ -36,6 +36,11 @@ public class MasterController : MonoBehaviour
 
         //Radar Params
         setIntArg("-radarRows", ref radarController.rows);
+        setFloatArg("-radarPower", ref radarController.transmittedPowerW);
+        setFloatArg("-radarGain", ref radarController.antennaGainDBi);
+        setFloatArg("-wavelength", ref radarController.wavelengthM);
+        setFloatArg("-radarLoss", ref radarController.systemLossesDB);
+        setIntArg("-radarImageRadius", ref radarController.ImageRadius);
 
         int nRadars = 0;
         if (setIntArg("-nRadars", ref nRadars))

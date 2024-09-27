@@ -28,6 +28,14 @@ public class RadarController : MonoBehaviour
     MainMenuController mainMenuController;
     SampleHeightHelper sampleHeightHelper = new();
 
+    [Header("Radar Equation Parameters")]
+    public float transmittedPowerW = 1000f; // Watts
+    public float antennaGainDBi = 30f; // dBi
+    public float wavelengthM = 0.03f; // meters (for 10 GHz)
+    public float systemLossesDB = 3f; // dB
+
+    public int ImageRadius = 1000;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -70,6 +78,12 @@ public class RadarController : MonoBehaviour
         // Update Radar ID for the radar
         RadarScript radarScript = instance.GetComponentInChildren<RadarScript>();
         radarScript.radarID = newRadarID;
+        radarScript.transmittedPowerW = transmittedPowerW;
+        radarScript.antennaGainDBi = antennaGainDBi;
+        radarScript.wavelengthM = wavelengthM;
+        radarScript.systemLossesDB = systemLossesDB;
+        radarScript.ImageRadius = ImageRadius;
+
 
         // Get the row with the least radars and its index
         float min = math.INFINITY;
