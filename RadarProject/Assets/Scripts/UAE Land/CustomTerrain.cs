@@ -7,6 +7,7 @@ using System.Collections.Generic;
 [ExecuteInEditMode]
 public class CustomTerrain : MonoBehaviour
 {
+    
     public Vector2 randomHeightRange = new Vector2(0.0f, 0.1f);
     public Texture2D heightMapImage;
     public Vector3 heightMapScale = new Vector3(1.0f, 1.0f, 1.0f);
