@@ -90,7 +90,7 @@ public class CSVController : MonoBehaviour
     {
         if (File.Exists(file + fileExtension) || File.Exists(file + shipListEndName + fileExtension))
         {
-            Debug.Log($"{file + fileExtension} or {file + shipListEndName + fileExtension} already exists.");
+            //Debug.Log($"{file + fileExtension} or {file + shipListEndName + fileExtension} already exists.");
             return;
         }
 
@@ -146,7 +146,7 @@ public class CSVController : MonoBehaviour
             GenerateScenario(file);
         }
 
-        Debug.Log("All scenarios have been generated.");
+        //Debug.Log("All scenarios have been generated.");
         
         mainMenuController.ScenarioMenuUI.ReadScenarios();
     }
@@ -174,7 +174,7 @@ public class CSVController : MonoBehaviour
                     // Ensure all rows do not have empty or null cells
                     if (value.Any(s => string.IsNullOrEmpty(s)))
                     {
-                        Debug.Log("Error: Invalid number of columns");
+                        //Debug.Log("Error: Invalid number of columns");
                         shipsInformation.Clear();
                         return false;
                     }
@@ -184,13 +184,20 @@ public class CSVController : MonoBehaviour
                     // Keep track of ship IDs in case there are duplicate IDs in the csv
                     if (shipsInformation.ContainsKey(id))
                     {
-                        Debug.Log("Error: Ship list csv contains duplicate ID");
+                        //Debug.Log("Error: Ship list csv contains duplicate ID");
                         shipsInformation.Clear();
                         return false;
                     }
                     else
                     {
-                        shipsInformation[id] = new ShipInformation(id, value[1], (ShipType)System.Enum.Parse(typeof(ShipType), value[2]));
+                        // If ship type is not found default to 0
+                        if (!System.Enum.TryParse(typeof(ShipType), value[2], false, out object result))
+                        {
+                            Debug.Log($"{value[2]} is not a valid ship type. Defaulting to {System.Enum.Parse(typeof(ShipType), "0")}");
+                            shipsInformation[id] = new ShipInformation(id, value[1], (ShipType) 0);   
+                        }
+                        else
+                            shipsInformation[id] = new ShipInformation(id, value[1], (ShipType) result);
                     }
 
                     data = streamReader.ReadLine();
@@ -209,7 +216,7 @@ public class CSVController : MonoBehaviour
                     // Ensure all rows do not have empty or null cells
                     if (value.Any(s => string.IsNullOrEmpty(s)))
                     {
-                        Debug.Log("Error: Invalid number of columns");
+                        //Debug.Log("Error: Invalid number of columns");
                         shipLocations.Clear();
                         return false;
                     }
@@ -235,12 +242,12 @@ public class CSVController : MonoBehaviour
                 scenarioSettings = JsonUtility.FromJson<ScenarioSettings>(json);
             }
 
-            Debug.Log("csv has been successfully parsed.");
+            //Debug.Log("csv has been successfully parsed.");
             return true;
         }
         catch (FileNotFoundException e)
         {
-            Debug.Log($"File not found: {e.Message}");
+            //Debug.Log($"File not found: {e.Message}");
             return false;
         }
     }

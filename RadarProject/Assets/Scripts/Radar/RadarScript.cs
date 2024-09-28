@@ -1,12 +1,14 @@
 using UnityEngine;
 using System;
+using System.Linq;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
 using System.Collections;
-
+using System.Collections.Generic;
+using System.Collections.Concurrent;
 public class RadarScript : MonoBehaviour
 {
     public int radarID;
@@ -27,7 +29,7 @@ public class RadarScript : MonoBehaviour
     [Range(0.0f, 0.99f)] public float parallelThreshold = 0.45f; // Threshold for considering a surface parallel
 
     private RenderTexture radarTexture;
-    private float currentRotation = 0f; // Track current rotation
+    private float currentRotation = 1f; // Track current rotation
     private GameObject cameraObject;
     private WebSocketServer server;
 
@@ -42,15 +44,19 @@ public class RadarScript : MonoBehaviour
     public float wavelengthM = 0.03f; // meters (for 10 GHz)
     public float systemLossesDB = 3f; // dB
 
+    private ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
 
     public int[,] radarPPI;
+    private ScenarioController scenario;
 
     void Start()
     {
         path += radarID;
 
         server = Server.serverInstance.server;
-        
+
+        scenario = FindObjectOfType<ScenarioController>();
+
         // If service not found then add it 
         // Allows us to reuse it for different radars when loading and unloading them
         if (!server.WebSocketServices.TryGetServiceHost($"/{path}", out _))
@@ -86,6 +92,14 @@ public class RadarScript : MonoBehaviour
 
         StartCoroutine(ProcessRadar());
     }
+    void Update()
+    {
+        // Execute any queued actions on the main thread
+        while (_mainThreadActions.TryDequeue(out var action))
+        {
+            action();
+        }
+    }
 
     IEnumerator ProcessRadar()
     {
@@ -119,17 +133,37 @@ public class RadarScript : MonoBehaviour
 
     async Task<string> CollectData()
     {
+        Vector3 radarPosition = Vector3.zero;
+        List<ShipData> shipDataList = new List<ShipData>();
+
+        // Queue the transform access to be executed on the main thread
+        _mainThreadActions.Enqueue(() =>
+        {
+            radarPosition = cameraObject.transform.position;
+            shipDataList = scenario.generatedShips.Select(ship => new ShipData
+            {
+                Id = ship.GetInstanceID(),
+                Position = ship.transform.position
+            }).ToList();
+        });
+
+        // Wait for a frame to ensure the queued action is processed
+        await Task.Yield();
+
         var dataObject = new
         {
             id = radarID,
-            timestamp = 55,
+            timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             range = MaxDistance,
             PPI = radarPPI,
+            ships = shipDataList,
+            radarLocation = radarPosition
         };
 
-        JsonSerializer serializer = new();
+        JsonSerializer serializer = new JsonSerializer();
+        serializer.Converters.Add(new Vector3Converter());
 
-        using StringWriter sw = new();
+        using StringWriter sw = new StringWriter();
         using (JsonWriter writer = new JsonTextWriter(sw))
         {
             await Task.Run(() => serializer.Serialize(writer, dataObject));
@@ -137,7 +171,6 @@ public class RadarScript : MonoBehaviour
 
         return sw.ToString();
     }
-
 
     private GameObject SpawnCameras(string name, int Width, int Height, float verticalAngle, RenderTextureFormat format)
     {
@@ -227,4 +260,29 @@ public class RadarScript : MonoBehaviour
         cameraObject.transform.localRotation = Quaternion.Euler(0, currentRotation, 0);
     }
 
+    public class ShipData
+    {
+        public int Id { get; set; }
+        public Vector3 Position { get; set; }
+    }
+
+}
+public class Vector3Converter : JsonConverter<Vector3>
+{
+    public override Vector3 ReadJson(JsonReader reader, Type objectType, Vector3 existingValue, bool hasExistingValue, JsonSerializer serializer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void WriteJson(JsonWriter writer, Vector3 value, JsonSerializer serializer)
+    {
+        writer.WriteStartObject();
+        writer.WritePropertyName("x");
+        writer.WriteValue(value.x);
+        writer.WritePropertyName("y");
+        writer.WriteValue(value.y);
+        writer.WritePropertyName("z");
+        writer.WriteValue(value.z);
+        writer.WriteEndObject();
+    }
 }

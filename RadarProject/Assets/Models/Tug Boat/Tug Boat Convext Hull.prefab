@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3249267516126098749}
   - component: {fileID: 4807051979274123139}
   - component: {fileID: 8773960076964039852}
-  - component: {fileID: 7926615832387045814}
+  - component: {fileID: 6862514067963760728}
   - component: {fileID: 2538637594129884758}
   m_Layer: 0
   m_Name: Tug Boat Convext Hull
@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 1041535636116702463}
   serializedVersion: 2
   m_LocalRotation: {x: 1.7112914e-15, y: 1, z: -0.000000021855694, w: 0.0000000754979}
-  m_LocalPosition: {x: -2.07, y: 11.63, z: -1.53}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -119,10 +119,10 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1041535636116702463}
   serializedVersion: 4
-  m_Mass: 500000
-  m_Drag: 1
+  m_Mass: 10000
+  m_Drag: 0.5
   m_AngularDrag: 1
-  m_CenterOfMass: {x: 0, y: 0, z: -2}
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
@@ -159,7 +159,7 @@ MonoBehaviour:
   distanceThreshold: 100
   timeToWaitBeforeLogging: 5
   logMessages: 0
---- !u!114 &7926615832387045814
+--- !u!114 &6862514067963760728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,12 +168,47 @@ MonoBehaviour:
   m_GameObject: {fileID: 1041535636116702463}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bb1c63a3c65659be9cafce08b9cde57, type: 3}
+  m_Script: {fileID: 11500000, guid: ebb499a376b0c094f92b8f70c0966934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplifyForce: 0.5
-  timeToWait: 0.04
-  rotationSpeed: 5
+  _version: 0
+  _centerOfMass: {x: 0, y: 0, z: 0}
+  _forcePoints:
+  - _weight: 1
+    _offsetPosition: {x: 6.82, y: -0.5, z: 0}
+  - _weight: 1
+    _offsetPosition: {x: 6.38, y: -0.5, z: 8.13}
+  - _weight: 1
+    _offsetPosition: {x: -6.35, y: -0.5, z: 8.13}
+  - _weight: 1
+    _offsetPosition: {x: -3.92, y: -0.5, z: 14}
+  - _weight: 1
+    _offsetPosition: {x: 4.22, y: -0.5, z: 14}
+  - _weight: 1
+    _offsetPosition: {x: -6.51, y: -0.5, z: 0}
+  - _weight: 1
+    _offsetPosition: {x: 6.39, y: -0.5, z: -8.58}
+  - _weight: 1
+    _offsetPosition: {x: -5.89, y: -0.5, z: -8.58}
+  - _weight: 1
+    _offsetPosition: {x: 0.37, y: -0.5, z: -15}
+  - _weight: 1
+    _offsetPosition: {x: 0.23, y: -0.5, z: 16}
+  _forceHeightOffset: 0
+  _forceMultiplier: 15
+  _minSpatialLength: 12
+  _turningHeel: 1
+  _maximumBuoyancyForce: Infinity
+  _dragInWaterUp: 0
+  _dragInWaterRight: 0
+  _dragInWaterForward: 0
+  _enginePower: 0
+  _turnPower: 0
+  _playerControlled: 0
+  _engineBias: 0
+  _turnBias: 0
+  _debug:
+    _drawQueries: 0
 --- !u!114 &2538637594129884758
 MonoBehaviour:
   m_ObjectHideFlags: 0

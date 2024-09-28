@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Crest;
 using System.Collections;
-using UnityEngine.Profiling;
 
 public class ShipBouyancyScript : MonoBehaviour
 {
     public static ShipBouyancyScript shipBouyancyScriptInstance;
 
     [SerializeField] float amplifyForce = 0.5f;
-    public float timeToWait = 0.1f;
+    public float timeToWait = 0.5f;
     public float rotationSpeed = 2.0f;
 
     ShipTriangles shipTriangles;
@@ -46,6 +45,9 @@ public class ShipBouyancyScript : MonoBehaviour
     {
         if (shipTriangles.underWaterTriangleData.Count == 0) return;
 
+        if (recalculateForces)
+            RecalculateForces();
+
         AddUnderWaterForces();
 
         // Align the ship upward to avoid sinking
@@ -57,12 +59,13 @@ public class ShipBouyancyScript : MonoBehaviour
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSeconds(timeToWait); 
+            yield return new WaitForSeconds(timeToWait);
             shipTriangles.GenerateUnderwaterMesh();
             recalculateForces = true;
         }
     }
 
+    // Only recalculate forces when needed to improve performance
     void RecalculateForces()
     {
         List<TriangleData> underWaterTriangleData = shipTriangles.underWaterTriangleData;
@@ -83,6 +86,8 @@ public class ShipBouyancyScript : MonoBehaviour
 
             forces[i] = force;
         }
+
+        recalculateForces = false;
     }
 
     // Add all forces that act on the squares below the water
@@ -93,17 +98,7 @@ public class ShipBouyancyScript : MonoBehaviour
         for (int i = 0; i < underWaterTriangleData.Count; i++)
         {
             TriangleData triangleData = underWaterTriangleData[i];
-
-            Vector3 force = Vector3.zero;
-            Vector3 buoyancyForce = BuoyancyForce(waterDensity, triangleData);
-            force += buoyancyForce;
-
-            Vector3 pressureDragForce = PressureDragForce(triangleData);
-            force += pressureDragForce;
-
-            force *= amplifyForce;
-
-            ship.AddForceAtPosition(force, triangleData.center);
+            ship.AddForceAtPosition(forces[i], triangleData.center);
         }
     }
 
@@ -122,7 +117,7 @@ public class ShipBouyancyScript : MonoBehaviour
     }
 
     Vector3 PressureDragForce(TriangleData triangleData)
-    {   
+    {
         float velocity = triangleData.velocity.magnitude;
         velocity /= velocity; // Assume velocity reference is the same as velocity
 
@@ -149,7 +144,7 @@ public class ShipBouyancyScript : MonoBehaviour
     }
 
     public float[] GetDistanceToWater(Vector3[] _queryPoints)
-    {   
+    {
         Vector3[] _queryResultDisps = new Vector3[_queryPoints.Length];
 
         var collProvider = OceanRenderer.Instance.CollisionProvider;
@@ -158,7 +153,7 @@ public class ShipBouyancyScript : MonoBehaviour
 
         float[] heightDiff = new float[_queryPoints.Length];
 
-        for(int i = 0; i < _queryPoints.Length; i++)
+        for (int i = 0; i < _queryPoints.Length; i++)
         {
             var waterHeight = OceanRenderer.Instance.SeaLevel + _queryResultDisps[i].y;
             heightDiff[i] = _queryPoints[i].y - waterHeight;

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Crest;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -10,6 +12,7 @@ public class RadarController : MonoBehaviour
     public int rows = 1;
     public int cols = 1;
     public int distanceBetweenRadars = 50;
+    public int numOfRadars;
 
     [Header("Generate Radars")]
     [SerializeField] bool generateRadars = false;
@@ -20,9 +23,18 @@ public class RadarController : MonoBehaviour
 
     GameObject parentEmptyObject;                   // Parent Object of the radars to easily rotate and move them
     List<List<int>> radarIDAtRow;
-    Dictionary<int, GameObject> radars = new();
+    public Dictionary<int, GameObject> radars = new();
 
     MainMenuController mainMenuController;
+    SampleHeightHelper sampleHeightHelper = new();
+
+    [Header("Radar Equation Parameters")]
+    public float transmittedPowerW = 1000f; // Watts
+    public float antennaGainDBi = 30f; // dBi
+    public float wavelengthM = 0.03f; // meters (for 10 GHz)
+    public float systemLossesDB = 3f; // dB
+
+    public int ImageRadius = 1000;
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +61,8 @@ public class RadarController : MonoBehaviour
         }
         else if (generateRadars)
         {
-            int numOfRadars = rows * cols;
+            if (numOfRadars == 0)
+                numOfRadars = rows * cols;
             GenerateRadars(numOfRadars);
             generateRadars = false;
         }
@@ -58,13 +71,19 @@ public class RadarController : MonoBehaviour
     public void GenerateRadar()
     {
         if (radarPrefab == null) return;
-        
+
         // Create Radar
         GameObject instance = Instantiate(radarPrefab);
 
         // Update Radar ID for the radar
         RadarScript radarScript = instance.GetComponentInChildren<RadarScript>();
         radarScript.radarID = newRadarID;
+        radarScript.transmittedPowerW = transmittedPowerW;
+        radarScript.antennaGainDBi = antennaGainDBi;
+        radarScript.wavelengthM = wavelengthM;
+        radarScript.systemLossesDB = systemLossesDB;
+        radarScript.ImageRadius = ImageRadius;
+
 
         // Get the row with the least radars and its index
         float min = math.INFINITY;
@@ -116,6 +135,38 @@ public class RadarController : MonoBehaviour
         //Debug.Log($"{numOfRadars} radars have been generated");
     }
 
+    public async void UpdateRadarsPositions()
+    {
+        foreach (KeyValuePair<int, GameObject> entry in radars)
+        {
+            // Disable kinematic to avoid unwanted forces being applied
+            Rigidbody rb = entry.Value.GetComponent<Rigidbody>();
+            rb.isKinematic = true;
+
+            Vector3 position = entry.Value.transform.position;
+            sampleHeightHelper.Init(position, 0, true);
+
+            float o_height = await WaitForSampleAsync();
+
+            entry.Value.transform.position = new Vector3(position.x, o_height, position.z);
+
+            rb.isKinematic = false;
+        }
+    }
+
+    async Task<float> WaitForSampleAsync()
+    {
+        float o_height;
+
+        // Wait until we get a valid sample height
+        while (!sampleHeightHelper.Sample(out o_height))
+        {
+            await Task.Yield();
+        }
+
+        return o_height;
+    }
+
     public void UnloadRadars()
     {
         foreach (KeyValuePair<int, GameObject> entry in radars)
@@ -123,7 +174,7 @@ public class RadarController : MonoBehaviour
             Destroy(entry.Value);
         }
         radars.Clear();
-        
+
         radarIDAtRow.Clear();
 
         for (int i = 0; i < rows; i++)

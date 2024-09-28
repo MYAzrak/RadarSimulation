@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Crest;
 using UnityEngine;
 
 public class ScenarioController : MonoBehaviour
@@ -14,7 +13,7 @@ public class ScenarioController : MonoBehaviour
     [SerializeField] List<ShipPrefab> shipPrefabs = new();
 
     [Header("Wave Prefabs")]
-    [SerializeField] List<WavePrefab> wavePrefabs = new();
+    public List<WavePrefab> wavePrefabs = new();
 
     [Header("Time options")]
     public int timeScale = 1;
@@ -28,10 +27,11 @@ public class ScenarioController : MonoBehaviour
     [Header("Debug")]
     public bool logMessages = false;
     bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
-    float timeSinceScenarioStart;
+    public float timeSinceScenarioStart;
+    public float timeLimit = 300;                                       // A time limit for the scenario (in seconds)
     public int completedShips = 0;                                      // Ships that have completed their path
     public bool loadAllScenarios = false;
-    
+
     // -------------------------------------------------
     // --------- Scenario Files Path and Names ---------
     // -------------------------------------------------
@@ -43,19 +43,18 @@ public class ScenarioController : MonoBehaviour
     // -------------------------------------------------
     Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
     Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
-    GameObject wave = null; 
-    List<GameObject> generatedShips = new();
+    public List<GameObject> generatedShips = new();
     ScenarioSettings scenarioSettings;
     bool csvReadResult;
-    
+
     // -------------------------------------------------
     // ----- Other Classes the Script Makes Use of -----
     // -------------------------------------------------
+    RadarController radarController;
     CSVController csvController;
     MainMenuController mainMenuController;
-    OceanRenderer oceanRenderer;
-    TimeProviderCustom timeProviderCustom;
-    
+    WavesTracker wavesTracker;
+
     // -------------------------------------------------
     // -------- Current Scenario Information -----------
     // -------------------------------------------------
@@ -64,7 +63,7 @@ public class ScenarioController : MonoBehaviour
     List<string> scenarios = new();                                     // All scenarios loaded
     bool endScenario = false;                                           // Forcefully ends a scenario
     string[] scenarioLabels = new string[3];                            // Use to animate the scenario label
-    
+
     // -------------------------------------------------
     // --------------- Speed Conversions ---------------
     // -------------------------------------------------
@@ -73,23 +72,19 @@ public class ScenarioController : MonoBehaviour
 
     void Awake()
     {
-        filePath = Application.persistentDataPath +  "/Scenarios/";
+        filePath = Application.persistentDataPath + "/Scenarios/";
         if (!Directory.Exists(filePath))
             Directory.CreateDirectory(filePath);
     }
 
     void Start()
     {
-
         timeSinceScenarioStart = Time.time;
 
-        oceanRenderer = FindObjectOfType<OceanRenderer>();
-        timeProviderCustom = FindObjectOfType<TimeProviderCustom>();
-        timeProviderCustom._overrideTime = true;
-
-        oceanRenderer.PushTimeProvider(timeProviderCustom);
+        wavesTracker = FindObjectOfType<WavesTracker>();
 
         csvController = GetComponent<CSVController>();
+        radarController = GetComponent<RadarController>();
         mainMenuController = FindObjectOfType<MainMenuController>();
         Time.timeScale = 1f;
 
@@ -115,7 +110,7 @@ public class ScenarioController : MonoBehaviour
         */
         else if (logMessages != previousLogMessageBool)
         {
-            foreach (var ship in generatedShips) 
+            foreach (var ship in generatedShips)
             {
                 ship.GetComponent<ShipController>().logMessages = logMessages;
             }
@@ -127,9 +122,12 @@ public class ScenarioController : MonoBehaviour
             Time.timeScale = timeScale;
             updateTimeScale = false;
         }
+        
+        if (timeSinceScenarioStart > timeLimit)
+            endScenario = true;
 
         timeSinceScenarioStart += Time.deltaTime;
-        timeProviderCustom._time = timeSinceScenarioStart;
+        wavesTracker.SetTimeProvider(timeSinceScenarioStart);
     }
 
     // Read all files in filePath 
@@ -150,7 +148,7 @@ public class ScenarioController : MonoBehaviour
         }
 
         Debug.Log("Scenario files have been read.");
-        
+
         scenarios = files;
 
         return files;
@@ -167,11 +165,14 @@ public class ScenarioController : MonoBehaviour
         endScenario = false;
 
         UnloadAllObjects();
-        
+
         // Reset ships that completed their path
         completedShips = 0;
-        
-        GenerateWaves(scenarioSettings.waves);
+
+        wavesTracker.GenerateWaves(scenarioSettings.waves);
+        mainMenuController.SetWaveLabel(scenarioSettings.waves.ToString());
+
+        radarController.UpdateRadarsPositions();
         GenerateShips();
 
         mainMenuController.SetShipsLabel(generatedShips.Count);
@@ -186,7 +187,7 @@ public class ScenarioController : MonoBehaviour
         timeSinceScenarioStart = 0;
         scenarioCurrentlyRunning = true;
 
-        Debug.Log($"{scenario} has been loaded");
+        //Debug.Log($"{scenario} has been loaded");
     }
 
     public void LoadAllScenarios()
@@ -194,36 +195,19 @@ public class ScenarioController : MonoBehaviour
         loadAllScenarios = true;
         loadScenario = true;
     }
-    
+
     void UnloadAllObjects()
     {
         // Destroy all generated ships
-        foreach (var ship in generatedShips) 
+        foreach (var ship in generatedShips)
         {
             Destroy(ship);
         }
 
-        // Destroy wave
-        Destroy(wave);
+        // Reset Wave
+        wavesTracker.ResetToDefaultWave();
 
         generatedShips.Clear();
-    }
-
-    void GenerateWaves(Waves scenarioWave)
-    {
-        GameObject prefab = null;
-
-        foreach (WavePrefab wavePrefab in wavePrefabs)
-        {
-            if (wavePrefab.waves == scenarioWave)
-            {
-                prefab = wavePrefab.prefab;
-            }
-        }
-
-        wave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-
-        mainMenuController.SetWaveLabel(scenarioWave.ToString());
     }
 
     void GenerateShips()
@@ -233,7 +217,7 @@ public class ScenarioController : MonoBehaviour
             // The first location is the starting position of the ship
             float x = ship.Value[0].x_coordinates;
             float z = ship.Value[0].z_coordinates;
-            
+
             GameObject instance;
             GameObject prefab = null;
 
@@ -247,8 +231,9 @@ public class ScenarioController : MonoBehaviour
 
             if (prefab == null)
             {
-                if (shipPrefabs.Count == 0){
-                    Debug.Log($"No prefabs found. Skipping ship with ID {shipsInformation[ship.Key].Id}");
+                if (shipPrefabs.Count == 0)
+                {
+                    //Debug.Log($"No prefabs found. Skipping ship with ID {shipsInformation[ship.Key].Id}");
                     break;
                 }
 
@@ -256,24 +241,24 @@ public class ScenarioController : MonoBehaviour
 
                 if (prefab == null)
                 {
-                    Debug.Log($"No prefabs found at the first index of Ship Prefabs. Skipping ship with ID {shipsInformation[ship.Key].Id}");
+                    //Debug.Log($"No prefabs found at the first index of Ship Prefabs. Skipping ship with ID {shipsInformation[ship.Key].Id}");
                     break;
                 }
 
-                Debug.Log($"Unable to find ship prefab for ship type {shipsInformation[ship.Key].Type}. " + 
-                $"Defaulting to the first ship prefab for ship with ID {shipsInformation[ship.Key].Id}");
+                //Debug.Log($"Unable to find ship prefab for ship type {shipsInformation[ship.Key].Type}. " +
+                //$"Defaulting to the first ship prefab for ship with ID {shipsInformation[ship.Key].Id}");
             }
 
             float shipHeight = prefab.transform.position.y;
             Vector3 shipLocation = new(x, shipHeight, z);
 
             // If there are more than one location then rotate the generated ship to face the direction of the next location
-            if (ship.Value.Count > 1) 
+            if (ship.Value.Count > 1)
             {
                 Vector3 heading = new Vector3(ship.Value[1].x_coordinates, shipHeight, ship.Value[1].z_coordinates) - shipLocation;
                 float distance = heading.magnitude;
                 Vector3 direction = heading / distance;
-                
+
                 instance = Instantiate(prefab, shipLocation, Quaternion.LookRotation(direction));
             }
             else
@@ -282,20 +267,20 @@ public class ScenarioController : MonoBehaviour
             ShipController shipController = instance.GetComponent<ShipController>() ?? instance.GetComponentInChildren<ShipController>();
             if (shipController == null)
             {
-                Debug.Log($"Unable to find ship controller component. Ship with ID: {shipsInformation[ship.Key].Id} is uninitialized.");
+                //Debug.Log($"Unable to find ship controller component. Ship with ID: {shipsInformation[ship.Key].Id} is uninitialized.");
                 continue;
             }
             shipController.shipInformation = shipsInformation[ship.Key]; // Initialize the ship information
 
             generatedShips.Add(instance);
-            
+
             // Start from index 1 since index 0 is the starting position
             for (int i = 1; i < ship.Value.Count; i++)
             {
                 x = ship.Value[i].x_coordinates;
                 z = ship.Value[i].z_coordinates;
                 float speed = ship.Value[i].speed;
-                
+
                 // Add the location and speed to ship controller lists
                 shipController.locationsToVisit.Add(new Vector3(x, 0, z));
                 shipController.speedAtEachLocation.Add(speed);
@@ -310,12 +295,9 @@ public class ScenarioController : MonoBehaviour
 
     public void EndScenario()
     {
-        if (scenarioCurrentlyRunning)
-        {
-            UnloadAllObjects();
-            endScenario = true;
-            mainMenuController.SetDefaultSimulationInfoPanel();
-        }
+        UnloadAllObjects();
+        endScenario = true;
+        mainMenuController.SetDefaultSimulationInfoPanel();
     }
 
     public void EndAllScenarios()
@@ -326,19 +308,21 @@ public class ScenarioController : MonoBehaviour
 
     IEnumerator UpdateScenarioLabelAnimation()
     {
-        while (Application.isPlaying) 
+        while (Application.isPlaying)
         {
             yield return new WaitForSeconds(1);
             if (scenarioCurrentlyRunning)
             {
                 for (int i = 0; i < scenarioLabels.Length; i++)
                 {
+                    mainMenuController.SetTimeRemainingLabel(timeLimit - timeSinceScenarioStart);
+                    
                     // TODO: Find a better solution since it is possible for SetDefaultSimulationInfoPanel() to be replaced
-                    if (!scenarioCurrentlyRunning) 
+                    if (!scenarioCurrentlyRunning)
                     {
                         mainMenuController.SetDefaultSimulationInfoPanel();
                         break;
-                    } 
+                    }
 
                     mainMenuController.SetScenarioRunningLabel(scenarioLabels[i]);
                     yield return new WaitForSeconds(1);
@@ -349,13 +333,13 @@ public class ScenarioController : MonoBehaviour
 
     IEnumerator RunNextScenario()
     {
-        while (Application.isPlaying) 
+        while (Application.isPlaying)
         {
             yield return new WaitForSeconds(1);
             if (scenarioCurrentlyRunning && (completedShips >= generatedShips.Count || endScenario))
             {
                 scenarioCurrentlyRunning = false;
-                Debug.Log("Scenario has finished");
+                //Debug.Log("Scenario has finished");
 
                 if (!loadAllScenarios)
                 {
@@ -368,7 +352,7 @@ public class ScenarioController : MonoBehaviour
 
                 if (currentScenarioIndex < scenarios.Count)
                 {
-                    for (int i = 5; i > 0; i--)
+                    for (int i = 3; i > 0; i--)
                     {
                         mainMenuController.SetScenarioRunningLabel($"Scenario has completed.\nRunning next scenario in {i}.");
                         yield return new WaitForSeconds(1);
@@ -400,7 +384,7 @@ public class ScenarioController : MonoBehaviour
     }
 
     [Serializable]
-    struct WavePrefab
+    public struct WavePrefab
     {
         public Waves waves;
         public GameObject prefab;

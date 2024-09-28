@@ -122,75 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &261883482
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6254869662381877804, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_Name
-      value: Container Ship
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -25.52179
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 85
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 11.636038
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6739094224447467670, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
 --- !u!1 &801338831
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,6 +288,7 @@ GameObject:
   - component: {fileID: 1059646246}
   - component: {fileID: 1059646245}
   - component: {fileID: 1059646247}
+  - component: {fileID: 1059646248}
   m_Layer: 0
   m_Name: Ocean
   m_TagString: Untagged
@@ -459,6 +391,19 @@ MonoBehaviour:
   _time: 0
   _overrideDeltaTime: 0
   _deltaTime: 0
+--- !u!114 &1059646248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059646244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdb7bf0dcd6d58c4d8c729e1f828ea13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWave: {fileID: 0}
 --- !u!1 &1422562296
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,7 +492,7 @@ Transform:
   m_GameObject: {fileID: 1422562296}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 20, z: -192.1}
+  m_LocalPosition: {x: 0, y: 20, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -575,7 +520,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422562296}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36b9b603a66ebd0fb9665b99c026c752, type: 3}
   m_Name: 
@@ -654,8 +599,11 @@ MonoBehaviour:
   loadScenario: 0
   resetScenario: 0
   logMessages: 0
+  timeSinceScenarioStart: 0
+  timeLimit: 300
   completedShips: 0
   loadAllScenarios: 0
+  generatedShips: []
 --- !u!4 &2106282668
 Transform:
   m_ObjectHideFlags: 0
@@ -699,9 +647,15 @@ MonoBehaviour:
   rows: 4
   cols: 1
   distanceBetweenRadars: 50
+  numOfRadars: 0
   generateRadars: 0
   generateOneRadar: 0
   newRadarID: 0
+  transmittedPowerW: 1000
+  antennaGainDBi: 30
+  wavelengthM: 0.03
+  systemLossesDB: 3
+  ImageRadius: 1000
 --- !u!114 &2106282671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,4 +677,3 @@ SceneRoots:
   - {fileID: 1059646246}
   - {fileID: 2106282668}
   - {fileID: 801338833}
-  - {fileID: 261883482}
