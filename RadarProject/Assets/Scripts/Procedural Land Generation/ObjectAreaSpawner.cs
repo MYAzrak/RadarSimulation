@@ -10,6 +10,7 @@ public class ObjectAreaSpawner : MonoBehaviour
     public float itemXSpread = 100; // Map's width
     public float itemYSpread = 0;
     public float itemZSpread = 600; // Map's height
+
     void Start()
     {
         for (int i = 0; i < numObjectsToSpawn; i++)
