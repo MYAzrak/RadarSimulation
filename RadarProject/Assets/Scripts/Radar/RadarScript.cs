@@ -14,13 +14,14 @@ public class RadarScript : MonoBehaviour
     public int radarID;
     [SerializeField] string path = "radar";
 
-    [SerializeField] private int HeightRes = 2048;
+    [SerializeField] private int HeightRes = 1024;
 
-    [SerializeField] private int WidthRes = 5;
+    [SerializeField] private int WidthRes = 10;
     [Range(0.0f, 1f)] private float resolution = 0.5f;
     [Range(5f, 5000f)] public float MaxDistance = 100F;
     [Range(0.01f, 2f)] public float MinDistance = 0.5F;
     [Range(5.0f, 90f)] public float VerticalAngle = 30f;
+    [Range(0.5f, 50f)] public float BeamWidth = 2f;
     [HideInInspector] public Camera radarCamera;
     [Range(0.0f, 5f)] public float noise = 10.0f;
     [Range(200, 2000)] public int ImageRadius = 1000;
@@ -74,7 +75,7 @@ public class RadarScript : MonoBehaviour
         {
             radarComputeShader = (ComputeShader)Resources.Load("ProcessRadarData");
         }
-        cameraObject = SpawnCameras("DepthCamera", WidthRes, HeightRes, VerticalAngle, RenderTextureFormat.ARGBFloat);
+        cameraObject = SpawnCameras("DepthCamera", WidthRes, HeightRes, VerticalAngle, BeamWidth, RenderTextureFormat.ARGBFloat);
         radarCamera = cameraObject.GetComponent<Camera>();
 
         // Initialize compute shader resources
@@ -172,7 +173,7 @@ public class RadarScript : MonoBehaviour
         return sw.ToString();
     }
 
-    private GameObject SpawnCameras(string name, int Width, int Height, float verticalAngle, RenderTextureFormat format)
+    private GameObject SpawnCameras(string name, int Width, int Height, float verticalAngle, float beamWidth, RenderTextureFormat format)
     {
         GameObject CameraObject = new GameObject();
         CameraObject.name = name;
@@ -182,12 +183,20 @@ public class RadarScript : MonoBehaviour
         CameraObject.AddComponent<Camera>();
         Camera cam = CameraObject.GetComponent<Camera>();
 
-        radarTexture = new RenderTexture(Width, 5, 32, format);
+        radarTexture = new RenderTexture(Width, Height, 32, format);
         cam.targetTexture = radarTexture;
 
         cam.usePhysicalProperties = false;
-        cam.aspect = (1) / verticalAngle;
-        cam.fieldOfView = Camera.HorizontalToVerticalFieldOfView(1, cam.aspect);
+
+        // Set the vertical field of view to the specified vertical angle
+        cam.fieldOfView = verticalAngle;
+
+        // Calculate the horizontal field of view based on the beam width
+        float horizontalFOV = beamWidth;
+
+        // Set the aspect ratio to maintain the desired horizontal FOV
+        cam.aspect = Mathf.Tan(horizontalFOV * 0.5f * Mathf.Deg2Rad) / Mathf.Tan(verticalAngle * 0.5f * Mathf.Deg2Rad);
+
         cam.farClipPlane = MaxDistance;
         cam.nearClipPlane = MinDistance;
         cam.enabled = true;
@@ -197,7 +206,6 @@ public class RadarScript : MonoBehaviour
 
         return CameraObject;
     }
-
 
     private void ProcessRadarDataGPU(int kernelIndex)
     {

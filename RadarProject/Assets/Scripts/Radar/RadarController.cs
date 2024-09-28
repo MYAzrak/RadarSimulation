@@ -35,6 +35,8 @@ public class RadarController : MonoBehaviour
     public float systemLossesDB = 3f; // dB
 
     public int ImageRadius = 1000;
+    public float VerticalAngle = 30f;
+    public float BeamWidth = 2f;
 
     // Start is called before the first frame update
     void Start()
@@ -83,7 +85,8 @@ public class RadarController : MonoBehaviour
         radarScript.wavelengthM = wavelengthM;
         radarScript.systemLossesDB = systemLossesDB;
         radarScript.ImageRadius = ImageRadius;
-
+        radarScript.VerticalAngle = VerticalAngle;
+        radarScript.BeamWidth = BeamWidth;
 
         // Get the row with the least radars and its index
         float min = math.INFINITY;
