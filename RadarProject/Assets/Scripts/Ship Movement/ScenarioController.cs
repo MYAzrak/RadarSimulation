@@ -311,7 +311,7 @@ public class ScenarioController : MonoBehaviour
         while (Application.isPlaying)
         {
             yield return new WaitForSeconds(1);
-            if (scenarioCurrentlyRunning)
+            while (scenarioCurrentlyRunning)
             {
                 for (int i = 0; i < scenarioLabels.Length; i++)
                 {
