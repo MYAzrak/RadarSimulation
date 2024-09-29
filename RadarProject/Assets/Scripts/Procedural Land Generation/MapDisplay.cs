@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Takes the noiseMap and returns it into a texture then applies that texture into a plane in out scene
+// Takes the noiseMap and returns it into a texture then applies that texture into a plane in our scene
 public class MapDisplay : MonoBehaviour
 {
     public Renderer textureRenderer; // A ref to the renderer of the plane we created

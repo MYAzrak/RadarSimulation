@@ -21,12 +21,12 @@ public class RandomizeObjectSelection : MonoBehaviour
             if (Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance)) // If hits something
             {
                 Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-                GameObject clone = Instantiate(objects[randomIndex], hit.point, spawnRotation); // Clones the prefab and doesn't rotate 
+                GameObject clone = Instantiate(objects[randomIndex], hit.point, spawnRotation);
             }
         }
         else
         {
-            GameObject clone = Instantiate(objects[randomIndex], transform.position, Quaternion.identity); // Clones the prefab and doesn't rotate 
+            GameObject clone = Instantiate(objects[randomIndex], transform.position, Quaternion.identity); // Clones the prefab and doesn't rotate it
         }
     }
 }
