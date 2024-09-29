@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 1041535636116702463}
   serializedVersion: 2
   m_LocalRotation: {x: 1.7112914e-15, y: 1, z: -0.000000021855694, w: 0.0000000754979}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -196,7 +196,7 @@ MonoBehaviour:
     _offsetPosition: {x: 0.23, y: -0.5, z: 16}
   _forceHeightOffset: 0
   _forceMultiplier: 15
-  _minSpatialLength: 12
+  _minSpatialLength: 1
   _turningHeel: 1
   _maximumBuoyancyForce: Infinity
   _dragInWaterUp: 0
