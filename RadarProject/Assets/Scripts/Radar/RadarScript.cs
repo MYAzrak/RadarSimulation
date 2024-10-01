@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using System.Linq;
-using WebSocketSharp;
 using WebSocketSharp.Server;
 using Newtonsoft.Json;
 using System.IO;
@@ -9,6 +8,11 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
+using Unity.Mathematics;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Burst;
+
 public class RadarScript : MonoBehaviour
 {
     public int radarID;
@@ -47,6 +51,13 @@ public class RadarScript : MonoBehaviour
 
     private ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
 
+    private ComputeBuffer rcsBuffer;
+    private ComputeBuffer depthNormalBuffer;
+    private RenderTexture depthNormalTexture;
+
+    [SerializeField] private LayerMask radarLayerMask;
+    [SerializeField] private float defaultReflectivity = 1f;
+
     public int[,] radarPPI;
     private ScenarioController scenario;
 
@@ -83,6 +94,7 @@ public class RadarScript : MonoBehaviour
         inputTexture.enableRandomWrite = true;
         inputTexture.Create();
 
+
         // Set up the radar camera
         radarCamera.targetTexture = inputTexture;
         radarCamera.depthTextureMode = DepthTextureMode.Depth;
@@ -90,6 +102,17 @@ public class RadarScript : MonoBehaviour
         // Create a buffer to hold a single rotation
         radarBuffer = new ComputeBuffer(ImageRadius, sizeof(int));
         tempBuffer = new int[ImageRadius];
+
+        depthNormalTexture = new RenderTexture(WidthRes, HeightRes, 0, RenderTextureFormat.ARGBFloat);
+        depthNormalTexture.enableRandomWrite = true;
+        depthNormalTexture.Create();
+
+        depthNormalBuffer = new ComputeBuffer(WidthRes * HeightRes, sizeof(float) * 4);
+        rcsBuffer = new ComputeBuffer(WidthRes * HeightRes, sizeof(float));
+
+        // Set up the radar camera to render to the depth-normal texture
+        radarCamera.targetTexture = depthNormalTexture;
+        radarCamera.depthTextureMode = DepthTextureMode.DepthNormals;
 
         StartCoroutine(ProcessRadar());
     }
@@ -100,6 +123,62 @@ public class RadarScript : MonoBehaviour
         {
             action();
         }
+    }
+
+
+    void UpdateRCSArray()
+    {
+        // Render the depth-normal texture
+        radarCamera.Render();
+
+        // Copy the depth-normal texture to the buffer
+        ComputeShader copyShader = Resources.Load<ComputeShader>("CopyTextureToBuffer");
+        int kernelHandle = copyShader.FindKernel("CSMain");
+        copyShader.SetTexture(kernelHandle, "InputTexture", depthNormalTexture);
+        copyShader.SetBuffer(kernelHandle, "OutputBuffer", depthNormalBuffer);
+
+        // Ensure at least one thread group in each dimension
+        int dispatchX = Mathf.Max(1, WidthRes / 8);
+        int dispatchY = Mathf.Max(1, HeightRes / 8);
+        copyShader.Dispatch(kernelHandle, dispatchX, dispatchY, 1);
+
+        // Set up the RCS calculation job
+        int totalPixels = WidthRes * HeightRes;
+        NativeArray<float4> depthNormalData = new NativeArray<float4>(totalPixels, Allocator.TempJob);
+        NativeArray<float> rcsData = new NativeArray<float>(totalPixels, Allocator.TempJob);
+
+        // Get data from compute buffer
+        float4[] tempArray = new float4[totalPixels];
+        depthNormalBuffer.GetData(tempArray);
+        depthNormalData.CopyFrom(tempArray);
+
+        RCSJob rcsJob = new RCSJob
+        {
+            DepthNormalData = depthNormalData,
+            RCSData = rcsData,
+            InverseViewProjectionMatrix = radarCamera.projectionMatrix.inverse * radarCamera.worldToCameraMatrix.inverse,
+            CameraPosition = radarCamera.transform.position,
+            MaxDistance = MaxDistance,
+            DefaultReflectivity = defaultReflectivity,
+            Width = WidthRes,
+            Height = HeightRes
+        };
+
+        // Schedule and complete the job
+        JobHandle jobHandle = rcsJob.Schedule(totalPixels, 64);
+        jobHandle.Complete();
+
+        // Copy the results back to the RCS buffer
+        rcsBuffer.SetData(rcsData);
+
+        // Clean up
+        depthNormalData.Dispose();
+        rcsData.Dispose();
+    }
+    float GetReflectivity(GameObject obj)
+    {
+        //TODO: Get reflectivity from object property
+        return defaultReflectivity;
     }
 
     IEnumerator ProcessRadar()
@@ -125,7 +204,9 @@ public class RadarScript : MonoBehaviour
                 Debug.Log($"Sent Data: {task.Result}");
             }
 
+            UpdateRCSArray();
             ProcessRadarDataGPU(kernelIndex);
+
             RotateCamera();
 
             yield return new WaitForFixedUpdate();
@@ -231,6 +312,7 @@ public class RadarScript : MonoBehaviour
         radarComputeShader.SetFloat("AntennaGain", antennaGainDBi);
         radarComputeShader.SetFloat("Wavelength", wavelengthM);
         radarComputeShader.SetFloat("SystemLosses", systemLossesDB);
+        radarComputeShader.SetBuffer(kernelIndex, "RCSBuffer", rcsBuffer);
 
         // Dispatch the compute shader
         int threadGroupsX = Mathf.CeilToInt(WidthRes / 8.0f);
@@ -260,6 +342,10 @@ public class RadarScript : MonoBehaviour
         {
             inputTexture.Release();
         }
+        if (rcsBuffer != null)
+        {
+            rcsBuffer.Release();
+        }
     }
     private void RotateCamera()
     {
@@ -273,7 +359,41 @@ public class RadarScript : MonoBehaviour
         public int Id { get; set; }
         public Vector3 Position { get; set; }
     }
+    [BurstCompile]
+    private struct RCSJob : IJobParallelFor
+    {
+        [ReadOnly] public NativeArray<float4> DepthNormalData;
+        public NativeArray<float> RCSData;
+        public float4x4 InverseViewProjectionMatrix;
+        public float3 CameraPosition;
+        public float MaxDistance;
+        public float DefaultReflectivity;
+        public int Width;
+        public int Height;
 
+        public void Execute(int index)
+        {
+            float4 depthNormal = DepthNormalData[index];
+            float depth = depthNormal.w * MaxDistance;
+            float3 normal = depthNormal.xyz * 2 - 1;
+
+            // Reconstruct world position
+            float4 clipSpace = new float4(
+                (index % Width) / (float)Width * 2 - 1,
+                (index / Width) / (float)Height * 2 - 1,
+                depth,
+                1
+            );
+            float4 worldSpace = math.mul(InverseViewProjectionMatrix, clipSpace);
+            float3 worldPos = worldSpace.xyz / worldSpace.w;
+
+            float3 rayDirection = math.normalize(worldPos - CameraPosition);
+            float angle = math.abs(math.dot(normal, rayDirection));
+            float visibleArea = angle * MaxDistance * MaxDistance; // Simplified area calculation
+
+            RCSData[index] = visibleArea * DefaultReflectivity;
+        }
+    }
 }
 public class Vector3Converter : JsonConverter<Vector3>
 {
