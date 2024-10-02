@@ -14,8 +14,15 @@ cbar = None
 radarID = None
 reconnect_delay = 5  # Delay in seconds before attempting to reconnect
 
+color = True
+
 def create_ppi_plot(data, azimuth, range_bins, vmin=None, vmax=None):
     global im, cbar
+
+    if color:
+        data = np.where(data != 0, 1, data)
+        vmin = data.min()
+        vmax = data.max()
     
     # Convert polar coordinates to cartesian
     theta = np.radians(azimuth)
@@ -95,6 +102,7 @@ if __name__ == "__main__":
 
     # Add arguments
     parser.add_argument('-r', type=int, default=0, help='Radar ID')
+    parser.add_argument('-c', type=bool, default=True, help='Color 0/1')
     args = parser.parse_args()
 
     if isinstance(args.r, int):
@@ -102,6 +110,9 @@ if __name__ == "__main__":
         print(radarID)
     else:
         print("Invalid Radar ID")
+
+    if isinstance(args.c, bool):
+        color = args.c
 
     # Start WebSocket connection in a separate thread
     websocket_thread = threading.Thread(target=run_websocket)
