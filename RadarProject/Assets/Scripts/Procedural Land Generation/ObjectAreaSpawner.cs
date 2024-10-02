@@ -5,11 +5,11 @@ using UnityEngine;
 public class ObjectAreaSpawner : MonoBehaviour
 {
     public GameObject objectToSpread;
-    public int numObjectsToSpawn = 10;
+    public int numObjectsToSpawn = 100;
 
-    public float itemXSpread = 100; 
+    public float itemXSpread = 200; 
     public float itemYSpread = 0;
-    public float itemZSpread = 600; 
+    public float itemZSpread = 2500; 
 
     void Start()
     {
