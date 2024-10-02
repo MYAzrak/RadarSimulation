@@ -3,7 +3,22 @@ guid: 5a215ff8f47445b4fbccfb1952d5347a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HP_Palm3_Leaf
+    second: {fileID: 2100000, guid: 3742f2d74ee5c9547ae1665d581871fa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HP_Palm3_Leaf_2
+    second: {fileID: 2100000, guid: c4938cfae975091499a0cc005ccc2fa5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HP_Palm3_Trunk
+    second: {fileID: 2100000, guid: 577299e9354517e4794cfb30a4bb70b2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
