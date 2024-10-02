@@ -1,0 +1,38 @@
+#pragma kernel CSMain
+
+RWStructuredBuffer<float4> DepthNormalBuffer;
+RWStructuredBuffer<float> RCSBuffer;
+
+float4x4 InverseViewProjectionMatrix;
+float3 CameraPosition;
+float MaxDistance;
+float DefaultReflectivity;
+uint Width;
+uint Height;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    uint index = id.y * Width + id.x;
+    if (id.x >= Width || id.y >= Height) return;
+
+    float4 depthNormal = DepthNormalBuffer[index];
+    float depth = depthNormal.w * MaxDistance;
+    float3 normal = depthNormal.xyz * 2 - 1;
+
+    // Reconstruct world position
+    float4 clipSpace = float4(
+        (id.x / (float)Width) * 2 - 1,
+        (id.y / (float)Height) * 2 - 1,
+        depth,
+        1
+    );
+    float4 worldSpace = mul(InverseViewProjectionMatrix, clipSpace);
+    float3 worldPos = worldSpace.xyz / worldSpace.w;
+
+    float3 rayDirection = normalize(worldPos - CameraPosition);
+    float angle = abs(dot(normal, rayDirection));
+    float visibleArea = angle * MaxDistance * MaxDistance; // Simplified area calculation
+
+    RCSBuffer[index] = visibleArea * DefaultReflectivity;
+}

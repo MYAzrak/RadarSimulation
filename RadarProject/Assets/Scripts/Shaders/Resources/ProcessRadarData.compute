@@ -69,10 +69,10 @@ void ProcessRadarData(uint3 id : SV_DispatchThreadID)
         distance = ScaleValue(distance, (int)MaxDistance, ImageRadius);
 
         // Get the RCS value for this pixel
-        float rcs = RCSBuffer[id.y * width + id.x] * normal[2];
+        float rcs = RCSBuffer[id.y * width + id.x] * normal[1];
 
         // Check if there's an object at this pixel (RCS > 0)
-        if (distance > 15)
+        if (distance > 10 && rcs > 0)
         {
             float signalStrength = CalculateSignalStrength(viewSpaceDepth, rcs);
             int scaledSignalStrength = (int)((signalStrength + 200) * 2); // Scale to 0-200 range assuming -100 to 0 dB

@@ -54,6 +54,7 @@ public class RadarScript : MonoBehaviour
     private ComputeBuffer rcsBuffer;
     private ComputeBuffer depthNormalBuffer;
     private RenderTexture depthNormalTexture;
+    private ComputeShader rcsComputeShader;
 
     [SerializeField] private LayerMask radarLayerMask;
     [SerializeField] private float defaultReflectivity = 1f;
@@ -114,6 +115,7 @@ public class RadarScript : MonoBehaviour
         radarCamera.targetTexture = depthNormalTexture;
         radarCamera.depthTextureMode = DepthTextureMode.DepthNormals;
 
+        rcsComputeShader = Resources.Load<ComputeShader>("RCSCalculation");
         StartCoroutine(ProcessRadar());
     }
     void Update()
@@ -129,51 +131,32 @@ public class RadarScript : MonoBehaviour
     void UpdateRCSArray()
     {
         // Render the depth-normal texture
+        radarCamera.depthTextureMode = DepthTextureMode.DepthNormals;
+        radarCamera.targetTexture = depthNormalTexture;
         radarCamera.Render();
 
         // Copy the depth-normal texture to the buffer
         ComputeShader copyShader = Resources.Load<ComputeShader>("CopyTextureToBuffer");
-        int kernelHandle = copyShader.FindKernel("CSMain");
-        copyShader.SetTexture(kernelHandle, "InputTexture", depthNormalTexture);
-        copyShader.SetBuffer(kernelHandle, "OutputBuffer", depthNormalBuffer);
+        int copyKernel = copyShader.FindKernel("CSMain");
+        copyShader.SetTexture(copyKernel, "InputTexture", depthNormalTexture);
+        copyShader.SetBuffer(copyKernel, "OutputBuffer", depthNormalBuffer);
 
-        // Ensure at least one thread group in each dimension
         int dispatchX = Mathf.Max(1, WidthRes / 8);
         int dispatchY = Mathf.Max(1, HeightRes / 8);
-        copyShader.Dispatch(kernelHandle, dispatchX, dispatchY, 1);
+        copyShader.Dispatch(copyKernel, dispatchX, dispatchY, 1);
 
-        // Set up the RCS calculation job
-        int totalPixels = WidthRes * HeightRes;
-        NativeArray<float4> depthNormalData = new NativeArray<float4>(totalPixels, Allocator.TempJob);
-        NativeArray<float> rcsData = new NativeArray<float>(totalPixels, Allocator.TempJob);
+        // Calculate RCS using compute shader
+        int rcsKernel = rcsComputeShader.FindKernel("CSMain");
+        rcsComputeShader.SetBuffer(rcsKernel, "DepthNormalBuffer", depthNormalBuffer);
+        rcsComputeShader.SetBuffer(rcsKernel, "RCSBuffer", rcsBuffer);
+        rcsComputeShader.SetMatrix("InverseViewProjectionMatrix", radarCamera.projectionMatrix.inverse * radarCamera.worldToCameraMatrix.inverse);
+        rcsComputeShader.SetVector("CameraPosition", radarCamera.transform.position);
+        rcsComputeShader.SetFloat("MaxDistance", MaxDistance);
+        rcsComputeShader.SetFloat("DefaultReflectivity", defaultReflectivity);
+        rcsComputeShader.SetInt("Width", WidthRes);
+        rcsComputeShader.SetInt("Height", HeightRes);
 
-        // Get data from compute buffer
-        float4[] tempArray = new float4[totalPixels];
-        depthNormalBuffer.GetData(tempArray);
-        depthNormalData.CopyFrom(tempArray);
-
-        RCSJob rcsJob = new RCSJob
-        {
-            DepthNormalData = depthNormalData,
-            RCSData = rcsData,
-            InverseViewProjectionMatrix = radarCamera.projectionMatrix.inverse * radarCamera.worldToCameraMatrix.inverse,
-            CameraPosition = radarCamera.transform.position,
-            MaxDistance = MaxDistance,
-            DefaultReflectivity = defaultReflectivity,
-            Width = WidthRes,
-            Height = HeightRes
-        };
-
-        // Schedule and complete the job
-        JobHandle jobHandle = rcsJob.Schedule(totalPixels, 64);
-        jobHandle.Complete();
-
-        // Copy the results back to the RCS buffer
-        rcsBuffer.SetData(rcsData);
-
-        // Clean up
-        depthNormalData.Dispose();
-        rcsData.Dispose();
+        rcsComputeShader.Dispatch(rcsKernel, dispatchX, dispatchY, 1);
     }
     float GetReflectivity(GameObject obj)
     {
@@ -295,6 +278,7 @@ public class RadarScript : MonoBehaviour
         tempBuffer = new int[ImageRadius];
 
         // Render the camera to the input texture
+        radarCamera.depthTextureMode = DepthTextureMode.Depth;
         radarCamera.targetTexture = inputTexture;
         radarCamera.Render();
 
@@ -358,41 +342,6 @@ public class RadarScript : MonoBehaviour
     {
         public int Id { get; set; }
         public Vector3 Position { get; set; }
-    }
-    [BurstCompile]
-    private struct RCSJob : IJobParallelFor
-    {
-        [ReadOnly] public NativeArray<float4> DepthNormalData;
-        public NativeArray<float> RCSData;
-        public float4x4 InverseViewProjectionMatrix;
-        public float3 CameraPosition;
-        public float MaxDistance;
-        public float DefaultReflectivity;
-        public int Width;
-        public int Height;
-
-        public void Execute(int index)
-        {
-            float4 depthNormal = DepthNormalData[index];
-            float depth = depthNormal.w * MaxDistance;
-            float3 normal = depthNormal.xyz * 2 - 1;
-
-            // Reconstruct world position
-            float4 clipSpace = new float4(
-                (index % Width) / (float)Width * 2 - 1,
-                (index / Width) / (float)Height * 2 - 1,
-                depth,
-                1
-            );
-            float4 worldSpace = math.mul(InverseViewProjectionMatrix, clipSpace);
-            float3 worldPos = worldSpace.xyz / worldSpace.w;
-
-            float3 rayDirection = math.normalize(worldPos - CameraPosition);
-            float angle = math.abs(math.dot(normal, rayDirection));
-            float visibleArea = angle * MaxDistance * MaxDistance; // Simplified area calculation
-
-            RCSData[index] = visibleArea * DefaultReflectivity;
-        }
     }
 }
 public class Vector3Converter : JsonConverter<Vector3>
