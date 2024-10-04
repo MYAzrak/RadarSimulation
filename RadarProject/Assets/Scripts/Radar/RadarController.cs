@@ -155,6 +155,8 @@ public class RadarController : MonoBehaviour
 
             rb.isKinematic = false;
         }
+
+        mainMenuController.SetRadarsLabel(numOfRadars);
     }
 
     async Task<float> WaitForSampleAsync()
@@ -172,12 +174,14 @@ public class RadarController : MonoBehaviour
 
     public void UnloadRadars()
     {
+        // Delete the radar objects
         foreach (KeyValuePair<int, GameObject> entry in radars)
         {
             Destroy(entry.Value);
         }
-        radars.Clear();
 
+        // Clear the arrays
+        radars.Clear();
         radarIDAtRow.Clear();
 
         for (int i = 0; i < rows; i++)
