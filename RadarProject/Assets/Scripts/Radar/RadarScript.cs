@@ -18,9 +18,8 @@ public class RadarScript : MonoBehaviour
     public int radarID;
     [SerializeField] string path = "radar";
 
-    [SerializeField] private int HeightRes = 1024;
-
-    [SerializeField] private int WidthRes = 10;
+    [SerializeField] public int HeightRes = 1024;
+    [SerializeField] public int WidthRes = 10;
     [Range(0.0f, 1f)] private float resolution = 0.5f;
     [Range(5f, 5000f)] public float MaxDistance = 100F;
     [Range(0.01f, 2f)] public float MinDistance = 0.5F;
@@ -98,7 +97,7 @@ public class RadarScript : MonoBehaviour
 
         // Set up the radar camera
         radarCamera.targetTexture = inputTexture;
-        radarCamera.depthTextureMode = DepthTextureMode.Depth;
+        // radarCamera.depthTextureMode = DepthTextureMode.Depth;
 
         // Create a buffer to hold a single rotation
         radarBuffer = new ComputeBuffer(ImageRadius, sizeof(int));
@@ -112,8 +111,8 @@ public class RadarScript : MonoBehaviour
         rcsBuffer = new ComputeBuffer(WidthRes * HeightRes, sizeof(float));
 
         // Set up the radar camera to render to the depth-normal texture
-        radarCamera.targetTexture = depthNormalTexture;
-        radarCamera.depthTextureMode = DepthTextureMode.DepthNormals;
+        // radarCamera.targetTexture = depthNormalTexture;
+        radarCamera.depthTextureMode = DepthTextureMode.Depth;
 
         rcsComputeShader = Resources.Load<ComputeShader>("RCSCalculation");
         StartCoroutine(ProcessRadar());
@@ -131,8 +130,8 @@ public class RadarScript : MonoBehaviour
     void UpdateRCSArray()
     {
         // Render the depth-normal texture
-        radarCamera.depthTextureMode = DepthTextureMode.DepthNormals;
-        radarCamera.targetTexture = depthNormalTexture;
+        // radarCamera.depthTextureMode = DepthTextureMode.DepthNormals;
+        // radarCamera.targetTexture = depthNormalTexture;
         radarCamera.Render();
 
         // Copy the depth-normal texture to the buffer
@@ -278,8 +277,8 @@ public class RadarScript : MonoBehaviour
         tempBuffer = new int[ImageRadius];
 
         // Render the camera to the input texture
-        radarCamera.depthTextureMode = DepthTextureMode.Depth;
-        radarCamera.targetTexture = inputTexture;
+        // radarCamera.depthTextureMode = DepthTextureMode.Depth;
+        // radarCamera.targetTexture = inputTexture;
         radarCamera.Render();
 
         // Set compute shader parameters

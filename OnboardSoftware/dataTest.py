@@ -14,41 +14,50 @@ cbar = None
 radarID = None
 reconnect_delay = 5  # Delay in seconds before attempting to reconnect
 
-color = True
+color = False
+clip = None
 
-def create_ppi_plot(data, azimuth, range_bins, vmin=None, vmax=None):
-    global im, cbar
+
+def create_ppi_plot(data, azimuth, range_bins, ):
+    global im, cbar, color
+
+    if clip:
+        mean = np.mean(data)
+        std = np.std(data)
+        data = np.clip(data, 0, mean + 1 * std)
 
     if color:
         data = np.where(data != 0, 1, data)
-        vmin = data.min()
-        vmax = data.max()
-    
+    vmin = data.min()
+    vmax = data.max()
+
     # Convert polar coordinates to cartesian
     theta = np.radians(azimuth)
     r, theta = np.meshgrid(range_bins, theta)
-    
+
     # Plot the data
     if im is None:
         im = ax.pcolormesh(theta, r, data, cmap='magma', vmin=vmin, vmax=vmax)
-        
+
         # Customize the plot
         ax.set_theta_zero_location("N")
         ax.set_theta_direction(-1)
         ax.set_rlabel_position(0)
         ax.set_title("PPI Plot")
-        
+
         # Add a colorbar
         cbar = plt.colorbar(im, ax=ax)
         cbar.set_label('Intensity')
     else:
         im.set_array(data.ravel())
         im.set_clim(vmin=vmin, vmax=vmax)
-    
+
     return im
+
 
 latest_data = None
 data_lock = threading.Lock()
+
 
 def on_message(ws, message):
     global latest_data
@@ -62,14 +71,18 @@ def on_message(ws, message):
     with data_lock:
         latest_data = ppi
 
+
 def on_error(ws, error):
     print(f"Error: {error}")
+
 
 def on_close(ws, close_status_code, close_msg):
     print("Connection closed")
 
+
 def on_open(ws):
     print("Connection opened")
+
 
 def run_websocket():
     while True:
@@ -82,9 +95,10 @@ def run_websocket():
             ws.run_forever()
         except Exception as e:
             print(f"WebSocket error: {e}")
-        
+
         print(f"Connection lost. Reconnecting in {reconnect_delay} seconds...")
         time.sleep(reconnect_delay)
+
 
 def update_plot(frame):
     global latest_data
@@ -93,8 +107,9 @@ def update_plot(frame):
             num_azimuth, num_range = latest_data.shape
             azimuth = np.linspace(0, 360, num_azimuth)
             range_bins = np.linspace(0, num_range, num_range)
-            
-            return create_ppi_plot(latest_data, azimuth, range_bins, vmin=latest_data.min(), vmax=latest_data.max())
+
+            return create_ppi_plot(latest_data, azimuth, range_bins,)
+
 
 if __name__ == "__main__":
 
@@ -102,7 +117,11 @@ if __name__ == "__main__":
 
     # Add arguments
     parser.add_argument('-r', type=int, default=0, help='Radar ID')
-    parser.add_argument('-c', type=bool, default=True, help='Color 0/1')
+    parser.add_argument('-c', '--color', action='store_true',
+                        help='Enable color output')
+
+    parser.add_argument('--clip', type=int, default=0,
+                        help='Clip standard deviations')
     args = parser.parse_args()
 
     if isinstance(args.r, int):
@@ -111,8 +130,11 @@ if __name__ == "__main__":
     else:
         print("Invalid Radar ID")
 
-    if isinstance(args.c, bool):
-        color = args.c
+    if isinstance(args.clip, int) and args.clip !=0:
+        clip = args.clip
+
+    if args.color:
+        color = True
 
     # Start WebSocket connection in a separate thread
     websocket_thread = threading.Thread(target=run_websocket)
