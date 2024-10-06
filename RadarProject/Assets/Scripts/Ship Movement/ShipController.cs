@@ -65,7 +65,7 @@ public class ShipController : MonoBehaviour
     IEnumerator LogShipEvents()
     {
         if (shipInformation == null) {
-            //Debug.Log("Error: shipInformation is not initialized");
+            Logger.Log("Error: shipInformation is not initialized");
             yield break;
         }
 

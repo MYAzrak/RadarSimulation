@@ -42,7 +42,7 @@ public class ScenarioMenuUI
 
         runScenariosBtn.RegisterCallback((ClickEvent clickEvent) => {
             
-            Debug.Log("Running scenarios");
+            Logger.Log("Running scenarios");
             scenarioController.LoadAllScenarios();
         });
     }
