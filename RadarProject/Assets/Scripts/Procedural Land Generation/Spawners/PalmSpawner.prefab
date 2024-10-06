@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeea08d4f3fd5a54fa0e44bfd09a89de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycast: 1
+  raycast: 0
   raycastDistance: 100
   objects:
   - {fileID: 919132149155446097, guid: daf14bdd8d9bec94ca181a921148cc52, type: 3}
