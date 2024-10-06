@@ -7,15 +7,26 @@ public class MainMenuController : MonoBehaviour
 {
     MainMenuController instance;
     VisualElement ui;
+
+    // -------------------------------
+    // --------- Controllers ---------
+    // -------------------------------
     ScenarioController scenarioController;
     CSVController csvController;
+    WeatherController weatherController;
+    WavesController wavesController;
 
+    // ------------------------------------
+    // --------- UI panel classes ---------
+    // ------------------------------------
     public ScenarioMenuUI ScenarioMenuUI;
+    DynamicMenuUI dynamicMenuUI;
 
     List<TabViews> tabBtns = new();
 
     VisualElement menuPanel;
     VisualElement simulationInfoPanel;
+    VisualElement helpPanel;
 
     bool paused = false;
 
@@ -32,17 +43,28 @@ public class MainMenuController : MonoBehaviour
     {
         instance = this;
 
+        // Get controllers
         scenarioController = FindObjectOfType<ScenarioController>();
         csvController = FindObjectOfType<CSVController>();
-        ui = GetComponent<UIDocument>().rootVisualElement;
+        weatherController = FindObjectOfType<WeatherController>();
+        wavesController = FindObjectOfType<WavesController>();
 
+        ui = GetComponent<UIDocument>().rootVisualElement;
+ 
+        // Hide panel by default
         menuPanel = ui.Q("Panel");
         menuPanel.visible = false;  
 
         simulationInfoPanel = ui.Q("SimulationInfoPanel");
         simulationInfoPanel.visible = false;
 
+        // Show help panel by default
+        helpPanel = ui.Q("HelpPanel");
+        helpPanel.visible = true;
+
+        // Initialize the events
         ScenarioMenuUI = new(ui, instance, scenarioController, csvController);
+        dynamicMenuUI = new(ui, instance, scenarioController, weatherController, wavesController);
 
         InitializeLabels();
 
@@ -50,6 +72,8 @@ public class MainMenuController : MonoBehaviour
         ViewToEnable(tabBtns[0].button);
 
         ScenarioMenuUI.SetBtnEvents();
+        dynamicMenuUI.SetBtnEvents();
+
         SetPauseBtn();
         SetEndBtns();
 
@@ -63,6 +87,8 @@ public class MainMenuController : MonoBehaviour
         {
             menuPanel.visible = !menuPanel.visible;
             simulationInfoPanel.visible = !simulationInfoPanel.visible;
+
+            helpPanel.visible = !helpPanel.visible;
         }
     }
 
@@ -89,7 +115,7 @@ public class MainMenuController : MonoBehaviour
     void AddTabBtnsToList()
     {
         tabBtns.Add(new TabViews(ui.Q("ShipBtn") as Button, ui.Q("ShipsView")));
-        //tabBtns.Add(new TabViews(ui.Q("CSVBtn") as Button, ui.Q("CsvView")));
+        tabBtns.Add(new TabViews(ui.Q("DynamicBtn") as Button, ui.Q("DynamicView")));
     }
 
     void ViewToEnable(Button button)
@@ -112,8 +138,8 @@ public class MainMenuController : MonoBehaviour
         currentScenarioLabel.text = "No Scenario Loaded";
         numOfShipsLabel.text = "0 Ships";
         numOfRadarsLabel.text = "0 Radars";
-        waveConditionLabel.text = "Waves: None";
-        weatherConditionLabel.text = "Weather: None";
+        waveConditionLabel.text = $"Waves: {Waves.Calm}";
+        weatherConditionLabel.text = $"Weather: {Weather.Clear}";
         timeLimitLabel.text = "Time Remaining: None";
     }
 

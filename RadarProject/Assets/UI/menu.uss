@@ -3,6 +3,19 @@
     background-color: rgba(0, 0, 0, 0.39);
 }
 
+.text {
+    color: rgb(255, 255, 255);
+    margin-left: 4%;
+    font-size: 16px;
+    margin-top: 2%;
+    margin-right: 4%;
+    margin-bottom: 2%;
+    text-overflow: clip;
+}
+
+.text:selected {
+}
+
 .tab-btns {
     color: rgb(255, 255, 255);
     background-color: rgb(28, 69, 168);
@@ -21,15 +34,6 @@
     margin-left: 2%;
     align-items: auto;
     flex-grow: 0;
-}
-
-.text {
-    color: rgb(255, 255, 255);
-    margin-left: 4%;
-    font-size: 16px;
-    margin-top: 2%;
-    margin-right: 4%;
-    margin-bottom: 2%;
 }
 
 .tab-btns:hover {
@@ -54,6 +58,10 @@
     align-self: flex-start;
 }
 
+.btns:hover {
+    background-color: rgba(0, 96, 255, 0.59);
+}
+
 .unity-base-popup-field__input {
     font-size: 18px;
     -unity-font-style: bold;
@@ -72,6 +80,10 @@
     padding-right: 0;
 }
 
-.btns:hover {
-    background-color: rgba(0, 96, 255, 0.59);
+.unity-label {
+    color: rgb(255, 255, 255);
+}
+
+.unity-foldout__checkmark {
+    -unity-background-image-tint-color: rgb(197, 197, 197);
 }

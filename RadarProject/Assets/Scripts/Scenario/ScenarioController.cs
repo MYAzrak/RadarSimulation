@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Crest;
 using UnityEngine;
 
 public class ScenarioController : MonoBehaviour
@@ -176,11 +177,9 @@ public class ScenarioController : MonoBehaviour
 
         // Set waves
         wavesController.GenerateWaves(scenarioSettings.waves);
-        mainMenuController.SetWaveLabel(scenarioSettings.waves.ToString());
 
         // Set weather
         weatherController.GenerateWeather(scenarioSettings.weather);
-        mainMenuController.SetWeatherLabel(scenarioSettings.weather.ToString());
 
         radarController.UpdateRadarsPositions();
         GenerateShips();
@@ -383,6 +382,11 @@ public class ScenarioController : MonoBehaviour
         }
     }
 
+    public void SetTimeScale(int speed)
+    {
+        Time.timeScale = speed;
+    }
+
     [Serializable]
     public struct ShipPrefab
     {
@@ -414,11 +418,15 @@ public class ScenarioController : MonoBehaviour
     {
         public Weather weather;
         public GameObject prefab;
+        public Material skybox;
+        public Material oceanMaterial; // For reflection
 
-        public WeatherPrefab(Weather weather, GameObject prefab)
+        public WeatherPrefab(Weather weather, GameObject prefab, Material skybox, Material oceanMaterial)
         {
             this.weather = weather;
             this.prefab = prefab;
+            this.skybox = skybox;
+            this.oceanMaterial = oceanMaterial;
         }
     }
 }

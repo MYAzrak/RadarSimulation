@@ -6,6 +6,7 @@ public class WavesController : MonoBehaviour
     public GameObject currentWave;
 
     ScenarioController scenarioController;
+    MainMenuController mainMenuController;
     OceanRenderer oceanRenderer;
     TimeProviderCustom timeProviderCustom;
 
@@ -19,6 +20,7 @@ public class WavesController : MonoBehaviour
         oceanRenderer.PushTimeProvider(timeProviderCustom);
 
         scenarioController = FindObjectOfType<ScenarioController>();
+        mainMenuController = FindObjectOfType<MainMenuController>();
 
         // Set default wave
         currentWave = Instantiate(scenarioController.wavePrefabs[0].prefab, Vector3.zero, Quaternion.identity);
@@ -43,6 +45,7 @@ public class WavesController : MonoBehaviour
 
         Destroy(currentWave);
         currentWave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+        mainMenuController.SetWaveLabel(scenarioWave.ToString());
     }
 
     public void ResetToDefaultWave()
