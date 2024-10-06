@@ -15,9 +15,6 @@ public class ScenarioController : MonoBehaviour
     [Header("Wave Prefabs")]
     public List<WavePrefab> wavePrefabs = new();
 
-    [Header("Weather Prefabs")]
-    public List<WeatherPrefab> weatherPrefabs = new();
-
     [Header("Time options")]
     public int timeScale = 1;
     public bool updateTimeScale = false;
@@ -56,8 +53,7 @@ public class ScenarioController : MonoBehaviour
     RadarController radarController;
     CSVController csvController;
     MainMenuController mainMenuController;
-    WavesController wavesController;
-    WeatherController weatherController;
+    WavesTracker wavesTracker;
 
     // -------------------------------------------------
     // -------- Current Scenario Information -----------
@@ -85,8 +81,7 @@ public class ScenarioController : MonoBehaviour
     {
         timeSinceScenarioStart = Time.time;
 
-        wavesController = FindObjectOfType<WavesController>();
-        weatherController = GetComponent<WeatherController>();
+        wavesTracker = FindObjectOfType<WavesTracker>();
 
         csvController = GetComponent<CSVController>();
         radarController = GetComponent<RadarController>();
@@ -132,7 +127,7 @@ public class ScenarioController : MonoBehaviour
             endScenario = true;
 
         timeSinceScenarioStart += Time.deltaTime;
-        wavesController.SetTimeProvider(timeSinceScenarioStart);
+        wavesTracker.SetTimeProvider(timeSinceScenarioStart);
     }
 
     // Read all files in filePath 
@@ -174,13 +169,8 @@ public class ScenarioController : MonoBehaviour
         // Reset ships that completed their path
         completedShips = 0;
 
-        // Set waves
-        wavesController.GenerateWaves(scenarioSettings.waves);
+        wavesTracker.GenerateWaves(scenarioSettings.waves);
         mainMenuController.SetWaveLabel(scenarioSettings.waves.ToString());
-
-        // Set weather
-        weatherController.GenerateWeather(scenarioSettings.weather);
-        mainMenuController.SetWeatherLabel(scenarioSettings.weather.ToString());
 
         radarController.UpdateRadarsPositions();
         GenerateShips();
@@ -215,10 +205,7 @@ public class ScenarioController : MonoBehaviour
         }
 
         // Reset Wave
-        wavesController.ResetToDefaultWave();
-
-        // Reset Weather
-        weatherController.ClearWeather();
+        wavesTracker.ResetToDefaultWave();
 
         generatedShips.Clear();
     }
@@ -405,19 +392,6 @@ public class ScenarioController : MonoBehaviour
         public WavePrefab(Waves waves, GameObject prefab)
         {
             this.waves = waves;
-            this.prefab = prefab;
-        }
-    }
-
-    [Serializable]
-    public struct WeatherPrefab
-    {
-        public Weather weather;
-        public GameObject prefab;
-
-        public WeatherPrefab(Weather weather, GameObject prefab)
-        {
-            this.weather = weather;
             this.prefab = prefab;
         }
     }

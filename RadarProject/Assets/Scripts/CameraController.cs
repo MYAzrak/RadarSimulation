@@ -9,8 +9,6 @@ public class CameraController : MonoBehaviour
     [SerializeField] int rotationSpeed = 100;
     [SerializeField] bool invertedVerticalMovement = false;
 
-    GameObject weather;
-
     // Update is called once per frame
     void Update()
     {
@@ -29,20 +27,5 @@ public class CameraController : MonoBehaviour
             
             transform.position += (transform.forward * verticalDirection) + (transform.right * horizontalDirection);
         }
-
-        if (weather != null) 
-        {
-            weather.transform.position = transform.position; 
-        }
-    }
-
-    public void SetWeatherOverCamera(GameObject weather)
-    {
-        this.weather = weather;
-    }
-
-    public Vector3 GetTransformPosition()
-    {
-        return transform.position;
     }
 }

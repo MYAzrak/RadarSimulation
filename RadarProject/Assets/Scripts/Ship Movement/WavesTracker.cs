@@ -1,7 +1,7 @@
 using Crest;
 using UnityEngine;
 
-public class WavesController : MonoBehaviour
+public class WavesTracker : MonoBehaviour
 {
     public GameObject currentWave;
 

@@ -117,8 +117,7 @@ public class CSVController : MonoBehaviour
         // Save the settings to a json file
         ScenarioSettings settings = new()
         {
-            waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length),
-            weather = (Weather)Random.Range(0, System.Enum.GetNames(typeof(Weather)).Length)
+            waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length)
         };
 
         string json = JsonUtility.ToJson(settings, true);

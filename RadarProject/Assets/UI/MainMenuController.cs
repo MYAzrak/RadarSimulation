@@ -113,7 +113,7 @@ public class MainMenuController : MonoBehaviour
         numOfShipsLabel.text = "0 Ships";
         numOfRadarsLabel.text = "0 Radars";
         waveConditionLabel.text = "Waves: None";
-        weatherConditionLabel.text = "Weather: None";
+        weatherConditionLabel.text = "Weather: None (WIP)";
         timeLimitLabel.text = "Time Remaining: None";
     }
 
