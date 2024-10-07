@@ -61,6 +61,14 @@ public class RadarScript : MonoBehaviour
     public int[,] radarPPI;
     private ScenarioController scenario;
 
+    [Header("Rain Simulation")]
+    [Range(0f, 1f)] public float RainProbability = 0.1f;
+    public float RainRCS = 0.001f; // Typical RCS for rain
+    [Range(1, 100)] public int RainIntensity = 10; // Number of rain drops per angle
+
+    private ComputeBuffer rainBuffer;
+    private int[] tempRainBuffer;
+
     void Start()
     {
         path += radarID;
@@ -113,6 +121,9 @@ public class RadarScript : MonoBehaviour
         // Set up the radar camera to render to the depth-normal texture
         // radarCamera.targetTexture = depthNormalTexture;
         radarCamera.depthTextureMode = DepthTextureMode.Depth;
+
+        rainBuffer = new ComputeBuffer(ImageRadius, sizeof(int));
+        tempRainBuffer = new int[ImageRadius];
 
         rcsComputeShader = Resources.Load<ComputeShader>("RCSCalculation");
         StartCoroutine(ProcessRadar());
@@ -167,6 +178,7 @@ public class RadarScript : MonoBehaviour
     {
 
         int kernelIndex = radarComputeShader.FindKernel("ProcessRadarData");
+        int rainKernelIndex = radarComputeShader.FindKernel("GenerateRain");
 
         while (Application.isPlaying)
         {
@@ -188,6 +200,8 @@ public class RadarScript : MonoBehaviour
 
             UpdateRCSArray();
             ProcessRadarDataGPU(kernelIndex);
+            GenerateRainGPU(rainKernelIndex);
+            CombineRadarAndRain();
 
             RotateCamera();
 
@@ -314,6 +328,41 @@ public class RadarScript : MonoBehaviour
         }
 
     }
+    private void GenerateRainGPU(int kernelIndex)
+    {
+        // Clear the rain buffer for the new rotation
+        rainBuffer.SetData(new int[ImageRadius]);
+        tempRainBuffer = new int[ImageRadius];
+
+        // Set compute shader parameters for rain
+        radarComputeShader.SetBuffer(kernelIndex, "RainBuffer", rainBuffer);
+        radarComputeShader.SetFloat("RainProbability", RainProbability);
+        radarComputeShader.SetFloat("RainRCS", RainRCS);
+        radarComputeShader.SetInt("RainIntensity", RainIntensity);
+        radarComputeShader.SetFloat("MaxDistance", MaxDistance);
+        radarComputeShader.SetInt("ImageRadius", ImageRadius);
+        radarComputeShader.SetFloat("CurrentRotation", currentRotation);
+
+        // Generate random seed for rain simulation
+        uint randomSeed = (uint)System.DateTime.Now.Ticks;
+        radarComputeShader.SetInt("RandomSeed", (int)randomSeed);
+
+        // Dispatch the compute shader for rain generation
+        radarComputeShader.Dispatch(kernelIndex, 1, 1, 1);
+
+        // Read back the results into the temporary rain buffer
+        rainBuffer.GetData(tempRainBuffer);
+    }
+
+    private void CombineRadarAndRain()
+    {
+        int rotationIndex = Mathf.RoundToInt(currentRotation / resolution);
+
+        for (int i = 0; i < ImageRadius; i++)
+        {
+            radarPPI[rotationIndex, i] = tempBuffer[i] + tempRainBuffer[i];
+        }
+    }
 
     void OnDestroy()
     {
@@ -328,6 +377,10 @@ public class RadarScript : MonoBehaviour
         if (rcsBuffer != null)
         {
             rcsBuffer.Release();
+        }
+        if (rainBuffer != null)
+        {
+            rainBuffer.Release();
         }
     }
     private void RotateCamera()
