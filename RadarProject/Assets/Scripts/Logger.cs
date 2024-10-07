@@ -10,7 +10,7 @@ public class Logger
     {
         string path = Path.Combine(Application.persistentDataPath, "Logs");
         if (!Directory.Exists(path))
-            Directory.CreateDirectory(filePath);
+            Directory.CreateDirectory(path);
         
         // Time stamp in a valid format (does not contain /)
         filePath = Path.Combine(path, $"Simulation_{DateTime.Now:yyyyMMdd_HHmmss}.log");
