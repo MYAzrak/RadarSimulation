@@ -44,7 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeea08d4f3fd5a54fa0e44bfd09a89de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  raycast: 0
+  raycastDistance: 100
   objects:
   - {fileID: 919132149155446097, guid: d47699c43b0aeb04eb32ee52a8a05c1f, type: 3}
   - {fileID: 919132149155446097, guid: 9b063a4cb74a33a49b485e7d79cd2701, type: 3}
   - {fileID: 919132149155446097, guid: 2e33df1e3212e3d4380eea3ab56b1d41, type: 3}
+  parentTransform: {fileID: 1402162494587712154, guid: 639cb1dc935915348b47695143bbad8e, type: 3}

@@ -49,3 +49,4 @@ MonoBehaviour:
   objects:
   - {fileID: 919132149155446097, guid: daf14bdd8d9bec94ca181a921148cc52, type: 3}
   - {fileID: 919132149155446097, guid: 5a215ff8f47445b4fbccfb1952d5347a, type: 3}
+  parentTransform: {fileID: 1402162494587712154, guid: 639cb1dc935915348b47695143bbad8e, type: 3}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ObjectAreaSpawner : MonoBehaviour
@@ -7,9 +8,9 @@ public class ObjectAreaSpawner : MonoBehaviour
     public GameObject objectToSpread;
     public int numObjectsToSpawn = 100;
 
-    public float itemXSpread = 200; 
+    public float itemXSpread = 200;
     public float itemYSpread = 0;
-    public float itemZSpread = 2500; 
+    public float itemZSpread = 2500;
 
     void Start()
     {
