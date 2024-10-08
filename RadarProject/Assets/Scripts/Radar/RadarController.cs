@@ -40,6 +40,8 @@ public class RadarController : MonoBehaviour
 
     public int HeightRes = 1024;
     public int WidthRes = 10;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,6 +71,32 @@ public class RadarController : MonoBehaviour
                 numOfRadars = rows * cols;
             GenerateRadars(numOfRadars);
             generateRadars = false;
+        }
+    }
+    public void SetWeather(Weather weather)
+    {
+        if (weather == Weather.Clear)
+        {
+            SetRadarWeather(0f, 0);
+        }
+        else if (weather == Weather.LightRain)
+        {
+            SetRadarWeather(UnityEngine.Random.Range(0.01f, 0.07f), 20);
+
+        }
+        else if (weather == Weather.HeavyRain)
+        {
+            SetRadarWeather(UnityEngine.Random.Range(0.1f, 0.2f), 15);
+        }
+    }
+
+    private void SetRadarWeather(float RainProbability, int RainIntensity)
+    {
+        foreach (KeyValuePair<int, GameObject> entry in radars)
+        {
+            RadarScript script = entry.Value.GetComponentInChildren<RadarScript>();
+            script.RainProbability = RainProbability;
+            script.RainIntensity = RainIntensity;
         }
     }
 

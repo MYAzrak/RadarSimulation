@@ -10,19 +10,22 @@ public class DynamicMenuUI
     ScenarioController scenarioController;
     WeatherController weatherController;
     WavesController wavesController;
+    RadarController radarController;
 
     public DynamicMenuUI(
-        VisualElement ui, 
-        MainMenuController mainMenuController, 
-        ScenarioController scenarioController, 
-        WeatherController weatherController, 
-        WavesController wavesController)
+        VisualElement ui,
+        MainMenuController mainMenuController,
+        ScenarioController scenarioController,
+        WeatherController weatherController,
+        WavesController wavesController,
+        RadarController radarController)
     {
         this.ui = ui;
         this.mainMenuController = mainMenuController;
         this.weatherController = weatherController;
         this.wavesController = wavesController;
         this.scenarioController = scenarioController;
+        this.radarController = radarController;
     }
 
     public void SetBtnEvents()
@@ -35,7 +38,8 @@ public class DynamicMenuUI
     public void SetScenarioEvents()
     {
         SliderInt simulationSpeedSlider = ui.Q("SimulationSpeedSlider") as SliderInt;
-        simulationSpeedSlider.RegisterValueChangedCallback((ChangeEvent<int> evt) => {
+        simulationSpeedSlider.RegisterValueChangedCallback((ChangeEvent<int> evt) =>
+        {
             scenarioController.SetTimeScale(evt.newValue);
         });
     }
@@ -43,30 +47,38 @@ public class DynamicMenuUI
     public void SetWeatherEvents()
     {
         Button clearWeatherBtn = ui.Q("ClearWeatherBtn") as Button;
-        clearWeatherBtn.RegisterCallback((ClickEvent clickEvent) => {
+        clearWeatherBtn.RegisterCallback((ClickEvent clickEvent) =>
+        {
             weatherController.GenerateWeather(Weather.Clear);
+            radarController.SetWeather(Weather.Clear);
         });
 
         Button lightRainBtn = ui.Q("LightRainBtn") as Button;
-        lightRainBtn.RegisterCallback((ClickEvent clickEvent) => {
+        lightRainBtn.RegisterCallback((ClickEvent clickEvent) =>
+        {
             weatherController.GenerateWeather(Weather.LightRain);
+            radarController.SetWeather(Weather.LightRain);
         });
 
         Button heavyRainBtn = ui.Q("HeavyRainBtn") as Button;
-        heavyRainBtn.RegisterCallback((ClickEvent clickEvent) => {
+        heavyRainBtn.RegisterCallback((ClickEvent clickEvent) =>
+        {
             weatherController.GenerateWeather(Weather.HeavyRain);
+            radarController.SetWeather(Weather.HeavyRain);
         });
     }
 
     public void SetWavesEvents()
     {
         Button calmWavesBtn = ui.Q("CalmWavesBtn") as Button;
-        calmWavesBtn.RegisterCallback((ClickEvent clickEvent) => {
+        calmWavesBtn.RegisterCallback((ClickEvent clickEvent) =>
+        {
             wavesController.GenerateWaves(Waves.Calm);
         });
 
         Button moderateWavesBtn = ui.Q("ModerateWavesBtn") as Button;
-        moderateWavesBtn.RegisterCallback((ClickEvent clickEvent) => {
+        moderateWavesBtn.RegisterCallback((ClickEvent clickEvent) =>
+        {
             wavesController.GenerateWaves(Waves.Moderate);
         });
     }

@@ -15,6 +15,7 @@ public class MainMenuController : MonoBehaviour
     CSVController csvController;
     WeatherController weatherController;
     WavesController wavesController;
+    RadarController radarController;
 
     // ------------------------------------
     // --------- UI panel classes ---------
@@ -48,12 +49,13 @@ public class MainMenuController : MonoBehaviour
         csvController = FindObjectOfType<CSVController>();
         weatherController = FindObjectOfType<WeatherController>();
         wavesController = FindObjectOfType<WavesController>();
+        radarController = FindObjectOfType<RadarController>();
 
         ui = GetComponent<UIDocument>().rootVisualElement;
- 
+
         // Hide panel by default
         menuPanel = ui.Q("Panel");
-        menuPanel.visible = false;  
+        menuPanel.visible = false;
 
         simulationInfoPanel = ui.Q("SimulationInfoPanel");
         simulationInfoPanel.visible = false;
@@ -64,7 +66,7 @@ public class MainMenuController : MonoBehaviour
 
         // Initialize the events
         ScenarioMenuUI = new(ui, instance, scenarioController, csvController);
-        dynamicMenuUI = new(ui, instance, scenarioController, weatherController, wavesController);
+        dynamicMenuUI = new(ui, instance, scenarioController, weatherController, wavesController, radarController);
 
         InitializeLabels();
 
@@ -83,7 +85,7 @@ public class MainMenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             menuPanel.visible = !menuPanel.visible;
             simulationInfoPanel.visible = !simulationInfoPanel.visible;
@@ -100,7 +102,7 @@ public class MainMenuController : MonoBehaviour
         waveConditionLabel = ui.Q("WaveConditionLabel") as Label;
         weatherConditionLabel = ui.Q("WeatherConditionLabel") as Label;
         timeLimitLabel = ui.Q("TimeLimitLabel") as Label;
-    } 
+    }
 
     void SetTabs()
     {
@@ -171,8 +173,8 @@ public class MainMenuController : MonoBehaviour
 
     public void SetTimeRemainingLabel(float timeRemaining)
     {
-        float minutes = (int) (timeRemaining / 60);  
-        float seconds = (int) (timeRemaining % 60);
+        float minutes = (int)(timeRemaining / 60);
+        float seconds = (int)(timeRemaining % 60);
 
         timeLimitLabel.text = $"Time Remaining: {minutes}:{seconds}";
     }
@@ -181,7 +183,8 @@ public class MainMenuController : MonoBehaviour
     {
         Button pauseSimulation = ui.Q("PauseSimulation") as Button;
 
-        pauseSimulation.RegisterCallback((ClickEvent clickEvent) => {
+        pauseSimulation.RegisterCallback((ClickEvent clickEvent) =>
+        {
 
             if (paused)
             {
@@ -195,20 +198,22 @@ public class MainMenuController : MonoBehaviour
                 pauseSimulation.text = "Resume";
                 paused = true;
             }
-            
+
             scenarioController.updateTimeScale = true;
         });
     }
 
     public void SetEndBtns()
     {
-        Button endScenarioBtn = ui.Q("EndScenarioBtn") as Button; 
-        endScenarioBtn.RegisterCallback((ClickEvent clickEvent) => {
+        Button endScenarioBtn = ui.Q("EndScenarioBtn") as Button;
+        endScenarioBtn.RegisterCallback((ClickEvent clickEvent) =>
+        {
             scenarioController.EndScenario();
         });
 
         Button terminateSimulation = ui.Q("TerminateSimulation") as Button;
-        terminateSimulation.RegisterCallback((ClickEvent clickEvent) => {
+        terminateSimulation.RegisterCallback((ClickEvent clickEvent) =>
+        {
             scenarioController.EndAllScenarios();
         });
     }

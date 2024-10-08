@@ -64,7 +64,7 @@ public class RadarScript : MonoBehaviour
     [Header("Rain Simulation")]
     [Range(0f, 1f)] public float RainProbability = 0.1f;
     public float RainRCS = 0.001f; // Typical RCS for rain
-    [Range(1, 100)] public int RainIntensity = 10; // Number of rain drops per angle
+    [Range(0f, 100)] public int RainIntensity = 10; // Number of rain drops per angle
 
     private ComputeBuffer rainBuffer;
     private int[] tempRainBuffer;

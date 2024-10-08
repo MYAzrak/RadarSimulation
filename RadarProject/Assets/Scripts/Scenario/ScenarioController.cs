@@ -130,7 +130,7 @@ public class ScenarioController : MonoBehaviour
             Time.timeScale = timeScale;
             updateTimeScale = false;
         }
-        
+
         if (timeSinceScenarioStart > timeLimit)
             endScenario = true;
 
@@ -182,6 +182,7 @@ public class ScenarioController : MonoBehaviour
 
         // Set weather
         weatherController.GenerateWeather(scenarioSettings.weather);
+        radarController.SetWeather(scenarioSettings.weather);
 
         radarController.UpdateRadarsPositions();
         GenerateShips();
@@ -330,7 +331,7 @@ public class ScenarioController : MonoBehaviour
                 for (int i = 0; i < scenarioLabels.Length; i++)
                 {
                     mainMenuController.SetTimeRemainingLabel(timeLimit - timeSinceScenarioStart);
-                    
+
                     // TODO: Find a better solution since it is possible for SetDefaultSimulationInfoPanel() to be replaced
                     if (!scenarioCurrentlyRunning)
                     {
