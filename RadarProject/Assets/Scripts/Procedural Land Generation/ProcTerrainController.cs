@@ -12,7 +12,7 @@ public class ProcTerrainController : MonoBehaviour
     private MapGenerator mapGenerator;
     void Start()
     {
-        GenerateTerrain();
+        //GenerateTerrain();
     }
     public void GenerateTerrain()
     {
@@ -38,8 +38,6 @@ public class ProcTerrainController : MonoBehaviour
         {
             child.position = newPosition;
         }
-
-
     }
 
 }

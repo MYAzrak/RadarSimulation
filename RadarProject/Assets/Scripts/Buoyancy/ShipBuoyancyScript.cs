@@ -28,7 +28,27 @@ public class ShipBouyancyScript : MonoBehaviour
     float Fp = 0.5f;
     float Fs = 0.5f;
 
+    float shipLength;
     float shipWidth;
+
+    /*
+    public void OnDrawGizmosSelected()
+    {
+        var r = GetComponent<Renderer>();
+        if (r == null)
+            return;
+        var bounds = r.bounds;
+        Gizmos.matrix = Matrix4x4.identity;
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(bounds.center, bounds.extents * 2);
+        
+        float width = bounds.size.x; 
+        float height = bounds.size.y;  
+        float depth = bounds.size.z;  
+
+        Debug.Log($"Width: {width}, Height: {height}, Depth: {depth}");
+    }
+    */
 
     void Start()
     {
@@ -36,7 +56,8 @@ public class ShipBouyancyScript : MonoBehaviour
         shipTriangles = new ShipTriangles(gameObject);
         shipBouyancyScriptInstance = this;
 
-        shipWidth = ship.GetComponent<MeshFilter>().mesh.bounds.size.x;
+        shipLength = ship.GetComponent<MeshFilter>().mesh.bounds.size.z * ship.transform.localScale.x; // Multiply by scale to get the correct bounds
+        shipWidth = ship.GetComponent<MeshFilter>().mesh.bounds.size.x * ship.transform.localScale.x; // Multiply by scale to get the correct bounds
 
         StartCoroutine(GenerateUnderwaterMeshCoroutine());
     }
@@ -48,7 +69,11 @@ public class ShipBouyancyScript : MonoBehaviour
         if (recalculateForces)
             RecalculateForces();
 
-        AddUnderWaterForces();
+        if (shipTriangles.underWaterTriangleData.Count > 0)
+            AddUnderWaterForces();
+
+        if (shipTriangles.aboveWaterTriangleData.Count > 0)
+            AddAboveWaterForces();
 
         // Align the ship upward to avoid sinking
         AlignShipUpward();
@@ -82,6 +107,9 @@ public class ShipBouyancyScript : MonoBehaviour
             Vector3 pressureDragForce = PressureDragForce(triangleData);
             force += pressureDragForce;
 
+            //Vector3 viscousWaterResistanceForce = ViscousWaterResistanceForce(waterDensity, triangleData, ResistanceCoefficient(waterDensity, ship.velocity.magnitude, shipWidth));
+            //force += viscousWaterResistanceForce;
+
             force *= amplifyForce;
 
             forces[i] = force;
@@ -102,6 +130,49 @@ public class ShipBouyancyScript : MonoBehaviour
         }
     }
 
+    void AddAboveWaterForces()
+    {
+        //Get all triangles
+        List<TriangleData> aboveWaterTriangleData = shipTriangles.aboveWaterTriangleData;
+
+        //Loop through all triangles
+        for (int i = 0; i < aboveWaterTriangleData.Count; i++)
+        {
+            TriangleData triangleData = aboveWaterTriangleData[i];
+
+
+            //Calculate the forces
+            Vector3 forceToAdd = Vector3.zero;
+
+            //Force 1 - Air resistance 
+            int shipDragCoefficient = 1;
+            forceToAdd += AirResistanceForce(1.225f, triangleData, shipDragCoefficient);
+
+            //Add the forces to the boat
+            ship.AddForceAtPosition(forceToAdd, triangleData.center);
+        }
+    }
+
+    public Vector3 AirResistanceForce(float rho, TriangleData triangleData, float C_air)
+    {
+        //Only add air resistance if normal is pointing in the same direction as the velocity
+        if (triangleData.cosTheta < 0f)
+        {
+            return Vector3.zero;
+        }
+
+        //Find air resistance force
+        Vector3 airResistanceForce = 0.5f * rho * triangleData.velocity.magnitude * triangleData.velocity * triangleData.area * C_air;
+
+        //Acting in the opposite side of the velocity
+        airResistanceForce *= -1f;
+
+        if (float.IsNaN(airResistanceForce.x) || float.IsNaN(airResistanceForce.y) || float.IsNaN(airResistanceForce.z))
+            return Vector3.zero;
+
+        return airResistanceForce;
+	}
+
     // A small residual torque is applied, so if the number of triangles is low the object will rotate
     Vector3 BuoyancyForce(float density, TriangleData triangleData)
     {
@@ -114,6 +185,40 @@ public class ShipBouyancyScript : MonoBehaviour
             return Vector3.zero;
 
         return force;
+    }
+
+    public float ResistanceCoefficient(float rho, float velocity, float length)
+    {
+        float nu = 0.0000008f; // At 30 degrees celcius
+
+        //Reynolds number
+        float Rn = velocity * length / nu;
+
+        //The resistance coefficient
+        float Cf = 0.075f / Mathf.Pow(Mathf.Log10(Rn) - 2f, 2f);
+
+        return Cf;
+    }
+
+
+    public static Vector3 ViscousWaterResistanceForce(float rho, TriangleData triangleData, float Cf)
+    {
+        Vector3 B = triangleData.normal;
+        Vector3 A = triangleData.velocity;
+
+        Vector3 velocityTangent = Vector3.Cross(B, Vector3.Cross(A, B) / B.magnitude) / B.magnitude;
+
+        Vector3 tangentialDirection = velocityTangent.normalized * -1f;
+        
+        Vector3 v_f_vec = triangleData.velocity.magnitude * tangentialDirection;
+
+        //The final resistance force
+        Vector3 viscousWaterResistanceForce = 0.5f * rho * v_f_vec.magnitude * v_f_vec * triangleData.area * Cf;
+
+        if (float.IsNaN(viscousWaterResistanceForce.x) || float.IsNaN(viscousWaterResistanceForce.y) || float.IsNaN(viscousWaterResistanceForce.z))
+            return Vector3.zero;
+
+        return viscousWaterResistanceForce;
     }
 
     Vector3 PressureDragForce(TriangleData triangleData)

@@ -59,6 +59,7 @@ public class ScenarioController : MonoBehaviour
     MainMenuController mainMenuController;
     WavesController wavesController;
     WeatherController weatherController;
+    ProcTerrainController procTerrainController;
 
     // -------------------------------------------------
     // -------- Current Scenario Information -----------
@@ -90,6 +91,7 @@ public class ScenarioController : MonoBehaviour
 
         wavesController = FindObjectOfType<WavesController>();
         weatherController = GetComponent<WeatherController>();
+        procTerrainController = GetComponent<ProcTerrainController>();
 
         csvController = GetComponent<CSVController>();
         radarController = GetComponent<RadarController>();
@@ -176,6 +178,14 @@ public class ScenarioController : MonoBehaviour
 
         // Reset ships that completed their path
         completedShips = 0;
+
+        // Set procedural land
+        if (scenarioSettings.hasProceduralLand)
+        {
+            procTerrainController.seed = scenarioSettings.proceduralLandSeed;
+            procTerrainController.position = scenarioSettings.proceduralLandLocation;
+            procTerrainController.GenerateTerrain();
+        }
 
         // Set waves
         wavesController.GenerateWaves(scenarioSettings.waves);

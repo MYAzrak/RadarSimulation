@@ -10,8 +10,9 @@ public class CSVController : MonoBehaviour
     public bool generateRandomCSV = false;
 
     public bool generateRandomParameters = true;
+    Vector3 centerOfRandomShipCoordinates = new(0, 0, 0); // Vector3.zero for now
 
-    [Header("Random CSV Parameters")]
+    [Header("Random Ship Parameters")]
     public int numberOfShips;                       // Number of ships to generate
     public int locationsToCreate;                   // Number of locations the ship will visit
     public float minStartingCoordinates;            // The min value in the range the ships will initially generate at
@@ -19,6 +20,11 @@ public class CSVController : MonoBehaviour
     public float randomCoordinates;                 // The range added to the previous location the ship will visit
     public int minSpeed;                            // The min value in the speed range
     public int maxSpeed;                            // The max value in the speed range
+
+    [Header("Random Procedural land Parameters")]
+    public bool hasProceduralLand;
+    public int proceduralLandSeed;
+    public Vector3 proceduralLandLocation;
 
     string filePath;
     string fileExtension = ".csv";
@@ -41,14 +47,30 @@ public class CSVController : MonoBehaviour
     {
         if (generateRandomParameters)
         {
-            // Initialize the parameters with random values
+            // Initialize ship parameters with random values
             numberOfShips = Random.Range(50, 100);
             locationsToCreate = Random.Range(3, 5);
             minStartingCoordinates = -10000;
             maxStartingCoordinates = 10000;
             randomCoordinates = Random.Range(-2000, 2000);
-            minSpeed = 11;
-            maxSpeed = 20;
+            minSpeed = 10;
+            maxSpeed = 16;
+
+            // Initialize procedural land parameters with random values
+            hasProceduralLand = Random.Range(0, 2) == 0;
+            proceduralLandSeed = Random.Range(0, 10_000_000);
+
+            // Generate a random direction
+            Vector2 randomDirection = Random.insideUnitCircle.normalized;
+
+            // Handle the case where random direction is 0
+            randomDirection = randomDirection == Vector2.zero ? Vector2.one : randomDirection;
+
+            // Create a point just outside the circle
+            // Adjust the 0.1f to change how far outside you want to be
+            Vector3 pointOutside = centerOfRandomShipCoordinates + new Vector3(randomDirection.x, 0, randomDirection.y) * (maxStartingCoordinates + 0.1f);
+
+            proceduralLandLocation = pointOutside;
         }
 
     }
@@ -90,7 +112,7 @@ public class CSVController : MonoBehaviour
     {
         if (File.Exists(file + fileExtension) || File.Exists(file + shipListEndName + fileExtension))
         {
-            //Debug.Log($"{file + fileExtension} or {file + shipListEndName + fileExtension} already exists.");
+            Logger.Log($"{file + fileExtension} or {file + shipListEndName + fileExtension} already exists.");
             return;
         }
 
@@ -118,7 +140,12 @@ public class CSVController : MonoBehaviour
         ScenarioSettings settings = new()
         {
             waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length),
-            weather = (Weather)Random.Range(0, System.Enum.GetNames(typeof(Weather)).Length)
+            weather = (Weather)Random.Range(0, System.Enum.GetNames(typeof(Weather)).Length),
+            
+            // Procedural land settings
+            hasProceduralLand = hasProceduralLand,
+            proceduralLandSeed = proceduralLandSeed,
+            proceduralLandLocation = proceduralLandLocation,
         };
 
         string json = JsonUtility.ToJson(settings, true);
@@ -132,6 +159,7 @@ public class CSVController : MonoBehaviour
         // TODO: Add error messages
         if (numOfScenarios < 0)
         {
+            Logger.Log("Invalid number of scenarios inputted.");
             return;
         }
 
@@ -147,7 +175,7 @@ public class CSVController : MonoBehaviour
             GenerateScenario(file);
         }
 
-        //Debug.Log("All scenarios have been generated.");
+        Logger.Log("All scenarios have been generated.");
         
         mainMenuController.ScenarioMenuUI.ReadScenarios();
     }
@@ -248,7 +276,7 @@ public class CSVController : MonoBehaviour
         }
         catch (FileNotFoundException e)
         {
-            //Debug.Log($"File not found: {e.Message}");
+            Logger.Log($"File not found: {e.Message}");
             return false;
         }
     }

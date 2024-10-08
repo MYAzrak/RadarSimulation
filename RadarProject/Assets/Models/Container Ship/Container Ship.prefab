@@ -10,27 +10,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 00dcaffd22c5e4eb7b89af819211717c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 00dcaffd22c5e4eb7b89af819211717c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 00dcaffd22c5e4eb7b89af819211717c, type: 3}
       propertyPath: m_LocalScale.z
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 00dcaffd22c5e4eb7b89af819211717c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -5.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 00dcaffd22c5e4eb7b89af819211717c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 40
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 00dcaffd22c5e4eb7b89af819211717c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 498.23065
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 00dcaffd22c5e4eb7b89af819211717c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -106,9 +106,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6254869662381877804}
   serializedVersion: 4
-  m_Mass: 40000000
+  m_Mass: 60000000
   m_Drag: 1
-  m_AngularDrag: 0.5
+  m_AngularDrag: 1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -180,6 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb1c63a3c65659be9cafce08b9cde57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amplifyForce: 0.07
+  amplifyForce: 1
   timeToWait: 0.1
   rotationSpeed: 2

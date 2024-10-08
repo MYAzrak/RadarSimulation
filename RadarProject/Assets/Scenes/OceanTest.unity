@@ -333,7 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _version: 0
-  _globalWindSpeed: 150
+  _globalWindSpeed: 50
   _viewpoint: {fileID: 0}
   _camera: {fileID: 0}
   _teleportThreshold: 10
@@ -551,6 +551,7 @@ GameObject:
   - component: {fileID: 2106282669}
   - component: {fileID: 2106282671}
   - component: {fileID: 2106282672}
+  - component: {fileID: 2106282673}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -580,6 +581,9 @@ MonoBehaviour:
   randomCoordinates: 1000
   minSpeed: 11
   maxSpeed: 21
+  hasProceduralLand: 0
+  proceduralLandSeed: 0
+  proceduralLandLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &2106282667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,6 +713,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeather: {fileID: 0}
+--- !u!114 &2106282673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106282665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878a61d3dc8639740b94f73d97a81540, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainGeneratorPrefab: {fileID: 2262635441062951885, guid: 639cb1dc935915348b47695143bbad8e, type: 3}
+  seed: 0
+  position: {x: 0, y: -1000, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

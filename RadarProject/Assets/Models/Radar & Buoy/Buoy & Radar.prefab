@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3d6ea4c5e16ed41d68c58016e927cec7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3d6ea4c5e16ed41d68c58016e927cec7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3d6ea4c5e16ed41d68c58016e927cec7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 3d6ea4c5e16ed41d68c58016e927cec7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.3528953
       objectReference: {fileID: 0}
@@ -235,6 +247,7 @@ MonoBehaviour:
   MaxDistance: 5000
   MinDistance: 0.5
   VerticalAngle: 30
+  BeamWidth: 2
   radarCamera: {fileID: 0}
   noise: 5
   ImageRadius: 500
@@ -245,3 +258,10 @@ MonoBehaviour:
   antennaGainDBi: 30
   wavelengthM: 0.03
   systemLossesDB: 3
+  radarLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  defaultReflectivity: 1
+  RainProbability: 0.1
+  RainRCS: 0.001
+  RainIntensity: 10
