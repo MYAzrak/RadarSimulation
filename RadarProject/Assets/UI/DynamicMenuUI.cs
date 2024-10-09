@@ -11,6 +11,7 @@ public class DynamicMenuUI
     WeatherController weatherController;
     WavesController wavesController;
     RadarController radarController;
+    CameraController cameraController;
 
     public DynamicMenuUI(
         VisualElement ui,
@@ -18,7 +19,8 @@ public class DynamicMenuUI
         ScenarioController scenarioController,
         WeatherController weatherController,
         WavesController wavesController,
-        RadarController radarController)
+        RadarController radarController,
+        CameraController cameraController)
     {
         this.ui = ui;
         this.mainMenuController = mainMenuController;
@@ -26,6 +28,7 @@ public class DynamicMenuUI
         this.wavesController = wavesController;
         this.scenarioController = scenarioController;
         this.radarController = radarController;
+        this.cameraController = cameraController;
     }
 
     public void SetBtnEvents()
@@ -33,6 +36,7 @@ public class DynamicMenuUI
         SetScenarioEvents();
         SetWeatherEvents();
         SetWavesEvents();
+        SetCameraEvents();
     }
 
     public void SetScenarioEvents()
@@ -80,6 +84,15 @@ public class DynamicMenuUI
         moderateWavesBtn.RegisterCallback((ClickEvent clickEvent) =>
         {
             wavesController.GenerateWaves(Waves.Moderate);
+        });
+    }
+
+    public void SetCameraEvents()
+    {
+        SliderInt cameraSpeedSlider = ui.Q("CameraSpeedSlider") as SliderInt;
+        cameraSpeedSlider.RegisterValueChangedCallback((ChangeEvent<int> evt) =>
+        {
+            cameraController.SetSpeed(evt.newValue);
         });
     }
 }

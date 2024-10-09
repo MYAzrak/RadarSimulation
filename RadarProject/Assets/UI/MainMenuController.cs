@@ -16,6 +16,7 @@ public class MainMenuController : MonoBehaviour
     WeatherController weatherController;
     WavesController wavesController;
     RadarController radarController;
+    CameraController cameraController;
 
     // ------------------------------------
     // --------- UI panel classes ---------
@@ -50,6 +51,7 @@ public class MainMenuController : MonoBehaviour
         weatherController = FindObjectOfType<WeatherController>();
         wavesController = FindObjectOfType<WavesController>();
         radarController = FindObjectOfType<RadarController>();
+        cameraController = FindObjectOfType<CameraController>();
 
         ui = GetComponent<UIDocument>().rootVisualElement;
 
@@ -66,7 +68,7 @@ public class MainMenuController : MonoBehaviour
 
         // Initialize the events
         ScenarioMenuUI = new(ui, instance, scenarioController, csvController);
-        dynamicMenuUI = new(ui, instance, scenarioController, weatherController, wavesController, radarController);
+        dynamicMenuUI = new(ui, instance, scenarioController, weatherController, wavesController, radarController, cameraController);
 
         InitializeLabels();
 

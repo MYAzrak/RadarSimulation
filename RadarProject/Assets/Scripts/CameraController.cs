@@ -45,4 +45,9 @@ public class CameraController : MonoBehaviour
     {
         return transform.position;
     }
+
+    public void SetSpeed(int speed)
+    {
+        movementSpeed = speed;
+    }
 }
