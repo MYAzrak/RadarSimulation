@@ -11,11 +11,12 @@ public class MainMenuController : MonoBehaviour
     // -------------------------------
     // --------- Controllers ---------
     // -------------------------------
+    [SerializeField] GameObject manager; // Manager objects that contains most of the controllers 
     ScenarioController scenarioController;
     CSVController csvController;
     WeatherController weatherController;
-    WavesController wavesController;
     RadarController radarController;
+    WavesController wavesController;
     CameraController cameraController;
 
     // ------------------------------------
@@ -46,11 +47,12 @@ public class MainMenuController : MonoBehaviour
         instance = this;
 
         // Get controllers
-        scenarioController = FindObjectOfType<ScenarioController>();
-        csvController = FindObjectOfType<CSVController>();
-        weatherController = FindObjectOfType<WeatherController>();
+        scenarioController = manager.GetComponent<ScenarioController>();
+        weatherController = manager.GetComponent<WeatherController>();
+        radarController = manager.GetComponent<RadarController>();
+        csvController = manager.GetComponent<CSVController>();
+
         wavesController = FindObjectOfType<WavesController>();
-        radarController = FindObjectOfType<RadarController>();
         cameraController = FindObjectOfType<CameraController>();
 
         ui = GetComponent<UIDocument>().rootVisualElement;
