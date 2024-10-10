@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _version: 0
-  _globalWindSpeed: 50
+  _globalWindSpeed: 20
   _viewpoint: {fileID: 0}
   _camera: {fileID: 0}
   _teleportThreshold: 10
@@ -534,8 +534,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c389d35701a4c61c7981491d1eee7d05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 200
-  rotationSpeed: 100
+  movementSpeed: 1
+  rotationSpeed: 1
   invertedVerticalMovement: 0
 --- !u!1 &2106282665
 GameObject:

@@ -17,7 +17,7 @@ public class ShipBouyancyScript : MonoBehaviour
     float waterDensity = 1025f; // Density of the UAE water
 
     Vector3[] forces;               // Forces to apply
-    bool recalculateForces = false; // Recaulate forces when needed for performances
+    bool recalculateForces = false; // Recaulate forces when needed for performance
 
     // Stabilizing Forces
     // For PressureDragForce
@@ -107,9 +107,6 @@ public class ShipBouyancyScript : MonoBehaviour
             Vector3 pressureDragForce = PressureDragForce(triangleData);
             force += pressureDragForce;
 
-            //Vector3 viscousWaterResistanceForce = ViscousWaterResistanceForce(waterDensity, triangleData, ResistanceCoefficient(waterDensity, ship.velocity.magnitude, shipWidth));
-            //force += viscousWaterResistanceForce;
-
             force *= amplifyForce;
 
             forces[i] = force;
@@ -140,16 +137,12 @@ public class ShipBouyancyScript : MonoBehaviour
         {
             TriangleData triangleData = aboveWaterTriangleData[i];
 
+            Vector3 force = Vector3.zero;
 
-            //Calculate the forces
-            Vector3 forceToAdd = Vector3.zero;
-
-            //Force 1 - Air resistance 
             int shipDragCoefficient = 1;
-            forceToAdd += AirResistanceForce(1.225f, triangleData, shipDragCoefficient);
+            force += AirResistanceForce(waterDensity, triangleData, shipDragCoefficient);
 
-            //Add the forces to the boat
-            ship.AddForceAtPosition(forceToAdd, triangleData.center);
+            ship.AddForceAtPosition(force, triangleData.center);
         }
     }
 
@@ -186,41 +179,6 @@ public class ShipBouyancyScript : MonoBehaviour
 
         return force;
     }
-
-    public float ResistanceCoefficient(float rho, float velocity, float length)
-    {
-        float nu = 0.0000008f; // At 30 degrees celcius
-
-        //Reynolds number
-        float Rn = velocity * length / nu;
-
-        //The resistance coefficient
-        float Cf = 0.075f / Mathf.Pow(Mathf.Log10(Rn) - 2f, 2f);
-
-        return Cf;
-    }
-
-
-    public static Vector3 ViscousWaterResistanceForce(float rho, TriangleData triangleData, float Cf)
-    {
-        Vector3 B = triangleData.normal;
-        Vector3 A = triangleData.velocity;
-
-        Vector3 velocityTangent = Vector3.Cross(B, Vector3.Cross(A, B) / B.magnitude) / B.magnitude;
-
-        Vector3 tangentialDirection = velocityTangent.normalized * -1f;
-        
-        Vector3 v_f_vec = triangleData.velocity.magnitude * tangentialDirection;
-
-        //The final resistance force
-        Vector3 viscousWaterResistanceForce = 0.5f * rho * v_f_vec.magnitude * v_f_vec * triangleData.area * Cf;
-
-        if (float.IsNaN(viscousWaterResistanceForce.x) || float.IsNaN(viscousWaterResistanceForce.y) || float.IsNaN(viscousWaterResistanceForce.z))
-            return Vector3.zero;
-
-        return viscousWaterResistanceForce;
-    }
-
     Vector3 PressureDragForce(TriangleData triangleData)
     {
         float velocity = triangleData.velocity.magnitude;

@@ -3,10 +3,10 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [Header("Camera Movement")]
-    [SerializeField] int movementSpeed = 200;
+    public int movementSpeed = 1;
 
     [Header("Camera Rotation")]
-    [SerializeField] int rotationSpeed = 100;
+    [SerializeField] int rotationSpeed = 1;
     [SerializeField] bool invertedVerticalMovement = false;
 
     GameObject weather;
@@ -18,14 +18,14 @@ public class CameraController : MonoBehaviour
         if (Input.GetButton("Fire2")) 
         {
             // Get the mouse delta, and add eulerAngles to save the last rotated values
-            float h = transform.eulerAngles.y + rotationSpeed * Input.GetAxis("Mouse X") * Time.unscaledDeltaTime;
-            float v = transform.eulerAngles.x + rotationSpeed * Input.GetAxis("Mouse Y") * (invertedVerticalMovement ? 1 : -1) * Time.unscaledDeltaTime;
+            float h = transform.eulerAngles.y + rotationSpeed * Input.GetAxis("Mouse X");
+            float v = transform.eulerAngles.x + rotationSpeed * Input.GetAxis("Mouse Y") * (invertedVerticalMovement ? 1 : -1);
 
             transform.rotation = Quaternion.Euler(v, h, 0);
 
             // Camera movement
-            float verticalDirection = Input.GetAxisRaw("Vertical") * Time.unscaledDeltaTime * movementSpeed;
-            float horizontalDirection = Input.GetAxisRaw("Horizontal") * Time.unscaledDeltaTime * movementSpeed;
+            float verticalDirection = Input.GetAxisRaw("Vertical") * movementSpeed;
+            float horizontalDirection = Input.GetAxisRaw("Horizontal") * movementSpeed;
             
             transform.position += (transform.forward * verticalDirection) + (transform.right * horizontalDirection);
         }
