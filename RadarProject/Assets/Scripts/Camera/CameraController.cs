@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
@@ -6,33 +7,44 @@ public class CameraController : MonoBehaviour
     public int movementSpeed = 1;
 
     [Header("Camera Rotation")]
-    [SerializeField] int rotationSpeed = 1;
-    [SerializeField] bool invertedVerticalMovement = false;
+    public float rotationSpeed = 0.4f;
 
     GameObject weather;
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        // Only move or rotate the camera if the user is holding the right button
-        if (Input.GetButton("Fire2")) 
-        {
-            // Get the mouse delta, and add eulerAngles to save the last rotated values
-            float h = transform.eulerAngles.y + rotationSpeed * Input.GetAxis("Mouse X");
-            float v = transform.eulerAngles.x + rotationSpeed * Input.GetAxis("Mouse Y") * (invertedVerticalMovement ? 1 : -1);
-
-            transform.rotation = Quaternion.Euler(v, h, 0);
-
-            // Camera movement
-            float verticalDirection = Input.GetAxisRaw("Vertical") * movementSpeed;
-            float horizontalDirection = Input.GetAxisRaw("Horizontal") * movementSpeed;
-            
-            transform.position += (transform.forward * verticalDirection) + (transform.right * horizontalDirection);
-        }
+        Move();
 
         if (weather != null) 
         {
             weather.transform.position = transform.position; 
+        }
+    }
+
+
+    public void Move()
+    {
+        // Only move or rotate the camera if the user is holding the right button
+        if (Mouse.current.rightButton.isPressed) 
+        {
+            // Get the mouse delta, and add eulerAngles to save the last rotated values
+            float h = transform.eulerAngles.y + rotationSpeed * Mouse.current.delta.x.ReadValue();
+            float v = transform.eulerAngles.x + rotationSpeed * Mouse.current.delta.y.ReadValue() * -1; // -1 to invert movement
+
+            transform.rotation = Quaternion.Euler(v, h, 0);
+
+            // Camera movement
+            int forward = Keyboard.current.wKey.isPressed ? 1 : 0;
+            int backward = Keyboard.current.sKey.isPressed ? -1 : 0;
+
+            int right = Keyboard.current.dKey.isPressed ? 1 : 0;
+            int left = Keyboard.current.aKey.isPressed ? -1 : 0;
+
+            float verticalDirection = (forward + backward) * movementSpeed;
+            float horizontalDirection = (left + right) * movementSpeed;
+            
+            transform.position += (transform.forward * verticalDirection) + (transform.right * horizontalDirection);
         }
     }
 
