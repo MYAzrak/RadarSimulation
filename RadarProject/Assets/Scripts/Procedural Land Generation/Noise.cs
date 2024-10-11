@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 // Static since 1 instance only, and no MonoBehaviour since we are not applying this 
@@ -11,7 +8,7 @@ public static class Noise
     {
         float[,] noiseMap = new float[mapWidth, mapHeight];
 
-        System.Random prng = new System.Random(seed);
+        System.Random prng = new(seed);
         // We want each octave to be sampled from a different location
         Vector2[] octaveOffsets = new Vector2[octaves];
         for (int i = 0; i < octaves; i++)

@@ -20,15 +20,7 @@ public class ObjectAreaSpawner : MonoBehaviour
     {
         pool = new ObjectPool<GameObject>(CreateObject, OnTakeObjectFromPool, OnReturnObjectFromPool, OnDestroyObject, true, 50, 50);
     }
-
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.Backspace))
-        {
-            UnloadAllObjects();
-        }
-    }
-
+    
     public void GenerateObjects(Transform parent)
     {
         this.parent = parent;

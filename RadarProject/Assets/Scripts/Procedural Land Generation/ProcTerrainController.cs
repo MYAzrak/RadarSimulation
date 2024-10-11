@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 public class ProcTerrainController : MonoBehaviour
 {
@@ -19,7 +15,8 @@ public class ProcTerrainController : MonoBehaviour
         objectAreaSpawner = FindObjectOfType<ObjectAreaSpawner>();
         //GenerateTerrain();
     }
-    public async Task GenerateTerrain()
+
+    public void GenerateTerrain()
     {
         terrainInstance = Instantiate(terrainGeneratorPrefab, position, Quaternion.identity);
         PositionAllChildren(terrainInstance.transform, position);
@@ -29,14 +26,14 @@ public class ProcTerrainController : MonoBehaviour
         if (mapGenerator != null)
         {
             mapGenerator.seed = seed;
-            await mapGenerator.GenerateMapAsync();
+            mapGenerator.GenerateMap();
         }
         else
         {
             Logger.Log("MapGenerator component not found on the instantiated prefab.");
         }
 
-        objectAreaSpawner.GenerateObjects(terrainInstance.transform);
+        //objectAreaSpawner.GenerateObjects(terrainInstance.transform);
     }
 
     private void PositionAllChildren(Transform parent, Vector3 newPosition)

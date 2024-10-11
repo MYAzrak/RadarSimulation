@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Takes the noiseMap and returns it into a texture then applies that texture into a plane in our scene
@@ -22,6 +20,10 @@ public class MapDisplay : MonoBehaviour
         Mesh mesh = meshData.CreateMesh();
         meshFilter.sharedMesh = mesh; // Shared since we could generate the mesh outside game mode
         meshRenderer.sharedMaterial.mainTexture = texture;
-        meshCollider.sharedMesh = mesh;
+        
+        // Add a box collider around the land to trigger events
+        BoxCollider boxCollider = gameObject.GetComponent<BoxCollider>();
+        boxCollider.size = mesh.bounds.size * 10;
+        boxCollider.center = mesh.bounds.center;
     }
 }

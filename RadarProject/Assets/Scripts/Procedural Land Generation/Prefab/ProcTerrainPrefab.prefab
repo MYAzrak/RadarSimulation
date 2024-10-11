@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2262635441062951885}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1763.7563, y: 890.9394, z: -2.7437196}
+  m_LocalPosition: {x: 1763.7563, y: 400, z: -2.7437196}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 3625314219168563874}
   - component: {fileID: 8490049888665994280}
   - component: {fileID: 8424194753967062611}
+  - component: {fileID: 4196587053275225531}
   m_Layer: 0
   m_Name: MapGenerator
   m_TagString: Untagged
@@ -81,15 +82,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drawMode: 2
   mapWidth: 1000
-  mapHeight: 600
-  noiseScale: 70
-  octaves: 5
+  mapHeight: 10000
+  noiseScale: 1000
+  octaves: 3
   persistance: 0.147
   lacunarity: 5
   seed: 289
   offset: {x: 2.13, y: 4.38}
   useFalloff: 1
-  meshHeightMultiplier: 20
+  meshHeightMultiplier: 100
   meshHeightCurve:
     serializedVersion: 2
     m_Curve:
@@ -142,7 +143,7 @@ MonoBehaviour:
     color: {r: 0.6431373, g: 0.5882353, b: 0.42352942, a: 0}
   - name: Grass
     height: 0.5
-    color: {r: 0.19607843, g: 0.8039216, b: 0.19607843, a: 0}
+    color: {r: 0.19607843, g: 0.5019608, b: 0.19607843, a: 0}
   - name: Rock
     height: 0.6
     color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0}
@@ -164,7 +165,28 @@ MonoBehaviour:
   textureRenderer: {fileID: 3323035581864153221}
   meshFilter: {fileID: 5660789993772149679}
   meshRenderer: {fileID: 3645480812966884697}
-  meshCollider: {fileID: 3100815713861061419}
+  meshCollider: {fileID: 0}
+--- !u!65 &4196587053275225531
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3709785692232520095}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3775030500783141341
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,7 +281,7 @@ GameObject:
   - component: {fileID: 543919658100012864}
   - component: {fileID: 5660789993772149679}
   - component: {fileID: 3645480812966884697}
-  - component: {fileID: 3100815713861061419}
+  - component: {fileID: 5075950800578121619}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -332,8 +354,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3100815713861061419
-MeshCollider:
+--- !u!65 &5075950800578121619
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -347,10 +369,9 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

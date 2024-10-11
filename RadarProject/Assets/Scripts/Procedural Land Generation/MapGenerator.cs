@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Unity.Mathematics;
 using UnityEngine;
 
 // Values that define our map
@@ -33,11 +28,9 @@ public class MapGenerator : MonoBehaviour
         fallOffMap = FalloffGenerator.GenerateFalloffMap(mapWidth, mapHeight);
     }
 
-    public async Task GenerateMapAsync()
+    public void GenerateMap()
     {
-        float[,] noiseMap = await Task.Run(() => 
-            Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset)
-        );
+        float[,] noiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
 
         // Loop over the pixels and assign the terrain type color based on the height
         Color[] colorMap = new Color[mapWidth * mapHeight];

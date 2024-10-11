@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public static class MeshGenerator
@@ -13,7 +9,7 @@ public static class MeshGenerator
         float topLeftX = (width - 1) / -2f;
         float topLeftZ = (height - 1) / 2f;
 
-        MeshData meshData = new MeshData(width, height);
+        MeshData meshData = new(width, height);
         int vertexIndex = 0;
         // Create the vertices
         for (int y = 0; y < height; y++)

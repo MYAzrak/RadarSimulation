@@ -164,7 +164,7 @@ public class ScenarioController : MonoBehaviour
         return files;
     }
 
-    async void LoadScenario(string scenario)
+    void LoadScenario(string scenario)
     {
         // Read csv
         csvReadResult = csvController.ReadScenarioCSV(ref shipsInformation, ref shipLocations, ref scenarioSettings, scenario);
@@ -184,9 +184,7 @@ public class ScenarioController : MonoBehaviour
         {
             procTerrainController.seed = scenarioSettings.proceduralLandSeed;
             procTerrainController.position = scenarioSettings.proceduralLandLocation;
-            Profiler.BeginSample("test");
-            await procTerrainController.GenerateTerrain();
-            Profiler.EndSample();
+            procTerrainController.GenerateTerrain();
         }
 
         // Set waves
