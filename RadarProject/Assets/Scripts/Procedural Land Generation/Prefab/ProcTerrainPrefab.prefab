@@ -82,7 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drawMode: 2
   mapWidth: 1000
-  mapHeight: 10000
+  mapHeight: 5000
   noiseScale: 1000
   octaves: 3
   persistance: 0.147
@@ -90,7 +90,7 @@ MonoBehaviour:
   seed: 289
   offset: {x: 2.13, y: 4.38}
   useFalloff: 1
-  meshHeightMultiplier: 100
+  meshHeightMultiplier: 70
   meshHeightCurve:
     serializedVersion: 2
     m_Curve:
@@ -135,19 +135,19 @@ MonoBehaviour:
     m_RotationOrder: 4
   autoUpdate: 1
   terrainTypes:
-  - name: Sand
+  - name: 
     height: 0.25
     color: {r: 0.92941177, g: 0.7882353, b: 0.6862745, a: 0}
-  - name: Sand 2
+  - name: 
     height: 0.45
     color: {r: 0.6431373, g: 0.5882353, b: 0.42352942, a: 0}
-  - name: Grass
+  - name: 
     height: 0.5
     color: {r: 0.19607843, g: 0.5019608, b: 0.19607843, a: 0}
-  - name: Rock
+  - name: 
     height: 0.6
     color: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0}
-  - name: Rock 2
+  - name: 
     height: 1
     color: {r: 0.4117647, g: 0.4117647, b: 0.4117647, a: 0}
 --- !u!114 &8424194753967062611
