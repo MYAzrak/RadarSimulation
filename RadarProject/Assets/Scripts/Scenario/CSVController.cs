@@ -57,7 +57,7 @@ public class CSVController : MonoBehaviour
             maxSpeed = 16;
 
             // Initialize procedural land parameters with random values
-            hasProceduralLand = Random.Range(0, 2) == 0;
+            hasProceduralLand = Random.Range(0, 10) < 6;
             proceduralLandSeed = Random.Range(0, 10_000_000);
 
             // Generate a random direction

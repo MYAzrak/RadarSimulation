@@ -6,12 +6,15 @@ public class ProcTerrainController : MonoBehaviour
 {
     public GameObject terrainGeneratorPrefab = null;
     public int seed;
-    public Vector3 position = new Vector3(0, 0, 0);
+    public Vector3 position = new();
 
     private GameObject terrainInstance;
     private MapGenerator mapGenerator;
+    private ObjectAreaSpawner objectAreaSpawner;
+
     void Start()
     {
+        objectAreaSpawner = FindObjectOfType<ObjectAreaSpawner>();
         //GenerateTerrain();
     }
     public void GenerateTerrain()
@@ -30,6 +33,8 @@ public class ProcTerrainController : MonoBehaviour
         {
             Logger.Log("MapGenerator component not found on the instantiated prefab.");
         }
+
+        objectAreaSpawner.GenerateObjects(terrainInstance.transform);
     }
 
     private void PositionAllChildren(Transform parent, Vector3 newPosition)
@@ -40,4 +45,11 @@ public class ProcTerrainController : MonoBehaviour
         }
     }
 
+    public void UnloadLandObjects()
+    {
+        objectAreaSpawner.UnloadAllObjects();
+
+        if (terrainInstance != null)
+            Destroy(terrainInstance);
+    }
 }

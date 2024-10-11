@@ -38,7 +38,7 @@ public class WavesController : MonoBehaviour
         mainMenuController.SetWaveLabel(scenarioWave.ToString());
     }
 
-    public void ResetToDefaultWave(GameObject prefab = null)
+    public void ResetToDefaultWave(GameObject prefab)
     {
         if (currentWave != null)
             Destroy(currentWave);

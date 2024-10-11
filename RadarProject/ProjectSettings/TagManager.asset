@@ -7,6 +7,7 @@ TagManager:
   - Shore
   - Cloud
   - Terrain
+  - LandPoolObject
   layers:
   - Default
   - TransparentFX

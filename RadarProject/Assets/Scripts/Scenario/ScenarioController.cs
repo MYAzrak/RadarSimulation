@@ -229,6 +229,9 @@ public class ScenarioController : MonoBehaviour
         // Reset Weather
         weatherController.ClearWeather();
 
+        // Delete the land
+        procTerrainController.UnloadLandObjects();
+
         generatedShips.Clear();
     }
 

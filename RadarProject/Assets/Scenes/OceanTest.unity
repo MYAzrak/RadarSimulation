@@ -122,6 +122,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &188005294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 188005295}
+  - component: {fileID: 188005296}
+  m_Layer: 0
+  m_Name: Spreader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &188005295
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188005294}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -19779.982, y: 127.57203, z: 487.7643}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &188005296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188005294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7b62f1eaae04c2449c23feeb18ba962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToSpread:
+  - {fileID: 919132149155446097, guid: d47699c43b0aeb04eb32ee52a8a05c1f, type: 3}
+  - {fileID: 919132149155446097, guid: 9b063a4cb74a33a49b485e7d79cd2701, type: 3}
+  - {fileID: 919132149155446097, guid: 2e33df1e3212e3d4380eea3ab56b1d41, type: 3}
+  - {fileID: 919132149155446097, guid: daf14bdd8d9bec94ca181a921148cc52, type: 3}
+  - {fileID: 919132149155446097, guid: 5a215ff8f47445b4fbccfb1952d5347a, type: 3}
+  parent: {fileID: 0}
+  numObjectsToSpawn: 50
+  itemXSpread: 200
+  itemYSpread: 0
+  itemZSpread: 2500
+  raycast: 1
+  raycastDistance: 100
 --- !u!1 &801338831
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,8 +412,8 @@ MonoBehaviour:
   _lodCount: 15
   _extentsSizeMultiplier: 100
   _simSettingsAnimatedWaves: {fileID: 11400000, guid: 61e04eb6778e52080926ec3f44e25698, type: 2}
-  _createSeaFloorDepthData: 1
-  _simSettingsSeaFloorDepth: {fileID: 0}
+  _createSeaFloorDepthData: 0
+  _simSettingsSeaFloorDepth: {fileID: 11400000, guid: 1caa0bb969611eca395941a4bcdfd171, type: 2}
   _createFoamSim: 1
   _simSettingsFoam: {fileID: 11400000, guid: b89895b183f302c5ab1acd0e3aca4ba9, type: 2}
   _createDynamicWaveSim: 1
@@ -488,7 +545,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 10000
+  far clip plane: 20000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -633,8 +690,8 @@ MonoBehaviour:
   generateRandomParameters: 1
   numberOfShips: 5
   locationsToCreate: 10
-  minStartingCoordinates: 2000
-  maxStartingCoordinates: 2000
+  minStartingCoordinates: 0
+  maxStartingCoordinates: 0
   randomCoordinates: 1000
   minSpeed: 11
   maxSpeed: 21
@@ -683,8 +740,6 @@ MonoBehaviour:
   updateTimeScale: 0
   loadScenario: 0
   resetScenario: 0
-  logMessages: 0
-  timeSinceScenarioStart: 0
   timeLimit: 300
   completedShips: 0
   loadAllScenarios: 0
@@ -784,7 +839,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terrainGeneratorPrefab: {fileID: 2262635441062951885, guid: 639cb1dc935915348b47695143bbad8e, type: 3}
   seed: 0
-  position: {x: 0, y: -1000, z: 0}
+  position: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -795,3 +850,4 @@ SceneRoots:
   - {fileID: 2106282668}
   - {fileID: 801338833}
   - {fileID: 1693119283}
+  - {fileID: 188005295}
