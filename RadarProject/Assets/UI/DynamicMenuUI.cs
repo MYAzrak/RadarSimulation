@@ -53,22 +53,19 @@ public class DynamicMenuUI
         Button clearWeatherBtn = ui.Q("ClearWeatherBtn") as Button;
         clearWeatherBtn.RegisterCallback((ClickEvent clickEvent) =>
         {
-            weatherController.GenerateWeather(Weather.Clear);
-            radarController.SetWeather(Weather.Clear);
+            scenarioController.SetWeather(Weather.Clear);
         });
 
         Button lightRainBtn = ui.Q("LightRainBtn") as Button;
         lightRainBtn.RegisterCallback((ClickEvent clickEvent) =>
         {
-            weatherController.GenerateWeather(Weather.LightRain);
-            radarController.SetWeather(Weather.LightRain);
+            scenarioController.SetWeather(Weather.LightRain);
         });
 
         Button heavyRainBtn = ui.Q("HeavyRainBtn") as Button;
         heavyRainBtn.RegisterCallback((ClickEvent clickEvent) =>
         {
-            weatherController.GenerateWeather(Weather.HeavyRain);
-            radarController.SetWeather(Weather.HeavyRain);
+            scenarioController.SetWeather(Weather.HeavyRain);
         });
     }
 
@@ -77,13 +74,13 @@ public class DynamicMenuUI
         Button calmWavesBtn = ui.Q("CalmWavesBtn") as Button;
         calmWavesBtn.RegisterCallback((ClickEvent clickEvent) =>
         {
-            wavesController.GenerateWaves(Waves.Calm);
+            scenarioController.SetWaves(Waves.Calm);
         });
 
         Button moderateWavesBtn = ui.Q("ModerateWavesBtn") as Button;
         moderateWavesBtn.RegisterCallback((ClickEvent clickEvent) =>
         {
-            wavesController.GenerateWaves(Waves.Moderate);
+            scenarioController.SetWaves(Waves.Moderate);
         });
     }
 

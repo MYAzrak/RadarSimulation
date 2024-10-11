@@ -23,8 +23,6 @@ public class MasterController : MonoBehaviour
             Debug.Log(x);
         }
 
-        csvController.GenerateParameters();
-
         //CSV Controller Params
         setIntArg("-nships", ref csvController.numberOfShips);
         setIntArg("-nLocations", ref csvController.locationsToCreate);

@@ -4,8 +4,8 @@ using UnityEngine;
 public class WavesController : MonoBehaviour
 {
     public GameObject currentWave;
+    GameObject defaultWavePrefab;
 
-    ScenarioController scenarioController;
     MainMenuController mainMenuController;
     OceanRenderer oceanRenderer;
     TimeProviderCustom timeProviderCustom;
@@ -19,11 +19,9 @@ public class WavesController : MonoBehaviour
 
         oceanRenderer.PushTimeProvider(timeProviderCustom);
 
-        scenarioController = FindObjectOfType<ScenarioController>();
         mainMenuController = FindObjectOfType<MainMenuController>();
 
-        // Set default wave
-        currentWave = Instantiate(scenarioController.wavePrefabs[0].prefab, Vector3.zero, Quaternion.identity);
+        currentWave = GameObject.Find("WavesCalm");
     }
 
     public void SetTimeProvider(float time)
@@ -31,26 +29,26 @@ public class WavesController : MonoBehaviour
         timeProviderCustom._time = time;
     }
     
-    public void GenerateWaves(Waves scenarioWave)
+    public void GenerateWaves(Waves scenarioWave, GameObject prefab)
     {
-        GameObject prefab = null;
-
-        foreach (ScenarioController.WavePrefab wavePrefab in scenarioController.wavePrefabs)
-        {
-            if (wavePrefab.waves == scenarioWave)
-            {
-                prefab = wavePrefab.prefab;
-            }
-        }
-
-        Destroy(currentWave);
+        if (currentWave != null)
+            Destroy(currentWave);
+        
         currentWave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
         mainMenuController.SetWaveLabel(scenarioWave.ToString());
     }
 
-    public void ResetToDefaultWave()
+    public void ResetToDefaultWave(GameObject prefab = null)
     {
-        Destroy(currentWave);
-        currentWave = Instantiate(scenarioController.wavePrefabs[0].prefab, Vector3.zero, Quaternion.identity);
+        if (currentWave != null)
+            Destroy(currentWave);
+        
+        if (prefab != null)
+        {
+            currentWave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+
+            if (defaultWavePrefab == null)
+                defaultWavePrefab = prefab;
+        }
     }
 }

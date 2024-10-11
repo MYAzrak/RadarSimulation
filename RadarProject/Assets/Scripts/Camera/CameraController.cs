@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     GameObject weather;
 
     // Update is called once per frame
-    public void Update()
+    void Update()
     {
         Move();
 
@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
     public void Move()
     {
         // Only move or rotate the camera if the user is holding the right button
-        if (Mouse.current.rightButton.isPressed) 
+        if (Mouse.current != null && Mouse.current.rightButton.isPressed) 
         {
             // Get the mouse delta, and add eulerAngles to save the last rotated values
             float h = transform.eulerAngles.y + rotationSpeed * Mouse.current.delta.x.ReadValue();

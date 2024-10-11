@@ -1,5 +1,5 @@
 {
-    "name": "Tests",
+    "name": "TestsPlayMode",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
@@ -8,9 +8,7 @@
         "Unity.InputSystem",
         "Unity.InputSystem.TestFramework"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

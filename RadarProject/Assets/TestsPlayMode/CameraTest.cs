@@ -1,21 +1,23 @@
 using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class CameraControllerTest : InputTestFixture
+public class CameraTest : InputTestFixture
 {
     GameObject cameraObject;
     CameraController cameraController;
 
-    [SetUp]
-    public void Setup()
+    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
+    // `yield return null;` to skip a frame.
+    [UnityTest]
+    public IEnumerator CameraControllerMovementTest()
     {
-        EditorSceneManager.OpenScene("Assets/Scenes/OceanTest.unity");
+        SceneManager.LoadScene("Assets/Scenes/OceanTest.unity");
+
+        yield return null;
         
         cameraObject = GameObject.FindWithTag("MainCamera");
         Assert.IsNotNull(cameraObject, "Main Camera should be present in the scene.");
@@ -26,13 +28,7 @@ public class CameraControllerTest : InputTestFixture
         // Start at the origin
         cameraObject.transform.position = Vector3.zero;
         cameraObject.transform.rotation = Quaternion.identity;
-    }
 
-    // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
-    // `yield return null;` to skip a frame.
-    [UnityTest]
-    public IEnumerator CameraControllerMovementTest()
-    {
         // Set speed to 1 
         cameraController.movementSpeed = 1;
 
@@ -55,17 +51,6 @@ public class CameraControllerTest : InputTestFixture
         
         Assert.AreEqual(new Vector3(0, 0, 1), cameraObject.transform.position);
 
-        // Move backward
-        Press(keyboard.sKey);
-        InputSystem.Update();
-
-        cameraController.Move();
-
-        Release(keyboard.sKey);
-        InputSystem.Update();
-        
-        Assert.AreEqual(new Vector3(0, 0, 0), cameraObject.transform.position);
-
         // Move right
         Press(keyboard.dKey);
         InputSystem.Update();
@@ -75,6 +60,17 @@ public class CameraControllerTest : InputTestFixture
         Release(keyboard.dKey);
         InputSystem.Update();
 
+        Assert.AreEqual(new Vector3(1, 0, 1), cameraObject.transform.position);
+
+        // Move backward
+        Press(keyboard.sKey);
+        InputSystem.Update();
+
+        cameraController.Move();
+
+        Release(keyboard.sKey);
+        InputSystem.Update();
+        
         Assert.AreEqual(new Vector3(1, 0, 0), cameraObject.transform.position);
 
         // Move left

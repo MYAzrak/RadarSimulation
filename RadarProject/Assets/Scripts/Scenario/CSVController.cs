@@ -43,16 +43,16 @@ public class CSVController : MonoBehaviour
         mainMenuController = FindObjectOfType<MainMenuController>();
     }
 
-    public void GenerateParameters()
+    public void GenerateRandomParameters()
     {
         if (generateRandomParameters)
         {
             // Initialize ship parameters with random values
-            numberOfShips = Random.Range(50, 100);
+            numberOfShips = Random.Range(80, 120);
             locationsToCreate = Random.Range(3, 5);
-            minStartingCoordinates = -10000;
-            maxStartingCoordinates = 10000;
-            randomCoordinates = Random.Range(-2000, 2000);
+            minStartingCoordinates = -20000;
+            maxStartingCoordinates = 20000;
+            randomCoordinates = Random.Range(-1500, 1500);
             minSpeed = 10;
             maxSpeed = 16;
 
@@ -172,6 +172,7 @@ public class CSVController : MonoBehaviour
         for (int i = 0; i < numOfScenarios; i++)
         {
             string file = filePath + "Scenario" + i;
+            GenerateRandomParameters();
             GenerateScenario(file);
         }
 

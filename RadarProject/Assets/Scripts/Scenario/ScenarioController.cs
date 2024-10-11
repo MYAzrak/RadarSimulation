@@ -12,12 +12,15 @@ public class ScenarioController : MonoBehaviour
     [Header("Scenario and Ship Prefabs")]
     public string scenarioFileName;
     [SerializeField] List<ShipPrefab> shipPrefabs = new();
+    Dictionary<ShipType, ShipPrefab> shipDict = new();
 
     [Header("Wave Prefabs")]
     public List<WavePrefab> wavePrefabs = new();
+    Dictionary<Waves, WavePrefab> waveDict = new();
 
     [Header("Weather Prefabs")]
     public List<WeatherPrefab> weatherPrefabs = new();
+    Dictionary<Weather, WeatherPrefab> weatherDict = new();
 
     [Header("Time options")]
     public int timeScale = 1;
@@ -29,9 +32,7 @@ public class ScenarioController : MonoBehaviour
     public bool resetScenario = false;
 
     [Header("Debug")]
-    public bool logMessages = false;
-    bool previousLogMessageBool = false;                                // Allows the log messages to be enabled or disabled using the same if statement
-    public float timeSinceScenarioStart;
+    float timeSinceScenarioStart;
     public float timeLimit = 300;                                       // A time limit for the scenario (in seconds)
     public int completedShips = 0;                                      // Ships that have completed their path
     public bool loadAllScenarios = false;
@@ -98,6 +99,9 @@ public class ScenarioController : MonoBehaviour
         mainMenuController = FindObjectOfType<MainMenuController>();
         Time.timeScale = 1f;
 
+        // Converting the list to dictionaries for faster and cleaner access
+        InitDict();
+
         StartCoroutine(UpdateScenarioLabelAnimation());
         StartCoroutine(RunNextScenario());
     }
@@ -109,35 +113,30 @@ public class ScenarioController : MonoBehaviour
             LoadScenario(scenarios[currentScenarioIndex]);
             loadScenario = false;
         }
-        /*
-        else if (resetScenario) 
-        {
-            LoadScenario();
-            resetScenario = false;
-            scenarioCurrentlyRunning = true;
-            timeSinceScenarioStart = 0;
-        }
-        */
-        else if (logMessages != previousLogMessageBool)
-        {
-            foreach (var ship in generatedShips)
-            {
-                ship.GetComponent<ShipController>().logMessages = logMessages;
-            }
-
-            previousLogMessageBool = logMessages;
-        }
-        else if (updateTimeScale)
-        {
-            Time.timeScale = timeScale;
-            updateTimeScale = false;
-        }
 
         if (timeSinceScenarioStart > timeLimit)
             endScenario = true;
 
         timeSinceScenarioStart += Time.deltaTime;
         wavesController.SetTimeProvider(timeSinceScenarioStart);
+    }
+
+    void InitDict()
+    {
+        foreach (var shipPrefab in shipPrefabs)
+        {
+            shipDict[shipPrefab.shipType] = shipPrefab;
+        }
+
+        foreach (var wavePrefab in wavePrefabs)
+        {
+            waveDict[wavePrefab.waves] = wavePrefab;
+        }
+
+        foreach (var weatherPrefab in weatherPrefabs)
+        {
+            weatherDict[weatherPrefab.weather] = weatherPrefab;
+        }
     }
 
     // Read all files in filePath 
@@ -188,11 +187,10 @@ public class ScenarioController : MonoBehaviour
         }
 
         // Set waves
-        wavesController.GenerateWaves(scenarioSettings.waves);
+        SetWaves(scenarioSettings.waves);
 
         // Set weather
-        weatherController.GenerateWeather(scenarioSettings.weather);
-        radarController.SetWeather(scenarioSettings.weather);
+        SetWeather(scenarioSettings.weather);
 
         radarController.UpdateRadarsPositions();
         GenerateShips();
@@ -205,7 +203,6 @@ public class ScenarioController : MonoBehaviour
         scenarioLabels[2] = $"{scenario} Running...";
 
         // Reset variables and start scenario
-        logMessages = previousLogMessageBool = false;
         timeSinceScenarioStart = 0;
         scenarioCurrentlyRunning = true;
 
@@ -226,8 +223,8 @@ public class ScenarioController : MonoBehaviour
             Destroy(ship);
         }
 
-        // Reset Wave
-        wavesController.ResetToDefaultWave();
+        // Reset Wave to calm
+        wavesController.ResetToDefaultWave(waveDict[Waves.Calm].prefab);
 
         // Reset Weather
         weatherController.ClearWeather();
@@ -400,47 +397,18 @@ public class ScenarioController : MonoBehaviour
         Time.timeScale = speed;
     }
 
-    [Serializable]
-    public struct ShipPrefab
+    public void SetWeather(Weather weather)
     {
-        public ShipType shipType;
-        public GameObject prefab;
-
-        public ShipPrefab(ShipType shipType, GameObject prefab)
-        {
-            this.shipType = shipType;
-            this.prefab = prefab;
-        }
+        GameObject prefab = weatherDict[weather].prefab;
+        Material skybox = weatherDict[weather].skybox;
+        Material oceanMaterial = weatherDict[weather].oceanMaterial;
+        weatherController.GenerateWeather(weather, prefab, skybox, oceanMaterial);
+        radarController.SetWeather(weather);
     }
 
-    [Serializable]
-    public struct WavePrefab
+    public void SetWaves(Waves waves)
     {
-        public Waves waves;
-        public GameObject prefab;
-
-        public WavePrefab(Waves waves, GameObject prefab)
-        {
-            this.waves = waves;
-            this.prefab = prefab;
-        }
-    }
-
-    [Serializable]
-    public struct WeatherPrefab
-    {
-        public Weather weather;
-        public GameObject prefab;
-        public Material skybox;
-        public Material oceanMaterial; // For reflection
-
-        public WeatherPrefab(Weather weather, GameObject prefab, Material skybox, Material oceanMaterial)
-        {
-            this.weather = weather;
-            this.prefab = prefab;
-            this.skybox = skybox;
-            this.oceanMaterial = oceanMaterial;
-        }
+        wavesController.GenerateWaves(waves, waveDict[waves].prefab);
     }
 }
 
