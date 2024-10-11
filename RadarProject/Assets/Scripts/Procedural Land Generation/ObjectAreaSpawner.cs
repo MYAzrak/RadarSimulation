@@ -9,12 +9,12 @@ public class ObjectAreaSpawner : MonoBehaviour
     public Transform parent;
     public int numObjectsToSpawn = 100;
 
-    public float itemXSpread = 200;
+    public float itemXSpread = 2000;
     public float itemYSpread = 0;
     public float itemZSpread = 2500;
 
     public bool raycast = true;
-    public float raycastDistance = 100f;
+    public float raycastDistance = 500f;
 
     void Start()
     {
@@ -50,7 +50,7 @@ public class ObjectAreaSpawner : MonoBehaviour
 
     void OnTakeObjectFromPool(GameObject gameObject)
     {
-        Vector3 randPosition = new Vector3(Random.Range(-itemXSpread, itemXSpread), Random.Range(-itemYSpread, itemYSpread), Random.Range(-itemZSpread, itemZSpread)) + parent.transform.position;
+        Vector3 randPosition = new Vector3(Random.Range(-itemXSpread, itemXSpread), 500, Random.Range(-itemZSpread, itemZSpread)) + parent.transform.position;
         gameObject.transform.position = randPosition;
 
         if (raycast)

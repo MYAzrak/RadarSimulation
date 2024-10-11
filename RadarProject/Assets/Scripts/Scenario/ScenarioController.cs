@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Crest;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class ScenarioController : MonoBehaviour
 {
@@ -163,7 +164,7 @@ public class ScenarioController : MonoBehaviour
         return files;
     }
 
-    void LoadScenario(string scenario)
+    async void LoadScenario(string scenario)
     {
         // Read csv
         csvReadResult = csvController.ReadScenarioCSV(ref shipsInformation, ref shipLocations, ref scenarioSettings, scenario);
@@ -183,7 +184,9 @@ public class ScenarioController : MonoBehaviour
         {
             procTerrainController.seed = scenarioSettings.proceduralLandSeed;
             procTerrainController.position = scenarioSettings.proceduralLandLocation;
-            procTerrainController.GenerateTerrain();
+            Profiler.BeginSample("test");
+            await procTerrainController.GenerateTerrain();
+            Profiler.EndSample();
         }
 
         // Set waves

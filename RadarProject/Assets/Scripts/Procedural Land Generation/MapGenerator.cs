@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -32,9 +33,11 @@ public class MapGenerator : MonoBehaviour
         fallOffMap = FalloffGenerator.GenerateFalloffMap(mapWidth, mapHeight);
     }
 
-    public void GenerateMap()
+    public async Task GenerateMapAsync()
     {
-        float[,] noiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
+        float[,] noiseMap = await Task.Run(() => 
+            Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset)
+        );
 
         // Loop over the pixels and assign the terrain type color based on the height
         Color[] colorMap = new Color[mapWidth * mapHeight];
@@ -56,10 +59,15 @@ public class MapGenerator : MonoBehaviour
         }
 
         MapDisplay display = FindObjectOfType<MapDisplay>();
-        if (drawMode == DrawMode.NoiseMap) display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
-        else if (drawMode == DrawMode.ColorMap) display.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
-        else if (drawMode == DrawMode.Mesh) display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve), TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
-        else if (drawMode == DrawMode.FalloffMap) display.DrawTexture(TextureGenerator.TextureFromHeightMap(FalloffGenerator.GenerateFalloffMap(mapWidth, mapHeight)));
+        if (drawMode == DrawMode.NoiseMap) 
+            display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
+        else if (drawMode == DrawMode.ColorMap) 
+            display.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+        else if (drawMode == DrawMode.Mesh) 
+            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve), 
+                            TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+        else if (drawMode == DrawMode.FalloffMap) 
+            display.DrawTexture(TextureGenerator.TextureFromHeightMap(FalloffGenerator.GenerateFalloffMap(mapWidth, mapHeight)));
     }
 
     // Called whenever any script variables changes in the inspector

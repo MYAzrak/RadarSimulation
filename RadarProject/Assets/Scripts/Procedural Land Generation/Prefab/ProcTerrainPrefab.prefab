@@ -1,55 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &754281169545071824
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6492649324574962770}
-  - component: {fileID: 8452571271939023932}
-  m_Layer: 0
-  m_Name: PalmSpreader
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
---- !u!4 &6492649324574962770
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754281169545071824}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1027.9751, y: 529.4239, z: -226.77501}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1402162494587712154}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8452571271939023932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754281169545071824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7b62f1eaae04c2449c23feeb18ba962, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToSpread: {fileID: 1939013207409395650, guid: facbf1ef716bdd14dbe6703579872068, type: 3}
-  parent: {fileID: 1402162494587712154}
-  numObjectsToSpawn: 200
-  itemXSpread: 200
-  itemYSpread: 0
-  itemZSpread: 2500
 --- !u!1 &2262635441062951885
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,8 +32,6 @@ Transform:
   - {fileID: 3625314219168563874}
   - {fileID: 9054596443548390013}
   - {fileID: 543919658100012864}
-  - {fileID: 6492649324574962770}
-  - {fileID: 5815313171703694250}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3709785692232520095
@@ -300,56 +248,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &5241373064719384233
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5815313171703694250}
-  - component: {fileID: 8167759349422411310}
-  m_Layer: 0
-  m_Name: SkyscraperSpreader
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
---- !u!4 &5815313171703694250
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5241373064719384233}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1027.9751, y: 461.4239, z: -226.77501}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1402162494587712154}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8167759349422411310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5241373064719384233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7b62f1eaae04c2449c23feeb18ba962, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToSpread: {fileID: 7184845760199360713, guid: f2c7d73cf0a6f1e42a0b1037f7ede3b5, type: 3}
-  parent: {fileID: 1402162494587712154}
-  numObjectsToSpawn: 50
-  itemXSpread: 200
-  itemYSpread: 0
-  itemZSpread: 2500
 --- !u!1 &5800977182734674031
 GameObject:
   m_ObjectHideFlags: 0

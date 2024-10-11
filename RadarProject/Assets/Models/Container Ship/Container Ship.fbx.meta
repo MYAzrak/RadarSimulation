@@ -3,7 +3,37 @@ guid: 00dcaffd22c5e4eb7b89af819211717c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bridge
+    second: {fileID: 2100000, guid: 1b6f679b6b5ec64f58e49dbf656e548f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bridge.001
+    second: {fileID: 2100000, guid: a4b4dfc88e83cda2083891fbbf52779f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Containers
+    second: {fileID: 2100000, guid: 5f1259a06ecd872f4b03af8c1153e68c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Containers.001
+    second: {fileID: 2100000, guid: adb4026b0b3b5ebc8976bfacd0a02a4f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hull
+    second: {fileID: 2100000, guid: b630f57bdfa57ddbe852d81cf9a5e6b2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hull.001
+    second: {fileID: 2100000, guid: 0946e7d5f5169596fbb548dca57c0d42, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

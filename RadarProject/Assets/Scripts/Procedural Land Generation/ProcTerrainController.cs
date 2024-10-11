@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class ProcTerrainController : MonoBehaviour
 {
@@ -17,7 +19,7 @@ public class ProcTerrainController : MonoBehaviour
         objectAreaSpawner = FindObjectOfType<ObjectAreaSpawner>();
         //GenerateTerrain();
     }
-    public void GenerateTerrain()
+    public async Task GenerateTerrain()
     {
         terrainInstance = Instantiate(terrainGeneratorPrefab, position, Quaternion.identity);
         PositionAllChildren(terrainInstance.transform, position);
@@ -27,7 +29,7 @@ public class ProcTerrainController : MonoBehaviour
         if (mapGenerator != null)
         {
             mapGenerator.seed = seed;
-            mapGenerator.GenerateMap();
+            await mapGenerator.GenerateMapAsync();
         }
         else
         {
