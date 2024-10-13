@@ -9,14 +9,14 @@ public class ShipController : MonoBehaviour
     public List<float> speedAtEachLocation;
 
     [Header("Ship Power")]
-    [SerializeField, Range(0.001f, 0.010f)] float turnSpeedMultiplier = 0.005f;
+    [Range(0.001f, 0.020f)] public float turnSpeedMultiplier = 0.005f;
     public float forwardSpeed = 5f; // The speed is in knots but it is converted to m/s for Unity
     [SerializeField] Transform motor;
 
     [Header("Debug")]
-    [SerializeField] int indexOfLocationToVisit;
-    [SerializeField] int distanceThreshold = 50;
-    [SerializeField] float timeToWaitBeforeLogging = 5f;
+    public int indexOfLocationToVisit;
+    public int distanceThreshold = 50;
+    public float timeToWaitBeforeLogging = 5f;
     public bool logMessages = false;
 
     new Rigidbody rigidbody;
@@ -35,6 +35,11 @@ public class ShipController : MonoBehaviour
 
     void FixedUpdate()
     {
+        Move();
+    }
+
+    public void Move()
+    {
         if (indexOfLocationToVisit == locationsToVisit.Count) return;
 
         if (speedAtEachLocation != null)
@@ -46,7 +51,7 @@ public class ShipController : MonoBehaviour
         float dot = Vector3.Dot(shipTransform.forward, heading.normalized);
 
         // Not facing the next location
-        if  (dot < 0.999f) {
+        if  (dot < 0.995f) {
             var newRotation = Quaternion.LookRotation (heading, Vector3.up);
             shipTransform.rotation = Quaternion.Slerp(shipTransform.rotation, newRotation, turnSpeedMultiplier * Time.deltaTime);
         }
