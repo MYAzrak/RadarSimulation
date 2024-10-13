@@ -15,7 +15,7 @@ public class CameraTest : InputTestFixture
     [UnityTest]
     public IEnumerator CameraControllerMovementTest()
     {
-        SceneManager.LoadScene("Assets/Scenes/OceanTest.unity");
+        SceneManager.LoadScene("Assets/Scenes/OceanMain.unity");
 
         yield return null;
         
