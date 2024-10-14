@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 public class DynamicMenuUI
@@ -34,6 +31,7 @@ public class DynamicMenuUI
     public void SetBtnEvents()
     {
         SetScenarioEvents();
+        SetRadarEvents();
         SetWeatherEvents();
         SetWavesEvents();
         SetCameraEvents();
@@ -45,6 +43,14 @@ public class DynamicMenuUI
         simulationSpeedSlider.RegisterValueChangedCallback((ChangeEvent<int> evt) =>
         {
             scenarioController.SetTimeScale(evt.newValue);
+        });
+    }
+    public void SetRadarEvents()
+    {
+        Button generateOneRadarAtNetworkBtn = ui.Q("GenerateRadarAtNetworkBtn") as Button;
+        generateOneRadarAtNetworkBtn.RegisterCallback((ClickEvent clickEvent) =>
+        {
+            radarController.GenerateRadar();
         });
     }
 

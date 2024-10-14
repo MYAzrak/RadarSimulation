@@ -154,6 +154,8 @@ public class RadarController : MonoBehaviour
         radars[newRadarID] = instance;
 
         newRadarID++; // Update for the next radar generated to use
+
+        mainMenuController.SetRadarsLabel(newRadarID);
     }
 
     public void GenerateRadars(int numOfRadars = 1)
@@ -188,7 +190,7 @@ public class RadarController : MonoBehaviour
             rb.isKinematic = false;
         }
 
-        mainMenuController.SetRadarsLabel(numOfRadars);
+        mainMenuController.SetRadarsLabel(radars.Count);
     }
 
     async Task<float> WaitForSampleAsync()

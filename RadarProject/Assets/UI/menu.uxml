@@ -15,6 +15,13 @@
             <ui:Foldout text="Scenario" focusable="false" value="true" name="ScenarioFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold;">
                 <ui:SliderInt label="Simulation Speed" high-value="3" show-input-field="true" low-value="1" name="SimulationSpeedSlider" focusable="false" class="text" />
             </ui:Foldout>
+            <ui:Foldout text="Radar" focusable="false" value="true" name="RadarFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold;">
+                <ui:Foldout text="Radar Settings" focusable="false" value="true" name="RadarSettingsFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold;" />
+                <ui:Foldout text="Generate Lattice Network" focusable="false" value="true" name="LatticeNetworkFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold;" />
+                <ui:Foldout text="Generate 1 Radar" focusable="false" value="true" name="GenerateRadarFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold;">
+                    <ui:Button text="Generate 1 Radar In&#10;Lattice Network" parse-escape-sequences="true" display-tooltip-when-elided="true" name="GenerateRadarAtNetworkBtn" focusable="false" class="btns" style="align-items: stretch; align-self: center; height: auto;" />
+                </ui:Foldout>
+            </ui:Foldout>
             <ui:Foldout text="Weather" focusable="false" value="false" name="WeatherFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold;">
                 <ui:VisualElement name="WeatherPanelFoldout" style="flex-grow: 1; flex-direction: row; height: 30px;">
                     <ui:Button text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ClearWeatherBtn" class="btns" style="margin-right: 1%;" />

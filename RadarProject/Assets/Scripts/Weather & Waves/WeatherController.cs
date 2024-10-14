@@ -29,6 +29,9 @@ public class WeatherController : MonoBehaviour
     {       
         ClearWeather();
 
+        if (skybox == null || oceanMaterial == null)
+            return;
+
         if (scenarioWeather == Weather.Clear)
         {
             RenderSettings.skybox = skybox;

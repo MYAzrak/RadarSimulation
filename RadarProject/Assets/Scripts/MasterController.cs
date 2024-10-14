@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class MasterController : MonoBehaviour
 {
@@ -55,7 +52,7 @@ public class MasterController : MonoBehaviour
             //TODO: refactor scenario controller UI code to seperate method, callable from here
             //TODO: after generating scenarios automatically load them
             csvController.GenerateScenarios(nScenarios);
-            scenarioController.LoadAllScenarios();
+            scenarioController.LoadAllScenariosMasterController(nScenarios);
         }
 
         //TODO: Start the simulation

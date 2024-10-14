@@ -106,6 +106,14 @@ public class ScenarioController : MonoBehaviour
 
     void Update()
     {
+        // Temp fix for master controller
+        if (!scenarioCurrentlyRunning && loadScenario)
+        {
+            scenario = scenarios[currentScenarioIndex];
+            LoadScenario(scenario);
+            loadScenario = false;
+        }
+
         if (scenarioCurrentlyRunning && timeSinceScenarioStart > timeLimit)
             endScenario = true;
 
@@ -161,8 +169,6 @@ public class ScenarioController : MonoBehaviour
         csvReadResult = csvController.ReadScenarioCSV(ref shipsInformation, ref shipLocations, ref scenarioSettings, scenario);
         if (!csvReadResult) return;
 
-        scenarioCurrentlyRunning = true;
-
         // set scenario name
         this.scenario = scenario;
 
@@ -194,6 +200,7 @@ public class ScenarioController : MonoBehaviour
 
         // Reset variables and start scenario
         timeSinceScenarioStart = 0;
+        scenarioCurrentlyRunning = true;
 
         Logger.Log($"{scenario} has been loaded");
     }
@@ -208,6 +215,16 @@ public class ScenarioController : MonoBehaviour
             scenario = scenarios[currentScenarioIndex];
             LoadScenario(scenario);
         }
+    }
+
+    // Loading from the above function does not work with the master controller
+    public void LoadAllScenariosMasterController(int nScenarios)
+    {
+        if (nScenarios <= 0) return;
+
+        currentScenarioIndex = 0;
+        loadAllScenarios = true;
+        loadScenario = true;
     }
 
     void UnloadAllObjects()
