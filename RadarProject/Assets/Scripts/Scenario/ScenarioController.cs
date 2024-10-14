@@ -25,17 +25,14 @@ public class ScenarioController : MonoBehaviour
 
     [Header("Time options")]
     public int timeScale = 1;
-    public bool updateTimeScale = false;
 
     [Header("Scenario Options")]
     public bool loadScenario = false;
     bool scenarioCurrentlyRunning = false;
-    public bool resetScenario = false;
 
     [Header("Debug")]
     float timeSinceScenarioStart;
     public float timeLimit = 300;                                       // A time limit for the scenario (in seconds)
-    public int completedShips = 0;                                      // Ships that have completed their path
     public bool loadAllScenarios = false;
 
     // -------------------------------------------------
@@ -109,15 +106,6 @@ public class ScenarioController : MonoBehaviour
 
     void Update()
     {
-        if (loadScenario)
-        {
-            LoadScenario(scenarios[currentScenarioIndex]);
-            loadScenario = false;
-        }
-
-        if (timeSinceScenarioStart > timeLimit)
-            endScenario = true;
-
         timeSinceScenarioStart += Time.deltaTime;
         wavesController.SetTimeProvider(timeSinceScenarioStart);
     }
@@ -170,14 +158,12 @@ public class ScenarioController : MonoBehaviour
         csvReadResult = csvController.ReadScenarioCSV(ref shipsInformation, ref shipLocations, ref scenarioSettings, scenario);
         if (!csvReadResult) return;
 
+        scenarioCurrentlyRunning = true;
+
         // set scenario name
         this.scenario = scenario;
-        endScenario = false;
 
         UnloadAllObjects();
-
-        // Reset ships that completed their path
-        completedShips = 0;
 
         // Set procedural land
         if (scenarioSettings.hasProceduralLand)
@@ -205,15 +191,20 @@ public class ScenarioController : MonoBehaviour
 
         // Reset variables and start scenario
         timeSinceScenarioStart = 0;
-        scenarioCurrentlyRunning = true;
 
         Logger.Log($"{scenario} has been loaded");
     }
 
     public void LoadAllScenarios()
     {
+        currentScenarioIndex = 0;
         loadAllScenarios = true;
-        loadScenario = true;
+        
+        if (currentScenarioIndex < scenarios.Count)
+        {
+            scenario = scenarios[currentScenarioIndex];
+            LoadScenario(scenario);
+        }
     }
 
     void UnloadAllObjects()
@@ -225,7 +216,7 @@ public class ScenarioController : MonoBehaviour
         }
 
         // Reset Wave to calm
-        wavesController.ResetToDefaultWave(waveDict[Waves.Calm].prefab);
+        wavesController.ResetToDefaultWave();
 
         // Reset Weather
         weatherController.ClearWeather();
@@ -314,13 +305,10 @@ public class ScenarioController : MonoBehaviour
         }
     }
 
-    public void ReportCompletion()
-    {
-        completedShips += 1;
-    }
-
     public void EndScenario()
     {
+        if (!scenarioCurrentlyRunning) return;
+
         UnloadAllObjects();
         endScenario = true;
         mainMenuController.SetDefaultSimulationInfoPanel();
@@ -362,14 +350,14 @@ public class ScenarioController : MonoBehaviour
         while (Application.isPlaying)
         {
             yield return new WaitForSeconds(1);
-            if (scenarioCurrentlyRunning && (completedShips >= generatedShips.Count || endScenario))
+            if (scenarioCurrentlyRunning && endScenario)
             {
                 scenarioCurrentlyRunning = false;
+                endScenario = false;
                 Logger.Log("Scenario has finished");
 
                 if (!loadAllScenarios)
                 {
-                    endScenario = false;
                     mainMenuController.SetDefaultSimulationInfoPanel();
                     continue;
                 }
@@ -383,6 +371,9 @@ public class ScenarioController : MonoBehaviour
                         mainMenuController.SetScenarioRunningLabel($"Scenario has completed.\nRunning next scenario in {i}.");
                         yield return new WaitForSeconds(1);
                     }
+
+                    if (scenarioCurrentlyRunning)
+                        continue;
 
                     scenario = scenarios[currentScenarioIndex];
                     LoadScenario(scenario);

@@ -99,7 +99,7 @@ MonoBehaviour:
   _bottomH: -2
   _buoyancyCoeff: 1
   _boyancyTorque: 1
-  _accelerateDownhill: 0.5
+  _accelerateDownhill: 0
   _maximumBuoyancyForce: Infinity
   _forceHeightOffset: 0
   _enginePower: 0

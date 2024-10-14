@@ -60,19 +60,40 @@ public class CSVController : MonoBehaviour
             hasProceduralLand = Random.Range(0, 10) < 6;
             proceduralLandSeed = Random.Range(0, 10_000_000);
 
-            // Generate a random direction
-            Vector2 randomDirection = Random.insideUnitCircle.normalized;
-
-            // Handle the case where random direction is 0
-            randomDirection = randomDirection == Vector2.zero ? Vector2.one : randomDirection;
-
-            // Create a point just outside the circle
-            // Adjust the 0.1f to change how far outside you want to be
-            Vector3 pointOutside = centerOfRandomShipCoordinates + new Vector3(randomDirection.x, 0, randomDirection.y) * (maxStartingCoordinates + 0.1f);
+            // Create a point on the boundary of the ship spawn area
+            Vector3 pointOutside = GetRandomPointOnBoundary(Vector3.zero, new Vector2(maxStartingCoordinates, maxStartingCoordinates));
 
             proceduralLandLocation = pointOutside;
         }
 
+    }
+
+    Vector3 GetRandomPointOnBoundary(Vector3 center, Vector2 size)
+    {
+        // Calculate half width and half height
+        float width = size.x;
+        float halfHeight = size.y / 2;
+        float yValue = 0f;
+
+        // Randomly choose a side
+        int side = Random.Range(0, 2); // 0 = right, 1 = left
+
+        return side switch
+        {
+            // Right
+            0 => new Vector3(
+                                center.x + width,
+                                yValue,
+                                center.z + Random.Range(-halfHeight, halfHeight)
+                            ),
+            // Left
+            1 => new Vector3(
+                                center.x - width,
+                                yValue,
+                                center.z + Random.Range(-halfHeight, halfHeight)
+                            ),
+            _ => Vector3.zero,
+        };
     }
 
     void Update()

@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -23,3 +24,4 @@ public class RuntimeTerrainGeneratorEditor : Editor
         GUILayout.Space(20);
     }
 }
+#endif

@@ -192,18 +192,16 @@ public class MainMenuController : MonoBehaviour
 
             if (paused)
             {
-                scenarioController.timeScale = 1;
+                scenarioController.SetTimeScale(1);
                 pauseSimulation.text = "Pause";
                 paused = false;
             }
             else
             {
-                scenarioController.timeScale = 0;
+                scenarioController.SetTimeScale(0);
                 pauseSimulation.text = "Resume";
                 paused = true;
             }
-
-            scenarioController.updateTimeScale = true;
         });
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 public class WavesController : MonoBehaviour
 {
     public GameObject currentWave;
-    GameObject defaultWavePrefab;
+    GameObject defaultWave;
 
     MainMenuController mainMenuController;
     OceanRenderer oceanRenderer;
@@ -21,7 +21,7 @@ public class WavesController : MonoBehaviour
 
         mainMenuController = FindObjectOfType<MainMenuController>();
 
-        currentWave = GameObject.Find("WavesCalm");
+        defaultWave = GameObject.Find("WavesCalm");
     }
 
     public void SetTimeProvider(float time)
@@ -30,25 +30,25 @@ public class WavesController : MonoBehaviour
     }
     
     public void GenerateWaves(Waves scenarioWave, GameObject prefab)
-    {
-        if (currentWave != null)
-            Destroy(currentWave);
-        
-        currentWave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-        mainMenuController.SetWaveLabel(scenarioWave.ToString());
+    {   
+        if (scenarioWave == Waves.Calm)
+            ResetToDefaultWave();
+        else
+        {
+            if (currentWave != null)
+                Destroy(currentWave);
+            defaultWave.SetActive(false);        
+            currentWave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+            mainMenuController.SetWaveLabel(scenarioWave.ToString());
+        }
     }
 
-    public void ResetToDefaultWave(GameObject prefab)
+    public void ResetToDefaultWave()
     {
         if (currentWave != null)
             Destroy(currentWave);
         
-        if (prefab != null)
-        {
-            currentWave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
-
-            if (defaultWavePrefab == null)
-                defaultWavePrefab = prefab;
-        }
+        if (defaultWave != null)
+            defaultWave.SetActive(true);
     }
 }

@@ -20,7 +20,7 @@ public class ShipControllerTests
             SceneManager.LoadScene("Assets/Scenes/OceanTests.unity");
         }
 
-        // Create a GameObject and add components needed for testing
+        // Get ship game object
         shipGameObject = GameObject.Find("Gas Carrier Ship");
         Assert.IsNotNull(shipGameObject, "Gas Carrier Ship should be present in the test scene.");
 

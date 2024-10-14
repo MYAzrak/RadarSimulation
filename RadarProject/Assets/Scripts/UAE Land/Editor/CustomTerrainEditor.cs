@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using EditorGUITable;
@@ -81,3 +82,4 @@ public class CustomTerrainEditor : Editor
 
     }
 }
+#endif
