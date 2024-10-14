@@ -106,6 +106,9 @@ public class ScenarioController : MonoBehaviour
 
     void Update()
     {
+        if (scenarioCurrentlyRunning && timeSinceScenarioStart > timeLimit)
+            endScenario = true;
+
         timeSinceScenarioStart += Time.deltaTime;
         wavesController.SetTimeProvider(timeSinceScenarioStart);
     }
