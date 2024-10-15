@@ -209,7 +209,7 @@ public class ScenarioController : MonoBehaviour
     {
         currentScenarioIndex = 0;
         loadAllScenarios = true;
-        
+
         if (currentScenarioIndex < scenarios.Count)
         {
             scenario = scenarios[currentScenarioIndex];

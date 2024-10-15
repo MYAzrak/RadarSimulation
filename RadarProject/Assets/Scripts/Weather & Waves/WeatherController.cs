@@ -1,3 +1,4 @@
+using System;
 using Crest;
 using UnityEngine;
 
@@ -19,34 +20,41 @@ public class WeatherController : MonoBehaviour
         // Set default wave
         currentWeather = null;
     }
-    
+
     public void GenerateWeather(
         Weather scenarioWeather,
         GameObject prefab,
         Material skybox,
         Material oceanMaterial
         )
-    {       
-        ClearWeather();
-
-        if (skybox == null || oceanMaterial == null)
-            return;
-
-        if (scenarioWeather == Weather.Clear)
+    {
+        try
         {
-            RenderSettings.skybox = skybox;
-            OceanRenderer.Instance.OceanMaterial = oceanMaterial;
-            mainMenuController.SetWeatherLabel(scenarioWeather.ToString());
-            return;
+            ClearWeather();
+
+            if (skybox == null || oceanMaterial == null)
+                return;
+
+            if (scenarioWeather == Weather.Clear)
+            {
+                RenderSettings.skybox = skybox;
+                OceanRenderer.Instance.OceanMaterial = oceanMaterial;
+                mainMenuController.SetWeatherLabel(scenarioWeather.ToString());
+                return;
+            }
+
+            if (prefab != null && skybox != null)
+            {
+                currentWeather = Instantiate(prefab, prefab.transform.position + cameraController.GetTransformPosition(), Quaternion.identity);
+                cameraController.SetWeatherOverCamera(currentWeather);
+                mainMenuController.SetWeatherLabel(scenarioWeather.ToString());
+                RenderSettings.skybox = skybox;
+                OceanRenderer.Instance.OceanMaterial = oceanMaterial;
+            }
         }
-
-        if (prefab != null && skybox != null)
+        catch (Exception e)
         {
-            currentWeather = Instantiate(prefab, prefab.transform.position + cameraController.GetTransformPosition(), Quaternion.identity);
-            cameraController.SetWeatherOverCamera(currentWeather);
-            mainMenuController.SetWeatherLabel(scenarioWeather.ToString());
-            RenderSettings.skybox = skybox;
-            OceanRenderer.Instance.OceanMaterial = oceanMaterial;
+            Debug.LogError("Generate weather error"+e.ToString());
         }
     }
 

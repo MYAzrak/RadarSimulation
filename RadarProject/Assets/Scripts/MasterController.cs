@@ -52,7 +52,8 @@ public class MasterController : MonoBehaviour
             //TODO: refactor scenario controller UI code to seperate method, callable from here
             //TODO: after generating scenarios automatically load them
             csvController.GenerateScenarios(nScenarios);
-            scenarioController.LoadAllScenariosMasterController(nScenarios);
+            // scenarioController.LoadAllScenariosMasterController(nScenarios);
+            scenarioController.LoadAllScenarios();
         }
 
         //TODO: Start the simulation

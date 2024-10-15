@@ -46,7 +46,8 @@ public class ProcTerrainController : MonoBehaviour
 
     public void UnloadLandObjects()
     {
-        objectAreaSpawner.UnloadAllObjects();
+        if (objectAreaSpawner != null)
+            objectAreaSpawner.UnloadAllObjects();
 
         if (terrainInstance != null)
             Destroy(terrainInstance);
