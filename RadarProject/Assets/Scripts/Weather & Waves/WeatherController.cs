@@ -6,15 +6,22 @@ public class WeatherController : MonoBehaviour
 {
     public GameObject currentWeather;
 
-    ScenarioController scenarioController;
     CameraController cameraController;
+    Transform cameraTransform;
     MainMenuController mainMenuController;
 
     // Start is called before the first frame update
     void Start()
     {
-        scenarioController = FindObjectOfType<ScenarioController>();
         cameraController = FindObjectOfType<CameraController>();
+        
+        GameObject camera = GameObject.FindWithTag("MainCamera");
+        if (camera == null)
+        {
+            Logger.Log("Main camera not present in the scene");
+        }
+        cameraTransform = camera.transform;
+
         mainMenuController = FindObjectOfType<MainMenuController>();
 
         // Set default wave
@@ -28,33 +35,19 @@ public class WeatherController : MonoBehaviour
         Material oceanMaterial
         )
     {
-        try
+        ClearWeather();
+
+        if (skybox == null || oceanMaterial == null)
+            return;
+
+        RenderSettings.skybox = skybox;
+        OceanRenderer.Instance.OceanMaterial = oceanMaterial;
+        mainMenuController.SetWeatherLabel(scenarioWeather.ToString());
+
+        if (scenarioWeather != Weather.Clear && prefab != null)
         {
-            ClearWeather();
-
-            if (skybox == null || oceanMaterial == null)
-                return;
-
-            if (scenarioWeather == Weather.Clear)
-            {
-                RenderSettings.skybox = skybox;
-                OceanRenderer.Instance.OceanMaterial = oceanMaterial;
-                mainMenuController.SetWeatherLabel(scenarioWeather.ToString());
-                return;
-            }
-
-            if (prefab != null && skybox != null)
-            {
-                currentWeather = Instantiate(prefab, prefab.transform.position + cameraController.GetTransformPosition(), Quaternion.identity);
-                cameraController.SetWeatherOverCamera(currentWeather);
-                mainMenuController.SetWeatherLabel(scenarioWeather.ToString());
-                RenderSettings.skybox = skybox;
-                OceanRenderer.Instance.OceanMaterial = oceanMaterial;
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Generate weather error"+e.ToString());
+            currentWeather = Instantiate(prefab, prefab.transform.position + cameraTransform.position, Quaternion.identity);
+            cameraController.SetWeatherOverCamera(currentWeather);
         }
     }
 

@@ -53,11 +53,6 @@ public class CameraController : MonoBehaviour
         this.weather = weather;
     }
 
-    public Vector3 GetTransformPosition()
-    {
-        return transform.position;
-    }
-
     public void SetSpeed(int speed)
     {
         movementSpeed = speed;
