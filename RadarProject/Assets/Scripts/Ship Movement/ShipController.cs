@@ -48,7 +48,7 @@ public class ShipController : MonoBehaviour
         float dot = Vector3.Dot(shipTransform.forward, heading.normalized);
 
         // Not facing the next location
-        if  (dot < 0.995f) {
+        if  (dot < 0.999f) {
             var newRotation = Quaternion.LookRotation (heading, Vector3.up);
             shipTransform.rotation = Quaternion.Slerp(shipTransform.rotation, newRotation, turnSpeedMultiplier * Time.deltaTime);
         }

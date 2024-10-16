@@ -31,7 +31,7 @@ public class ShipControllerTests
         shipController.locationsToVisit = new List<Vector3>
         {
             new(0, 0, 50), // Directly in front of the ship
-            new(30, 0, 500)  // To the right of the ship
+            new(50, 0, 500)  // To the right of the ship
         };
         
         shipController.speedAtEachLocation = new List<float>
@@ -69,19 +69,14 @@ public class ShipControllerTests
         yield return null;
 
         // Call FixedUpdate enough times to rotate
-        for (int i = 0; i < 500; i++)
+        for (int i = 0; i < 4000; i++)
         {
             shipController.Move();
             yield return new WaitForFixedUpdate();
         }
 
-        Vector3 heading = shipController.locationsToVisit[shipController.indexOfLocationToVisit] - shipTransform.position;
-        heading.y = 0; // Ignore elevation
-
-        float dot = Vector3.Dot(shipTransform.forward, heading.normalized);
-
         // Assert that the ship has rotated to face the next location
-        Assert.Greater(dot, 0.995f, "Ship did not rotate to face next location.");
+        Assert.AreEqual(shipController.indexOfLocationToVisit, 2);
     }
 
     [TearDown]
