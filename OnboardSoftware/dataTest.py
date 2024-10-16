@@ -10,6 +10,7 @@ import time
 fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(projection='polar'))
 im = None
 cbar = None
+scatter = None
 
 radarID = None
 reconnect_delay = 5  # Delay in seconds before attempting to reconnect
@@ -18,13 +19,13 @@ color = False
 clip = None
 
 
-def create_ppi_plot(data, azimuth, range_bins, ):
-    global im, cbar, color
+def create_ppi_plot(data, azimuth, range_bins, ships, radar_range):
+    global im, cbar, scatter, color
 
     if clip:
         mean = np.mean(data)
         std = np.std(data)
-        data = np.clip(data, 0, mean + 1 * std)
+        data = np.clip(data, 0, mean + clip * std)
 
     if color:
         data = np.where(data != 0, 1, data)
@@ -52,17 +53,33 @@ def create_ppi_plot(data, azimuth, range_bins, ):
         im.set_array(data.ravel())
         im.set_clim(vmin=vmin, vmax=vmax)
 
-    return im
+    # Plot ship points
+    if ships:
+        ship_thetas = np.radians([ship['Azimuth'] for ship in ships])
+        ship_distances = [ship['Distance'] /
+                          int(radar_range) * data.shape[1] for ship in ships]
+
+        if scatter is None:
+            scatter = ax.scatter(ship_thetas, ship_distances,
+                                 c='cyan', s=10, zorder=5)
+        else:
+            scatter.set_offsets(np.column_stack((ship_thetas, ship_distances)))
+
+    return im, scatter
 
 
 latest_data = None
+latest_ships = None
 data_lock = threading.Lock()
+radar_range = None
 
 
 def on_message(ws, message):
-    global latest_data
+    global latest_data, latest_ships, radar_range
     data = json.loads(message)
     ppi = data.get('PPI', 'NA')
+    ships = data.get('ships', [])
+    r_range = data.get('range', 5000)
     if ppi == "NA":
         return
     ppi = np.array(ppi)
@@ -70,6 +87,8 @@ def on_message(ws, message):
 
     with data_lock:
         latest_data = ppi
+        latest_ships = ships
+        radar_range = r_range
 
 
 def on_error(ws, error):
@@ -101,25 +120,23 @@ def run_websocket():
 
 
 def update_plot(frame):
-    global latest_data
+    global latest_data, latest_ships
     with data_lock:
         if latest_data is not None:
             num_azimuth, num_range = latest_data.shape
             azimuth = np.linspace(0, 360, num_azimuth)
             range_bins = np.linspace(0, num_range, num_range)
 
-            return create_ppi_plot(latest_data, azimuth, range_bins,)
+            return create_ppi_plot(latest_data, azimuth, range_bins, latest_ships, radar_range)
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
 
     # Add arguments
     parser.add_argument('-r', type=int, default=0, help='Radar ID')
     parser.add_argument('-c', '--color', action='store_true',
                         help='Enable color output')
-
     parser.add_argument('--clip', type=int, default=0,
                         help='Clip standard deviations')
     args = parser.parse_args()
@@ -130,7 +147,7 @@ if __name__ == "__main__":
     else:
         print("Invalid Radar ID")
 
-    if isinstance(args.clip, int) and args.clip !=0:
+    if isinstance(args.clip, int) and args.clip != 0:
         clip = args.clip
 
     if args.color:

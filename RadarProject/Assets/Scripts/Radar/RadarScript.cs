@@ -69,6 +69,8 @@ public class RadarScript : MonoBehaviour
     private ComputeBuffer rainBuffer;
     private int[] tempRainBuffer;
 
+    private Dictionary<int, ShipData> detectedShips = new Dictionary<int, ShipData>();
+
     void Start()
     {
         path += radarID;
@@ -196,12 +198,15 @@ public class RadarScript : MonoBehaviour
 
                 server.WebSocketServices[$"/{path}"].Sessions.Broadcast(task.Result);
                 Debug.Log($"Sent Data: {task.Result}");
+
+                detectedShips.Clear();
             }
 
             UpdateRCSArray();
             ProcessRadarDataGPU(kernelIndex);
             GenerateRainGPU(rainKernelIndex);
             CombineRadarAndRain();
+            DetectShipsInView();
 
             RotateCamera();
 
@@ -209,20 +214,63 @@ public class RadarScript : MonoBehaviour
         }
     }
 
+    private void DetectShipsInView()
+    {
+        float halfBeamWidth = BeamWidth / 2f;
+        Vector3 radarPosition = cameraObject.transform.position;
+        Vector3 radarForward = cameraObject.transform.forward;
+
+        foreach (var ship in scenario.generatedShips)
+        {
+            Vector3 directionToShip = ship.transform.position - radarPosition;
+            float distanceToShip = directionToShip.magnitude;
+
+            if (distanceToShip <= MaxDistance)
+            {
+                directionToShip.Normalize();
+                float angleToShip = Vector3.Angle(radarForward, directionToShip);
+
+                if (angleToShip <= BeamWidth)
+                {
+                    // Calculate azimuth
+                    float azimuth = Mathf.Atan2(directionToShip.x, directionToShip.z) * Mathf.Rad2Deg;
+                    azimuth = (azimuth + 360) % 360; // Ensure positive angle
+                    //off by 90 degrees for some reason
+                    azimuth += 90;
+
+                    int shipId = ship.GetInstanceID();
+                    ShipData shipData = new ShipData
+                    {
+                        Id = shipId,
+                        Azimuth = azimuth,
+                        Distance = distanceToShip
+                    };
+
+                    // Update or add the ship data
+                    if (detectedShips.ContainsKey(shipId))
+                    {
+                        detectedShips[shipId] = shipData;
+                    }
+                    else
+                    {
+                        detectedShips.Add(shipId, shipData);
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
     async Task<string> CollectData()
     {
         Vector3 radarPosition = Vector3.zero;
-        List<ShipData> shipDataList = new List<ShipData>();
 
         // Queue the transform access to be executed on the main thread
         _mainThreadActions.Enqueue(() =>
         {
             radarPosition = cameraObject.transform.position;
-            shipDataList = scenario.generatedShips.Select(ship => new ShipData
-            {
-                Id = ship.GetInstanceID(),
-                Position = ship.transform.position
-            }).ToList();
         });
 
         // Wait for a frame to ensure the queued action is processed
@@ -234,7 +282,7 @@ public class RadarScript : MonoBehaviour
             timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             range = MaxDistance,
             PPI = radarPPI,
-            ships = shipDataList,
+            ships = detectedShips.Values.ToList(),
             radarLocation = radarPosition
         };
 
@@ -395,7 +443,12 @@ public class RadarScript : MonoBehaviour
     public class ShipData
     {
         public int Id { get; set; }
-        public Vector3 Position { get; set; }
+        public float Azimuth { get; set; }
+        public float Distance { get; set; }
+        public override string ToString()
+        {
+            return $"ID: {Id}, Azimuth: {Azimuth}, Distance: {Distance}";
+        }
     }
 }
 public class Vector3Converter : JsonConverter<Vector3>

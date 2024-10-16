@@ -24,10 +24,11 @@ def plot_ppi_and_ships(data):
                    extent=[0, width, 0, height])
 
     # Plot transformed ships
-    for ship in data['transformedShips']:
-        ship['azimuth'] = ship["azimuth"]/360 * width
-        ax.plot(ship['azimuth'], ship['distance'], 'ro', markersize=5)
-        ax.text(ship['azimuth'], ship['distance'], str(ship['Id']),
+    for ship in data['ships']:
+        ship['Azimuth'] = ship["Azimuth"]/360 * width
+        ship['Distance'] = ship['Distance']/int(data['range']) * height
+        ax.plot(ship['Azimuth'], ship['Distance'], 'ro', markersize=5)
+        ax.text(ship['Azimuth'], ship['Distance'], str(ship['Id']),
                 fontsize=8, ha='right', va='bottom', color='white')
 
     # Set labels and title
@@ -35,14 +36,14 @@ def plot_ppi_and_ships(data):
     ax.set_ylabel('Distance (pixels)')
     ax.set_title('PPI Visualization with Ship Positions')
 
-    # Add azimuth markings
-    azimuth_ticks = np.linspace(0, width, 9)
-    azimuth_labels = ['0°', '45°', '90°', '135°',
+    # Add Azimuth markings
+    Azimuth_ticks = np.linspace(0, width, 9)
+    Azimuth_labels = ['0°', '45°', '90°', '135°',
                       '180°', '225°', '270°', '315°', '360°']
-    ax.set_xticks(azimuth_ticks)
-    ax.set_xticklabels(azimuth_labels)
+    ax.set_xticks(Azimuth_ticks)
+    ax.set_xticklabels(Azimuth_labels)
 
-    # Add distance markings
+    # Add Distance markings
     ax.set_yticks(np.linspace(0, height, 6))
 
     # Add colorbar
