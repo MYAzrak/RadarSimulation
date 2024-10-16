@@ -71,6 +71,9 @@ public class RadarScript : MonoBehaviour
 
     private Dictionary<int, ShipData> detectedShips = new Dictionary<int, ShipData>();
 
+    private float precalculatedRadarConstant;
+    private float precalculatedRainConstant;
+
     void Start()
     {
         path += radarID;
@@ -128,7 +131,21 @@ public class RadarScript : MonoBehaviour
         tempRainBuffer = new int[ImageRadius];
 
         rcsComputeShader = Resources.Load<ComputeShader>("RCSCalculation");
+        PrecalculateRadarConstants();
         StartCoroutine(ProcessRadar());
+    }
+    void PrecalculateRadarConstants()
+    {
+        float G = Mathf.Pow(10f, antennaGainDBi / 10f);
+        float Ls = Mathf.Pow(10f, systemLossesDB / 10f);
+        float lambda = wavelengthM;
+
+        precalculatedRadarConstant = (transmittedPowerW * Mathf.Pow(G, 2) * Mathf.Pow(lambda, 2)) /
+                                     (Mathf.Pow((4 * Mathf.PI), 3) * Ls);
+
+        // Precalculate for rain as well
+        precalculatedRainConstant = (transmittedPowerW * Mathf.Pow(G, 2) * Mathf.Pow(lambda, 2) * RainRCS) /
+                                    (Mathf.Pow((4 * Mathf.PI), 3) * Ls);
     }
     void Update()
     {
@@ -353,12 +370,8 @@ public class RadarScript : MonoBehaviour
         radarComputeShader.SetFloat("Resolution", resolution);
         radarComputeShader.SetInt("ImageRadius", ImageRadius);
         radarComputeShader.SetFloat("CurrentRotation", currentRotation);
-        radarComputeShader.SetFloat("TransmittedPower", transmittedPowerW);
-        radarComputeShader.SetFloat("AntennaGain", antennaGainDBi);
-        radarComputeShader.SetFloat("Wavelength", wavelengthM);
-        radarComputeShader.SetFloat("SystemLosses", systemLossesDB);
+        radarComputeShader.SetFloat("PrecalculatedRadarConstant", precalculatedRadarConstant);
         radarComputeShader.SetBuffer(kernelIndex, "RCSBuffer", rcsBuffer);
-
         // Dispatch the compute shader
         int threadGroupsX = Mathf.CeilToInt(WidthRes / 8.0f);
         int threadGroupsY = Mathf.CeilToInt(HeightRes / 8.0f);
@@ -387,12 +400,11 @@ public class RadarScript : MonoBehaviour
         // Set compute shader parameters for rain
         radarComputeShader.SetBuffer(kernelIndex, "RainBuffer", rainBuffer);
         radarComputeShader.SetFloat("RainProbability", RainProbability);
-        radarComputeShader.SetFloat("RainRCS", RainRCS);
         radarComputeShader.SetInt("RainIntensity", RainIntensity);
         radarComputeShader.SetFloat("MaxDistance", MaxDistance);
         radarComputeShader.SetInt("ImageRadius", ImageRadius);
         radarComputeShader.SetFloat("CurrentRotation", currentRotation);
-
+        radarComputeShader.SetFloat("PrecalculatedRainConstant", precalculatedRainConstant);
         // Generate random seed for rain simulation
         uint randomSeed = (uint)System.DateTime.Now.Ticks;
         radarComputeShader.SetInt("RandomSeed", (int)randomSeed);

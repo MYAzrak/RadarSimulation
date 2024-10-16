@@ -18,19 +18,16 @@ float Resolution;
 int ImageRadius;
 float CurrentRotation;
 
-// Radar Equation Parameters
-float TransmittedPower;
-float AntennaGain;
-float Wavelength;
-float SystemLosses;
+// Precalculated Radar Equation Constant
+float PrecalculatedRadarConstant;
 
 RWStructuredBuffer<int> RainBuffer;
 
 // Rain simulation parameters
 float RainProbability;
-float RainRCS;
 int RainIntensity;
 int RandomSeed;
+float PrecalculatedRainConstant;
 
 // Utility function to scale value
 int ScaleValue(int originalValue, int originalMax, int newMax)
@@ -40,13 +37,7 @@ int ScaleValue(int originalValue, int originalMax, int newMax)
 
 float CalculateSignalStrength(float distance, float radarCrossSection)
 {
-    float G = pow(10.0, AntennaGain / 10.0);
-    float Ls = pow(10.0, SystemLosses / 10.0);
-    float lambda = Wavelength;
-    
-    float Pr = (TransmittedPower * pow(G, 2) * pow(lambda, 2) * radarCrossSection) /
-               (pow((4 * 3.14159), 3) * pow(distance, 4) * Ls);
-    
+    float Pr = PrecalculatedRadarConstant * radarCrossSection / (distance * distance * distance * distance);
     return 10 * log10(Pr);
 }
 
@@ -63,7 +54,6 @@ float RandomFloat(inout uint state)
     state = PCGHash(state);
     return float(state) / 4294967295.0; // 2^32 - 1
 }
-
 
 [numthreads(THREAD_GROUP_SIZE, THREAD_GROUP_SIZE, 1)]
 void ProcessRadarData(uint3 id : SV_DispatchThreadID)
@@ -100,7 +90,6 @@ void ProcessRadarData(uint3 id : SV_DispatchThreadID)
             float signalStrength = CalculateSignalStrength(viewSpaceDepth, rcs);
             int scaledSignalStrength = (int)((signalStrength + 200) * 2); // Scale to 0-200 range assuming -100 to 0 dB
             InterlockedAdd(RadarBuffer[distance], scaledSignalStrength);
-
         }
     }
 }
@@ -118,8 +107,8 @@ void GenerateRain(uint3 id : SV_DispatchThreadID)
             float randomDistance = RandomFloat(randomState) * MaxDistance;
             int distanceIndex = (int)(randomDistance / MaxDistance * ImageRadius);
             
-            // Calculate signal strength for the rain drop
-            float rainSignalStrength = CalculateSignalStrength(randomDistance, RainRCS);
+            // Calculate signal strength for the rain drop using precalculated constant
+            float rainSignalStrength = 10 * log10(PrecalculatedRainConstant / (randomDistance * randomDistance * randomDistance * randomDistance));
             int scaledRainSignalStrength = (int)((rainSignalStrength + 200) * 2);
 
             // Add the rain signal to the rain buffer
