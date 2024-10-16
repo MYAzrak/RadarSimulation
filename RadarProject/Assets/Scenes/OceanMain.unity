@@ -737,11 +737,8 @@ MonoBehaviour:
     skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
     oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
   timeScale: 1
-  updateTimeScale: 0
   loadScenario: 0
-  resetScenario: 0
   timeLimit: 300
-  completedShips: 0
   loadAllScenarios: 0
   generatedShips: []
 --- !u!4 &2106282668

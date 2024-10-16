@@ -332,6 +332,7 @@ public class ScenarioController : MonoBehaviour
         UnloadAllObjects();
         endScenario = true;
         mainMenuController.SetDefaultSimulationInfoPanel();
+        SetWeather(Weather.Clear);
     }
 
     public void EndAllScenarios()

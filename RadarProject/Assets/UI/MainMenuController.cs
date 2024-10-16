@@ -84,6 +84,10 @@ public class MainMenuController : MonoBehaviour
         SetEndBtns();
 
         SetDefaultSimulationInfoPanel();
+
+        // Weird bug where the first visual element remains visible
+        // Ignoring the parents visibility
+        tabBtns[0].visualElement.visible = false;
     }
 
     // Update is called once per frame
@@ -95,6 +99,8 @@ public class MainMenuController : MonoBehaviour
             simulationInfoPanel.visible = !simulationInfoPanel.visible;
 
             helpPanel.visible = !helpPanel.visible;
+
+            tabBtns[0].visualElement.visible = !tabBtns[0].visualElement.visible;
         }
     }
 
@@ -122,6 +128,7 @@ public class MainMenuController : MonoBehaviour
     {
         tabBtns.Add(new TabViews(ui.Q("ShipBtn") as Button, ui.Q("ShipsView")));
         tabBtns.Add(new TabViews(ui.Q("DynamicBtn") as Button, ui.Q("DynamicView")));
+        tabBtns.Add(new TabViews(ui.Q("CameraBtn") as Button, ui.Q("CameraView")));
     }
 
     void ViewToEnable(Button button)
