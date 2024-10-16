@@ -28,6 +28,7 @@ public class WeatherController : MonoBehaviour
         currentWeather = null;
     }
 
+    // Most null checks are needed for master controller
     public void GenerateWeather(
         Weather scenarioWeather,
         GameObject prefab,
@@ -42,9 +43,11 @@ public class WeatherController : MonoBehaviour
 
         RenderSettings.skybox = skybox;
         OceanRenderer.Instance.OceanMaterial = oceanMaterial;
-        mainMenuController.SetWeatherLabel(scenarioWeather.ToString());
 
-        if (scenarioWeather != Weather.Clear && prefab != null)
+        if (mainMenuController != null)
+            mainMenuController.SetWeatherLabel(scenarioWeather.ToString());
+
+        if (scenarioWeather != Weather.Clear && prefab != null && cameraTransform != null && cameraController != null)
         {
             currentWeather = Instantiate(prefab, prefab.transform.position + cameraTransform.position, Quaternion.identity);
             cameraController.SetWeatherOverCamera(currentWeather);
