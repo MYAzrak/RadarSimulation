@@ -10,7 +10,6 @@ public class CSVController : MonoBehaviour
     public bool generateRandomCSV = false;
 
     public bool generateRandomParameters = true;
-    Vector3 centerOfRandomShipCoordinates = new(0, 0, 0); // Vector3.zero for now
 
     [Header("Random Ship Parameters")]
     public int numberOfShips;                       // Number of ships to generate
@@ -20,6 +19,10 @@ public class CSVController : MonoBehaviour
     public float randomCoordinates;                 // The range added to the previous location the ship will visit
     public int minSpeed;                            // The min value in the speed range
     public int maxSpeed;                            // The max value in the speed range
+
+    [Header("Weather & Waves")]
+    public Weather weather;
+    public Waves waves;
 
     [Header("Random Procedural land Parameters")]
     public bool hasProceduralLand;
@@ -55,6 +58,10 @@ public class CSVController : MonoBehaviour
             randomCoordinates = Random.Range(-1500, 1500);
             minSpeed = 10;
             maxSpeed = 16;
+
+            // Initialize weathers and waves
+            waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length);
+            weather = (Weather)Random.Range(0, System.Enum.GetNames(typeof(Weather)).Length);
 
             // Initialize procedural land parameters with random values
             hasProceduralLand = Random.Range(0, 10) < 6;
@@ -160,8 +167,8 @@ public class CSVController : MonoBehaviour
         // Save the settings to a json file
         ScenarioSettings settings = new()
         {
-            waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length),
-            weather = (Weather)Random.Range(0, System.Enum.GetNames(typeof(Weather)).Length),
+            waves = waves,
+            weather = weather,
             
             // Procedural land settings
             hasProceduralLand = hasProceduralLand,

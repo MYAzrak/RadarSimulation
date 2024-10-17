@@ -160,7 +160,7 @@ public class ShipBouyancyScript : MonoBehaviour
         //Acting in the opposite side of the velocity
         airResistanceForce *= -1f;
 
-        if (float.IsNaN(airResistanceForce.x) || float.IsNaN(airResistanceForce.y) || float.IsNaN(airResistanceForce.z))
+        if (!IsValidForce(airResistanceForce))
             return Vector3.zero;
 
         return airResistanceForce;
@@ -174,7 +174,7 @@ public class ShipBouyancyScript : MonoBehaviour
         force.x = 0f;
         force.z = 0f;
 
-        if (float.IsNaN(force.x) || float.IsNaN(force.y) || float.IsNaN(force.z))
+        if (!IsValidForce(force))
             return Vector3.zero;
 
         return force;
@@ -194,10 +194,24 @@ public class ShipBouyancyScript : MonoBehaviour
             force = (CSD1 * velocity + CSD2 * (velocity * velocity)) * triangleData.area * math.pow(triangleData.cosTheta, Fs) * triangleData.normal;
         }
 
-        if (float.IsNaN(force.x) || float.IsNaN(force.y) || float.IsNaN(force.z))
+        if (!IsValidForce(force))
             return Vector3.zero;
 
         return force;
+    }
+
+    bool IsValidForce(Vector3 force)
+    {
+        if (float.IsNaN(force.x) || float.IsNaN(force.y) || float.IsNaN(force.z))
+            return false;
+        
+        if (float.IsInfinity(force.x) || float.IsInfinity(force.y) || float.IsInfinity(force.z))
+            return false;
+
+        if (float.IsNegativeInfinity(force.x) || float.IsNegativeInfinity(force.y) || float.IsNegativeInfinity(force.z))
+            return false;
+        
+        return true;
     }
 
     void AlignShipUpward()

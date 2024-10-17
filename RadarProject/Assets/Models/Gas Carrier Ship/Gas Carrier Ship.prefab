@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplifyForce: 1
-  timeToWait: 0.15
+  timeToWait: 0.2
   rotationSpeed: 2
 --- !u!114 &9083716614500702741
 MonoBehaviour:

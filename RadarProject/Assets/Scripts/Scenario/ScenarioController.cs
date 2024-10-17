@@ -1,12 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Crest;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 public class ScenarioController : MonoBehaviour
 {
@@ -44,10 +41,10 @@ public class ScenarioController : MonoBehaviour
     // -------------------------------------------------
     // ------- Stored Scenario File Information --------
     // -------------------------------------------------
-    Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
+    public Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
     Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
     public List<GameObject> generatedShips = new();
-    ScenarioSettings scenarioSettings;
+    public ScenarioSettings scenarioSettings;
     bool csvReadResult;
 
     // -------------------------------------------------
@@ -106,14 +103,6 @@ public class ScenarioController : MonoBehaviour
 
     void Update()
     {
-        // Temp fix for master controller
-        if (!scenarioCurrentlyRunning && loadScenario)
-        {
-            scenario = scenarios[currentScenarioIndex];
-            LoadScenario(scenario);
-            loadScenario = false;
-        }
-
         if (scenarioCurrentlyRunning && timeSinceScenarioStart > timeLimit)
             endScenario = true;
 
@@ -163,7 +152,7 @@ public class ScenarioController : MonoBehaviour
         return files;
     }
 
-    void LoadScenario(string scenario)
+    public void LoadScenario(string scenario)
     {
         // Read csv
         csvReadResult = csvController.ReadScenarioCSV(ref shipsInformation, ref shipLocations, ref scenarioSettings, scenario);
@@ -188,7 +177,7 @@ public class ScenarioController : MonoBehaviour
         // Set weather
         SetWeather(scenarioSettings.weather);
 
-        radarController.UpdateRadarsPositions();
+        //radarController.UpdateRadarsPositions();
         GenerateShips();
 
         mainMenuController.SetShipsLabel(generatedShips.Count);
@@ -215,16 +204,6 @@ public class ScenarioController : MonoBehaviour
             scenario = scenarios[currentScenarioIndex];
             LoadScenario(scenario);
         }
-    }
-
-    // Loading from the above function does not work with the master controller
-    public void LoadAllScenariosMasterController(int nScenarios)
-    {
-        if (nScenarios <= 0) return;
-
-        currentScenarioIndex = 0;
-        loadAllScenarios = true;
-        loadScenario = true;
     }
 
     void UnloadAllObjects()

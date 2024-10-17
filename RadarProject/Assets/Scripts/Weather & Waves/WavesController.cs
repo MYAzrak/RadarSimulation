@@ -4,7 +4,7 @@ using UnityEngine;
 public class WavesController : MonoBehaviour
 {
     public GameObject currentWave;
-    GameObject defaultWave;
+    public GameObject defaultWave;
 
     MainMenuController mainMenuController;
     OceanRenderer oceanRenderer;
@@ -31,12 +31,9 @@ public class WavesController : MonoBehaviour
     
     public void GenerateWaves(Waves scenarioWave, GameObject prefab)
     {   
-        if (scenarioWave == Waves.Calm)
-            ResetToDefaultWave();
-        else
+        ResetToDefaultWave();
+        if (scenarioWave != Waves.Calm)
         {
-            if (currentWave != null)
-                Destroy(currentWave);
             defaultWave.SetActive(false);        
             currentWave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
             mainMenuController.SetWaveLabel(scenarioWave.ToString());

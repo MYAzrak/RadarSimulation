@@ -181,5 +181,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplifyForce: 1
-  timeToWait: 0.1
+  timeToWait: 0.2
   rotationSpeed: 2

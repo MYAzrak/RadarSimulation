@@ -14,15 +14,11 @@ public class RadarController : MonoBehaviour
     public int distanceBetweenRadars = 50;
     public int numOfRadars;
 
-    [Header("Generate Radars")]
-    [SerializeField] bool generateRadars = false;
-    [SerializeField] bool generateOneRadar = false;
-
     [Header("Debug")]
     [SerializeField] int newRadarID = 0;
 
     GameObject parentEmptyObject;                   // Parent Object of the radars to easily rotate and move them
-    List<List<int>> radarIDAtRow;
+    public List<List<int>> radarIDAtRow;
     public Dictionary<int, GameObject> radars = new();
 
     MainMenuController mainMenuController;
@@ -57,22 +53,6 @@ public class RadarController : MonoBehaviour
         mainMenuController = FindObjectOfType<MainMenuController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (generateOneRadar)
-        {
-            GenerateRadar();
-            generateOneRadar = false;
-        }
-        else if (generateRadars)
-        {
-            if (numOfRadars == 0)
-                numOfRadars = rows * cols;
-            GenerateRadars(numOfRadars);
-            generateRadars = false;
-        }
-    }
     public void SetWeather(Weather weather)
     {
         if (weather == Weather.Clear)
@@ -172,6 +152,7 @@ public class RadarController : MonoBehaviour
         //Debug.Log($"{numOfRadars} radars have been generated");
     }
 
+    /*
     public async void UpdateRadarsPositions()
     {
         foreach (KeyValuePair<int, GameObject> entry in radars)
@@ -205,6 +186,7 @@ public class RadarController : MonoBehaviour
 
         return o_height;
     }
+    */
 
     public void UnloadRadars()
     {

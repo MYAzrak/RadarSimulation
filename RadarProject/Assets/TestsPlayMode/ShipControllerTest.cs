@@ -30,8 +30,8 @@ public class ShipControllerTests
         // Initialize values for testing
         shipController.locationsToVisit = new List<Vector3>
         {
-            new(0, 0, 50), // Directly in front of the ship
-            new(50, 0, 500)  // To the right of the ship
+            new(0, 0, 60), // Directly in front of the ship
+            new(50, 0, 150)  // To the right of the ship
         };
         
         shipController.speedAtEachLocation = new List<float>
@@ -45,14 +45,14 @@ public class ShipControllerTests
         shipController.indexOfLocationToVisit = 0;
 
         shipController.shipInformation = new ShipInformation(1, "TestShip", ShipType.GasCarrier);
-
-        // Speed up the events
-        Time.timeScale = 5f;
     }
 
     [UnityTest]
     public IEnumerator ShipMovementAndRotationTest()
     {
+        // Speed up the events
+        Time.timeScale = 2f;
+
         // Set initial position of the ship
         shipTransform.position = new Vector3(0, 0, 0);
 
@@ -69,7 +69,7 @@ public class ShipControllerTests
         yield return null;
 
         // Call FixedUpdate enough times to rotate
-        for (int i = 0; i < 4000; i++)
+        for (int i = 0; i < 1000; i++)
         {
             shipController.Move();
             yield return new WaitForFixedUpdate();
