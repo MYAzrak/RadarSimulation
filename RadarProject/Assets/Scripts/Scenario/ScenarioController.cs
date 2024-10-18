@@ -184,7 +184,7 @@ public class ScenarioController : MonoBehaviour
                     x += 13000;
                     break;
                 case RadarGenerationDirection.Left:
-                    x -= 13000;
+                    x += 13000;
                     break;
                 default:
                     break;
