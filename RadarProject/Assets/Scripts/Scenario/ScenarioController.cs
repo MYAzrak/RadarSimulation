@@ -42,7 +42,7 @@ public class ScenarioController : MonoBehaviour
     // ------- Stored Scenario File Information --------
     // -------------------------------------------------
     public Dictionary<int, ShipInformation> shipsInformation = new();          // <Ship id, list of ship info>
-    Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
+    public Dictionary<int, List<ShipCoordinates>> shipLocations = new();       // <Ship id, list of ship coordinates>
     public List<GameObject> generatedShips = new();
     public ScenarioSettings scenarioSettings;
     bool csvReadResult;
@@ -159,7 +159,7 @@ public class ScenarioController : MonoBehaviour
         if (!csvReadResult) return;
 
         // set scenario name
-        this.scenario = scenario;
+        this.scenario = Path.GetFileName(scenario);
 
         UnloadAllObjects();
 
@@ -218,19 +218,22 @@ public class ScenarioController : MonoBehaviour
         mainMenuController.SetShipsLabel(generatedShips.Count);
 
         // Set the label for the animation
-        scenarioLabels[0] = $"{scenario} Running.";
-        scenarioLabels[1] = $"{scenario} Running..";
-        scenarioLabels[2] = $"{scenario} Running...";
+        scenarioLabels[0] = $"{this.scenario} Running.";
+        scenarioLabels[1] = $"{this.scenario} Running..";
+        scenarioLabels[2] = $"{this.scenario} Running...";
 
         // Reset variables and start scenario
         timeSinceScenarioStart = 0;
         scenarioCurrentlyRunning = true;
 
-        Logger.Log($"{scenario} has been loaded");
+        Logger.Log($"{this.scenario} has been loaded");
     }
 
-    public void LoadAllScenarios()
+    public void LoadAllScenarios(string filePath = null)
     {
+        if (filePath == null)
+            filePath = this.filePath;
+
         currentScenarioIndex = 0;
         loadAllScenarios = true;
 

@@ -44,7 +44,7 @@ public class ShipControllerTests
         shipController.turnSpeedMultiplier = 0.020f;
         shipController.indexOfLocationToVisit = 0;
 
-        shipController.shipInformation = new ShipInformation(1, "TestShip", ShipType.GasCarrier);
+        shipController.shipInformation = new ShipInformation(1, ShipType.GasCarrier);
     }
 
     [UnityTest]

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class ScenarioControllerTests
     CSVController CSVController;
     WeatherController weatherController;
     WavesController wavesController;
+    ProcTerrainController procTerrainController;
 
     string filePath;
 
@@ -36,6 +38,9 @@ public class ScenarioControllerTests
         wavesController = Object.FindObjectOfType<WavesController>();
         Assert.IsNotNull(wavesController, "WavesController not found in scene.");
 
+        procTerrainController = Object.FindObjectOfType<ProcTerrainController>();
+        Assert.IsNotNull(procTerrainController, "ProcTerrainController not found in scene.");
+
         filePath = Path.Combine(CSVController.GetFilePath(), "Tests/");
 
         if (Directory.Exists(filePath)) 
@@ -44,9 +49,78 @@ public class ScenarioControllerTests
         if (!Directory.Exists(filePath))
             Directory.CreateDirectory(filePath);
     }
-    
+
     [UnityTest]
     public IEnumerator LoadScenarioTest()
+    {
+        // Test calm waves and clear weather
+        string test1FileName = "TestScenario4";
+        GenerateTestScenario(test1FileName, false, Weather.Clear, Waves.Calm);
+        scenarioController.LoadScenario(filePath + test1FileName);
+
+        yield return null;
+
+        // Check ships were created as required
+        Assert.Greater(scenarioController.shipsInformation.Count, 0, "Not all ships were created.");
+        Assert.AreEqual(scenarioController.shipsInformation.Count, scenarioController.generatedShips.Count, "Not all ships were created.");
+
+        // Get the ship's locations and speeds
+        List<Vector3> shipLocations = scenarioController.generatedShips[0].GetComponent<ShipController>().locationsToVisit;
+        List<float> shipSpeedAtEachLocation = scenarioController.generatedShips[0].GetComponent<ShipController>().speedAtEachLocation;
+
+        // Get the ship's coordinates 
+        List<ShipCoordinates> expectedCoordinates = scenarioController.shipLocations[1]; // Ship ID 1
+
+        List<Vector3> expectedLocations = new();
+        for (int i = 1; i < expectedCoordinates.Count; i++)
+        {
+            expectedLocations.Add(new Vector3(expectedCoordinates[i].x_coordinates, 0, expectedCoordinates[i].z_coordinates));
+        }
+
+        float xGenerated = scenarioController.generatedShips[0].transform.position.x;
+        float zGenerated = scenarioController.generatedShips[0].transform.position.z;
+        
+        // Check ship spawned in first location
+        // Checking with tolerance due to floating point errors
+        float tolerance = 0.1f;
+        Vector3 expected = new(expectedCoordinates[0].x_coordinates, 0, expectedCoordinates[0].z_coordinates);
+        Vector3 actual = new(xGenerated, 0, zGenerated);
+        Assert.IsTrue(
+            Mathf.Abs(expected.x - actual.x) < tolerance &&
+            Mathf.Abs(expected.y - actual.y) < tolerance &&
+            Mathf.Abs(expected.z - actual.z) < tolerance,
+            $"Expected: {expected}, but was: {actual}"
+        );
+        Assert.AreEqual(expectedLocations, shipLocations); // Check the remaining locations to visit
+        
+        // Get the ship's speed
+        List<float> expectedSpeeds = new();
+
+        // First ship speed is ignored since it is the starting position of the ship
+        for (int i = 1; i < expectedCoordinates.Count; i++)
+        {
+            expectedSpeeds.Add(expectedCoordinates[i].speed);
+        }
+
+        Assert.AreEqual(expectedSpeeds, shipSpeedAtEachLocation);
+    }
+
+    [UnityTest]
+    public IEnumerator EndScenariosTest()
+    {
+        scenarioController.LoadAllScenarios(filePath);
+
+        yield return null;
+        
+        scenarioController.EndAllScenarios();
+
+        yield return null;
+
+        Assert.AreEqual(scenarioController.generatedShips.Count, 0);
+    }
+
+    [UnityTest]
+    public IEnumerator WeatherAndWavesTest()
     {
         yield return null;
 

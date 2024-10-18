@@ -160,7 +160,7 @@ public class CSVController : MonoBehaviour
         using TextWriter shipListWriter = new StreamWriter(file + shipListEndName + fileExtension, true);
 
         scenarioWriter.WriteLine("ID, X Coordinate, Z Coordinate, Speed");
-        shipListWriter.WriteLine("ID, Name, Type");
+        shipListWriter.WriteLine("ID, Type");
 
         int shipTypeEnumLength = System.Enum.GetNames(typeof(ShipType)).Length;
 
@@ -173,7 +173,7 @@ public class CSVController : MonoBehaviour
                 scenarioWriter.WriteLine($"{i + 1}, {locations[x].x}, {locations[x].z}, {speed[x]}");
             }
 
-            shipListWriter.WriteLine($"{i + 1}, TestShip{i + 1}, {(ShipType)Random.Range(0, shipTypeEnumLength)}");
+            shipListWriter.WriteLine($"{i + 1}, {(ShipType)Random.Range(0, shipTypeEnumLength)}");
         }
 
         // Save the settings to a json file
@@ -195,13 +195,18 @@ public class CSVController : MonoBehaviour
         // Debug.Log("csv has been generated.");
     }
 
-    public void GenerateScenarios(int numOfScenarios = 1)
+    public void GenerateScenarios(int numOfScenarios = 1, string filePath = null)
     {
         // TODO: Add error messages
         if (numOfScenarios < 0)
         {
             Logger.Log("Invalid number of scenarios inputted.");
             return;
+        }
+
+        if (filePath == null)
+        {
+            filePath = this.filePath;
         }
 
         // Delete the file path and all scenarios in it
@@ -262,13 +267,13 @@ public class CSVController : MonoBehaviour
                     else
                     {
                         // If ship type is not found default to 0
-                        if (!System.Enum.TryParse(typeof(ShipType), value[2], false, out object result))
+                        if (!System.Enum.TryParse(typeof(ShipType), value[1], false, out object result))
                         {
-                            Debug.Log($"{value[2]} is not a valid ship type. Defaulting to {System.Enum.Parse(typeof(ShipType), "0")}");
-                            shipsInformation[id] = new ShipInformation(id, value[1], (ShipType) 0);   
+                            Logger.Log($"{value[1]} is not a valid ship type. Defaulting to {System.Enum.Parse(typeof(ShipType), "0")}");
+                            shipsInformation[id] = new ShipInformation(id, 0);   
                         }
                         else
-                            shipsInformation[id] = new ShipInformation(id, value[1], (ShipType) result);
+                            shipsInformation[id] = new ShipInformation(id, (ShipType) result);
                     }
 
                     data = streamReader.ReadLine();

@@ -81,7 +81,7 @@ public class ShipController : MonoBehaviour
             shipInformation.AddToHistory(speed, position);
 
             if (logMessages)
-                Debug.Log($"{shipInformation.Name} with ID {shipInformation.Id} has speed: {speed} Knots at position: {position}");
+                Debug.Log($"Ship with ID {shipInformation.Id} has speed: {speed} Knots at position: {position}");
         }
     }
 }

@@ -6,7 +6,7 @@ public class ProcTerrainController : MonoBehaviour
     public int seed;
     public Vector3 position = new();
 
-    private GameObject terrainInstance;
+    public GameObject terrainInstance;
     private MapGenerator mapGenerator;
     private ObjectAreaSpawner objectAreaSpawner;
 
