@@ -18,6 +18,14 @@ public enum Weather
     HeavyRain,
 }
 
+public enum RadarGenerationDirection
+{
+    Left,
+    Right,
+    Up,
+    Down,
+}
+
 // Whether we want to see the NoiseMap, ColorMap or Mesh
 public enum DrawMode
 {

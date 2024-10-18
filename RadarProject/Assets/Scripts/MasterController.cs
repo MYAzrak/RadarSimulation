@@ -14,11 +14,14 @@ public class MasterController : MonoBehaviour
         scenarioController = GetComponent<ScenarioController>();
 
         string[] args = System.Environment.GetCommandLineArgs();
+
+        /*
         Debug.Log("CLI Arg Length :" + args.Length);
         foreach (var x in args)
         {
             Debug.Log(x);
         }
+        */
 
         //CSV Controller Params
         setIntArg("-nships", ref csvController.numberOfShips);
@@ -52,16 +55,10 @@ public class MasterController : MonoBehaviour
             //TODO: refactor scenario controller UI code to seperate method, callable from here
             //TODO: after generating scenarios automatically load them
             csvController.GenerateScenarios(nScenarios);
-            // scenarioController.LoadAllScenariosMasterController(nScenarios);
             scenarioController.LoadAllScenarios();
         }
 
         //TODO: Start the simulation
-    }
-
-    void Update()
-    {
-
     }
 
     private bool setIntArg(string argName, ref int parameter)

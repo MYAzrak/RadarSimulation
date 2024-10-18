@@ -214,7 +214,7 @@ public class RadarScript : MonoBehaviour
                 }
 
                 server.WebSocketServices[$"/{path}"].Sessions.Broadcast(task.Result);
-                Debug.Log($"Sent Data: {task.Result}");
+                //Debug.Log($"Sent Data: {task.Result}");
 
                 detectedShips.Clear();
             }

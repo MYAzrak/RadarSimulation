@@ -10,4 +10,5 @@ public class ScenarioSettings
     public bool hasProceduralLand;
     public int proceduralLandSeed;
     public Vector3 proceduralLandLocation;
+    public RadarGenerationDirection directionToSpawnRadars;
 }

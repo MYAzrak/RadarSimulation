@@ -169,6 +169,41 @@ public class ScenarioController : MonoBehaviour
             procTerrainController.seed = scenarioSettings.proceduralLandSeed;
             procTerrainController.position = scenarioSettings.proceduralLandLocation;
             procTerrainController.GenerateTerrain();
+            
+            // Set radars direction
+            radarController.direction = scenarioSettings.directionToSpawnRadars;
+            
+            // Set radars position to be close to the land
+            float x = procTerrainController.position.x;
+            float y = 0;
+            float z = procTerrainController.position.z;
+
+            switch (scenarioSettings.directionToSpawnRadars)
+            {
+                case RadarGenerationDirection.Right:
+                    x += 13000;
+                    break;
+                case RadarGenerationDirection.Left:
+                    x -= 13000;
+                    break;
+                default:
+                    break;
+            }
+
+            radarController.parentEmptyObject.transform.position = new Vector3(x, y, z);
+        }
+        else
+        {
+            radarController.direction = RadarGenerationDirection.Right;
+            radarController.parentEmptyObject.transform.position = Vector3.zero;
+        }
+
+        int numOfRadars = radarController.radars.Count;
+        
+        if (numOfRadars > 0)
+        {
+            radarController.UnloadRadars();
+            radarController.GenerateRadars(numOfRadars);
         }
 
         // Set waves

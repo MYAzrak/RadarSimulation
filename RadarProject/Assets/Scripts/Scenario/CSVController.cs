@@ -28,6 +28,7 @@ public class CSVController : MonoBehaviour
     public bool hasProceduralLand;
     public int proceduralLandSeed;
     public Vector3 proceduralLandLocation;
+    RadarGenerationDirection direction;
 
     string filePath;
     string fileExtension = ".csv";
@@ -68,14 +69,14 @@ public class CSVController : MonoBehaviour
             proceduralLandSeed = Random.Range(0, 10_000_000);
 
             // Create a point on the boundary of the ship spawn area
-            Vector3 pointOutside = GetRandomPointOnBoundary(Vector3.zero, new Vector2(maxStartingCoordinates, maxStartingCoordinates));
+            Vector3 pointOutside = GetRandomPointOnBoundary(Vector3.zero, new Vector2(maxStartingCoordinates, maxStartingCoordinates), ref direction);
 
             proceduralLandLocation = pointOutside;
         }
 
     }
 
-    Vector3 GetRandomPointOnBoundary(Vector3 center, Vector2 size)
+    Vector3 GetRandomPointOnBoundary(Vector3 center, Vector2 size, ref RadarGenerationDirection direction)
     {
         // Calculate half width and half height
         float width = size.x;
@@ -84,6 +85,17 @@ public class CSVController : MonoBehaviour
 
         // Randomly choose a side
         int side = Random.Range(0, 2); // 0 = right, 1 = left
+        switch (side)
+        {
+            case 0:
+                direction = RadarGenerationDirection.Right;
+                break;
+            case 1:
+                direction = RadarGenerationDirection.Left;
+                break;
+            default:
+                break;
+        }
 
         return side switch
         {
@@ -174,6 +186,7 @@ public class CSVController : MonoBehaviour
             hasProceduralLand = hasProceduralLand,
             proceduralLandSeed = proceduralLandSeed,
             proceduralLandLocation = proceduralLandLocation,
+            directionToSpawnRadars = direction,
         };
 
         string json = JsonUtility.ToJson(settings, true);

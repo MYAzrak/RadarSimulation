@@ -31,9 +31,9 @@ public class RadarControllerTests
         radarController.GenerateRadars(numOfRadars);
         Assert.AreEqual(radarController.radars.Count, numOfRadars, $"Number of generated radars is {radarController.radars.Count} and not {numOfRadars}.");
 
-        Assert.AreEqual(radarController.radarIDAtRow[0].Count, 2, "2 Radars should have been created in the first row.");
-        Assert.AreEqual(radarController.radarIDAtRow[1].Count, 2, "2 Radars should have been created in the second row.");
-        Assert.AreEqual(radarController.radarIDAtRow[2].Count, 1, "1 Radars should have been created in the third row.");
+        Assert.AreEqual(radarController.numOfRadarsPerRow[0], 2, "2 Radars should have been created in the first row.");
+        Assert.AreEqual(radarController.numOfRadarsPerRow[1], 2, "2 Radars should have been created in the second row.");
+        Assert.AreEqual(radarController.numOfRadarsPerRow[2], 1, "1 Radars should have been created in the third row.");
     }
 
     [UnityTest]
