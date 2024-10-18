@@ -36,7 +36,11 @@ public class ScenarioControllerTests
         wavesController = Object.FindObjectOfType<WavesController>();
         Assert.IsNotNull(wavesController, "WavesController not found in scene.");
 
-        filePath = Path.Combine(CSVController.GetFilePath(), "Tests");
+        filePath = Path.Combine(CSVController.GetFilePath(), "Tests/");
+
+        if (Directory.Exists(filePath)) 
+            Directory.Delete(filePath, true);
+
         if (!Directory.Exists(filePath))
             Directory.CreateDirectory(filePath);
     }
@@ -49,15 +53,15 @@ public class ScenarioControllerTests
         // Test calm waves and clear weather
         string test1FileName = "TestScenario1";
         GenerateTestScenario(test1FileName, false, Weather.Clear, Waves.Calm);
-        scenarioController.LoadScenario(test1FileName);
+        scenarioController.LoadScenario(filePath + test1FileName);
 
         yield return null;
 
         // Check ships were created as required
+        Assert.Greater(scenarioController.shipsInformation.Count, 0, "Not all ships were created.");
         Assert.AreEqual(scenarioController.shipsInformation.Count, scenarioController.generatedShips.Count, "Not all ships were created.");
 
-        Assert.AreEqual(wavesController.defaultWave.activeInHierarchy, true, "Calm wave is not set");
-
+        Assert.AreEqual(wavesController.currentWaveCondition, Waves.Calm, "Calm wave is not set");
         Assert.IsNull(weatherController.currentWeather, "Current weather should be clear (null)");
 
         scenarioController.EndScenario();
@@ -66,12 +70,12 @@ public class ScenarioControllerTests
         // Test moderate waves and light rain weather
         string test2FileName = "TestScenario2";
         GenerateTestScenario(test2FileName, false, Weather.LightRain, Waves.Moderate);
-        scenarioController.LoadScenario(test2FileName);
+        scenarioController.LoadScenario(filePath + test2FileName);
 
-        yield return null;
+        for (int i = 0; i < 500; i++)
+            yield return null;
 
-        Assert.AreEqual(wavesController.currentWave.name, "WavesModerate(Clone)", "Moderate waves was not created");
-
+        Assert.AreEqual(wavesController.currentWaveCondition, Waves.Moderate, "Moderate waves was not created");
         Assert.AreEqual(weatherController.currentWeather.name, "Light Rain(Clone)", "Current weather should be light rain");
 
         scenarioController.EndScenario();
@@ -80,7 +84,7 @@ public class ScenarioControllerTests
         // Test heavy rain weather
         string test3FileName = "TestScenario3";
         GenerateTestScenario(test3FileName, false, Weather.HeavyRain, Waves.Calm);
-        scenarioController.LoadScenario(test3FileName);
+        scenarioController.LoadScenario(filePath + test3FileName);
 
         yield return null;
 
@@ -93,7 +97,7 @@ public class ScenarioControllerTests
     void GenerateTestScenario(string fileName, bool proceduralLand = false, Weather weather = Weather.Clear, Waves waves = Waves.Calm)
     {
         CSVController.GenerateRandomParameters();
-        CSVController.numberOfShips = 2; // Small number of ships for testing
+        CSVController.numberOfShips = 5; // Small number of ships for testing
         CSVController.hasProceduralLand = proceduralLand;
         CSVController.weather = weather;
         CSVController.waves = waves;

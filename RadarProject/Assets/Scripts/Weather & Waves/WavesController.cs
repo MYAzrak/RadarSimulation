@@ -4,6 +4,7 @@ using UnityEngine;
 public class WavesController : MonoBehaviour
 {
     public GameObject currentWave;
+    public Waves currentWaveCondition;
     public GameObject defaultWave;
 
     MainMenuController mainMenuController;
@@ -22,6 +23,7 @@ public class WavesController : MonoBehaviour
         mainMenuController = FindObjectOfType<MainMenuController>();
 
         defaultWave = GameObject.Find("WavesCalm");
+        currentWaveCondition = Waves.Calm;
     }
 
     public void SetTimeProvider(float time)
@@ -37,6 +39,7 @@ public class WavesController : MonoBehaviour
             defaultWave.SetActive(false);        
             currentWave = Instantiate(prefab, Vector3.zero, Quaternion.identity);
             mainMenuController.SetWaveLabel(scenarioWave.ToString());
+            currentWaveCondition = scenarioWave;
         }
     }
 
@@ -47,5 +50,7 @@ public class WavesController : MonoBehaviour
         
         if (defaultWave != null)
             defaultWave.SetActive(true);
+
+        currentWaveCondition = Waves.Calm;
     }
 }

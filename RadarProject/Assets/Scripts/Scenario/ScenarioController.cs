@@ -237,7 +237,7 @@ public class ScenarioController : MonoBehaviour
         if (currentScenarioIndex < scenarios.Count)
         {
             scenario = scenarios[currentScenarioIndex];
-            LoadScenario(scenario);
+            LoadScenario(filePath + scenario);
         }
     }
 
@@ -411,7 +411,7 @@ public class ScenarioController : MonoBehaviour
                         continue;
 
                     scenario = scenarios[currentScenarioIndex];
-                    LoadScenario(scenario);
+                    LoadScenario(filePath + scenario);
                 }
                 else
                 {

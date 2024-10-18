@@ -234,7 +234,7 @@ public class CSVController : MonoBehaviour
         try
         {
             // Read ship list information
-            using (StreamReader streamReader = new(filePath + scenarioFileName + shipListEndName + fileExtension))
+            using (StreamReader streamReader = new(scenarioFileName + shipListEndName + fileExtension))
             {
                 _ = streamReader.ReadLine(); // Ignore the first line which is the headings
                 string data = streamReader.ReadLine();
@@ -276,7 +276,7 @@ public class CSVController : MonoBehaviour
             }
 
             // Read each ship locations and speed
-            using (StreamReader streamReader = new(filePath + scenarioFileName + fileExtension))
+            using (StreamReader streamReader = new(scenarioFileName + fileExtension))
             {
                 _ = streamReader.ReadLine(); // Ignore the first line which is the headings
                 string data = streamReader.ReadLine();
@@ -307,7 +307,7 @@ public class CSVController : MonoBehaviour
             }
 
             // Read scenario settings
-            using (StreamReader streamReader = new(filePath + scenarioFileName + scenarioSettingsEndName))
+            using (StreamReader streamReader = new(scenarioFileName + scenarioSettingsEndName))
             {
                 string json = streamReader.ReadToEnd();
                 scenarioSettings = JsonUtility.FromJson<ScenarioSettings>(json);
