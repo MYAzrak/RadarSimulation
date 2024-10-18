@@ -74,6 +74,11 @@ public class RadarScript : MonoBehaviour
     private float precalculatedRadarConstant;
     private float precalculatedRainConstant;
 
+    [SerializeField] private RenderTexture reflectivityTexture;
+    private ComputeBuffer reflectivityBuffer;
+    private ComputeShader reflectivityShader;
+    private ComputeBuffer reflectivityDataBuffer;
+
     void Start()
     {
         path += radarID;
@@ -130,7 +135,21 @@ public class RadarScript : MonoBehaviour
         rainBuffer = new ComputeBuffer(ImageRadius, sizeof(int));
         tempRainBuffer = new int[ImageRadius];
 
+        //Set up reflectivity texture
+        reflectivityTexture = new RenderTexture(WidthRes, HeightRes, 0, RenderTextureFormat.RFloat);
+        reflectivityTexture.enableRandomWrite = true;
+        reflectivityTexture.Create();
+        reflectivityShader = Resources.Load<ComputeShader>("ReflectivityComputation");
+
+        ReflectivityData[] reflectivityDataArray = ReflectivityManager.Instance.GetReflectivityDataArray();
+        reflectivityDataBuffer = new ComputeBuffer(reflectivityDataArray.Length, sizeof(int) + sizeof(float));
+        reflectivityDataBuffer.SetData(reflectivityDataArray);
+
+
+        reflectivityBuffer = new ComputeBuffer(WidthRes * HeightRes, sizeof(float));
+
         rcsComputeShader = Resources.Load<ComputeShader>("RCSCalculation");
+
         PrecalculateRadarConstants();
         StartCoroutine(ProcessRadar());
     }
@@ -184,13 +203,48 @@ public class RadarScript : MonoBehaviour
         rcsComputeShader.SetFloat("DefaultReflectivity", defaultReflectivity);
         rcsComputeShader.SetInt("Width", WidthRes);
         rcsComputeShader.SetInt("Height", HeightRes);
+        rcsComputeShader.SetBuffer(rcsKernel, "ReflectivityBuffer", reflectivityBuffer);
 
         rcsComputeShader.Dispatch(rcsKernel, dispatchX, dispatchY, 1);
     }
-    float GetReflectivity(GameObject obj)
+
+
+    private void UpdateReflectivityTexture(int kernel)
     {
-        //TODO: Get reflectivity from object property
-        return defaultReflectivity;
+        // Create a temporary texture to store object IDs
+        RenderTexture objectIdTexture = new RenderTexture(WidthRes, HeightRes, 0, RenderTextureFormat.RFloat);
+        objectIdTexture.enableRandomWrite = true;
+        objectIdTexture.Create();
+
+        // Set up a new camera to render object IDs
+        Camera objectIdCamera = Instantiate(radarCamera.gameObject).GetComponent<Camera>();
+        objectIdCamera.targetTexture = objectIdTexture;
+        objectIdCamera.SetReplacementShader(Shader.Find("Custom/ObjectIdShader"), "");
+
+        // Render the object ID texture
+        objectIdCamera.Render();
+
+        // Create a compute shader to process the object ID texture and generate the reflectivity texture
+
+        reflectivityShader.SetTexture(kernel, "ObjectIdTexture", objectIdTexture);
+        reflectivityShader.SetTexture(kernel, "ReflectivityTexture", reflectivityTexture);
+        reflectivityShader.SetBuffer(kernel, "ReflectivityBuffer", reflectivityBuffer);
+        reflectivityShader.SetInt("Width", WidthRes);
+        reflectivityShader.SetInt("Height", HeightRes);
+
+
+        ReflectivityData[] reflectivityDataArray = ReflectivityManager.Instance.GetReflectivityDataArray();
+        reflectivityDataBuffer.SetData(reflectivityDataArray);
+
+        reflectivityShader.SetBuffer(kernel, "ReflectivityDataBuffer", reflectivityDataBuffer);
+        reflectivityShader.SetInt("ReflectivityDataCount", reflectivityDataArray.Length);
+
+        // Dispatch the compute shader
+        reflectivityShader.Dispatch(kernel, Mathf.CeilToInt(WidthRes / 8f), Mathf.CeilToInt(HeightRes / 8f), 1);
+
+        // Clean up
+        Destroy(objectIdCamera.gameObject);
+        objectIdTexture.Release();
     }
 
     IEnumerator ProcessRadar()
@@ -198,6 +252,7 @@ public class RadarScript : MonoBehaviour
 
         int kernelIndex = radarComputeShader.FindKernel("ProcessRadarData");
         int rainKernelIndex = radarComputeShader.FindKernel("GenerateRain");
+        int reflectivitykernel = reflectivityShader.FindKernel("CSMain");
 
         while (Application.isPlaying)
         {
@@ -224,6 +279,7 @@ public class RadarScript : MonoBehaviour
             GenerateRainGPU(rainKernelIndex);
             CombineRadarAndRain();
             DetectShipsInView();
+            UpdateReflectivityTexture(reflectivitykernel);
 
             RotateCamera();
 

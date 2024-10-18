@@ -1,0 +1,41 @@
+#pragma kernel CSMain
+
+Texture2D<float> ObjectIdTexture;
+RWTexture2D<float> ReflectivityTexture;
+RWStructuredBuffer<float> ReflectivityBuffer;
+
+struct ReflectivityData
+{
+    int objectId;
+    float reflectivity;
+};
+
+StructuredBuffer<ReflectivityData> ReflectivityDataBuffer;
+uint ReflectivityDataCount;
+
+uint Width;
+uint Height;
+
+float GetReflectivity(int objectId)
+{
+    for (uint i = 0; i < ReflectivityDataCount; i++)
+    {
+        if (ReflectivityDataBuffer[i].objectId == objectId)
+        {
+            return ReflectivityDataBuffer[i].reflectivity;
+        }
+    }
+    return 1.0; // Default reflectivity if not found
+}
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= Width || id.y >= Height) return;
+
+    int objectId = (int)ObjectIdTexture[id.xy];
+    float reflectivity = GetReflectivity(objectId);
+
+    ReflectivityTexture[id.xy] = reflectivity;
+    ReflectivityBuffer[id.y * Width + id.x] = reflectivity;
+}

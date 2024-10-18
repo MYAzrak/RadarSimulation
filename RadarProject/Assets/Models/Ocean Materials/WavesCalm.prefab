@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8645792689517359682}
   - component: {fileID: 6848937620224814225}
+  - component: {fileID: 3486890700385805806}
   m_Layer: 0
   m_Name: WavesCalm
   m_TagString: Untagged
@@ -70,3 +71,16 @@ MonoBehaviour:
   _debug:
     _drawBounds: 0
     _drawSlicesInEditor: 0
+--- !u!114 &3486890700385805806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6028083280660833559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69cdb484cd664eea989dedf8c6f1a73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reflectivity: 0
