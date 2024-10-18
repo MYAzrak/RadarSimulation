@@ -176,19 +176,21 @@ public class ScenarioController : MonoBehaviour
             // Set radars position to be close to the land
             float x = procTerrainController.position.x;
             float y = 0;
-            float z = procTerrainController.position.z;
+            float z = procTerrainController.position.z - 10000;
 
             switch (scenarioSettings.directionToSpawnRadars)
             {
                 case RadarGenerationDirection.Right:
-                    x += 13000;
+                    x += 14000;
                     break;
                 case RadarGenerationDirection.Left:
-                    x += 13000;
+                    x -= 14000;
                     break;
                 default:
                     break;
             }
+
+            Debug.Log("Direction to spawn radars: " + scenarioSettings.directionToSpawnRadars);
 
             radarController.parentEmptyObject.transform.position = new Vector3(x, y, z);
         }

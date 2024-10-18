@@ -84,14 +84,16 @@ public class CSVController : MonoBehaviour
         float yValue = 0f;
 
         // Randomly choose a side
-        int side = Random.Range(0, 2); // 0 = right, 1 = left
+        int side = Random.Range(0, 2); // 0 = right, 1 = left for land
+
+        // Direction of radar is opposite to direction of land
         switch (side)
         {
             case 0:
-                direction = RadarGenerationDirection.Right;
+                direction = RadarGenerationDirection.Left;
                 break;
             case 1:
-                direction = RadarGenerationDirection.Left;
+                direction = RadarGenerationDirection.Right;
                 break;
             default:
                 break;

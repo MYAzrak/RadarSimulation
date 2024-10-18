@@ -486,6 +486,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWave: {fileID: 0}
+  currentWaveCondition: 0
+  defaultWave: {fileID: 0}
 --- !u!1 &1422562296
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,6 +697,8 @@ MonoBehaviour:
   randomCoordinates: 1000
   minSpeed: 11
   maxSpeed: 21
+  weather: 0
+  waves: 0
   hasProceduralLand: 0
   proceduralLandSeed: 0
   proceduralLandLocation: {x: 0, y: 0, z: 0}
@@ -741,6 +745,13 @@ MonoBehaviour:
   timeLimit: 300
   loadAllScenarios: 0
   generatedShips: []
+  scenarioSettings:
+    waves: 0
+    weather: 0
+    hasProceduralLand: 0
+    proceduralLandSeed: 0
+    proceduralLandLocation: {x: 0, y: 0, z: 0}
+    directionToSpawnRadars: 0
 --- !u!4 &2106282668
 Transform:
   m_ObjectHideFlags: 0
@@ -783,11 +794,10 @@ MonoBehaviour:
   radarPrefab: {fileID: 1562314535405687953, guid: 3b15d8a37689cf3cdb0844e0ea411b03, type: 3}
   rows: 4
   cols: 1
-  distanceBetweenRadars: 50
+  distanceBetweenRadars: 10000
   numOfRadars: 0
-  generateRadars: 0
-  generateOneRadar: 0
   newRadarID: 0
+  parentEmptyObject: {fileID: 0}
   transmittedPowerW: 1000
   antennaGainDBi: 30
   wavelengthM: 0.03
@@ -797,6 +807,7 @@ MonoBehaviour:
   BeamWidth: 2
   HeightRes: 1024
   WidthRes: 10
+  direction: 1
 --- !u!114 &2106282671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -837,6 +848,7 @@ MonoBehaviour:
   terrainGeneratorPrefab: {fileID: 2262635441062951885, guid: 639cb1dc935915348b47695143bbad8e, type: 3}
   seed: 0
   position: {x: 0, y: 400, z: 0}
+  terrainInstance: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
