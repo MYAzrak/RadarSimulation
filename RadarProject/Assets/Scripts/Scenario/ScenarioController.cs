@@ -181,16 +181,14 @@ public class ScenarioController : MonoBehaviour
             switch (scenarioSettings.directionToSpawnRadars)
             {
                 case RadarGenerationDirection.Right:
-                    x += 14000;
+                    x += 15000;
                     break;
                 case RadarGenerationDirection.Left:
-                    x -= 14000;
+                    x -= 15000;
                     break;
                 default:
                     break;
             }
-
-            Debug.Log("Direction to spawn radars: " + scenarioSettings.directionToSpawnRadars);
 
             radarController.parentEmptyObject.transform.position = new Vector3(x, y, z);
         }

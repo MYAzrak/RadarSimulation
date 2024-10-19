@@ -14,6 +14,7 @@ public class ShipTriangles
     public List<TriangleData> underWaterTriangleData = new();
     public List<TriangleData> aboveWaterTriangleData = new();
 
+    int shipVerticesLength;
 
     public ShipTriangles(GameObject ship)
     {
@@ -23,8 +24,10 @@ public class ShipTriangles
         shipVertices = ship.GetComponent<MeshFilter>().mesh.vertices;
         shipTriangles = ship.GetComponent<MeshFilter>().mesh.triangles;
 
-        heights = new float[shipVertices.Length];
-        samplePoints = new Vector3[shipVertices.Length];
+        shipVerticesLength = shipVertices.Length;
+
+        heights = new float[shipVerticesLength];
+        samplePoints = new Vector3[shipVerticesLength];
     }
 
     public void GenerateUnderwaterMesh()
@@ -32,7 +35,8 @@ public class ShipTriangles
         aboveWaterTriangleData.Clear();
         underWaterTriangleData.Clear();
 
-        for (int i = 0; i < shipVertices.Length; i++)
+        samplePoints = new Vector3[shipVerticesLength];
+        for (int i = 0; i < shipVerticesLength; i++)
         {
             Vector3 worldSpacePosition = shipTransform.TransformPoint(shipVertices[i]);
             samplePoints[i] = worldSpacePosition;
@@ -42,17 +46,18 @@ public class ShipTriangles
 
         AddTriangles();
 
-        Vector3[] points = new Vector3[underWaterTriangleData.Count];
-        for (int i = 0; i < underWaterTriangleData.Count; i++)
+        samplePoints = new Vector3[underWaterTriangleData.Count];
+        int count = underWaterTriangleData.Count;
+        for (int i = 0; i < count; i++)
         {
-            points[i] = underWaterTriangleData[i].center;
+            samplePoints[i] = underWaterTriangleData[i].center;
         }
 
-        var newHeights = ShipBouyancyScript.shipBouyancyScriptInstance.GetDistanceToWater(points);
-        
-        for (int i = 0; i < underWaterTriangleData.Count; i++)
+        heights = ShipBouyancyScript.shipBouyancyScriptInstance.GetDistanceToWater(samplePoints);
+        count = underWaterTriangleData.Count;
+        for (int i = 0; i < count; i++)
         {
-            underWaterTriangleData[i].distanceToWater = newHeights[i];
+            underWaterTriangleData[i].distanceToWater = heights[i];
         }
     }
 

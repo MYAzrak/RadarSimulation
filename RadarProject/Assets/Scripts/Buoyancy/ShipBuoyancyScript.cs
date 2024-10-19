@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Crest;
 using System.Collections;
+using System;
+using UnityEngine.Profiling;
 
 public class ShipBouyancyScript : MonoBehaviour
 {
     public static ShipBouyancyScript shipBouyancyScriptInstance;
 
     [SerializeField] float amplifyForce = 0.5f;
-    public float timeToWait = 0.5f;
     public float rotationSpeed = 2.0f;
 
     ShipTriangles shipTriangles;
@@ -28,8 +29,10 @@ public class ShipBouyancyScript : MonoBehaviour
     float Fp = 0.5f;
     float Fs = 0.5f;
 
-    float shipLength;
+    //float shipLength;
     float shipWidth;
+
+    ICollProvider collProvider;
 
     /*
     public void OnDrawGizmosSelected()
@@ -56,16 +59,16 @@ public class ShipBouyancyScript : MonoBehaviour
         shipTriangles = new ShipTriangles(gameObject);
         shipBouyancyScriptInstance = this;
 
-        shipLength = ship.GetComponent<MeshFilter>().mesh.bounds.size.z * ship.transform.localScale.x; // Multiply by scale to get the correct bounds
+        //shipLength = ship.GetComponent<MeshFilter>().mesh.bounds.size.z * ship.transform.localScale.x; // Multiply by scale to get the correct bounds
         shipWidth = ship.GetComponent<MeshFilter>().mesh.bounds.size.x * ship.transform.localScale.x; // Multiply by scale to get the correct bounds
+
+        collProvider = OceanRenderer.Instance.CollisionProvider;
 
         StartCoroutine(GenerateUnderwaterMeshCoroutine());
     }
 
     void FixedUpdate()
     {
-        if (shipTriangles.underWaterTriangleData.Count == 0) return;
-
         if (recalculateForces)
             RecalculateForces();
 
@@ -84,7 +87,7 @@ public class ShipBouyancyScript : MonoBehaviour
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSeconds(timeToWait);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(0.1f, 1f));
             shipTriangles.GenerateUnderwaterMesh();
             recalculateForces = true;
         }
@@ -222,18 +225,17 @@ public class ShipBouyancyScript : MonoBehaviour
 
     public float[] GetDistanceToWater(Vector3[] _queryPoints)
     {
-        Vector3[] _queryResultDisps = new Vector3[_queryPoints.Length];
-
-        var collProvider = OceanRenderer.Instance.CollisionProvider;
+        int _queryPointsLength = _queryPoints.Length;
+        Vector3[] _queryResultDisps = new Vector3[_queryPointsLength];
 
         collProvider.Query(GetHashCode(), shipWidth, _queryPoints, _queryResultDisps, null, null);
 
-        float[] heightDiff = new float[_queryPoints.Length];
+        float[] heightDiff = new float[_queryPointsLength];
 
-        for (int i = 0; i < _queryPoints.Length; i++)
+        for (int i = 0; i < _queryPointsLength; i++)
         {
-            var waterHeight = OceanRenderer.Instance.SeaLevel + _queryResultDisps[i].y;
-            heightDiff[i] = _queryPoints[i].y - waterHeight;
+            //var waterHeight = OceanRenderer.Instance.SeaLevel + _queryResultDisps[i].y;
+            heightDiff[i] = _queryPoints[i].y - _queryResultDisps[i].y;
         }
 
         return heightDiff;
