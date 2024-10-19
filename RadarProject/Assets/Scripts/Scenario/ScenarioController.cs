@@ -210,7 +210,7 @@ public class ScenarioController : MonoBehaviour
         SetWaves(scenarioSettings.waves);
 
         // Set weather
-        SetWeather(scenarioSettings.weather);
+        SetWeather(scenarioSettings.weather, scenarioSettings.isFoggy);
 
         //radarController.UpdateRadarsPositions();
         GenerateShips();
@@ -349,7 +349,7 @@ public class ScenarioController : MonoBehaviour
         UnloadAllObjects();
         endScenario = true;
         mainMenuController.SetDefaultSimulationInfoPanel();
-        SetWeather(Weather.Clear);
+        SetWeather(Weather.Clear, false);
     }
 
     public void EndAllScenarios()
@@ -430,13 +430,13 @@ public class ScenarioController : MonoBehaviour
         Time.timeScale = speed;
     }
 
-    public void SetWeather(Weather weather)
+    public void SetWeather(Weather weather, bool isFoggy)
     {
         GameObject prefab = weatherDict[weather].prefab;
         Material skybox = weatherDict[weather].skybox;
         Material oceanMaterial = weatherDict[weather].oceanMaterial;
         weatherController.GenerateWeather(weather, prefab, skybox, oceanMaterial);
-        radarController.SetWeather(weather);
+        radarController.SetWeather(weather, isFoggy);
     }
 
     public void SetWaves(Waves waves)

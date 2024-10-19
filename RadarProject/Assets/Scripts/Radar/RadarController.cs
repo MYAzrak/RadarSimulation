@@ -54,7 +54,7 @@ public class RadarController : MonoBehaviour
         mainMenuController = FindObjectOfType<MainMenuController>();
     }
 
-    public void SetWeather(Weather weather)
+    public void SetWeather(Weather weather, bool isFoggy)
     {
         if (weather == Weather.Clear)
         {
@@ -62,12 +62,17 @@ public class RadarController : MonoBehaviour
         }
         else if (weather == Weather.LightRain)
         {
-            SetRadarWeather(UnityEngine.Random.Range(0.01f, 0.07f), 20);
+            SetRadarWeather(UnityEngine.Random.Range(0.01f, 0.07f), 15);
 
         }
-        else if (weather == Weather.HeavyRain)
+        else if (weather == Weather.HeavyRain && !isFoggy)
         {
-            SetRadarWeather(UnityEngine.Random.Range(0.1f, 0.2f), 15);
+            SetRadarWeather(UnityEngine.Random.Range(0.1f, 0.2f), 20);
+        }
+
+        else if (weather == Weather.HeavyRain && isFoggy)
+        {
+            SetRadarWeather(UnityEngine.Random.Range(0.3f, 0.4f), 25);
         }
     }
 
@@ -115,7 +120,7 @@ public class RadarController : MonoBehaviour
         }
 
         int key = min.Key; // 0 first row, 1 second row, etc
-        
+
         int xDistance = min.Value * distanceBetweenRadars;
 
         int radarToSpawnAt = (min.Value * rows) + key;
@@ -126,7 +131,7 @@ public class RadarController : MonoBehaviour
             latestRadarPosition = radars[radarToSpawnAt].transform.position;
         else
             latestRadarPosition = radars[radarToSpawnAt + 1].transform.position;
-        
+
         float x = latestRadarPosition.x;
         float y = 0;
         float z = latestRadarPosition.z;
