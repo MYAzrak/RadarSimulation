@@ -20,7 +20,7 @@ public class RadarScript : MonoBehaviour
 
     [SerializeField] public int HeightRes = 1024;
     [SerializeField] public int WidthRes = 10;
-    [Range(0.0f, 1f)] private float resolution = 0.5f;
+    [Range(0.0f, 1f)] public float resolution = 0.5f;
     [Range(5f, 5000f)] public float MaxDistance = 100F;
     [Range(0.01f, 2f)] public float MinDistance = 0.5F;
     [Range(5.0f, 90f)] public float VerticalAngle = 30f;
@@ -33,7 +33,7 @@ public class RadarScript : MonoBehaviour
     [Range(0.0f, 0.99f)] public float parallelThreshold = 0.45f; // Threshold for considering a surface parallel
 
     private RenderTexture radarTexture;
-    private float currentRotation = 1f; // Track current rotation
+    public float currentRotation = 1f; // Track current rotation
     private GameObject cameraObject;
     private WebSocketServer server;
 
@@ -78,6 +78,11 @@ public class RadarScript : MonoBehaviour
     private ComputeBuffer reflectivityBuffer;
     private ComputeShader reflectivityShader;
     private ComputeBuffer reflectivityDataBuffer;
+    private Camera objectIdCamera;
+    private RenderTexture objectIdTexture;
+    public int nRotations = 0;
+
+    private ComputeShader copyShader;
 
     void Start()
     {
@@ -144,14 +149,33 @@ public class RadarScript : MonoBehaviour
         ReflectivityData[] reflectivityDataArray = ReflectivityManager.Instance.GetReflectivityDataArray();
         reflectivityDataBuffer = new ComputeBuffer(reflectivityDataArray.Length, sizeof(int) + sizeof(float));
         reflectivityDataBuffer.SetData(reflectivityDataArray);
+        SetupObjectIdCamera();
 
 
         reflectivityBuffer = new ComputeBuffer(WidthRes * HeightRes, sizeof(float));
+        copyShader = Resources.Load<ComputeShader>("CopyTextureToBuffer");
 
         rcsComputeShader = Resources.Load<ComputeShader>("RCSCalculation");
 
         PrecalculateRadarConstants();
         StartCoroutine(ProcessRadar());
+    }
+    private void SetupObjectIdCamera()
+    {
+        // Create a new camera object
+        GameObject objectIdCameraObj = new GameObject("ObjectIdCamera");
+        objectIdCamera = objectIdCameraObj.AddComponent<Camera>();
+        objectIdCameraObj.transform.SetParent(transform);
+
+        // Set up the object ID texture
+        objectIdTexture = new RenderTexture(WidthRes, HeightRes, 0, RenderTextureFormat.RFloat);
+        objectIdTexture.enableRandomWrite = true;
+        objectIdTexture.Create();
+
+        // Configure the object ID camera
+        objectIdCamera.targetTexture = objectIdTexture;
+        objectIdCamera.enabled = false; // Keep it disabled until needed
+        objectIdCamera.SetReplacementShader(Shader.Find("Custom/ObjectIdShader"), "");
     }
     void PrecalculateRadarConstants()
     {
@@ -176,7 +200,7 @@ public class RadarScript : MonoBehaviour
     }
 
 
-    void UpdateRCSArray()
+    void UpdateRCSArray(int copyKernel, int rcsKernel)
     {
         // Render the depth-normal texture
         // radarCamera.depthTextureMode = DepthTextureMode.DepthNormals;
@@ -184,8 +208,6 @@ public class RadarScript : MonoBehaviour
         radarCamera.Render();
 
         // Copy the depth-normal texture to the buffer
-        ComputeShader copyShader = Resources.Load<ComputeShader>("CopyTextureToBuffer");
-        int copyKernel = copyShader.FindKernel("CSMain");
         copyShader.SetTexture(copyKernel, "InputTexture", depthNormalTexture);
         copyShader.SetBuffer(copyKernel, "OutputBuffer", depthNormalBuffer);
 
@@ -194,7 +216,6 @@ public class RadarScript : MonoBehaviour
         copyShader.Dispatch(copyKernel, dispatchX, dispatchY, 1);
 
         // Calculate RCS using compute shader
-        int rcsKernel = rcsComputeShader.FindKernel("CSMain");
         rcsComputeShader.SetBuffer(rcsKernel, "DepthNormalBuffer", depthNormalBuffer);
         rcsComputeShader.SetBuffer(rcsKernel, "RCSBuffer", rcsBuffer);
         rcsComputeShader.SetMatrix("InverseViewProjectionMatrix", radarCamera.projectionMatrix.inverse * radarCamera.worldToCameraMatrix.inverse);
@@ -211,27 +232,23 @@ public class RadarScript : MonoBehaviour
 
     private void UpdateReflectivityTexture(int kernel)
     {
-        // Create a temporary texture to store object IDs
-        RenderTexture objectIdTexture = new RenderTexture(WidthRes, HeightRes, 0, RenderTextureFormat.RFloat);
-        objectIdTexture.enableRandomWrite = true;
-        objectIdTexture.Create();
-
-        // Set up a new camera to render object IDs
-        Camera objectIdCamera = Instantiate(radarCamera.gameObject).GetComponent<Camera>();
-        objectIdCamera.targetTexture = objectIdTexture;
-        objectIdCamera.SetReplacementShader(Shader.Find("Custom/ObjectIdShader"), "");
+        // Update object ID camera transform to match radar camera
+        objectIdCamera.transform.position = radarCamera.transform.position;
+        objectIdCamera.transform.rotation = radarCamera.transform.rotation;
+        objectIdCamera.fieldOfView = radarCamera.fieldOfView;
+        objectIdCamera.aspect = radarCamera.aspect;
+        objectIdCamera.nearClipPlane = radarCamera.nearClipPlane;
+        objectIdCamera.farClipPlane = radarCamera.farClipPlane;
 
         // Render the object ID texture
         objectIdCamera.Render();
 
-        // Create a compute shader to process the object ID texture and generate the reflectivity texture
-
+        // Set up the compute shader
         reflectivityShader.SetTexture(kernel, "ObjectIdTexture", objectIdTexture);
         reflectivityShader.SetTexture(kernel, "ReflectivityTexture", reflectivityTexture);
         reflectivityShader.SetBuffer(kernel, "ReflectivityBuffer", reflectivityBuffer);
         reflectivityShader.SetInt("Width", WidthRes);
         reflectivityShader.SetInt("Height", HeightRes);
-
 
         ReflectivityData[] reflectivityDataArray = ReflectivityManager.Instance.GetReflectivityDataArray();
         reflectivityDataBuffer.SetData(reflectivityDataArray);
@@ -241,18 +258,15 @@ public class RadarScript : MonoBehaviour
 
         // Dispatch the compute shader
         reflectivityShader.Dispatch(kernel, Mathf.CeilToInt(WidthRes / 8f), Mathf.CeilToInt(HeightRes / 8f), 1);
-
-        // Clean up
-        Destroy(objectIdCamera.gameObject);
-        objectIdTexture.Release();
     }
-
     IEnumerator ProcessRadar()
     {
 
         int kernelIndex = radarComputeShader.FindKernel("ProcessRadarData");
         int rainKernelIndex = radarComputeShader.FindKernel("GenerateRain");
         int reflectivitykernel = reflectivityShader.FindKernel("CSMain");
+        int copyKernel = copyShader.FindKernel("CSMain");
+        int rcsKernel = rcsComputeShader.FindKernel("CSMain");
 
         while (Application.isPlaying)
         {
@@ -274,7 +288,7 @@ public class RadarScript : MonoBehaviour
                 detectedShips.Clear();
             }
 
-            UpdateRCSArray();
+            UpdateRCSArray(copyKernel, rcsKernel);
             ProcessRadarDataGPU(kernelIndex);
             GenerateRainGPU(rainKernelIndex);
             CombineRadarAndRain();
@@ -405,6 +419,11 @@ public class RadarScript : MonoBehaviour
         return CameraObject;
     }
 
+    public RenderTexture getObjectIDTexture()
+    {
+        return objectIdTexture;
+    }
+
     private void ProcessRadarDataGPU(int kernelIndex)
     {
         // Clear the buffer for the new rotation
@@ -500,11 +519,24 @@ public class RadarScript : MonoBehaviour
         {
             rainBuffer.Release();
         }
+        if (objectIdTexture != null)
+        {
+            objectIdTexture.Release();
+        }
+
+        if (objectIdCamera != null)
+        {
+            Destroy(objectIdCamera.gameObject);
+        }
+        if (depthNormalBuffer != null)
+        {
+            depthNormalBuffer.Release();
+        }
     }
     private void RotateCamera()
     {
         currentRotation += resolution; // Increase rotation by 1 degree
-        if (currentRotation >= 360f) currentRotation = 0f; // Wrap around at 360 degrees
+        if (currentRotation >= 360f) { currentRotation = 0f; nRotations++; } // Wrap around at 360 degrees
         cameraObject.transform.localRotation = Quaternion.Euler(0, currentRotation, 0);
     }
 

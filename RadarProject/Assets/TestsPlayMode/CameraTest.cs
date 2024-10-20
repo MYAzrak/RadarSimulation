@@ -15,10 +15,16 @@ public class CameraTest : InputTestFixture
     [UnityTest]
     public IEnumerator CameraControllerMovementTest()
     {
-        SceneManager.LoadScene("Assets/Scenes/OceanTests.unity");
+        string sceneName = "OceanTests";
+
+        if (SceneManager.GetActiveScene().name != sceneName)
+        {
+            SceneManager.LoadScene("Assets/Scenes/OceanTests.unity");
+        }
+
 
         yield return null;
-        
+
         cameraObject = GameObject.FindWithTag("MainCamera");
         Assert.IsNotNull(cameraObject, "Main Camera should be present in the scene.");
 
@@ -38,17 +44,17 @@ public class CameraTest : InputTestFixture
 
         InputSystem.Update();
 
-        var keyboard = InputSystem. AddDevice<Keyboard>();
+        var keyboard = InputSystem.AddDevice<Keyboard>();
 
         // Move forward
         Press(keyboard.wKey);
         InputSystem.Update();
-        
+
         cameraController.Move();
 
         Release(keyboard.wKey);
         InputSystem.Update();
-        
+
         Assert.AreEqual(new Vector3(0, 0, 1), cameraObject.transform.position);
 
         // Move right
@@ -56,7 +62,7 @@ public class CameraTest : InputTestFixture
         InputSystem.Update();
 
         cameraController.Move();
-        
+
         Release(keyboard.dKey);
         InputSystem.Update();
 
@@ -70,7 +76,7 @@ public class CameraTest : InputTestFixture
 
         Release(keyboard.sKey);
         InputSystem.Update();
-        
+
         Assert.AreEqual(new Vector3(1, 0, 0), cameraObject.transform.position);
 
         // Move left
@@ -78,10 +84,10 @@ public class CameraTest : InputTestFixture
         InputSystem.Update();
 
         cameraController.Move();
-        
+
         Release(keyboard.aKey);
         InputSystem.Update();
-        
+
         Assert.AreEqual(new Vector3(0, 0, 0), cameraObject.transform.position);
 
         Release(mouse.rightButton);
