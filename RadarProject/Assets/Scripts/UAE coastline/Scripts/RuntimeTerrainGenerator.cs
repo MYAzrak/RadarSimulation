@@ -215,7 +215,7 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         foreach (Transform tree in treesToDestroy)
         {
             DestroyImmediate(tree.gameObject);
-            Debug.Log("Tree destroyed");
+            // Debug.Log("Tree destroyed");
         }
 
 
@@ -263,7 +263,7 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         foreach (Transform bush in bushesToDestroy)
         {
             DestroyImmediate(bush.gameObject);
-            Debug.Log("Bush destroyed");
+            // Debug.Log("Bush destroyed");
         }
 
 
@@ -300,7 +300,7 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         foreach (Transform bush in bushesToDestroy)
         {
             DestroyImmediate(bush.gameObject);
-            Debug.Log("House destroyed");
+            // Debug.Log("House destroyed");
         }
 
         // Ensure there are enough predefined positions for the number of houses to spawn
@@ -412,8 +412,8 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         terrainData.SetHeights(0, 0, heights);
 
 
-        Debug.Log($"Terrain Scale: {terrain.terrainData.size}");
-        Debug.Log($"Height Scale: {heightScale}");
+        // Debug.Log($"Terrain Scale: {terrain.terrainData.size}");
+        // Debug.Log($"Height Scale: {heightScale}");
 
 
 

@@ -9,6 +9,7 @@ public class Server : MonoBehaviour
 
     void Awake()
     {
+        Debug.Log("Server awake");
         serverInstance = this;
 
         if (server == null)
@@ -19,6 +20,14 @@ public class Server : MonoBehaviour
     void Start()
     {
         server.Start();
+        Debug.Log("Started Server");
+    }
+
+    void OnDestroy()
+    {
+        server.Stop();
+        Debug.Log("Stopped Server");
+
     }
 
     void OnApplicationQuit()

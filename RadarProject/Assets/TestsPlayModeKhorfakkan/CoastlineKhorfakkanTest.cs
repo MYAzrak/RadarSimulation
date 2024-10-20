@@ -27,13 +27,13 @@ public class CoastlineKhorfakkanTest
         Assert.IsNotNull(terrainGeneratorComponent, "The RuntimeTerrainGenerator component must be attached to the Terrain object.");
 
         // Validate user input ranges for number of trees, bushes, and houses.
-       // terrainGeneratorComponent.numberOfTrees = Mathf.Clamp(terrainGeneratorComponent.numberOfTrees, 100, 1000);
-       // terrainGeneratorComponent.numberOfBushes = Mathf.Clamp(terrainGeneratorComponent.numberOfBushes, 100, 1000);
+        // terrainGeneratorComponent.numberOfTrees = Mathf.Clamp(terrainGeneratorComponent.numberOfTrees, 100, 1000);
+        // terrainGeneratorComponent.numberOfBushes = Mathf.Clamp(terrainGeneratorComponent.numberOfBushes, 100, 1000);
         //terrainGeneratorComponent.numberOfHouses = Mathf.Clamp(terrainGeneratorComponent.numberOfHouses, 1, 3);
 
-        Debug.Log($"The number of Trees: {terrainGeneratorComponent.numberOfTrees}");
-        Debug.Log($"The number of Bushes: {terrainGeneratorComponent.numberOfBushes}");
-        Debug.Log($"The number of Houses: {terrainGeneratorComponent.numberOfHouses}");
+        // Debug.Log($"The number of Trees: {terrainGeneratorComponent.numberOfTrees}");
+        // Debug.Log($"The number of Bushes: {terrainGeneratorComponent.numberOfBushes}");
+        // Debug.Log($"The number of Houses: {terrainGeneratorComponent.numberOfHouses}");
 
         // Ensure the exclusion zone is assigned and has a collider.
         Assert.IsNotNull(terrainGeneratorComponent.exclusionZoneObject, "Exclusion area object is not assigned in the RuntimeTerrainGenerator.");
@@ -97,7 +97,7 @@ public class CoastlineKhorfakkanTest
         int treeCount = trees.Length;
 
         // Log the number of trees found for debugging purposes.
-        Debug.Log($"Expected {terrainGeneratorComponent.numberOfTrees} trees, but found {treeCount}.");
+        // Debug.Log($"Expected {terrainGeneratorComponent.numberOfTrees} trees, but found {treeCount}.");
 
         /* // Calculate acceptable range based on user input.
          int minExpectedCount = Mathf.FloorToInt(terrainGeneratorComponent.numberOfTrees * 0.9f); // 90% of the input
@@ -115,7 +115,7 @@ public class CoastlineKhorfakkanTest
              $"Expected {terrainGeneratorComponent.numberOfTrees} trees, but found {treeCount}. Acceptable range: {minExpectedCount}-{maxExpectedCount}."
          );*/
 
-        Debug.Log("The actual number of trees falls within the acceptable range.");
+        // Debug.Log("The actual number of trees falls within the acceptable range.");
         // Verify that the spawned trees are of the expected prefabs.
         foreach (GameObject tree in trees)
         {
@@ -178,7 +178,7 @@ public class CoastlineKhorfakkanTest
         int bushCount = bushes.Length;
 
         // Log the number of bushes found for debugging purposes.
-        Debug.Log($"Expected {terrainGeneratorComponent.numberOfBushes} bushes, but found {bushCount}.");
+        // Debug.Log($"Expected {terrainGeneratorComponent.numberOfBushes} bushes, but found {bushCount}.");
 
         /*  // Calculate acceptable range based on user input.
           int minExpectedCount = Mathf.FloorToInt(terrainGeneratorComponent.numberOfBushes * 0.9f); // 90% of the input
@@ -196,7 +196,7 @@ public class CoastlineKhorfakkanTest
               $"Expected {terrainGeneratorComponent.numberOfBushes} bushes, but found {bushCount}. Acceptable range: {minExpectedCount}-{maxExpectedCount}."
           );*/
 
-        Debug.Log("The actual number of bushes falls within the acceptable range.");
+        // Debug.Log("The actual number of bushes falls within the acceptable range.");
 
         // Verify that the spawned bushes are of the expected prefabs.
         foreach (GameObject bush in bushes)
@@ -263,24 +263,24 @@ public class CoastlineKhorfakkanTest
         int houseCount = houses.Length;
 
         // Log the number of houses found for debugging purposes.
-        Debug.Log($"Expected {terrainGeneratorComponent.numberOfHouses} houses, but found {houseCount}.");
+        // Debug.Log($"Expected {terrainGeneratorComponent.numberOfHouses} houses, but found {houseCount}.");
 
-       /* // Calculate acceptable range based on user input.
-        int minExpectedCount = Mathf.FloorToInt(terrainGeneratorComponent.numberOfHouses * 0.9f); // 90% of the input
-        int maxExpectedCount = Mathf.CeilToInt(terrainGeneratorComponent.numberOfHouses * 1.1f); // 110% of the input
+        /* // Calculate acceptable range based on user input.
+         int minExpectedCount = Mathf.FloorToInt(terrainGeneratorComponent.numberOfHouses * 0.9f); // 90% of the input
+         int maxExpectedCount = Mathf.CeilToInt(terrainGeneratorComponent.numberOfHouses * 1.1f); // 110% of the input
 
-        // Check if the house count is within the acceptable range.
-        if (houseCount >= minExpectedCount && houseCount <= maxExpectedCount)
-        {
-            Debug.Log("The actual number of houses falls within the acceptable range.");
-        }
-
-        // Verify the count is within the acceptable range.
-        Assert.IsTrue(
-            houseCount >= minExpectedCount && houseCount <= maxExpectedCount,
-            $"Expected {terrainGeneratorComponent.numberOfHouses} houses, but found {houseCount}. Acceptable range: {minExpectedCount}-{maxExpectedCount}."
-        );*/
+         // Check if the house count is within the acceptable range.
+         if (houseCount >= minExpectedCount && houseCount <= maxExpectedCount)
+         {
              Debug.Log("The actual number of houses falls within the acceptable range.");
+         }
+
+         // Verify the count is within the acceptable range.
+         Assert.IsTrue(
+             houseCount >= minExpectedCount && houseCount <= maxExpectedCount,
+             $"Expected {terrainGeneratorComponent.numberOfHouses} houses, but found {houseCount}. Acceptable range: {minExpectedCount}-{maxExpectedCount}."
+         );*/
+        // Debug.Log("The actual number of houses falls within the acceptable range.");
 
         // Verify that the spawned houses are of the expected prefabs.
         foreach (GameObject house in houses)
@@ -329,7 +329,7 @@ public class CoastlineKhorfakkanTest
         string[] tagsToCheck = { "Tree", "Bush", "House" };
 
         // Verify the exclusion zone collider's bounds.
-        Debug.Log($"Exclusion Zone Bounds: Center = {exclusionZoneCollider.bounds.center}, Size = {exclusionZoneCollider.bounds.size}");
+        // Debug.Log($"Exclusion Zone Bounds: Center = {exclusionZoneCollider.bounds.center}, Size = {exclusionZoneCollider.bounds.size}");
 
         // Iterate over each tag.
         foreach (string tag in tagsToCheck)
@@ -343,7 +343,7 @@ public class CoastlineKhorfakkanTest
                 bool isInsideExclusionZone = exclusionZoneCollider.bounds.Contains(obj.transform.position);
 
                 // Log the position of each object for debugging.
-                Debug.Log($"Object '{obj.name}' with tag '{tag}' is at position {obj.transform.position}. Inside Exclusion Zone: {isInsideExclusionZone}");
+                // Debug.Log($"Object '{obj.name}' with tag '{tag}' is at position {obj.transform.position}. Inside Exclusion Zone: {isInsideExclusionZone}");
 
                 // Assert that the object is outside the exclusion zone.
                 Assert.IsFalse(
