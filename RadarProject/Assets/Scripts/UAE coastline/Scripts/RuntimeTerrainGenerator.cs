@@ -9,7 +9,7 @@ public class RuntimeTerrainGenerator : MonoBehaviour
     public float heightScale = 600f;
     public int smoothingIterations = 2;
     //public GameObject waterPrefab;
-    float waterHeight = 0f; 
+    float waterHeight = 0f;
     public GameObject[] treePrefabs;
     public int numberOfTrees = 20;
 
@@ -24,15 +24,15 @@ public class RuntimeTerrainGenerator : MonoBehaviour
     [Range(0, 1)] public float maxSlope = 0.2f;
     // Terrain width and length
     public float terrainWidth = 1000f;
-    public float terrainLength = 1000f;     
+    public float terrainLength = 1000f;
     // Layers for terrain texture
     public TerrainLayer sandLayer;
     public TerrainLayer grassLayer;
     public TerrainLayer rockLayer;
     //Layers distribution based on height
     [Range(0, 2000)] public float sandHeight = 30f; // Sand applied below this height
-    [Range(0, 2000)] public float grassHeight = 90f; 
-    [Range(0, 2000)] public float rockHeight = 150f; 
+    [Range(0, 2000)] public float grassHeight = 90f;
+    [Range(0, 2000)] public float rockHeight = 150f;
 
     public Material skyboxMaterial;
     private List<Vector3> occupiedPositions = new List<Vector3>();
