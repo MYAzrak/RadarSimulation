@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.UIElements;
 
 public class DynamicMenuUI
@@ -46,15 +47,26 @@ public class DynamicMenuUI
         });
     }
     public void SetRadarEvents()
+    {   
+        SetRadarSettingsEvents();
+        SetLatticeNetworkEvents();
+        SetOneRadarEvents();
+    }
+
+    void SetRadarSettingsEvents()
     {
-        // One radar
-        Button generateOneRadarAtNetworkBtn = ui.Q("GenerateRadarAtNetworkBtn") as Button;
-        generateOneRadarAtNetworkBtn.RegisterCallback((ClickEvent clickEvent) =>
+        IntegerField radarRangeField = ui.Q("RadarRangeField") as IntegerField;
+        radarRangeField.RegisterValueChangedCallback((ChangeEvent<int> evt) =>
         {
-            radarController.GenerateRadar();
+            if (evt.newValue >= 0)
+            {
+                radarController.maxDistance = evt.newValue;
+            }
         });
-        
-        // Lattice network
+    }
+
+    void SetLatticeNetworkEvents()
+    {
         SliderInt radarColSlider = ui.Q("RadarColSlider") as SliderInt;
         radarColSlider.value = 3;
         radarController.cols = radarColSlider.value;
@@ -77,6 +89,17 @@ public class DynamicMenuUI
             int numOfRadars = radarController.rows * radarController.cols;
             radarController.numOfRadars = numOfRadars;
             radarController.GenerateRadars(numOfRadars);
+        });
+    }
+
+    void SetOneRadarEvents()
+    {
+        Button generateOneRadarAtNetworkBtn = ui.Q("GenerateRadarAtNetworkBtn") as Button;
+        generateOneRadarAtNetworkBtn.RegisterCallback((ClickEvent clickEvent) =>
+        {
+            Vector3Field radarLocation = ui.Q("RadarLocationVector3") as Vector3Field;
+            radarController.locationToCreateRadar = radarLocation.value;
+            radarController.GenerateRadar();
         });
     }
 

@@ -85,6 +85,8 @@ public class MainMenuController : MonoBehaviour
 
         SetDefaultSimulationInfoPanel();
 
+        SetLogBtnEvent();
+
         // Weird bug where the first visual element remains visible
         // Ignoring the parents visibility
         tabBtns[0].visualElement.visible = false;
@@ -129,6 +131,7 @@ public class MainMenuController : MonoBehaviour
         tabBtns.Add(new TabViews(ui.Q("ShipBtn") as Button, ui.Q("ShipsView")));
         tabBtns.Add(new TabViews(ui.Q("DynamicBtn") as Button, ui.Q("DynamicView")));
         tabBtns.Add(new TabViews(ui.Q("CameraBtn") as Button, ui.Q("CameraView")));
+        tabBtns.Add(new TabViews(ui.Q("LogBtn") as Button, ui.Q("LogView")));
     }
 
     void ViewToEnable(Button button)
@@ -224,6 +227,15 @@ public class MainMenuController : MonoBehaviour
         terminateSimulation.RegisterCallback((ClickEvent clickEvent) =>
         {
             scenarioController.EndAllScenarios();
+        });
+    }
+
+    public void SetLogBtnEvent()
+    {
+        Button logBtn = ui.Q("OpenLogFileBtn") as Button;
+        logBtn.RegisterCallback((ClickEvent clickEvent) =>
+        {
+            System.Diagnostics.Process.Start(Logger.filePath);
         });
     }
 

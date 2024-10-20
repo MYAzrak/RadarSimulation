@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Crest;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class RadarController : MonoBehaviour
@@ -11,7 +9,9 @@ public class RadarController : MonoBehaviour
     [SerializeField] GameObject radarPrefab;
     public int rows = 1;
     public int cols = 1;
-    public int distanceBetweenRadars = 5000;
+    int distanceBetweenRadars;
+    public int maxDistance = 5000;
+    public Vector3 locationToCreateRadar = Vector3.zero;
     public int numOfRadars;
 
     [Header("Debug")]
@@ -105,55 +105,65 @@ public class RadarController : MonoBehaviour
         radarScript.BeamWidth = BeamWidth;
         radarScript.HeightRes = HeightRes;
         radarScript.WidthRes = WidthRes;
+        radarScript.MaxDistance = maxDistance;
 
         // Keep track of created radars
         radars[newRadarID] = instance;
 
-        // Get the row with the least radars and its key
-        var min = numOfRadarsPerRow.First();
-        foreach (var pair in numOfRadarsPerRow)
+        if (locationToCreateRadar == Vector3.zero)
         {
-            if (pair.Value < min.Value)
+            // Get the row with the least radars and its key
+            var min = numOfRadarsPerRow.First();
+            foreach (var pair in numOfRadarsPerRow)
             {
-                min = pair;
+                if (pair.Value < min.Value)
+                {
+                    min = pair;
+                }
             }
+
+            distanceBetweenRadars = maxDistance * 2;
+
+            int key = min.Key; // 0 first row, 1 second row, etc
+
+            int xDistance = min.Value * distanceBetweenRadars;
+
+            int radarToSpawnAt = (min.Value * rows) + key;
+            Vector3 latestRadarPosition;
+
+            // Create radar at the row with least radars
+            if (radars.Keys.Contains(radarToSpawnAt))
+                latestRadarPosition = radars[radarToSpawnAt].transform.position;
+            else
+                latestRadarPosition = radars[radarToSpawnAt + 1].transform.position;
+
+            float x = latestRadarPosition.x;
+            float y = 0;
+            float z = latestRadarPosition.z;
+
+            float zAdd = z + (distanceBetweenRadars * key);
+            float xAdd = x + xDistance;
+
+            instance.transform.position = parentEmptyObject.transform.position;
+            if (direction == RadarGenerationDirection.Right || direction == RadarGenerationDirection.Up)
+            {
+                instance.transform.position += new Vector3(xAdd, y, zAdd);
+            }
+            else if (direction == RadarGenerationDirection.Left)
+            {
+                instance.transform.position += new Vector3(-xAdd, y, zAdd);
+            }
+            else if (direction == RadarGenerationDirection.Down)
+            {
+                instance.transform.position += new Vector3(xAdd, y, -zAdd);
+            }
+
+            numOfRadarsPerRow[key] += 1;
         }
-
-        int key = min.Key; // 0 first row, 1 second row, etc
-
-        int xDistance = min.Value * distanceBetweenRadars;
-
-        int radarToSpawnAt = (min.Value * rows) + key;
-        Vector3 latestRadarPosition;
-
-        // Create radar at the row with least radars
-        if (radars.Keys.Contains(radarToSpawnAt))
-            latestRadarPosition = radars[radarToSpawnAt].transform.position;
         else
-            latestRadarPosition = radars[radarToSpawnAt + 1].transform.position;
-
-        float x = latestRadarPosition.x;
-        float y = 0;
-        float z = latestRadarPosition.z;
-
-        float zAdd = z + (distanceBetweenRadars * key);
-        float xAdd = x + xDistance;
-
-        instance.transform.position = parentEmptyObject.transform.position;
-        if (direction == RadarGenerationDirection.Right || direction == RadarGenerationDirection.Up)
         {
-            instance.transform.position += new Vector3(xAdd, y, zAdd);
+            instance.transform.position = locationToCreateRadar;
         }
-        else if (direction == RadarGenerationDirection.Left)
-        {
-            instance.transform.position += new Vector3(-xAdd, y, zAdd);
-        }
-        else if (direction == RadarGenerationDirection.Down)
-        {
-            instance.transform.position += new Vector3(xAdd, y, -zAdd);
-        }
-
-        numOfRadarsPerRow[key] += 1;
 
         // Make the new radar a child of parentEmptyObject
         instance.transform.parent = parentEmptyObject.transform;
@@ -178,42 +188,6 @@ public class RadarController : MonoBehaviour
         mainMenuController.SetRadarsLabel(numOfRadars);
         //Debug.Log($"{numOfRadars} radars have been generated");
     }
-
-    /*
-    public async void UpdateRadarsPositions()
-    {
-        foreach (KeyValuePair<int, GameObject> entry in radars)
-        {
-            // Disable kinematic to avoid unwanted forces being applied
-            Rigidbody rb = entry.Value.GetComponent<Rigidbody>();
-            rb.isKinematic = true;
-
-            Vector3 position = entry.Value.transform.position;
-            sampleHeightHelper.Init(position, 0, true);
-
-            float o_height = await WaitForSampleAsync();
-
-            entry.Value.transform.position = new Vector3(position.x, o_height, position.z);
-
-            rb.isKinematic = false;
-        }
-
-        mainMenuController.SetRadarsLabel(radars.Count);
-    }
-
-    async Task<float> WaitForSampleAsync()
-    {
-        float o_height;
-
-        // Wait until we get a valid sample height
-        while (!sampleHeightHelper.Sample(out o_height))
-        {
-            await Task.Yield();
-        }
-
-        return o_height;
-    }
-    */
 
     public void UnloadRadars()
     {

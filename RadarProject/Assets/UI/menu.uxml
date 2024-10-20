@@ -5,6 +5,7 @@
             <ui:Button text="Scenario" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ShipBtn" class="tab-btns" style="align-self: auto; height: auto; padding-top: 3%; padding-right: 4%; padding-bottom: 3%; padding-left: 4%; align-items: auto; justify-content: flex-start; margin-left: 0; width: auto;" />
             <ui:Button text="Dynamic" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DynamicBtn" class="tab-btns" style="height: auto; padding-top: 3%; padding-right: 4%; padding-bottom: 3%; padding-left: 4%; display: flex; margin-bottom: 1%;" />
             <ui:Button text="Camera" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CameraBtn" class="tab-btns" style="height: auto; padding-top: 3%; padding-right: 4%; padding-bottom: 3%; padding-left: 4%; display: flex; margin-bottom: 1%;" />
+            <ui:Button text="Log" parse-escape-sequences="true" display-tooltip-when-elided="true" name="LogBtn" class="tab-btns" style="height: auto; padding-top: 3%; padding-right: 4%; padding-bottom: 3%; padding-left: 4%; display: flex; margin-bottom: 1%;" />
         </ui:VisualElement>
         <ui:VisualElement name="ShipsView" style="flex-grow: 1; height: auto; display: flex; width: 400px; visibility: visible;">
             <ui:Label tabindex="-1" text="Found {Num} Scenarios" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NumOfScenariosLabel" class="text" style="align-items: stretch; justify-content: flex-start; -unity-text-align: upper-center; height: 28px; padding-top: 4px;" />
@@ -17,13 +18,17 @@
                 <ui:SliderInt label="Simulation Speed" high-value="3" show-input-field="true" low-value="1" name="SimulationSpeedSlider" focusable="false" class="text" />
             </ui:Foldout>
             <ui:Foldout text="Radar" focusable="false" value="false" name="RadarFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold;">
-                <ui:Foldout text="Radar Settings" focusable="false" value="false" name="RadarSettingsFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold; display: none;" />
+                <ui:Foldout text="Radar Settings" focusable="false" value="false" name="RadarSettingsFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold; display: flex;">
+                    <ui:IntegerField label="Range" value="5000" name="RadarRangeField" />
+                </ui:Foldout>
                 <ui:Foldout text="Generate Lattice Network" focusable="false" value="false" name="LatticeNetworkFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold;">
                     <ui:SliderInt label="Rows" high-value="5" show-input-field="true" low-value="1" name="RadarRowSlider" focusable="true" inverted="false" class="text" />
                     <ui:SliderInt label="Columns" high-value="5" show-input-field="true" low-value="1" name="RadarColSlider" focusable="true" inverted="false" class="text" />
                     <ui:Button text="Generate Lattice Network" parse-escape-sequences="true" display-tooltip-when-elided="true" name="GenerateNetworkBtn" focusable="false" class="btns" style="align-items: stretch; align-self: center;" />
                 </ui:Foldout>
                 <ui:Foldout text="Generate 1 Radar" focusable="false" value="false" name="GenerateRadarFoldout" class="text" style="margin-left: 2%; margin-right: 2%; background-color: rgba(0, 0, 0, 0); -unity-font-style: bold;">
+                    <ui:Vector3Field label="Location" x="0" name="RadarLocationVector3" class="text" style="margin-right: 4px; padding-right: 0; padding-left: 0; margin-left: 0; flex-direction: column;" />
+                    <ui:Label tabindex="-1" text="Setting the location to (0,0,0) will create &#10;the radar at a predefined position" parse-escape-sequences="true" display-tooltip-when-elided="true" class="text" style="font-size: 12px; -unity-font-style: bold-and-italic;" />
                     <ui:Button text="Generate 1 Radar In&#10;Lattice Network" parse-escape-sequences="true" display-tooltip-when-elided="true" name="GenerateRadarAtNetworkBtn" focusable="false" class="btns" style="align-items: stretch; align-self: center; height: auto;" />
                 </ui:Foldout>
             </ui:Foldout>
@@ -48,6 +53,9 @@
             <ui:SliderInt label="Camera Speed" high-value="30" show-input-field="true" low-value="5" name="CameraSpeedSlider" focusable="false" page-size="1" direction="Horizontal" inverted="false" class="text" style="height: 50px; display: flex;" />
             <ui:IntegerField label="Radar ID" value="0" name="RadarIDField" class="text" style="align-self: center; width: 250px;" />
             <ui:Button text="Go To Radar" parse-escape-sequences="true" display-tooltip-when-elided="true" name="GoToRadarBtn" focusable="false" class="btns" style="align-items: stretch; align-self: center;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="LogView" style="flex-grow: 1; height: auto; display: flex; width: 400px;">
+            <ui:Button text="Open Log File" parse-escape-sequences="true" display-tooltip-when-elided="true" name="OpenLogFileBtn" focusable="false" class="btns" style="align-items: stretch; align-self: center; margin-top: 4%;" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="SimulationInfoPanel" class="panel" style="flex-grow: 1; position: absolute; left: auto; top: 1px; right: -1px; bottom: auto; margin-top: 1%; margin-right: 2%; background-color: rgba(0, 0, 0, 0.94); width: 300px;">

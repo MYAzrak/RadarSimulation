@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Logger
 {
-    private static string filePath;
+    public static string filePath;
 
     public static void SetFilePath(object message)
     {
