@@ -136,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6042938906732329270, guid: e14a80e599e6f8e33834926622231b92, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 16.1
       objectReference: {fileID: 0}
     - target: {fileID: 6042938906732329270, guid: e14a80e599e6f8e33834926622231b92, type: 3}
       propertyPath: m_LocalPosition.z
@@ -173,6 +173,10 @@ PrefabInstance:
     - target: {fileID: 6822851038680780235, guid: e14a80e599e6f8e33834926622231b92, type: 3}
       propertyPath: m_Name
       value: Gas Carrier Ship
+      objectReference: {fileID: 0}
+    - target: {fileID: 6822851038680780235, guid: e14a80e599e6f8e33834926622231b92, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -543,6 +547,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWave: {fileID: 0}
+  currentWaveCondition: 0
+  defaultWave: {fileID: 0}
 --- !u!1 &1422562296
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,6 +758,8 @@ MonoBehaviour:
   randomCoordinates: 1000
   minSpeed: 11
   maxSpeed: 21
+  weather: 0
+  waves: 0
   hasProceduralLand: 0
   proceduralLandSeed: 0
   proceduralLandLocation: {x: 0, y: 0, z: 0}
@@ -794,13 +802,18 @@ MonoBehaviour:
     skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
     oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
   timeScale: 1
-  updateTimeScale: 0
   loadScenario: 0
-  resetScenario: 0
   timeLimit: 300
-  completedShips: 0
   loadAllScenarios: 0
   generatedShips: []
+  scenarioSettings:
+    waves: 0
+    weather: 0
+    isFoggy: 0
+    hasProceduralLand: 0
+    proceduralLandSeed: 0
+    proceduralLandLocation: {x: 0, y: 0, z: 0}
+    directionToSpawnRadars: 0
 --- !u!4 &2106282668
 Transform:
   m_ObjectHideFlags: 0
@@ -845,9 +858,8 @@ MonoBehaviour:
   cols: 1
   distanceBetweenRadars: 50
   numOfRadars: 0
-  generateRadars: 0
-  generateOneRadar: 0
   newRadarID: 0
+  parentEmptyObject: {fileID: 0}
   transmittedPowerW: 1000
   antennaGainDBi: 30
   wavelengthM: 0.03
@@ -857,6 +869,7 @@ MonoBehaviour:
   BeamWidth: 2
   HeightRes: 1024
   WidthRes: 10
+  direction: 1
 --- !u!114 &2106282671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -897,6 +910,7 @@ MonoBehaviour:
   terrainGeneratorPrefab: {fileID: 2262635441062951885, guid: 639cb1dc935915348b47695143bbad8e, type: 3}
   seed: 0
   position: {x: 0, y: 400, z: 0}
+  terrainInstance: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

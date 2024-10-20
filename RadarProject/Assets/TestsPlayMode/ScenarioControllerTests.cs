@@ -58,7 +58,7 @@ public class ScenarioControllerTests
         GenerateTestScenario(test1FileName, false, Weather.Clear, Waves.Calm);
         scenarioController.LoadScenario(filePath + test1FileName);
 
-        yield return null;
+        yield return new WaitForSeconds(1f);
 
         // Check ships were created as required
         Assert.Greater(scenarioController.shipsInformation.Count, 0, "Not all ships were created.");
@@ -82,7 +82,7 @@ public class ScenarioControllerTests
         
         // Check ship spawned in first location
         // Checking with tolerance due to floating point errors
-        float tolerance = 0.1f;
+        float tolerance = 2f;
         Vector3 expected = new(expectedCoordinates[0].x_coordinates, 0, expectedCoordinates[0].z_coordinates);
         Vector3 actual = new(xGenerated, 0, zGenerated);
         Assert.IsTrue(

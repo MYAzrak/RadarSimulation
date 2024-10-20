@@ -11,6 +11,7 @@ public class ShipBouyancyScript : MonoBehaviour
     public static ShipBouyancyScript shipBouyancyScriptInstance;
 
     [SerializeField] float amplifyForce = 0.5f;
+    public float timeToWait = 0;
     public float rotationSpeed = 2.0f;
 
     ShipTriangles shipTriangles;
@@ -75,6 +76,9 @@ public class ShipBouyancyScript : MonoBehaviour
         if (shipTriangles.underWaterTriangleData.Count > 0)
             AddUnderWaterForces();
 
+        if (shipTriangles.aboveWaterTriangleData.Count > 0)
+            AddAboveWaterForces();
+
         // Align the ship upward to avoid sinking
         AlignShipUpward();
     }
@@ -84,7 +88,10 @@ public class ShipBouyancyScript : MonoBehaviour
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(0.2f, 1f));
+            if (timeToWait == 0)
+                yield return new WaitForSeconds(UnityEngine.Random.Range(0.2f, 1f));
+            else
+                yield return new WaitForSeconds(timeToWait);
             shipTriangles.GenerateUnderwaterMesh();
             recalculateForces = true;
         }
@@ -160,6 +167,45 @@ public class ShipBouyancyScript : MonoBehaviour
 
         return force;
     }
+
+    void AddAboveWaterForces()
+    {
+        //Get all triangles
+        List<TriangleData> aboveWaterTriangleData = shipTriangles.aboveWaterTriangleData;
+
+        //Loop through all triangles
+        for (int i = 0; i < aboveWaterTriangleData.Count; i++)
+        {
+            TriangleData triangleData = aboveWaterTriangleData[i];
+
+            Vector3 force = Vector3.zero;
+
+            int shipDragCoefficient = 1;
+            force += AirResistanceForce(waterDensity, triangleData, shipDragCoefficient);
+
+            ship.AddForceAtPosition(force, triangleData.center);
+        }
+    }
+
+    public Vector3 AirResistanceForce(float rho, TriangleData triangleData, float C_air)
+    {
+        //Only add air resistance if normal is pointing in the same direction as the velocity
+        if (triangleData.cosTheta < 0f)
+        {
+            return Vector3.zero;
+        }
+
+        //Find air resistance force
+        Vector3 airResistanceForce = 0.5f * rho * triangleData.velocity.magnitude * triangleData.velocity * triangleData.area * C_air;
+
+        //Acting in the opposite side of the velocity
+        airResistanceForce *= -1f;
+
+        if (!IsValidForce(airResistanceForce))
+            return Vector3.zero;
+
+        return airResistanceForce;
+	}
 
     bool IsValidForce(Vector3 force)
     {

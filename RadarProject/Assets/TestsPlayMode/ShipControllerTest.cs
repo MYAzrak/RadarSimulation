@@ -21,8 +21,9 @@ public class ShipControllerTests
         }
 
         // Get ship game object
-        shipGameObject = GameObject.Find("Gas Carrier Ship");
+        shipGameObject = Object.FindObjectOfType<Rigidbody>(true).gameObject;
         Assert.IsNotNull(shipGameObject, "Gas Carrier Ship should be present in the test scene.");
+        shipGameObject.SetActive(true);
 
         shipTransform = shipGameObject.transform;
         shipController = shipGameObject.GetComponent<ShipController>();
@@ -43,6 +44,7 @@ public class ShipControllerTests
         shipController.distanceThreshold = 50;
         shipController.turnSpeedMultiplier = 0.020f;
         shipController.indexOfLocationToVisit = 0;
+        shipGameObject.GetComponent<ShipBouyancyScript>().timeToWait = 0.2f;
 
         shipController.shipInformation = new ShipInformation(1, ShipType.GasCarrier);
     }
@@ -50,11 +52,12 @@ public class ShipControllerTests
     [UnityTest]
     public IEnumerator ShipMovementAndRotationTest()
     {
-        // Speed up the events
         Time.timeScale = 2f;
-
+        
         // Set initial position of the ship
-        shipTransform.position = new Vector3(0, 0, 0);
+        shipTransform.position = new Vector3(0, 15, 0);
+
+        yield return null;
 
         // Call FixedUpdate enough times to move
         for (int i = 0; i < 200; i++)

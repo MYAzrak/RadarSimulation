@@ -12,6 +12,7 @@ public class ShipTriangles
     Vector3[] samplePoints;
 
     public List<TriangleData> underWaterTriangleData = new();
+    public List<TriangleData> aboveWaterTriangleData = new();
 
     int shipVerticesLength;
 
@@ -31,6 +32,7 @@ public class ShipTriangles
 
     public void GenerateUnderwaterMesh()
     {
+        aboveWaterTriangleData.Clear();
         underWaterTriangleData.Clear();
 
         samplePoints = new Vector3[shipVerticesLength];
@@ -84,6 +86,8 @@ public class ShipTriangles
                 Vector3 p1 = vertexData[0].worldSpacePosition;
                 Vector3 p2 = vertexData[1].worldSpacePosition;
                 Vector3 p3 = vertexData[2].worldSpacePosition;
+
+                aboveWaterTriangleData.Add(new TriangleData(p1, p2, p3, shipRigidbody));
             }
 
             // All vertices are underwater
