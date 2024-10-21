@@ -328,9 +328,7 @@ public class RadarScript : MonoBehaviour
                 {
                     // Calculate azimuth
                     float azimuth = Mathf.Atan2(directionToShip.x, directionToShip.z) * Mathf.Rad2Deg;
-                    azimuth = (azimuth + 360) % 360; // Ensure positive angle
-                    //off by 90 degrees for some reason
-                    azimuth += 90;
+                    azimuth = (azimuth - transform.parent.transform.rotation.y + 360) % 360; // Ensure positive angle
 
                     int shipId = ship.GetInstanceID();
                     ShipData shipData = new ShipData
