@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1977436472703728319}
   - component: {fileID: 9083716614500702741}
   - component: {fileID: 1071580377255672330}
+  - component: {fileID: 1295870565304099473}
   m_Layer: 0
   m_Name: Gas Carrier Ship
   m_TagString: Untagged
@@ -195,6 +196,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1773197216858952008, guid: 6b19def0317f5789b8e63c24ee1d8e67, type: 3}
+--- !u!114 &1295870565304099473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6822851038680780235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69cdb484cd664eea989dedf8c6f1a73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reflectivity: 1
 --- !u!1 &8526547969715830430
 GameObject:
   m_ObjectHideFlags: 0

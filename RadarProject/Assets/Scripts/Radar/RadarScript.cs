@@ -160,6 +160,7 @@ public class RadarScript : MonoBehaviour
         PrecalculateRadarConstants();
         StartCoroutine(ProcessRadar());
     }
+
     private void SetupObjectIdCamera()
     {
         // Create a new camera object
@@ -177,6 +178,7 @@ public class RadarScript : MonoBehaviour
         objectIdCamera.enabled = false; // Keep it disabled until needed
         objectIdCamera.SetReplacementShader(Shader.Find("Custom/ObjectIdShader"), "");
     }
+
     void PrecalculateRadarConstants()
     {
         float G = Mathf.Pow(10f, antennaGainDBi / 10f);
@@ -251,6 +253,11 @@ public class RadarScript : MonoBehaviour
         reflectivityShader.SetInt("Height", HeightRes);
 
         ReflectivityData[] reflectivityDataArray = ReflectivityManager.Instance.GetReflectivityDataArray();
+        if (reflectivityDataArray.Length > reflectivityDataBuffer.count)
+        {
+            reflectivityDataBuffer.Release();
+            reflectivityDataBuffer = new ComputeBuffer(1024, sizeof(int) + sizeof(float));
+        }
         reflectivityDataBuffer.SetData(reflectivityDataArray);
 
         reflectivityShader.SetBuffer(kernel, "ReflectivityDataBuffer", reflectivityDataBuffer);
@@ -523,7 +530,14 @@ public class RadarScript : MonoBehaviour
         {
             objectIdTexture.Release();
         }
-
+        if (reflectivityDataBuffer != null)
+        {
+            reflectivityDataBuffer.Release();
+        }
+        if (reflectivityBuffer != null)
+        {
+            reflectivityBuffer.Release();
+        }
         if (objectIdCamera != null)
         {
             Destroy(objectIdCamera.gameObject);

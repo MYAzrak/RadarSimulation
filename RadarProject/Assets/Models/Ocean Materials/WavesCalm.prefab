@@ -83,4 +83,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f69cdb484cd664eea989dedf8c6f1a73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reflectivity: 0
+  reflectivity: 1

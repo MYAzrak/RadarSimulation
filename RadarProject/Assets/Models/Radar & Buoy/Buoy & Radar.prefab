@@ -77,6 +77,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3d6ea4c5e16ed41d68c58016e927cec7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8411988310849697186}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3d6ea4c5e16ed41d68c58016e927cec7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6780059466265500058}
   m_SourcePrefab: {fileID: 100100000, guid: 3d6ea4c5e16ed41d68c58016e927cec7, type: 3}
 --- !u!1 &1562314535405687953 stripped
 GameObject:
@@ -141,6 +144,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6780059466265500058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562314535405687953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69cdb484cd664eea989dedf8c6f1a73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reflectivity: 1
 --- !u!4 &2226366349955386923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3d6ea4c5e16ed41d68c58016e927cec7, type: 3}
@@ -244,6 +260,7 @@ MonoBehaviour:
   path: radar
   HeightRes: 2048
   WidthRes: 5
+  resolution: 0.5
   MaxDistance: 5000
   MinDistance: 0.5
   VerticalAngle: 30
@@ -253,6 +270,7 @@ MonoBehaviour:
   ImageRadius: 500
   normalDepthShader: {fileID: 4800000, guid: 80276a72e6457210a8488c7156a96948, type: 3}
   parallelThreshold: 0.45
+  currentRotation: 1
   radarComputeShader: {fileID: 7200000, guid: d7843e87c99ec997aa589a355eb3fa87, type: 3}
   transmittedPowerW: 1000
   antennaGainDBi: 30
@@ -265,3 +283,5 @@ MonoBehaviour:
   RainProbability: 0.1
   RainRCS: 0.001
   RainIntensity: 10
+  reflectivityTexture: {fileID: 0}
+  nRotations: 0
