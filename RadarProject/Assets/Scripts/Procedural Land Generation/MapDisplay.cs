@@ -23,7 +23,7 @@ public class MapDisplay : MonoBehaviour
         
         // Add a box collider around the land to trigger events
         BoxCollider boxCollider = gameObject.GetComponent<BoxCollider>();
-        boxCollider.size = mesh.bounds.size * 10;
+        boxCollider.size = mesh.bounds.size * 9.5f;
         boxCollider.center = mesh.bounds.center;
     }
 }

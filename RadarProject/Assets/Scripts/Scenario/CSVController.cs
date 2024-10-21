@@ -53,9 +53,9 @@ public class CSVController : MonoBehaviour
         {
             // Initialize ship parameters with random values
             numberOfShips = Random.Range(80, 120);
-            locationsToCreate = Random.Range(3, 5);
-            minStartingCoordinates = -20000;
-            maxStartingCoordinates = 20000;
+            locationsToCreate = Random.Range(7, 10);
+            minStartingCoordinates = -15000;
+            maxStartingCoordinates = 15000;
             randomCoordinates = Random.Range(-1500, 1500);
             minSpeed = 10;
             maxSpeed = 16;
@@ -70,6 +70,17 @@ public class CSVController : MonoBehaviour
 
             // Create a point on the boundary of the ship spawn area
             Vector3 pointOutside = GetRandomPointOnBoundary(Vector3.zero, new Vector2(maxStartingCoordinates, maxStartingCoordinates), ref direction);
+
+            if (direction == RadarGenerationDirection.Left)
+            {
+                minStartingCoordinates = -15000;
+                maxStartingCoordinates = 7000;
+            }
+            else if (direction == RadarGenerationDirection.Right)
+            {
+                minStartingCoordinates = -7000;
+                maxStartingCoordinates = 15000;
+            }
 
             proceduralLandLocation = pointOutside;
         }

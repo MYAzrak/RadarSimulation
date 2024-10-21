@@ -342,6 +342,15 @@ public class ScenarioController : MonoBehaviour
         }
     }
 
+    public void RemoveShip(GameObject ship)
+    {
+        if (generatedShips.Contains(ship))
+        {
+            generatedShips.Remove(ship);
+            Destroy(ship);
+        }
+    }
+
     public void EndScenario()
     {
         if (!scenarioCurrentlyRunning) return;

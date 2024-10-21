@@ -19,14 +19,19 @@ public class ShipController : MonoBehaviour
     public float timeToWaitBeforeLogging = 5f;
     public bool logMessages = false;
 
+    ScenarioController scenarioController;
     new Rigidbody rigidbody;
     Transform shipTransform;
     public ShipInformation shipInformation;
+    bool hitLand = false;
 
     void Start()
     {
         rigidbody = GetComponentInChildren<Rigidbody>() ?? GetComponent<Rigidbody>();
         shipTransform = transform;
+
+        scenarioController = FindObjectOfType<ScenarioController>();
+
         StartCoroutine(LogShipEvents());
     }
 
@@ -74,7 +79,10 @@ public class ShipController : MonoBehaviour
         while (Application.isPlaying) 
         {
             yield return new WaitForSeconds(timeToWaitBeforeLogging);
-            
+
+            // If ship hits land then exit
+            if (hitLand) break;
+
             float speed = rigidbody.velocity.magnitude * ScenarioController.METERS_PER_SECOND_TO_KNOTS;
             Vector3 position = rigidbody.position;
 
@@ -82,6 +90,23 @@ public class ShipController : MonoBehaviour
 
             if (logMessages)
                 Debug.Log($"Ship with ID {shipInformation.Id} has speed: {speed} Knots at position: {position}");
+        }
+
+        if (hitLand)
+        {
+            scenarioController.RemoveShip(gameObject);
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag.Contains("Terrain"))
+        {
+            hitLand = true;
+        }
+        else
+        {
+            hitLand = false;
         }
     }
 }
