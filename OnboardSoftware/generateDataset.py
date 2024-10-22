@@ -6,6 +6,7 @@ import time
 import websocket
 import threading
 import argparse
+import numpy as np
 
 class SimulationManager:
     def __init__(self, config_path, unity_exe_path, output_dir):
@@ -25,7 +26,8 @@ class SimulationManager:
         for key, value in self.config.items():
             cmd.extend([f"-{key}", str(value)])
         
-        self.simulation_process = subprocess.Popen(cmd)
+        self.simulation_process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
 
     def collect_radar_data(self, radar_id):
         ws = websocket.WebSocketApp(f"ws://localhost:8080/radar{radar_id}",
@@ -43,6 +45,25 @@ class SimulationManager:
         data = json.loads(message)
         timestamp = int(time.time())
         filename = f"{self.output_dir}/radar_{radar_id}_{timestamp}.json"
+
+        # Extract the PPI array
+        ppi = np.array(data['PPI'], dtype=np.float32)
+
+        mean = np.mean(ppi)
+        std = np.std(ppi)
+        ppi = np.clip(ppi, 0, min(500, mean + (2/3) * std))
+
+        # Normalize to [0, 1]
+        ppi_min = np.min(ppi)
+        ppi_max = np.max(ppi)
+        
+        # Avoid division by zero
+        if ppi_max > ppi_min:
+            ppi_normalized = (ppi - ppi_min) / (ppi_max - ppi_min)
+        else:
+            ppi_normalized = np.zeros_like(ppi)
+
+        data['PPI'] = ppi_normalized.tolist()
         
         with open(filename, 'w') as f:
             json.dump(data, f)

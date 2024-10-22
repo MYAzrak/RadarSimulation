@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class MasterController : MonoBehaviour
@@ -22,6 +23,13 @@ public class MasterController : MonoBehaviour
             Debug.Log(x);
         }
         */
+
+        StartCoroutine(RunArguments());
+    }
+
+    IEnumerator RunArguments()
+    {
+        yield return null;
 
         //CSV Controller Params
         setIntArg("-nships", ref csvController.numberOfShips);

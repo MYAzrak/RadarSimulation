@@ -404,10 +404,10 @@ MonoBehaviour:
   _layer: 4
   _gravityMultiplier: 1
   _waterBodyCulling: 0
-  _minScale: 8
-  _maxScale: 256
+  _minScale: 0.25
+  _maxScale: -1
   _dropDetailHeightBasedOnWaves: 0.2
-  _lodDataResolution: 384
+  _lodDataResolution: 512
   _geometryDownSampleFactor: 2
   _lodCount: 15
   _extentsSizeMultiplier: 100
@@ -748,6 +748,7 @@ MonoBehaviour:
   scenarioSettings:
     waves: 0
     weather: 0
+    isFoggy: 0
     hasProceduralLand: 0
     proceduralLandSeed: 0
     proceduralLandLocation: {x: 0, y: 0, z: 0}
@@ -794,7 +795,8 @@ MonoBehaviour:
   radarPrefab: {fileID: 1562314535405687953, guid: 3b15d8a37689cf3cdb0844e0ea411b03, type: 3}
   rows: 4
   cols: 1
-  distanceBetweenRadars: 10000
+  maxDistance: 5000
+  locationToCreateRadar: {x: 0, y: 0, z: 0}
   numOfRadars: 0
   newRadarID: 0
   parentEmptyObject: {fileID: 0}

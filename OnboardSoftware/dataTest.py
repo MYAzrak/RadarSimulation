@@ -25,7 +25,7 @@ def create_ppi_plot(data, azimuth, range_bins, ships, radar_range):
     if clip:
         mean = np.mean(data)
         std = np.std(data)
-        data = np.clip(data, 0, mean + clip * std)
+        data = np.clip(data, 0, min(500, mean + clip * std))
 
     if color:
         data = np.where(data != 0, 1, data)
