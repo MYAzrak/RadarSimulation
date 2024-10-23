@@ -1,5 +1,6 @@
 {
-  "nRadars": 2,
-  "nScenarios": 10,
-  "screen-fullscreen": 0
+  "nRadars": 1,
+  "nScenarios": 60,
+  "screen-fullscreen": 0,
+  "scenarioTimeLimit": 60
 }

@@ -65,6 +65,7 @@ public class MasterController : MonoBehaviour
             csvController.GenerateScenarios(nScenarios);
             scenarioController.LoadAllScenarios();
         }
+        setFloatArg("-scenarioTimeLimit", ref scenarioController.timeLimit);
 
         //TODO: Start the simulation
     }
