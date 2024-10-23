@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using Crest;
 using UnityEngine;
 
@@ -37,12 +38,19 @@ public class RadarController : MonoBehaviour
     public int HeightRes = 1024;
     public int WidthRes = 10;
 
+    private Weather currentWeather = Weather.Clear;
+    private bool currentFog = false;
+
+    private Crest.OceanRenderer ocean;
+
     public RadarGenerationDirection direction = RadarGenerationDirection.Right;
 
     // Start is called before the first frame update
     void Start()
     {
         parentEmptyObject = new("Radars");
+        ocean = FindObjectOfType<Crest.OceanRenderer>();
+
 
         numOfRadarsPerRow = new();
 
@@ -56,24 +64,10 @@ public class RadarController : MonoBehaviour
 
     public void SetWeather(Weather weather, bool isFoggy)
     {
-        if (weather == Weather.Clear)
-        {
-            SetRadarWeather(0f, 0);
-        }
-        else if (weather == Weather.LightRain)
-        {
-            SetRadarWeather(UnityEngine.Random.Range(0.01f, 0.07f), 15);
-
-        }
-        else if (weather == Weather.HeavyRain && !isFoggy)
-        {
-            SetRadarWeather(UnityEngine.Random.Range(0.1f, 0.2f), 20);
-        }
-
-        else if (weather == Weather.HeavyRain && isFoggy)
-        {
-            SetRadarWeather(UnityEngine.Random.Range(0.3f, 0.4f), 25);
-        }
+        Tuple<float, int> weatherSettings = GetWeatherParams(weather, isFoggy);
+        SetRadarWeather(weatherSettings.Item1, weatherSettings.Item2);
+        currentWeather = weather;
+        currentFog = isFoggy;
     }
 
     private void SetRadarWeather(float RainProbability, int RainIntensity)
@@ -84,6 +78,30 @@ public class RadarController : MonoBehaviour
             script.RainProbability = RainProbability;
             script.RainIntensity = RainIntensity;
         }
+    }
+
+    private Tuple<float, int> GetWeatherParams(Weather weather, bool isFoggy)
+    {
+        if (weather == Weather.Clear)
+        {
+            return new Tuple<float, int>(0f, 0);
+        }
+        else if (weather == Weather.LightRain)
+        {
+            return new Tuple<float, int>(UnityEngine.Random.Range(0.01f, 0.07f), 15);
+
+        }
+        else if (weather == Weather.HeavyRain && !isFoggy)
+        {
+            return new Tuple<float, int>(UnityEngine.Random.Range(0.1f, 0.2f), 20);
+        }
+
+        else if (weather == Weather.HeavyRain && isFoggy)
+        {
+            return new Tuple<float, int>(UnityEngine.Random.Range(0.3f, 0.4f), 25);
+        }
+        return new Tuple<float, int>(0f, 0);
+
     }
 
     public void GenerateRadar()
@@ -107,8 +125,14 @@ public class RadarController : MonoBehaviour
         radarScript.WidthRes = WidthRes;
         radarScript.MaxDistance = maxDistance;
 
+        Tuple<float, int> weatherSettings = GetWeatherParams(currentWeather, currentFog);
+        radarScript.RainProbability = weatherSettings.Item1;
+        radarScript.RainIntensity = weatherSettings.Item2;
+
+
         // Keep track of created radars
         radars[newRadarID] = instance;
+
 
         if (locationToCreateRadar == Vector3.zero)
         {
@@ -164,6 +188,11 @@ public class RadarController : MonoBehaviour
         {
             instance.transform.position = locationToCreateRadar;
         }
+        if (ocean != null && newRadarID == 0)
+        {
+            ocean.Viewpoint = instance.transform;
+        }
+
 
         // Make the new radar a child of parentEmptyObject
         instance.transform.parent = parentEmptyObject.transform;

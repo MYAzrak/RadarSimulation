@@ -39,8 +39,6 @@ public class ReflectivityManager : MonoBehaviour
     reflectivityMap.Remove(objectId);
   }
 
-
-
   public float GetReflectivity(int objectId)
   {
     if (reflectivityMap.TryGetValue(objectId, out float reflectivity))

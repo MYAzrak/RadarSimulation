@@ -7,31 +7,35 @@ from torchvision import transforms
 from PIL import Image
 import matplotlib.pyplot as plt
 
+
 class PPIDataset(Dataset):
     def __init__(self, json_dir, transform=None):
         self.json_dir = json_dir
         self.transform = transform
-        self.json_files = [file for file in os.listdir(json_dir) if file.endswith('.json')]
+        self.json_files = [file for file in os.listdir(
+            json_dir) if file.endswith('.json')]
 
     def __len__(self):
         return len(self.json_files)
 
     def __getitem__(self, idx):
         json_path = os.path.join(self.json_dir, self.json_files[idx])
-        
+
         with open(json_path, 'r') as file:
             data = json.load(file)
-        
+
         ppi_array = np.array(data['PPI'], dtype=np.float32)
 
         # Convert to PIL Image (Assuming PPI is in a format that can be converted)
         image = Image.fromarray(ppi_array)
+        ships = data['ships']
 
         # Apply any transformations
         if self.transform:
             image = self.transform(image)
 
-        return image
+        return image, ships
+
 
 # Usage example
 json_directory = os.path.expanduser('~/Downloads/output')

@@ -159,6 +159,11 @@ public class RadarScript : MonoBehaviour
         StartCoroutine(ProcessRadar());
     }
 
+    public GameObject getDepthCamera()
+    {
+        return cameraObject;
+    }
+
     private void SetupObjectIdCamera()
     {
         // Create a new camera object
