@@ -48,8 +48,6 @@ public class RadarScript : MonoBehaviour
     public float wavelengthM = 0.03f; // meters (for 10 GHz)
     public float systemLossesDB = 3f; // dB
 
-    private ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
-
     private ComputeBuffer rcsBuffer;
     private ComputeBuffer depthNormalBuffer;
     private RenderTexture depthNormalTexture;
@@ -192,15 +190,6 @@ public class RadarScript : MonoBehaviour
         precalculatedRainConstant = (transmittedPowerW * Mathf.Pow(G, 2) * Mathf.Pow(lambda, 2) * RainRCS) /
                                     (Mathf.Pow((4 * Mathf.PI), 3) * Ls);
     }
-    void Update()
-    {
-        // Execute any queued actions on the main thread
-        while (_mainThreadActions.TryDequeue(out var action))
-        {
-            action();
-        }
-    }
-
 
     void UpdateRCSArray(int copyKernel, int rcsKernel)
     {
@@ -358,12 +347,7 @@ public class RadarScript : MonoBehaviour
     async Task<string> CollectData()
     {
         Vector3 radarPosition = Vector3.zero;
-
-        // Queue the transform access to be executed on the main thread
-        _mainThreadActions.Enqueue(() =>
-        {
-            radarPosition = cameraObject.transform.position;
-        });
+        radarPosition = cameraObject.transform.position;
 
         // Wait for a frame to ensure the queued action is processed
         await Task.Yield();

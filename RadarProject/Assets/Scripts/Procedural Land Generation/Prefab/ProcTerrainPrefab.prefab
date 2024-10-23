@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawMode: 2
-  levelOfDetail: 7
+  levelOfDetail: 5
   noiseScale: 1000
   octaves: 3
   persistance: 0.147

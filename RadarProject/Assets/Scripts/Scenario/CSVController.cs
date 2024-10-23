@@ -16,6 +16,7 @@ public class CSVController : MonoBehaviour
     public int locationsToCreate;                   // Number of locations the ship will visit
     public float minStartingCoordinates;            // The min value in the range the ships will initially generate at
     public float maxStartingCoordinates;            // The max value in the range the ships will initially generate at
+    public float length;
     public float randomCoordinates;                 // The range added to the previous location the ship will visit
     public int minSpeed;                            // The min value in the speed range
     public int maxSpeed;                            // The max value in the speed range
@@ -82,6 +83,8 @@ public class CSVController : MonoBehaviour
                 maxStartingCoordinates = 15000;
             }
 
+            length = Mathf.Abs(minStartingCoordinates + maxStartingCoordinates);
+
             proceduralLandLocation = pointOutside;
         }
 
@@ -145,8 +148,8 @@ public class CSVController : MonoBehaviour
         speed = new int[locationsToCreate];
         speed[0] = Random.Range(minSpeed, maxSpeed);
 
-        float x = Random.Range(minStartingCoordinates, maxStartingCoordinates);
-        float z = Random.Range(minStartingCoordinates, maxStartingCoordinates);
+        float x = Random.Range(-length, length);
+        float z = Random.Range(-length * 2, length * 2);
         points[0] = new Vector3(x, 0, z);
 
         for (int i = 1; i < locationsToCreate; i++)
