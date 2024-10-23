@@ -49,6 +49,7 @@ public class MasterController : MonoBehaviour
         setIntArg("-radarImageRadius", ref radarController.ImageRadius);
         setFloatArg("-verticalAngle", ref radarController.VerticalAngle);
         setFloatArg("-beamWidth", ref radarController.BeamWidth);
+        setFloatArg("-rainRCS", ref radarController.rainRCS);
 
         int nRadars = 0;
         if (setIntArg("-nRadars", ref nRadars))

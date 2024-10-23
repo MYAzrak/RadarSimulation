@@ -40,6 +40,7 @@ public class RadarController : MonoBehaviour
 
     private Weather currentWeather = Weather.Clear;
     private bool currentFog = false;
+    public float rainRCS = 0.001f;
 
     private Crest.OceanRenderer ocean;
 
@@ -124,6 +125,7 @@ public class RadarController : MonoBehaviour
         radarScript.HeightRes = HeightRes;
         radarScript.WidthRes = WidthRes;
         radarScript.MaxDistance = maxDistance;
+        radarScript.RainRCS = rainRCS;
 
         Tuple<float, int> weatherSettings = GetWeatherParams(currentWeather, currentFog);
         radarScript.RainProbability = weatherSettings.Item1;
