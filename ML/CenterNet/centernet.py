@@ -47,7 +47,10 @@ class CenterNetBackbone(nn.Module):
 
         # Final prediction layer
         # 1 channel output for heatmap
-        self.head = nn.Conv2d(64, 1, kernel_size=1)
+        self.head = nn.Sequential(
+            nn.Conv2d(64, 1, kernel_size=1),
+            nn.UpsamplingBilinear2d(scale_factor=2)
+        )
 
     def forward(self, x):
         # Downsampling path

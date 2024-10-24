@@ -132,7 +132,8 @@ def evaluate_model(model, dataset, device, threshold=0.3):
             # Detect points
             target_points = detect_points(
                 target_heatmap[0], threshold=threshold)
-            pred_points = detect_points(pred_heatmap, threshold=threshold)
+            pred_points = detect_points(
+                pred_heatmap, threshold=threshold)
 
             # Count matches (using a simple distance threshold)
             matched_points = set()

@@ -53,7 +53,7 @@ public class CSVController : MonoBehaviour
         if (generateRandomParameters)
         {
             // Initialize ship parameters with random values
-            numberOfShips = Random.Range(80, 120);
+            numberOfShips = Random.Range(30, 120);
             locationsToCreate = Random.Range(7, 10);
             minStartingCoordinates = -15000;
             maxStartingCoordinates = 15000;
@@ -197,7 +197,7 @@ public class CSVController : MonoBehaviour
         {
             waves = waves,
             weather = weather,
-            
+
             // Procedural land settings
             hasProceduralLand = hasProceduralLand,
             proceduralLandSeed = proceduralLandSeed,
@@ -226,9 +226,9 @@ public class CSVController : MonoBehaviour
         }
 
         // Delete the file path and all scenarios in it
-        if (Directory.Exists(filePath)) 
+        if (Directory.Exists(filePath))
             Directory.Delete(filePath, true);
-            
+
         Directory.CreateDirectory(filePath);
 
         for (int i = 0; i < numOfScenarios; i++)
@@ -239,7 +239,7 @@ public class CSVController : MonoBehaviour
         }
 
         Logger.Log("All scenarios have been generated.");
-        
+
         mainMenuController.ScenarioMenuUI.ReadScenarios();
     }
 
@@ -286,10 +286,10 @@ public class CSVController : MonoBehaviour
                         if (!System.Enum.TryParse(typeof(ShipType), value[1], false, out object result))
                         {
                             Logger.Log($"{value[1]} is not a valid ship type. Defaulting to {System.Enum.Parse(typeof(ShipType), "0")}");
-                            shipsInformation[id] = new ShipInformation(id, 0);   
+                            shipsInformation[id] = new ShipInformation(id, 0);
                         }
                         else
-                            shipsInformation[id] = new ShipInformation(id, (ShipType) result);
+                            shipsInformation[id] = new ShipInformation(id, (ShipType)result);
                     }
 
                     data = streamReader.ReadLine();
