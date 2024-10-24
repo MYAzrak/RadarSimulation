@@ -165,7 +165,7 @@ def evaluate_model(model, dataset, device, threshold=0.3):
     }
 
 
-def train(model, train_loader, val_loader, criterion, optimizer, num_epochs, device, patience):
+def train(model, train_loader, val_loader, criterion, optimizer, scheduler, num_epochs, device, patience):
     best_val_loss = float('inf')
     early_stop_grace = 0
 
@@ -199,7 +199,7 @@ def train(model, train_loader, val_loader, criterion, optimizer, num_epochs, dev
 
         avg_train_loss = epoch_loss / batch_count
 
-        # Validation and evaluation
+        # Validation phase
         model.eval()
         val_loss = 0
         val_batch_count = 0
@@ -221,6 +221,16 @@ def train(model, train_loader, val_loader, criterion, optimizer, num_epochs, dev
 
         avg_val_loss = val_loss / val_batch_count
 
+        # Step the scheduler
+        current_lr = optimizer.param_groups[0]['lr']
+        scheduler.step(avg_val_loss)
+        new_lr = optimizer.param_groups[0]['lr']
+
+        # Log if learning rate changed
+        if new_lr != current_lr:
+            logging.info(f'Learning rate decreased from '
+                         f'{current_lr:.6f} to {new_lr:.6f}')
+
         # Evaluate detection performance
         if (epoch + 1) % 5 == 0:
             metrics = evaluate_model(model, val_loader.dataset, device)
@@ -229,12 +239,12 @@ def train(model, train_loader, val_loader, criterion, optimizer, num_epochs, dev
                          f'Recall: {metrics["recall"]:.3f}, '
                          f'F1: {metrics["f1"]:.3f}')
 
-            visualize_predictions(model, val_loader.dataset, device,
-                                  num_samples=min(5, len(val_loader.dataset)))
+            visualize_predictions(model, val_loader.dataset, device)
 
         logging.info(f'Epoch {epoch+1}/{num_epochs}, '
                      f'Training Loss: {avg_train_loss:.4f}, '
-                     f'Validation Loss: {avg_val_loss:.4f}')
+                     f'Validation Loss: {avg_val_loss:.4f}, '
+                     f'LR: {new_lr:.6f}')
 
         # Save best model
         if avg_val_loss < best_val_loss:
@@ -244,10 +254,11 @@ def train(model, train_loader, val_loader, criterion, optimizer, num_epochs, dev
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
+                'scheduler_state_dict': scheduler.state_dict(),
                 'loss': best_val_loss,
                 'metrics': metrics if (epoch + 1) % 5 == 0 else None,
             }, 'best_model.pth')
-            logging.info(f'Saved new best model with validation loss:'
+            logging.info(f'Saved new best model with validation loss: '
                          f'{best_val_loss:.4f}')
         else:
             early_stop_grace += 1
@@ -266,9 +277,15 @@ def main():
     # Hyperparameters
     BATCH_SIZE = 8
     NUM_EPOCHS = 500
-    LEARNING_RATE = 1e-4
+    INITIAL_LR = 1e-4
     SIGMA = 2
     PATIENCE = 10
+
+    # Learning rate scheduler parameters
+    LR_FACTOR = 0.5        # Factor to multiply learning rate by when decreasing
+    LR_PATIENCE = 5        # Number of epochs with no improvement after which LR will decrease
+    LR_MIN = 1e-7         # Minimum learning rate
+    LR_THRESHOLD = 1e-4   # Minimum change in validation loss to qualify as an improvement
 
     # Dataset setup
     json_directory = os.path.expanduser('~/RadarDataset/')
@@ -284,9 +301,9 @@ def main():
     # Create augmented training dataset
     train_dataset = AugmentedRadarDataset(
         train_dataset_base,
-        flip_prob=0.5,      # 50% of samples will have flipped versions
-        num_shifts=3,       # Create 3 shifted versions (-shift, 0, +shift)
-        shift_fraction=0.15  # Maximum shift is 15% of image height
+        flip_prob=0.5,
+        num_shifts=3,
+        shift_fraction=0.15
     )
 
     logging.info(
@@ -312,12 +329,27 @@ def main():
     # Model setup
     model = CenterNetBackbone(in_channels=1).to(device)
     criterion = FocalLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    optimizer = torch.optim.Adam(model.parameters(), lr=INITIAL_LR)
+
+    # Learning rate scheduler
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer,
+        mode='min',              # Monitor minimization of the validation loss
+        factor=LR_FACTOR,        # Multiply LR by this factor when reducing
+        patience=LR_PATIENCE,    # Number of epochs to wait before reducing LR
+        verbose=True,            # Print message when LR is reduced
+        min_lr=LR_MIN,          # Don't reduce LR below this value
+        threshold=LR_THRESHOLD,  # Minimum change in loss to qualify as an improvement
+    )
+
+    logging.info(f'Initial learning rate: {INITIAL_LR}')
+    logging.info(f'Learning rate schedule - Factor: {LR_FACTOR}, Patience: {LR_PATIENCE}, '
+                 f'Min LR: {LR_MIN}, Threshold: {LR_THRESHOLD}')
 
     # Train model
     try:
         train(model, train_loader, val_loader, criterion,
-              optimizer, NUM_EPOCHS, device, PATIENCE)
+              optimizer, scheduler, NUM_EPOCHS, device, PATIENCE)
         logging.info('Training completed successfully!')
 
         # Final evaluation
