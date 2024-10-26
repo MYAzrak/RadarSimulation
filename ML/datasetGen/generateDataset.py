@@ -51,19 +51,9 @@ class SimulationManager:
 
         mean = np.mean(ppi)
         std = np.std(ppi)
-        ppi = np.clip(ppi, 0, min(500, mean + (2/3) * std))
+        ppi = np.clip(ppi, 0, min(1500, mean + (2/3) * std))
 
-        # Normalize to [0, 1]
-        ppi_min = np.min(ppi)
-        ppi_max = np.max(ppi)
-        
-        # Avoid division by zero
-        if ppi_max > ppi_min:
-            ppi_normalized = (ppi - ppi_min) / (ppi_max - ppi_min)
-        else:
-            ppi_normalized = np.zeros_like(ppi)
-
-        data['PPI'] = ppi_normalized.tolist()
+        data['PPI'] = ppi.tolist()
         
         with open(filename, 'w') as f:
             json.dump(data, f)
