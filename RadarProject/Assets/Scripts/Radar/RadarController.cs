@@ -198,6 +198,7 @@ public class RadarController : MonoBehaviour
 
         // Make the new radar a child of parentEmptyObject
         instance.transform.parent = parentEmptyObject.transform;
+        radarScript.Init();
 
         newRadarID++; // Update for the next radar generated to use
 

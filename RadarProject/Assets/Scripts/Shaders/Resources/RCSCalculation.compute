@@ -3,7 +3,6 @@
 
 RWStructuredBuffer<float4> DepthNormalBuffer;
 RWStructuredBuffer<float> RCSBuffer;
-RWStructuredBuffer<float> ReflectivityBuffer;
 
 float4x4 InverseViewProjectionMatrix;
 float3 CameraPosition;
@@ -35,7 +34,6 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float angle = abs(dot(normal, rayDirection));
     float visibleArea = angle * MaxDistance * MaxDistance; // Simplified area calculation
 
-    float reflectivity = ReflectivityBuffer[index];
-    RCSBuffer[index] = visibleArea * reflectivity;
+    RCSBuffer[index] = visibleArea;
 }
 

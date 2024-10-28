@@ -104,29 +104,6 @@ public class RadarTests
         radarController.UnloadRadars();
     }
 
-    [UnityTest]
-    public IEnumerator ObjectIDTextureRenders()
-    {
-        radarController.GenerateRadar();
-        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sphere.transform.position = new Vector3(0, 10000, 2500);
-        sphere.transform.localScale = new Vector3(300, 300, 300);
-        radarController.SetWeather(Weather.Clear, false);
-        yield return new WaitForFixedUpdate();
-        foreach (KeyValuePair<int, GameObject> entry in radarController.radars)
-        {
-            entry.Value.GetComponent<Rigidbody>().useGravity = false;
-            entry.Value.transform.position = new Vector3(0, 10000, 0);
-
-            RadarScript script = entry.Value.GetComponentInChildren<RadarScript>();
-            yield return new WaitUntil(() => script.currentRotation == 90f);
-            RenderTexture objectIDs = script.getObjectIDTexture();
-
-            bool hasSphere = false;
-        }
-
-        radarController.UnloadRadars();
-    }
 
 
 

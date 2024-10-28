@@ -72,30 +72,27 @@ public class RadarScript : MonoBehaviour
     private float precalculatedRadarConstant;
     private float precalculatedRainConstant;
 
-    [SerializeField] private RenderTexture reflectivityTexture;
-    private ComputeBuffer reflectivityBuffer;
-    private ComputeShader reflectivityShader;
-    private ComputeBuffer reflectivityDataBuffer;
-    private Camera objectIdCamera;
-    private RenderTexture objectIdTexture;
     public int nRotations = 0;
 
     private ComputeShader copyShader;
+    private bool isInitialized = false;
 
-    void Start()
+    void Awake()
     {
         path += radarID;
-
+        scenario = FindObjectOfType<ScenarioController>();
         server = Server.serverInstance.server;
 
-        scenario = FindObjectOfType<ScenarioController>();
-
         // If service not found then add it 
-        // Allows us to reuse it for different radars when loading and unloading them
         if (!server.WebSocketServices.TryGetServiceHost($"/{path}", out _))
         {
             server.AddWebSocketService<DataService>($"/{path}");
         }
+    }
+
+    public void Init()
+    {
+        if (isInitialized) return;
 
         radarPPI = new int[Mathf.RoundToInt(360 / resolution), ImageRadius];
         if (normalDepthShader == null)
@@ -107,6 +104,7 @@ public class RadarScript : MonoBehaviour
         {
             radarComputeShader = (ComputeShader)Resources.Load("ProcessRadarData");
         }
+
         cameraObject = SpawnCameras("DepthCamera", WidthRes, HeightRes, VerticalAngle, BeamWidth, RenderTextureFormat.ARGBFloat);
         radarCamera = cameraObject.GetComponent<Camera>();
 
@@ -115,10 +113,8 @@ public class RadarScript : MonoBehaviour
         inputTexture.enableRandomWrite = true;
         inputTexture.Create();
 
-
         // Set up the radar camera
         radarCamera.targetTexture = inputTexture;
-        // radarCamera.depthTextureMode = DepthTextureMode.Depth;
 
         // Create a buffer to hold a single rotation
         radarBuffer = new ComputeBuffer(ImageRadius, sizeof(int));
@@ -131,32 +127,20 @@ public class RadarScript : MonoBehaviour
         depthNormalBuffer = new ComputeBuffer(WidthRes * HeightRes, sizeof(float) * 4);
         rcsBuffer = new ComputeBuffer(WidthRes * HeightRes, sizeof(float));
 
-        // Set up the radar camera to render to the depth-normal texture
-        // radarCamera.targetTexture = depthNormalTexture;
         radarCamera.depthTextureMode = DepthTextureMode.Depth;
 
         rainBuffer = new ComputeBuffer(ImageRadius, sizeof(int));
         tempRainBuffer = new int[ImageRadius];
 
-        //Set up reflectivity texture
-        reflectivityTexture = new RenderTexture(WidthRes, HeightRes, 0, RenderTextureFormat.RFloat);
-        reflectivityTexture.enableRandomWrite = true;
-        reflectivityTexture.Create();
-        reflectivityShader = Resources.Load<ComputeShader>("ReflectivityComputation");
 
-        ReflectivityData[] reflectivityDataArray = ReflectivityManager.Instance.GetReflectivityDataArray();
-        reflectivityDataBuffer = new ComputeBuffer(reflectivityDataArray.Length, sizeof(int) + sizeof(float));
-        reflectivityDataBuffer.SetData(reflectivityDataArray);
-        SetupObjectIdCamera();
-
-
-        reflectivityBuffer = new ComputeBuffer(WidthRes * HeightRes, sizeof(float));
         copyShader = Resources.Load<ComputeShader>("CopyTextureToBuffer");
 
         rcsComputeShader = Resources.Load<ComputeShader>("RCSCalculation");
 
         PrecalculateRadarConstants();
         StartCoroutine(ProcessRadar());
+
+        isInitialized = true;
     }
 
     public GameObject getDepthCamera()
@@ -164,23 +148,6 @@ public class RadarScript : MonoBehaviour
         return cameraObject;
     }
 
-    private void SetupObjectIdCamera()
-    {
-        // Create a new camera object
-        GameObject objectIdCameraObj = new GameObject("ObjectIdCamera");
-        objectIdCamera = objectIdCameraObj.AddComponent<Camera>();
-        objectIdCameraObj.transform.SetParent(transform);
-
-        // Set up the object ID texture
-        objectIdTexture = new RenderTexture(WidthRes, HeightRes, 0, RenderTextureFormat.RFloat);
-        objectIdTexture.enableRandomWrite = true;
-        objectIdTexture.Create();
-
-        // Configure the object ID camera
-        objectIdCamera.targetTexture = objectIdTexture;
-        objectIdCamera.enabled = false; // Keep it disabled until needed
-        objectIdCamera.SetReplacementShader(Shader.Find("Custom/ObjectIdShader"), "");
-    }
 
     void PrecalculateRadarConstants()
     {
@@ -220,52 +187,16 @@ public class RadarScript : MonoBehaviour
         rcsComputeShader.SetFloat("DefaultReflectivity", defaultReflectivity);
         rcsComputeShader.SetInt("Width", WidthRes);
         rcsComputeShader.SetInt("Height", HeightRes);
-        rcsComputeShader.SetBuffer(rcsKernel, "ReflectivityBuffer", reflectivityBuffer);
 
         rcsComputeShader.Dispatch(rcsKernel, dispatchX, dispatchY, 1);
     }
 
 
-    private void UpdateReflectivityTexture(int kernel)
-    {
-        // Update object ID camera transform to match radar camera
-        objectIdCamera.transform.position = radarCamera.transform.position;
-        objectIdCamera.transform.rotation = radarCamera.transform.rotation;
-        objectIdCamera.fieldOfView = radarCamera.fieldOfView;
-        objectIdCamera.aspect = radarCamera.aspect;
-        objectIdCamera.nearClipPlane = radarCamera.nearClipPlane;
-        objectIdCamera.farClipPlane = radarCamera.farClipPlane;
-
-        // Render the object ID texture
-        objectIdCamera.Render();
-
-        // Set up the compute shader
-        reflectivityShader.SetTexture(kernel, "ObjectIdTexture", objectIdTexture);
-        reflectivityShader.SetTexture(kernel, "ReflectivityTexture", reflectivityTexture);
-        reflectivityShader.SetBuffer(kernel, "ReflectivityBuffer", reflectivityBuffer);
-        reflectivityShader.SetInt("Width", WidthRes);
-        reflectivityShader.SetInt("Height", HeightRes);
-
-        ReflectivityData[] reflectivityDataArray = ReflectivityManager.Instance.GetReflectivityDataArray();
-        if (reflectivityDataArray.Length > reflectivityDataBuffer.count)
-        {
-            reflectivityDataBuffer.Release();
-            reflectivityDataBuffer = new ComputeBuffer(1024, sizeof(int) + sizeof(float));
-        }
-        reflectivityDataBuffer.SetData(reflectivityDataArray);
-
-        reflectivityShader.SetBuffer(kernel, "ReflectivityDataBuffer", reflectivityDataBuffer);
-        reflectivityShader.SetInt("ReflectivityDataCount", reflectivityDataArray.Length);
-
-        // Dispatch the compute shader
-        reflectivityShader.Dispatch(kernel, Mathf.CeilToInt(WidthRes / 8f), Mathf.CeilToInt(HeightRes / 8f), 1);
-    }
     IEnumerator ProcessRadar()
     {
 
         int kernelIndex = radarComputeShader.FindKernel("ProcessRadarData");
         int rainKernelIndex = radarComputeShader.FindKernel("GenerateRain");
-        int reflectivitykernel = reflectivityShader.FindKernel("CSMain");
         int copyKernel = copyShader.FindKernel("CSMain");
         int rcsKernel = rcsComputeShader.FindKernel("CSMain");
 
@@ -294,7 +225,6 @@ public class RadarScript : MonoBehaviour
             GenerateRainGPU(rainKernelIndex);
             CombineRadarAndRain();
             DetectShipsInView();
-            UpdateReflectivityTexture(reflectivitykernel);
 
             RotateCamera();
 
@@ -402,6 +332,8 @@ public class RadarScript : MonoBehaviour
 
         // Set the aspect ratio to maintain the desired horizontal FOV
         cam.aspect = Mathf.Tan(horizontalFOV * 0.5f * Mathf.Deg2Rad) / Mathf.Tan(verticalAngle * 0.5f * Mathf.Deg2Rad);
+        cam.clearFlags = CameraClearFlags.SolidColor;
+        cam.backgroundColor = Color.black;
 
         cam.farClipPlane = MaxDistance;
         cam.nearClipPlane = MinDistance;
@@ -411,11 +343,6 @@ public class RadarScript : MonoBehaviour
         cam.SetReplacementShader(normalDepthShader, "");
 
         return CameraObject;
-    }
-
-    public RenderTexture getObjectIDTexture()
-    {
-        return objectIdTexture;
     }
 
     private void ProcessRadarDataGPU(int kernelIndex)
@@ -512,22 +439,6 @@ public class RadarScript : MonoBehaviour
         if (rainBuffer != null)
         {
             rainBuffer.Release();
-        }
-        if (objectIdTexture != null)
-        {
-            objectIdTexture.Release();
-        }
-        if (reflectivityDataBuffer != null)
-        {
-            reflectivityDataBuffer.Release();
-        }
-        if (reflectivityBuffer != null)
-        {
-            reflectivityBuffer.Release();
-        }
-        if (objectIdCamera != null)
-        {
-            Destroy(objectIdCamera.gameObject);
         }
         if (depthNormalBuffer != null)
         {
