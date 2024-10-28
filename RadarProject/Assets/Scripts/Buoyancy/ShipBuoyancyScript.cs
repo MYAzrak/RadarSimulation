@@ -76,8 +76,8 @@ public class ShipBouyancyScript : MonoBehaviour
         if (shipTriangles.underWaterTriangleData.Count > 0)
             AddUnderWaterForces();
 
-        if (shipTriangles.aboveWaterTriangleData.Count > 0)
-            AddAboveWaterForces();
+        //if (shipTriangles.aboveWaterTriangleData.Count > 0)
+        //    AddAboveWaterForces();
 
         // Align the ship upward to avoid sinking
         AlignShipUpward();
