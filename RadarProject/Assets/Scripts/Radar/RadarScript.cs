@@ -7,11 +7,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
-using Unity.Mathematics;
-using Unity.Collections;
-using Unity.Jobs;
-using Unity.Burst;
 
 public class RadarScript : MonoBehaviour
 {
@@ -35,6 +30,7 @@ public class RadarScript : MonoBehaviour
     private RenderTexture radarTexture;
     public float currentRotation = 1f; // Track current rotation
     private GameObject cameraObject;
+    Camera depthCamera;
     private WebSocketServer server;
 
     [SerializeField] private ComputeShader radarComputeShader;
@@ -136,6 +132,8 @@ public class RadarScript : MonoBehaviour
         copyShader = Resources.Load<ComputeShader>("CopyTextureToBuffer");
 
         rcsComputeShader = Resources.Load<ComputeShader>("RCSCalculation");
+
+        depthCamera = cameraObject.GetComponent<Camera>();
 
         PrecalculateRadarConstants();
         StartCoroutine(ProcessRadar());
@@ -245,21 +243,46 @@ public class RadarScript : MonoBehaviour
 
             if (distanceToShip <= MaxDistance)
             {
-                directionToShip.Normalize();
-                float angleToShip = Vector3.Angle(radarForward, directionToShip);
-
-                if (angleToShip <= BeamWidth)
+                // Use depth camera to see if the radar is viewing the ship
+                Vector3 viewPos = depthCamera.WorldToViewportPoint(ship.transform.position);
+                if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && viewPos.z > 0)
                 {
-                    // Calculate azimuth
-                    float azimuth = Mathf.Atan2(directionToShip.x, directionToShip.z) * Mathf.Rad2Deg;
-                    azimuth = (azimuth - transform.parent.transform.rotation.y + 360) % 360; // Ensure positive angle
-
                     int shipId = ship.GetInstanceID();
-                    ShipData shipData = new ShipData
+                    
+                    // Get bounds for bounding box
+                    var r = ship.GetComponent<Renderer>();
+                    string boundingBox = "";
+                    if (r != null)
+                    {
+                        var bounds = r.bounds;
+
+                        int trainingClass = 0; // Class 0 is ship
+                        float x_center = bounds.center.x;
+                        float y_center = bounds.center.z;
+                        float width = bounds.size.x;
+                        float height = bounds.size.z;
+
+                         // Get the angle of the direction vector
+                        float angle = Vector3.SignedAngle(Vector3.right, directionToShip, radarForward);
+
+                        // Switch width and height based on the angle
+                        if (Mathf.Abs(angle) > 45f && Mathf.Abs(angle) < 135f)
+                        {
+                            // If the ship is more vertical, swap width and height
+                            (height, width) = (width, height);
+                        }
+
+                        // Bounding box saved per YOLO format (class x_center y_center width height)
+                        // Needs to be scaled and normalized per usage
+                        boundingBox = $"{trainingClass} {distanceToShip} {currentRotation} {width} {height}\n";
+                    }
+
+                    ShipData shipData = new()
                     {
                         Id = shipId,
-                        Azimuth = azimuth,
-                        Distance = distanceToShip
+                        Azimuth = currentRotation,
+                        Distance = distanceToShip,
+                        Bounds = boundingBox,
                     };
 
                     // Update or add the ship data
@@ -275,9 +298,6 @@ public class RadarScript : MonoBehaviour
             }
         }
     }
-
-
-
 
     async Task<string> CollectData()
     {
@@ -311,8 +331,10 @@ public class RadarScript : MonoBehaviour
 
     private GameObject SpawnCameras(string name, int Width, int Height, float verticalAngle, float beamWidth, RenderTextureFormat format)
     {
-        GameObject CameraObject = new GameObject();
-        CameraObject.name = name;
+        GameObject CameraObject = new()
+        {
+            name = name
+        };
         CameraObject.transform.SetParent(transform);
         CameraObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
         CameraObject.transform.localPosition = new Vector3(0, 0.1f, 0);
@@ -385,6 +407,7 @@ public class RadarScript : MonoBehaviour
         }
 
     }
+
     private void GenerateRainGPU(int kernelIndex)
     {
         // Clear the rain buffer for the new rotation
@@ -445,6 +468,7 @@ public class RadarScript : MonoBehaviour
             depthNormalBuffer.Release();
         }
     }
+    
     private void RotateCamera()
     {
         currentRotation += resolution; // Increase rotation by 1 degree
@@ -457,9 +481,10 @@ public class RadarScript : MonoBehaviour
         public int Id { get; set; }
         public float Azimuth { get; set; }
         public float Distance { get; set; }
+        public string Bounds { get; set; }
         public override string ToString()
         {
-            return $"ID: {Id}, Azimuth: {Azimuth}, Distance: {Distance}";
+            return $"ID: {Id}, Azimuth: {Azimuth}, Distance: {Distance}, Bounds: {Bounds}";
         }
     }
 }
