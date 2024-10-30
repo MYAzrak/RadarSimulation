@@ -23,7 +23,6 @@ public class RadarController : MonoBehaviour
     public Dictionary<int, GameObject> radars = new();
 
     MainMenuController mainMenuController;
-    SampleHeightHelper sampleHeightHelper = new();
 
     [Header("Radar Equation Parameters")]
     public float transmittedPowerW = 1000f; // Watts
@@ -42,7 +41,7 @@ public class RadarController : MonoBehaviour
     private bool currentFog = false;
     public float rainRCS = 0.001f;
 
-    private Crest.OceanRenderer ocean;
+    private OceanRenderer ocean;
 
     public RadarGenerationDirection direction = RadarGenerationDirection.Right;
 

@@ -76,9 +76,6 @@ public class ShipBouyancyScript : MonoBehaviour
         if (shipTriangles.underWaterTriangleData.Count > 0)
             AddUnderWaterForces();
 
-        //if (shipTriangles.aboveWaterTriangleData.Count > 0)
-        //    AddAboveWaterForces();
-
         // Align the ship upward to avoid sinking
         AlignShipUpward();
     }
@@ -166,25 +163,6 @@ public class ShipBouyancyScript : MonoBehaviour
             return Vector3.zero;
 
         return force;
-    }
-
-    void AddAboveWaterForces()
-    {
-        //Get all triangles
-        List<TriangleData> aboveWaterTriangleData = shipTriangles.aboveWaterTriangleData;
-
-        //Loop through all triangles
-        for (int i = 0; i < aboveWaterTriangleData.Count; i++)
-        {
-            TriangleData triangleData = aboveWaterTriangleData[i];
-
-            Vector3 force = Vector3.zero;
-
-            int shipDragCoefficient = 1;
-            force += AirResistanceForce(waterDensity, triangleData, shipDragCoefficient);
-
-            ship.AddForceAtPosition(force, triangleData.center);
-        }
     }
 
     public Vector3 AirResistanceForce(float rho, TriangleData triangleData, float C_air)

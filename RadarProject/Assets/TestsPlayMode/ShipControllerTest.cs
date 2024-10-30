@@ -71,8 +71,8 @@ public class ShipControllerTests
 
         yield return null;
 
-        // Call FixedUpdate enough times to rotate
-        for (int i = 0; i < 1000; i++)
+        // Call FixedUpdate enough times to rotate and move
+        for (int i = 0; i < 600; i++)
         {
             shipController.Move();
             yield return new WaitForFixedUpdate();

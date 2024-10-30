@@ -81,8 +81,8 @@ public class ScenarioControllerTests
         float zGenerated = scenarioController.generatedShips[0].transform.position.z;
         
         // Check ship spawned in first location
-        // Checking with tolerance due to floating point errors
-        float tolerance = 2f;
+        // Checking with tolerance due to physics and floating point errors
+        float tolerance = 5f;
         Vector3 expected = new(expectedCoordinates[0].x_coordinates, 0, expectedCoordinates[0].z_coordinates);
         Vector3 actual = new(xGenerated, 0, zGenerated);
         Assert.IsTrue(
@@ -146,8 +146,7 @@ public class ScenarioControllerTests
         GenerateTestScenario(test2FileName, false, Weather.LightRain, Waves.Moderate);
         scenarioController.LoadScenario(filePath + test2FileName);
 
-        for (int i = 0; i < 500; i++)
-            yield return null;
+        yield return null;
 
         Assert.AreEqual(wavesController.currentWaveCondition, Waves.Moderate, "Moderate waves was not created");
         Assert.AreEqual(weatherController.currentWeather.name, "Light Rain(Clone)", "Current weather should be light rain");

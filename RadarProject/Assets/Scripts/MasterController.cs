@@ -14,9 +14,9 @@ public class MasterController : MonoBehaviour
         csvController = GetComponent<CSVController>();
         scenarioController = GetComponent<ScenarioController>();
 
+        /*
         string[] args = System.Environment.GetCommandLineArgs();
 
-        /*
         Debug.Log("CLI Arg Length :" + args.Length);
         foreach (var x in args)
         {
