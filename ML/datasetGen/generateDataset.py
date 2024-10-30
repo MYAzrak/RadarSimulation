@@ -51,7 +51,7 @@ class SimulationManager:
 
         mean = np.mean(ppi)
         std = np.std(ppi)
-        ppi = np.clip(ppi, 0, min(1500, mean + (2/3) * std))
+        ppi = np.clip(ppi, 0, min(2000, mean + (2/3) * std))
 
         data['PPI'] = ppi.tolist()
         

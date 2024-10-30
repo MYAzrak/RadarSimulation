@@ -256,9 +256,7 @@ public class RadarScript : MonoBehaviour
                     {
                         var bounds = r.bounds;
 
-                        int trainingClass = 0; // Class 0 is ship
-                        float x_center = bounds.center.x;
-                        float y_center = bounds.center.z;
+                        int modelClass = 0; // Class 0 is ship
                         float width = bounds.size.x;
                         float height = bounds.size.z;
 
@@ -274,7 +272,7 @@ public class RadarScript : MonoBehaviour
 
                         // Bounding box saved per YOLO format (class x_center y_center width height)
                         // Needs to be scaled and normalized per usage
-                        boundingBox = $"{trainingClass} {distanceToShip} {currentRotation} {width} {height}\n";
+                        boundingBox = $"{modelClass} {distanceToShip} {currentRotation} {width} {height}";
                     }
 
                     ShipData shipData = new()

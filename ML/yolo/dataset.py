@@ -47,12 +47,16 @@ class PPIDataset(Dataset):
 
         # Draw bounding boxes for each ship
         for ship in ships:
-            trainingClass, x_center, y_center, width, height = ship["Bounds"].split()
+            model_class, x_center, y_center, width, height = ship["Bounds"].split()
             x_center, y_center, width, height = map(float, (x_center, y_center, width, height))
 
             # Convert normalized coordinates to pixel values
             x_scaled = int(x_center / data['range'] * output_size[1])
             y_scaled = int(y_center / 360 * output_size[0])
+
+            # Ensure coordinates are within bounds
+            x_scaled = min(max(0, x_scaled), output_size[1] - 1)
+            y_scaled = min(max(0, y_scaled), output_size[0] - 1)
 
             # Scale width and height to pixel values
             width_scaled = int(width / data['range'] * output_size[1])
@@ -68,11 +72,11 @@ class PPIDataset(Dataset):
             img_width, img_height = output_size[1], output_size[0]
             x_normalized = (x_scaled + width_scaled / 2) / img_width
             y_normalized = (y_scaled + height_scaled / 2) / img_height
-            width_normalized = width_scaled / img_height
+            width_normalized = width_scaled / img_width
             height_normalized = height_scaled / img_height
 
-            trainingClass = 0 # Class 0 is ships
-            yolo_bboxes.append(f"{trainingClass} {x_normalized} {y_normalized} {width_normalized} {height_normalized}")
+            model_class = 0 # Class 0 is ships
+            yolo_bboxes.append(f"{model_class} {x_normalized} {y_normalized} {width_normalized} {height_normalized}")
 
         # Determine save directory based on training/validation split
         if self.json_files[idx] in self.train_files:
@@ -100,6 +104,7 @@ if __name__ == '__main__':
 
     dataset = PPIDataset(json_directory, save_directory, val_split=0.2)
 
+    # Create the image and labels in the directories (train and val) for YOLO
     for i in range(len(dataset)):
         image = dataset[i]
         print(f"Processed image {i + 1}/{len(dataset)}")
@@ -109,6 +114,6 @@ if __name__ == '__main__':
     # Assuming yaml is in the same directory as this script
     current_directory = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(current_directory, 'ppi_dataset.yaml')
-    results = model.train(data=data_path, epochs=50) # TODO: Train with different parameters 
+    results = model.train(data=data_path, epochs=500, patience=50, imgsz=[720,1000]) 
     #model.val()
     
