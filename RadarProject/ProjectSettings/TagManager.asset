@@ -8,6 +8,10 @@ TagManager:
   - Cloud
   - Terrain
   - LandPoolObject
+  - Tree
+  - Bush
+  - House
+  - ExclusiveZone
   layers:
   - Default
   - TransparentFX

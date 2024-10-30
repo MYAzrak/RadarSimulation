@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class RuntimeTerrainGenerator : MonoBehaviour
 {
-    private Terrain terrain;                // Terrain object
-    public Texture2D heightmapTexture;      // Heightmap image
+    private Terrain terrain;               
+    public Texture2D heightmapTexture;      
     public float heightScale = 600f;
     public int smoothingIterations = 2;
     //public GameObject waterPrefab;
@@ -25,20 +25,15 @@ public class RuntimeTerrainGenerator : MonoBehaviour
     // Terrain width and length
     public float terrainWidth = 1000f;
     public float terrainLength = 1000f;
-    // Layers for terrain texture
+
     public TerrainLayer sandLayer;
-    public TerrainLayer grassLayer;
-    public TerrainLayer rockLayer;
-    //Layers distribution based on height
-    [Range(0, 2000)] public float sandHeight = 30f; // Sand applied below this height
-    [Range(0, 2000)] public float grassHeight = 90f;
-    [Range(0, 2000)] public float rockHeight = 150f;
 
     public Material skyboxMaterial;
     private List<Vector3> occupiedPositions = new List<Vector3>();
     public float minimumDistance = 5f;
     public float safeDistanceFromHouses = 10f; //Minimum distance from house positions
     public GameObject exclusionZoneObject;
+    public float maxSpawnHeight = 100f;
 
 
 
@@ -109,7 +104,6 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         terrain.terrainData.size = new Vector3(terrainWidth, heightScale, terrainLength);
 
         ApplyHeightmap();
-        //ApplyTextures();
         ApplyTerrainLayers();
         //SpawnWater();
         PlantTrees();
@@ -122,8 +116,8 @@ public class RuntimeTerrainGenerator : MonoBehaviour
     {
         TerrainData terrainData = terrain.terrainData;
 
-        // Terrain layers
-        terrainData.terrainLayers = new TerrainLayer[] { sandLayer, grassLayer, rockLayer };
+        // Set only the grass layer
+        terrainData.terrainLayers = new TerrainLayer[] { sandLayer };
 
         // Check Terrain Layers are assigned
         if (terrainData.terrainLayers == null || terrainData.terrainLayers.Length == 0)
@@ -132,71 +126,23 @@ public class RuntimeTerrainGenerator : MonoBehaviour
             return;
         }
 
-        //splatmap data array
+        // Splatmap data array
         float[,,] splatmapData = new float[terrainData.alphamapWidth, terrainData.alphamapHeight, terrainData.terrainLayers.Length];
 
-
-
-        // Blend layers based on height
+        // Fill splatmap with the grass layer
         for (int y = 0; y < terrainData.alphamapHeight; y++)
         {
             for (int x = 0; x < terrainData.alphamapWidth; x++)
             {
-                // Get the corresponding height at this point
-                float normalizedX = (float)x / (float)terrainData.alphamapWidth;
-                float normalizedY = (float)y / (float)terrainData.alphamapHeight;
-
-                float heightAtPoint = terrainData.GetHeight(
-                    Mathf.RoundToInt(normalizedX * terrainData.heightmapResolution),
-                    Mathf.RoundToInt(normalizedY * terrainData.heightmapResolution)
-                ) / terrainData.size.y;
-
-                // Debugging to verify height values
-                //if (x % 100 == 0 && y % 100 == 0) // Print debug info every 100 points to avoid spamming
-                //{
-                //    Debug.Log($"Height at Point ({x}, {y}): {heightAtPoint}");
-                //}
-
-                // Initialize splat weights for each terrain layer
-                float[] splatWeights = new float[terrainData.terrainLayers.Length];
-
-                // Apply sand layer for low elevations
-                if (heightAtPoint < sandHeight / terrainData.size.y)
-                {
-                    splatWeights[0] = 1f; // Full sand
-                }
-                // Blend grass layer between sand and rock
-                else if (heightAtPoint < grassHeight / terrainData.size.y)
-                {
-                    float blendFactor = Mathf.InverseLerp(sandHeight / terrainData.size.y, grassHeight / terrainData.size.y, heightAtPoint);
-                    splatWeights[0] = 1f - blendFactor; // Sand fading out
-                    splatWeights[1] = blendFactor;      // Grass fading in
-                }
-                // Apply rock layer for high elevations
-                else if (heightAtPoint < rockHeight / terrainData.size.y)
-                {
-                    float blendFactor = Mathf.InverseLerp(grassHeight / terrainData.size.y, rockHeight / terrainData.size.y, heightAtPoint);
-                    splatWeights[1] = 1f - blendFactor; // Grass fading out
-                    splatWeights[2] = blendFactor;      // Rock fading in
-                }
-                else
-                {
-                    splatWeights[2] = 1f; // Full rock
-                }
-
-                // Normalize the splat weights to ensure they sum to 1
-                float totalWeight = splatWeights.Sum();
-                for (int i = 0; i < splatWeights.Length; i++)
-                {
-                    splatWeights[i] /= totalWeight;
-                    splatmapData[x, y, i] = splatWeights[i];
-                }
+                // Set the grass layer to full weight
+                splatmapData[x, y, 0] = 1f; // Full grass
             }
         }
 
         // Splatmap to the terrain
         terrainData.SetAlphamaps(0, 0, splatmapData);
     }
+
 
 
     void PlantTrees()
@@ -224,28 +170,13 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         {
             Vector3 position = GetRandomFlatPositionOnTerrain();
             float height = terrain.SampleHeight(position) + terrain.GetPosition().y;
-            if (height > waterHeight)
-            {
                 position.y = height;
                 GameObject treePrefab = treePrefabs[Random.Range(0, treePrefabs.Length)];
                 Instantiate(treePrefab, position, Quaternion.identity, transform).tag = "Tree";
                 occupiedPositions.Add(position); // Mark position as occupied
-            }
         }
     }
 
-    Vector3 GetRandomPositionOnTerrain()
-    {
-        float terrainWidth = terrain.terrainData.size.x;
-        float terrainLength = terrain.terrainData.size.z;
-
-        // Generate random X and Z positions within the terrain bounds
-        float randomX = Random.Range(0, terrainWidth);
-        float randomZ = Random.Range(0, terrainLength);
-
-        // Return the random position on the terrain
-        return new Vector3(randomX, 0, randomZ) + terrain.GetPosition();
-    }
 
     void PlantBushes()
     {
@@ -271,15 +202,13 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         {
             Vector3 position = GetRandomFlatPositionOnTerrain();
             float height = terrain.SampleHeight(position) + terrain.GetPosition().y;
-            if (height > waterHeight)
-            {
                 position.y = height;
                 GameObject bushPrefab = bushPrefabs[Random.Range(0, bushPrefabs.Length)];
                 Instantiate(bushPrefab, position, Quaternion.identity, transform).tag = "Bush";
                 occupiedPositions.Add(position); // Mark position as occupied
-            }
         }
     }
+
 
 
     void SpawnHouses()
@@ -300,7 +229,6 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         foreach (Transform bush in bushesToDestroy)
         {
             DestroyImmediate(bush.gameObject);
-            // Debug.Log("House destroyed");
         }
 
         // Ensure there are enough predefined positions for the number of houses to spawn
@@ -373,7 +301,6 @@ public class RuntimeTerrainGenerator : MonoBehaviour
 
         terrain.terrainData.size = new Vector3(terrainWidth, heightScale, terrainLength);
         ApplyHeightmap();
-        //ApplyTextures();
         ApplyTerrainLayers();
         //SpawnWater();
         PlantTrees();
@@ -398,7 +325,6 @@ public class RuntimeTerrainGenerator : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 float pixelHeight = BilinearSample(heightmapTexture, x, y);
-                //Debug.Log($"Heightmap pixel at ({x}, {y}): {pixelHeight}");
                 heights[x, y] = pixelHeight * heightScale / terrainData.size.y;
             }
         }
@@ -410,12 +336,6 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         }
 
         terrainData.SetHeights(0, 0, heights);
-
-
-        // Debug.Log($"Terrain Scale: {terrain.terrainData.size}");
-        // Debug.Log($"Height Scale: {heightScale}");
-
-
 
     }
 
@@ -448,14 +368,38 @@ public class RuntimeTerrainGenerator : MonoBehaviour
     {
         Vector3 position;
         int attempts = 0;
+        float terrainHeight;
+
         do
         {
             position = GetRandomPositionOnTerrain();
+            terrainHeight = terrain.SampleHeight(position);
+            position.y = terrainHeight;
+            // Increment attempts
             attempts++;
-        } while ((!IsFlatArea(position) || !IsFarEnough(position) || IsNearHousePosition(position) || IsInExcludedArea(position)) && attempts < 100);
+
+        } while ((terrainHeight > maxSpawnHeight || !IsFlatArea(position) || !IsFarEnough(position) || IsNearHousePosition(position) || IsInExcludedArea(position)) && attempts < 100);
+
+        // If the maximum number of attempts is reached, handle it accordingly (e.g., return a default position or log a warning)
+        if (attempts >= 200)
+        {
+            Debug.LogWarning("Could not find a valid flat position after 100 attempts.");
+            return Vector3.zero;
+        }
         return position;
     }
 
+    Vector3 GetRandomPositionOnTerrain()
+    {
+        float terrainWidth = terrain.terrainData.size.x;
+        float terrainLength = terrain.terrainData.size.z;
+
+        float randomX = Random.Range(0, terrainWidth);
+        float randomZ = Random.Range(0, terrainLength);
+
+        // Return the random position on the terrain
+        return new Vector3(randomX, 0, randomZ) + terrain.GetPosition();
+    }
 
     bool IsNearHousePosition(Vector3 position)
     {
