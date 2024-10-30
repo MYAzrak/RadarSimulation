@@ -358,7 +358,6 @@ public class ScenarioController : MonoBehaviour
         UnloadAllObjects();
         endScenario = true;
         mainMenuController.SetDefaultSimulationInfoPanel();
-        SetWeather(Weather.Clear, false);
     }
 
     public void EndAllScenarios()
@@ -399,6 +398,7 @@ public class ScenarioController : MonoBehaviour
             yield return new WaitForSeconds(1);
             if (scenarioCurrentlyRunning && endScenario)
             {
+                EndScenario();
                 scenarioCurrentlyRunning = false;
                 endScenario = false;
                 Logger.Log("Scenario has finished");
@@ -419,9 +419,6 @@ public class ScenarioController : MonoBehaviour
                         yield return new WaitForSeconds(1);
                     }
 
-                    if (scenarioCurrentlyRunning)
-                        continue;
-
                     scenario = scenarios[currentScenarioIndex];
                     LoadScenario(filePath + scenario);
                 }
@@ -430,6 +427,10 @@ public class ScenarioController : MonoBehaviour
                     EndAllScenarios();
                     currentScenarioIndex = 0;
                 }
+            }
+            else if (!scenarioCurrentlyRunning && generatedShips.Count > 0)
+            {
+                UnloadAllObjects();
             }
         }
     }
