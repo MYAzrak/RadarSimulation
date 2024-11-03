@@ -35,6 +35,6 @@ def load_random_json(directory):
     
     return ppi_array
 
-model = YOLO("/home/user/Downloads/best.pt")
+model = YOLO("/home/kkp/RadarSimulation/ML/yolo/best.pt")
 
-result = run_model_on_image(model, load_random_json('/home/user/Downloads/output'))
+result = run_model_on_image(model, load_random_json('/home/kkp/Downloads/output'))
