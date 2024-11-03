@@ -2,39 +2,33 @@ import numpy as np
 import os
 import random
 import json
+import matplotlib.pyplot as plt
 from PIL import Image
 from ultralytics import YOLO
 
-def run_model_on_image(model, ppi_array):
+def run_model(ppi_array, model):
     
     # Create an image from the array
     image = Image.fromarray(ppi_array)
-    output = model.predict(image, save=True)
+    output = model.predict(image, conf=0.7)
     
-    return output
+    boxes = output[0].boxes
+    image = np.zeros((720, 1000), dtype=np.uint8)
 
-def load_random_json(directory):
-    # List all JSON files in the specified directory
-    json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
-    
-    # Check if there are any JSON files in the directory
-    if not json_files:
-        raise FileNotFoundError("No JSON files found in the specified directory.")
+    xy = boxes.xywh[:, :2].detach().cpu().numpy()
 
-    # Select a random JSON file
-    random_file = random.choice(json_files)
-    
-    # Construct the full file path
-    file_path = os.path.join(directory, random_file)
-    
-    # Load and return the JSON data
-    with open(file_path, 'r') as file:
-        data = json.load(file)
-    
-    ppi_array = np.array(data['PPI'], dtype=np.float32)
-    
-    return ppi_array
+    # Make the "dot" bigger
+    dot_size = 7
 
-model = YOLO("/home/kkp/RadarSimulation/ML/yolo/best.pt")
+    # Mark the points on the image array
+    for point in xy:
+        x, y = point
+        x, y = int(x), int(y)
+        # Ensure the square fits within the bounds
+        for i in range(max(0, y - dot_size // 2), min(720, y + dot_size // 2 + 1)):
+            for j in range(max(0, x - dot_size // 2), min(1000, x + dot_size // 2 + 1)):
+                image[i, j] = 255
+    
+    # output[0].show()
 
-result = run_model_on_image(model, load_random_json('/home/kkp/Downloads/output'))
+    return image
