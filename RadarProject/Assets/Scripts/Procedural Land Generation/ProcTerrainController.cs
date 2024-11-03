@@ -8,11 +8,9 @@ public class ProcTerrainController : MonoBehaviour
 
     public GameObject terrainInstance;
     private MapGenerator mapGenerator;
-    private ObjectAreaSpawner objectAreaSpawner;
 
     void Start()
     {
-        objectAreaSpawner = FindObjectOfType<ObjectAreaSpawner>();
         //GenerateTerrain();
     }
 
@@ -46,10 +44,7 @@ public class ProcTerrainController : MonoBehaviour
 
     public void UnloadLandObjects()
     {
-        if (objectAreaSpawner != null)
-            objectAreaSpawner.UnloadAllObjects();
-
-        if (terrainInstance != null)
+            if (terrainInstance != null)
             Destroy(terrainInstance);
     }
 }
