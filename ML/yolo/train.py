@@ -105,15 +105,15 @@ if __name__ == '__main__':
     dataset = PPIDataset(json_directory, save_directory, val_split=0.2)
 
     # Create the image and labels in the directories (train and val) for YOLO
-    #for i in range(len(dataset)):
-     #   image = dataset[i]
-      #  print(f"Processed image {i + 1}/{len(dataset)}")
+    for i in range(len(dataset)):
+        image = dataset[i]
+        print(f"Processed image {i + 1}/{len(dataset)}")
 
     model = YOLO("yolo11n.pt")  # Load a pretrained model
 
     # Assuming yaml is in the same directory as this script
     current_directory = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(current_directory, 'ppi_dataset.yaml')
-    results = model.train(data=data_path, epochs=1, patience=50, imgsz=[720,1000], batch=8) 
+    results = model.train(data=data_path, epochs=500, patience=50, imgsz=[720,1000]) 
     #model.val()
     
