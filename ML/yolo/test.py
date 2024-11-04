@@ -8,6 +8,8 @@ from ultralytics import YOLO
 from inference import run_model
 
 def load_random_json(directory):
+
+    directory = os.path.expanduser(directory)
     
     # List all JSON files in the specified directory
     json_files = [f for f in os.listdir(directory) if f.endswith('.json')]
@@ -26,13 +28,10 @@ def load_random_json(directory):
     
     return data
 
-model = YOLO("/home/kkp/RadarSimulation/ML/yolo/best.pt")
+model = YOLO("./best.pt")
 
-test = load_random_json('/home/kkp/Downloads/output')
+test = load_random_json('~/Downloads/output')
 test = np.array(test['PPI'], dtype=np.float32)
 
-image = run_model(test, model)
-
-plt.imshow(image, cmap='gray')
-plt.axis('off')  # Turn off axis
-plt.show()
+ships = run_model(test, model)
+print(ships)
