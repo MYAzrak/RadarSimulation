@@ -53,7 +53,7 @@ public class CSVController : MonoBehaviour
         if (generateRandomParameters)
         {
             // Initialize ship parameters with random values
-            numberOfShips = Random.Range(30, 120);
+            numberOfShips = Random.Range(30, 100);
             locationsToCreate = Random.Range(7, 10);
             minStartingCoordinates = -15000;
             maxStartingCoordinates = 15000;

@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 1059646245}
   - component: {fileID: 1059646247}
   - component: {fileID: 1059646248}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ocean
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +344,7 @@ MonoBehaviour:
   _material: {fileID: 2100000, guid: cd1fd0b58097b603e9d3498ff4df5719, type: 2}
   _waterTilePrefab: {fileID: 0}
   _layerName: 
-  _layer: 4
+  _layer: 3
   _gravityMultiplier: 1
   _waterBodyCulling: 0
   _minScale: 0.25
@@ -497,7 +497,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 303
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -755,6 +755,8 @@ MonoBehaviour:
   WidthRes: 10
   rainRCS: 0.001
   direction: 1
+  oceanCalm: {fileID: 9068541679767220484, guid: 48c928c92371461ae894e656f6ace5ab, type: 3}
+  oceanModerate: {fileID: 0}
 --- !u!114 &2106282671
 MonoBehaviour:
   m_ObjectHideFlags: 0

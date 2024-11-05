@@ -41,15 +41,18 @@ public class RadarController : MonoBehaviour
     private bool currentFog = false;
     public float rainRCS = 0.001f;
 
-    private OceanRenderer ocean;
-
     public RadarGenerationDirection direction = RadarGenerationDirection.Right;
+    
+    // Used for a more realistic ocean normal detection by the radar
+    [Header("Ocean Community")]
+    public GameObject oceanCalm;
+    public GameObject oceanModerate;
+    List<GameObject> radarOceansGenerated = new();
 
     // Start is called before the first frame update
     void Start()
     {
         parentEmptyObject = new("Radars");
-        ocean = FindObjectOfType<Crest.OceanRenderer>();
 
 
         numOfRadarsPerRow = new();
@@ -109,7 +112,7 @@ public class RadarController : MonoBehaviour
         if (radarPrefab == null) return;
 
         // Create Radar
-        GameObject instance = Instantiate(radarPrefab);
+        GameObject instance = Instantiate(radarPrefab);        
 
         // Update Radar ID for the radar
         RadarScript radarScript = instance.GetComponentInChildren<RadarScript>();
@@ -130,10 +133,8 @@ public class RadarController : MonoBehaviour
         radarScript.RainProbability = weatherSettings.Item1;
         radarScript.RainIntensity = weatherSettings.Item2;
 
-
         // Keep track of created radars
         radars[newRadarID] = instance;
-
 
         if (locationToCreateRadar == Vector3.zero)
         {
@@ -189,15 +190,19 @@ public class RadarController : MonoBehaviour
         {
             instance.transform.position = locationToCreateRadar;
         }
-        if (ocean != null && newRadarID == 0)
-        {
-            ocean.Viewpoint = instance.transform;
-        }
 
 
         // Make the new radar a child of parentEmptyObject
         instance.transform.parent = parentEmptyObject.transform;
         radarScript.Init();
+
+        // Set the readars ocean (For a more realistic ocean detection)
+        GameObject oceanInstance = Instantiate(oceanCalm);
+        radarOceansGenerated.Add(oceanInstance);
+
+        Ocean o = oceanInstance.GetComponent<Ocean>();
+        o.AssignFolowTarget(radarScript.radarCamera.transform);
+        o.followMainCamera = true;
 
         newRadarID++; // Update for the next radar generated to use
 
@@ -222,6 +227,13 @@ public class RadarController : MonoBehaviour
 
     public void UnloadRadars()
     {
+        // Delete radar ocean
+        foreach (GameObject ocean in radarOceansGenerated)
+        {
+            Destroy(ocean);
+        }
+        radarOceansGenerated.Clear();
+
         // Delete the radar objects
         foreach (KeyValuePair<int, GameObject> entry in radars)
         {

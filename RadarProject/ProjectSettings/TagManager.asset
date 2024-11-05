@@ -12,11 +12,12 @@ TagManager:
   - Bush
   - House
   - ExclusiveZone
+  - Ocean
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - ShipWater
   - Water
   - UI
   - 

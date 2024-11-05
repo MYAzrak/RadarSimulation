@@ -339,6 +339,10 @@ public class RadarScript : MonoBehaviour
         CameraObject.AddComponent<Camera>();
         Camera cam = CameraObject.GetComponent<Camera>();
 
+        // Ignore crest ocean
+        int layerToIgnore = LayerMask.NameToLayer("ShipWater");
+        cam.cullingMask &= ~(1 << layerToIgnore);
+
         radarTexture = new RenderTexture(Width, Height, 32, format);
         cam.targetTexture = radarTexture;
 
