@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor.SceneManagement;
 
-#if UNITY_EDITOR
 [CustomEditor(typeof(Buoyancy))]
 [System.Serializable]
 public class BuoyancyInspector  : Editor{

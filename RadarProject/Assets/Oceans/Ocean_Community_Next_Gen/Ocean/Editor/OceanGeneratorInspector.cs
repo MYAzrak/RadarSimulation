@@ -4,10 +4,11 @@ using System.Collections;
 using System.Reflection;
 using System.Collections.Generic;
 using System.IO;
+
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-#if UNITY_EDITOR
 [CustomEditor(typeof(Ocean))]
 [System.Serializable]
 public class OceanGeneratorInspector : Editor {
