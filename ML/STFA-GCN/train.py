@@ -111,6 +111,7 @@ class RadarDataProcessor:
 
                 distance = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
 
+                print(self.connection_threshold)
                 if distance <= self.connection_threshold:
                     edges.append((i, j))
                     edge_weights.append(1.0 - distance / self.connection_threshold)
@@ -347,7 +348,7 @@ def create_graph_dataset(json_data: List[Dict]) -> Data:
                 distance = np.sqrt((comp_x - ship_x) ** 2 + (comp_y - ship_y) ** 2)
 
                 # If component is within threshold distance of ship, mark as true target
-                if distance < 100:  # 100m threshold, adjust as needed
+                if distance < 2000:  # 100m threshold, adjust as needed
                     is_ship = True
                     break
 
@@ -499,10 +500,6 @@ def load_json_files(dataset_path):
 
 
 def main():
-    # Set random seed for reproducibility
-    torch.manual_seed(42)
-    np.random.seed(42)
-
     # Set device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
@@ -511,7 +508,9 @@ def main():
     torch.set_default_dtype(torch.float32)
 
     # Load dataset
-    dataset_path = os.path.expanduser(r"D:\MYA\AUS\Bachelor\Senior 2\CMP 491\Dataset")
+    dataset_path = os.path.expanduser(
+        r"D:\MYA\AUS\Bachelor\Senior 2\CMP 491\NewestDataset"
+    )
     json_data = load_json_files(dataset_path)
 
     # Create graph datasets
@@ -530,51 +529,36 @@ def main():
     print(f"Created {len(graph_data)} valid graph datasets")
 
     # Split dataset into train and test
-    train_graphs, test_graphs = train_test_split(
-        graph_data, test_size=0.2, random_state=42
-    )
+    train_graphs, test_graphs = train_test_split(graph_data, test_size=0.2)
 
-    def print_class_distribution(data_list):
-        total_positive = 0
-        total_samples = 0
-        for data in data_list:
-            total_positive += torch.sum(data.y).item()
-            total_samples += len(data.y)
-        print(f"Class distribution:")
-        print(f"Positive samples: {total_positive}")
-        print(f"Negative samples: {total_samples - total_positive}")
-        print(f"Positive ratio: {total_positive/total_samples:.2%}")
+    # Create data loaders with proper device placement
+    train_loader = DataLoader(train_graphs, batch_size=32, shuffle=True)
+    test_loader = DataLoader(test_graphs, batch_size=32)
 
-    # Add this before training:
-    print("Training set distribution:")
-    print_class_distribution(train_graphs)
-    print("\nTest set distribution:")
-    print_class_distribution(test_graphs)
+    # Initialize model and move to device
+    model = STFAGCN().to(device)
+    optimizer = torch.optim.Adam(
+        model.parameters(), lr=0.001
+    )  # ADAM & lr = 10^-3 were used in the paper
 
-    # # Create data loaders with proper device placement
-    # train_loader = DataLoader(train_graphs, batch_size=32, shuffle=True)
-    # test_loader = DataLoader(test_graphs, batch_size=32)
+    # Train model
+    print("Starting training...")
+    train_stfagcn(
+        model, train_loader, optimizer, epochs=50
+    )  # 3000 epochs were used in the paper
 
-    # # Initialize model and move to device
-    # model = STFAGCN().to(device)
-    # optimizer = torch.optim.Adam(model.parameters(), lr=0.001) # ADAM & lr = 10^-3 were used in the paper
+    # Evaluate model
+    print("\nEvaluating model...")
+    metrics = evaluate_stfagcn(model, test_loader)
 
-    # # Train model
-    # print("Starting training...")
-    # train_stfagcn(model, train_loader, optimizer, epochs=50) # 3000 epochs were used in the paper
+    # Print results
+    print("\nResults:")
+    for metric, value in metrics.items():
+        print(f"{metric.capitalize()}: {value:.4f}")
 
-    # # Evaluate model
-    # print("\nEvaluating model...")
-    # metrics = evaluate_stfagcn(model, test_loader)
-
-    # # Print results
-    # print("\nResults:")
-    # for metric, value in metrics.items():
-    #     print(f"{metric.capitalize()}: {value:.4f}")
-
-    # # Save model
-    # torch.save(model.state_dict(), "ML\STFA-GCN\stfagcn_model.pth")
-    # print("\nModel saved as 'stfagcn_model.pth'")
+    # Save model
+    torch.save(model.state_dict(), r"ML\STFA-GCN\stfagcn_model.pth")
+    print("\nModel saved as 'stfagcn_model.pth'")
 
 
 if __name__ == "__main__":
