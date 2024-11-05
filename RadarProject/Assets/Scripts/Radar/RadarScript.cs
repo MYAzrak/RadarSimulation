@@ -75,20 +75,21 @@ public class RadarScript : MonoBehaviour
 
     void Awake()
     {
-        path += radarID;
         scenario = FindObjectOfType<ScenarioController>();
-        server = Server.serverInstance.server;
-
-        // If service not found then add it 
-        if (!server.WebSocketServices.TryGetServiceHost($"/{path}", out _))
-        {
-            server.AddWebSocketService<DataService>($"/{path}");
-        }
+        server = Server.serverInstance.server;       
     }
 
     public void Init()
     {
+
         if (isInitialized) return;
+        // If service not found then add it 
+        path += radarID;
+        if (!server.WebSocketServices.TryGetServiceHost($"/{path}", out _))
+        {
+            server.AddWebSocketService<DataService>($"/{path}");
+        }
+
 
         radarPPI = new int[Mathf.RoundToInt(360 / resolution), ImageRadius];
         if (normalDepthShader == null)
