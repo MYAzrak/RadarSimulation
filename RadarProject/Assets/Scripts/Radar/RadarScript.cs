@@ -249,7 +249,7 @@ public class RadarScript : MonoBehaviour
                 if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && viewPos.z > 0)
                 {
                     int shipId = ship.GetInstanceID();
-                    
+
                     // Get bounds for bounding box
                     var r = ship.GetComponent<Renderer>();
                     string boundingBox = "";
@@ -261,15 +261,7 @@ public class RadarScript : MonoBehaviour
                         float width = bounds.size.x;
                         float height = bounds.size.z;
 
-                         // Get the angle of the direction vector
-                        float angle = Vector3.SignedAngle(Vector3.right, directionToShip, radarForward);
-
-                        // Switch width and height based on the angle
-                        if (Mathf.Abs(angle) > 45f && Mathf.Abs(angle) < 135f)
-                        {
-                            // If the ship is more vertical, swap width and height
-                            (height, width) = (width, height);
-                        }
+                        // Debug.Log($"{ship.GetComponent<ShipController>().shipInformation.Type} {width} {height}");
 
                         // Bounding box saved per YOLO format (class x_center y_center width height)
                         // Needs to be scaled and normalized per usage
