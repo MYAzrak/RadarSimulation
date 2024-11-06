@@ -6,12 +6,16 @@ from matplotlib.animation import FuncAnimation
 import threading
 import argparse
 import time
+from Inference.yolo_infer import run_model
+from utils.api.radar import create_radar_with_id, update_radar_location 
+from utils.locations import getLatLong
 
 fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(projection='polar'))
 im = None
 cbar = None
 scatter = None
 scatter_gt = None
+legend=None
 
 radarID = None
 reconnect_delay = 5  # Delay in seconds before attempting to reconnect
@@ -21,7 +25,7 @@ clip = None
 
 
 def create_ppi_plot(data, azimuth, range_bins, ships, radar_range, gt):
-    global im, cbar, scatter, color, scatter_gt
+    global im, cbar, scatter, color, scatter_gt, legend
 
     if clip:
         mean = np.mean(data)
@@ -61,7 +65,7 @@ def create_ppi_plot(data, azimuth, range_bins, ships, radar_range, gt):
 
         if scatter is None:
             scatter = ax.scatter(ship_thetas, ship_distances,
-                                 c='cyan', s=10, zorder=5)
+                                 c='cyan', s=10, zorder=5, label="Predicted")
         else:
             scatter.set_offsets(np.column_stack((ship_thetas, ship_distances)))
 
@@ -73,31 +77,17 @@ def create_ppi_plot(data, azimuth, range_bins, ships, radar_range, gt):
 
         if scatter_gt is None:
             scatter_gt= ax.scatter(ship_thetas, ship_distances,
-                                 c='green', s=5, zorder=5)
+                                 c='green', s=5, zorder=5, label="Ground Truth")
         else:
             scatter_gt.set_offsets(np.column_stack((ship_thetas, ship_distances)))
+    if legend is None:
+        legend = ax.legend(loc='upper left')
 
 
     return im, scatter, scatter_gt
 
-from PIL import Image
+
 from ultralytics import YOLO
-
-def run_model(ppi_array, model):
-    
-    # Create an image from the array
-    image = Image.fromarray(ppi_array)
-    output = model.predict(image, conf=0.7)
-    
-    boxes = output[0].boxes
-    #output[0].show()
-
-    # 2D array of [distance, azimuth]
-    xy_coordinates = boxes.xywh[:, :2].detach().cpu().numpy()
-    print(xy_coordinates.tolist())
-
-    return xy_coordinates
-
 latest_data = None
 latest_ships = None
 latest_gt = None
@@ -109,6 +99,7 @@ def on_message(ws, message):
     global latest_data, latest_ships, radar_range, model, latest_gt
     data = json.loads(message)
     ppi = data.get('PPI', 'NA')
+    radar_loc_unity = data.get('radarLocation', 'NA')
     ground_truth = data.get('ships', [])
     r_range = data.get('range', 5000)
     if ppi == "NA":
@@ -117,6 +108,13 @@ def on_message(ws, message):
     print(np.unravel_index(ppi.argmax(), ppi.shape))
     
     ships = run_model(ppi, model)
+    
+    lat, long = getLatLong(radar_loc_unity['x'], radar_loc_unity['z'])
+    print(ppi.shape)
+    update_radar_location(radarID, lat, long, r_range//1000, ppi.shape[0]) 
+
+    for ship in ships:
+        print(ship)
 
     with data_lock:
         latest_data = ppi
@@ -186,6 +184,8 @@ if __name__ == "__main__":
 
     if args.color:
         color = True
+
+    create_radar_with_id(radar_id=radarID)
 
     # Start WebSocket connection in a separate thread
     websocket_thread = threading.Thread(target=run_websocket)
