@@ -199,6 +199,9 @@ public class RadarScript : MonoBehaviour
         int copyKernel = copyShader.FindKernel("CSMain");
         int rcsKernel = rcsComputeShader.FindKernel("CSMain");
 
+        // Wait a frame to allow the ocean to finish loading
+        yield return null;
+
         while (Application.isPlaying)
         {
             if (currentRotation == 0)

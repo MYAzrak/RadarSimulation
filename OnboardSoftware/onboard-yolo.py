@@ -60,7 +60,7 @@ def create_ppi_plot(data, azimuth, range_bins, ships, radar_range, gt):
 
     # Plot ship points
     if len(ships) > 0:
-        ship_thetas = np.radians([ship[1] for ship in ships])
+        ship_thetas = np.radians([ship[1] / 720 * 360 for ship in ships])
         ship_distances = [ship[0]  for ship in ships]
 
         if scatter is None:

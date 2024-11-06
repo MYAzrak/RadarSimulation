@@ -48,7 +48,7 @@ class PPIDataset(Dataset):
         yolo_bboxes = []
 
         minIntensityThreshold = 10
-        maxIntensityThreshold = 150
+        maxIntensityThreshold = 230
 
         # Draw bounding boxes for each ship
         for ship in ships:
@@ -142,5 +142,5 @@ if __name__ == '__main__':
     # Assuming yaml is in the same directory as this script
     current_directory = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(current_directory, 'ppi_dataset.yaml')
-    results = model.train(data=data_path, epochs=500, patience=100, imgsz=[720,1000]) 
+    results = model.train(data=data_path, epochs=300, patience=100, cache=True) 
     #model.val()
