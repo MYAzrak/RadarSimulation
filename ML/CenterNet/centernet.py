@@ -3,11 +3,40 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
+from sklearn.cluster import DBSCAN
+from math import sqrt, atan2, pi
 
 
-def detect_points(heatmap, threshold=0.3, nms_kernel_size=3):
+def convert_to_polar(point, image_size):
+    """Convert (x, y) coordinates to (azimuth, distance) in polar coordinates"""
+    center_x = image_size[1] / 2
+    center_y = image_size[0] / 2
+
+    # Translate point to origin at center
+    x = point[0] - center_x
+    y = point[1] - center_y
+
+    # Calculate distance
+    distance = sqrt(x**2 + y**2)
+
+    # Calculate azimuth (in degrees)
+    azimuth = atan2(y, x) * 180 / pi
+    if azimuth < 0:
+        azimuth += 360
+
+    return np.array([azimuth, distance])
+
+
+def detect_points(heatmap, threshold=0.3, nms_kernel_size=3, eps=20, min_samples=2):
     """
-    Extract points from a heatmap using non-maximum suppression
+    Extract points from a heatmap using non-maximum suppression and DBSCAN clustering
+
+    Args:
+        heatmap: The prediction heatmap
+        threshold: Detection threshold for the heatmap
+        nms_kernel_size: Kernel size for non-maximum suppression
+        eps: The maximum distance between two samples for DBSCAN clustering
+        min_samples: The minimum number of samples in a neighborhood for a point to be considered a core point
     """
     with torch.no_grad():
         # Apply NMS
@@ -24,7 +53,44 @@ def detect_points(heatmap, threshold=0.3, nms_kernel_size=3):
 
         points = [(x.item(), y.item()) for x, y in zip(xs, ys)]
 
-        return points
+        if len(points) == 0:
+            return []
+
+        # Convert points to polar coordinates for clustering
+        image_size = heatmap.shape
+        polar_points = np.array([convert_to_polar(p, image_size) for p in points])
+
+        # Scale the coordinates to handle the circular nature of azimuth
+        # This ensures that points at 359° and 1° are considered close
+        X = np.column_stack(
+            [
+                np.sin(polar_points[:, 0] * pi / 180) * polar_points[:, 1],
+                np.cos(polar_points[:, 0] * pi / 180) * polar_points[:, 1],
+            ]
+        )
+
+        # Apply DBSCAN clustering
+        db = DBSCAN(eps=eps, min_samples=min_samples).fit(X)
+        labels = db.labels_
+
+        # Calculate cluster centers
+        final_points = []
+        unique_labels = np.unique(labels)
+        for label in unique_labels:
+            if label == -1:  # Noise points
+                noise_points = points[labels == label]
+                final_points.extend([(x, y) for x, y in noise_points])
+            else:
+                # Get all points in the cluster
+                cluster_points = points[labels == label]
+                # Take the point with highest heatmap value as the representative
+                heatmap_values = [
+                    heatmap[int(y), int(x)].item() for x, y in cluster_points
+                ]
+                best_point = cluster_points[np.argmax(heatmap_values)]
+                final_points.append((best_point[0], best_point[1]))
+
+        return final_points
 
 
 class CenterNetBackbone(nn.Module):
