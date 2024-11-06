@@ -755,8 +755,8 @@ MonoBehaviour:
   WidthRes: 10
   rainRCS: 0.001
   direction: 1
-  oceanCalm: {fileID: 9068541679767220484, guid: 48c928c92371461ae894e656f6ace5ab, type: 3}
-  oceanModerate: {fileID: 0}
+  oceanCalm: {fileID: 9068541679767220484, guid: 6de26ad77ed8030f4941781a76036014, type: 3}
+  oceanModerate: {fileID: 9068541679767220484, guid: 48c928c92371461ae894e656f6ace5ab, type: 3}
 --- !u!114 &2106282671
 MonoBehaviour:
   m_ObjectHideFlags: 0

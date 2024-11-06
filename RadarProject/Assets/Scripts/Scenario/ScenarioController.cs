@@ -198,14 +198,6 @@ public class ScenarioController : MonoBehaviour
             radarController.parentEmptyObject.transform.position = Vector3.zero;
         }
 
-        int numOfRadars = radarController.radars.Count;
-        
-        if (numOfRadars > 0)
-        {
-            radarController.UnloadRadars();
-            radarController.GenerateRadars(numOfRadars);
-        }
-
         // Set waves
         SetWaves(scenarioSettings.waves);
 
@@ -214,6 +206,13 @@ public class ScenarioController : MonoBehaviour
 
         //radarController.UpdateRadarsPositions();
         GenerateShips();
+
+        int numOfRadars = radarController.radars.Count;
+        if (numOfRadars > 0)
+        {
+            radarController.UnloadRadars();
+            radarController.GenerateRadars(numOfRadars);
+        }
 
         mainMenuController.SetShipsLabel(generatedShips.Count);
 

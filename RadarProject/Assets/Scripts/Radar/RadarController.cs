@@ -23,6 +23,7 @@ public class RadarController : MonoBehaviour
     public Dictionary<int, GameObject> radars = new();
 
     MainMenuController mainMenuController;
+    WavesController wavesController;
 
     [Header("Radar Equation Parameters")]
     public float transmittedPowerW = 1000f; // Watts
@@ -63,6 +64,7 @@ public class RadarController : MonoBehaviour
         }
 
         mainMenuController = FindObjectOfType<MainMenuController>();
+        wavesController = FindObjectOfType<WavesController>();
     }
 
     public void SetWeather(Weather weather, bool isFoggy)
@@ -196,13 +198,8 @@ public class RadarController : MonoBehaviour
         instance.transform.parent = parentEmptyObject.transform;
         radarScript.Init();
 
-        // Set the readars ocean (For a more realistic ocean detection)
-        GameObject oceanInstance = Instantiate(oceanCalm);
-        radarOceansGenerated.Add(oceanInstance);
-
-        Ocean o = oceanInstance.GetComponent<Ocean>();
-        o.AssignFolowTarget(radarScript.radarCamera.transform);
-        o.followMainCamera = true;
+        Waves wave = wavesController.currentWaveCondition;
+        SetRadarWaveCondition(wave, radarScript);
 
         newRadarID++; // Update for the next radar generated to use
 
@@ -223,6 +220,27 @@ public class RadarController : MonoBehaviour
 
         mainMenuController.SetRadarsLabel(numOfRadars);
         //Debug.Log($"{numOfRadars} radars have been generated");
+    }
+
+    // Radar is making use of a different more realistic ocean
+    void SetRadarWaveCondition(Waves wave, RadarScript radarScript)
+    {
+        GameObject oceanInstance = null;
+        if (wave == Waves.Calm)
+            oceanInstance = Instantiate(oceanCalm);
+        else if (wave == Waves.Moderate)
+            oceanInstance = Instantiate(oceanModerate);
+
+        if (oceanInstance == null)
+        {
+            Logger.Log("Unable to generate radar ocean");
+        }
+
+        radarOceansGenerated.Add(oceanInstance);
+
+        Ocean o = oceanInstance.GetComponent<Ocean>();
+        o.AssignFolowTarget(radarScript.radarCamera.transform);
+        o.followMainCamera = true;
     }
 
     public void UnloadRadars()
