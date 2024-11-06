@@ -20,10 +20,8 @@ class Radar(Base):
     __tablename__ = "radars"
     
     radar_id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
     latitude = Column(Float)
     longitude = Column(Float)
-    websocket_path = Column(String)
     range_km = Column(Float)
     azimuth_resolution = Column(Float)  # Changed from azimuth_coverage
     last_active = Column(DateTime, default=datetime.utcnow)
@@ -46,10 +44,8 @@ class Detection(Base):
 
 # Pydantic Models for Request/Response
 class RadarBase(BaseModel):
-    name: str
     latitude: float
     longitude: float
-    websocket_path: str
     range_km: float
     azimuth_resolution: float  # Changed from azimuth_coverage
 
@@ -66,7 +62,7 @@ class RadarBase(BaseModel):
         return int(360 / self.azimuth_resolution)
 
 class RadarCreate(RadarBase):
-    pass
+    radar_id: int
 
 class RadarResponse(RadarBase):
     radar_id: int
@@ -94,6 +90,25 @@ class DetectionResponse(DetectionBase):
     class Config:
         orm_mode = True
 
+class RadarLocationUpdate(BaseModel):
+    latitude: float
+    longitude: float
+    range_km: float 
+    azimuth_resolution: float
+
+    @validator('latitude')
+    def validate_latitude(cls, v):
+        if v < -90 or v > 90:
+            raise ValueError('Latitude must be between -90 and 90 degrees')
+        return v
+
+    @validator('longitude')
+    def validate_longitude(cls, v):
+        if v < -180 or v > 180:
+            raise ValueError('Longitude must be between -180 and 180 degrees')
+        return v
+
+
 # Database Dependency
 def get_db():
     db = SessionLocal()
@@ -108,7 +123,21 @@ app = FastAPI(title="Radar Tracking System API")
 # API Endpoints
 @app.post("/radars/", response_model=RadarResponse)
 def create_radar(radar: RadarCreate, db: Session = Depends(get_db)):
-    db_radar = Radar(**radar.dict())
+    # Check if radar with same ID exists
+    existing_radar = db.query(Radar).filter(Radar.radar_id == radar.radar_id).first()
+    
+    if existing_radar:
+        # Delete all detections associated with this radar
+        db.query(Detection).filter(Detection.radar_id == existing_radar.radar_id).delete()
+        
+        # Update existing radar with new data
+        for key, value in radar.dict().items():
+            setattr(existing_radar, key, value)
+        db_radar = existing_radar
+    else:
+        # Create new radar
+        db_radar = Radar(**radar.dict())
+    
     db.add(db_radar)
     db.commit()
     db.refresh(db_radar)
@@ -117,6 +146,33 @@ def create_radar(radar: RadarCreate, db: Session = Depends(get_db)):
 @app.get("/radars/", response_model=List[RadarResponse])
 def get_radars(db: Session = Depends(get_db)):
     return db.query(Radar).all()
+
+@app.patch("/radars/{radar_id}/location", response_model=RadarResponse)
+def update_radar_location(
+    radar_id: int, 
+    location: RadarLocationUpdate, 
+    db: Session = Depends(get_db)
+):
+    # Query the radar
+    radar = db.query(Radar).filter(Radar.radar_id == radar_id).first()
+    if not radar:
+        raise HTTPException(status_code=404, detail="Radar not found")
+    
+    # Update location
+    radar.latitude = location.latitude
+    radar.longitude = location.longitude
+    radar.azimuth_resolution = location.azimuth_resolution
+    radar.range_km = location.range_km
+    
+    # Update last_active timestamp
+    radar.last_active = datetime.utcnow()
+    
+    # Commit changes
+    db.commit()
+    db.refresh(radar)
+    
+    return radar
+
 
 @app.get("/radars/{radar_id}", response_model=RadarResponse)
 def get_radar(radar_id: int, db: Session = Depends(get_db)):
