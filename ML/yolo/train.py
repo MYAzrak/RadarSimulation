@@ -36,9 +36,10 @@ class PPIDataset(Dataset):
 
         ppi_array = np.array(data['PPI'], dtype=np.float32)
 
+        ppi_array_normalized = (ppi_array - ppi_array.min()) / (ppi_array.max() - ppi_array.min() + 1e-8)
+
         # Convert to PIL Image
-        image = Image.fromarray(ppi_array)
-        image = image.convert('L')
+        image = Image.fromarray((ppi_array_normalized * 255).astype(np.uint8))
 
         ships = data['ships']
         output_size = ppi_array.shape
@@ -50,26 +51,25 @@ class PPIDataset(Dataset):
             model_class, x_center, y_center, width, height = ship["Bounds"].split()
             x_center, y_center, width, height = map(float, (x_center, y_center, width, height))
 
+            img_width, img_height = output_size[1], output_size[0]
+
             # Convert normalized coordinates to pixel values
-            x_scaled = int(x_center / data['range'] * output_size[1])
-            y_scaled = int(y_center / 360 * output_size[0])
+            x_scaled = int(x_center / data['range'] * img_width)
+            y_scaled = int(y_center / 360 * img_height)
 
             # Ensure coordinates are within bounds
-            x_scaled = min(max(0, x_scaled), output_size[1] - 1)
-            y_scaled = min(max(0, y_scaled), output_size[0] - 1)
+            x_scaled = min(max(0, x_scaled), img_width - 1)
+            y_scaled = min(max(0, y_scaled), img_height - 1)
 
             # Scale width and height to pixel values
-            width_scaled = int(width / data['range'] * output_size[1])
-            height_scaled = int(height / data['range'] * output_size[1])
+            width_scaled = int(width / data['range'] * img_width)
+            height_scaled = int(height / data['range'] * img_width)
 
-            # Clamp width and height (Needed for very small boats)
-            min_width = 20
-            min_height = 20
-            width_scaled = max(width_scaled, min_width)
-            height_scaled = max(height_scaled, min_height)
+            # Ensure width and height are within bounds
+            width_scaled = min(max(0, width_scaled), img_width - 1)
+            height_scaled = min(max(0, height_scaled), img_height - 1)
 
             # Normalize bounding box values for YOLO format
-            img_width, img_height = output_size[1], output_size[0]
             x_normalized = x_scaled / img_width
             y_normalized = y_scaled / img_height
             width_normalized = width_scaled / img_width
