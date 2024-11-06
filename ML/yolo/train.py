@@ -20,7 +20,7 @@ class PPIDataset(Dataset):
         os.makedirs(os.path.join(save_dir, 'labels', 'val'), exist_ok=True)
 
         # Shuffle files and split into train and validation
-        #random.shuffle(self.json_files)
+        random.shuffle(self.json_files)
         split_index = int(len(self.json_files) * (1 - val_split))
         self.train_files = self.json_files[:split_index]
         self.val_files = self.json_files[split_index:]
@@ -40,12 +40,15 @@ class PPIDataset(Dataset):
 
         # Convert to PIL Image
         image = Image.fromarray((ppi_array_normalized * 255).astype(np.uint8))
-        #draw = ImageDraw.Draw(image)
+        draw = ImageDraw.Draw(image)
 
         ships = data['ships']
         output_size = ppi_array.shape
 
         yolo_bboxes = []
+
+        minIntensityThreshold = 10
+        maxIntensityThreshold = 150
 
         # Draw bounding boxes for each ship
         for ship in ships:
@@ -72,7 +75,6 @@ class PPIDataset(Dataset):
 
             # Check the average intensity in the bounding box
             # to ensure that it mostly covers a visible object
-            threshold = 10
 
             tleft = x_scaled - width_scaled // 2
             tright = y_scaled - height_scaled // 2
@@ -83,9 +85,9 @@ class PPIDataset(Dataset):
             cropped_array = np.array(cropped_image)
 
             average_intensity = np.mean(cropped_array)
-            print(average_intensity)
+            #print(average_intensity)
 
-            if average_intensity > threshold:
+            if minIntensityThreshold < average_intensity < maxIntensityThreshold:
 
                 # Normalize bounding box values for YOLO format
                 x_normalized = x_scaled / img_width
@@ -96,7 +98,7 @@ class PPIDataset(Dataset):
                 model_class = 0 # Class 0 is ships
                 yolo_bboxes.append(f"{model_class} {x_normalized} {y_normalized} {width_normalized} {height_normalized}")
 
-                #draw.rectangle([tleft, tright, bleft, bright], outline="red", width=3)
+                #draw.rectangle([tleft, tright, bleft, bright], outline="red", width=1)
 
         #image.show()
 
@@ -110,11 +112,14 @@ class PPIDataset(Dataset):
         image_file_name = os.path.splitext(os.path.basename(json_path))[0] + '.png'
         image.save(os.path.join(self.save_dir, 'images', save_subdir, image_file_name))
 
-        # Save the YOLO format bounding boxes to a text file
-        yolo_file_path = os.path.splitext(image_file_name)[0] + '.txt'
-        with open(os.path.join(self.save_dir, 'labels', save_subdir, yolo_file_path), 'w') as yolo_file:
-            for bbox in yolo_bboxes:
-                yolo_file.write(bbox + '\n')
+        # If no bboxes detected then no labels
+        # yolo counts these images as background images
+        if yolo_bboxes:
+            # Save the YOLO format bounding boxes to a text file
+            yolo_file_path = os.path.splitext(image_file_name)[0] + '.txt'
+            with open(os.path.join(self.save_dir, 'labels', save_subdir, yolo_file_path), 'w') as yolo_file:
+                for bbox in yolo_bboxes:
+                    yolo_file.write(bbox + '\n')
 
         return image
 
@@ -125,7 +130,7 @@ if __name__ == '__main__':
     os.makedirs(save_directory, exist_ok=True)
 
     dataset = PPIDataset(json_directory, save_directory, val_split=0.2)
-    #image = dataset[0]
+    #image = dataset[170]
     
     # Create the image and labels in the directories (train and val) for YOLO
     for i in range(len(dataset)):
