@@ -134,14 +134,16 @@ def process_radar_detections(
         List[Optional[dict]]: List of API responses for each detection, None for failed detections
     """
     results = []
-    
+    del_req = requests.delete(f"{base_url}/detections/by_radar/{radar_id}")
+    del_req.raise_for_status()
+
     for scaled_distance, azimuth_idx in predictions:
         try:
             # Scale azimuth by resolution to get actual angle in degrees
             azimuth = azimuth_idx * azimuth_resolution
             
             # Convert scaled distance to actual distance in meters
-            actual_distance = (scaled_distance / ppi_max_distance) * (radar_range * 1000)  # Convert km to meters
+            actual_distance = (scaled_distance / ppi_max_distance) * (radar_range )  # Convert km to meters
             
             # Convert polar coordinates (distance, azimuth) to cartesian coordinates (x, y)
             # Azimuth is in degrees, convert to radians for math functions

@@ -51,10 +51,6 @@ class RadarBase(BaseModel):
 
     @validator('azimuth_resolution')
     def validate_azimuth_resolution(cls, v):
-        if v <= 0:
-            raise ValueError('Azimuth resolution must be positive')
-        if 360 % v != 0:
-            raise ValueError('360 must be divisible by azimuth resolution')
         return v
 
     @property
@@ -78,7 +74,6 @@ class DetectionBase(BaseModel):
     longitude: float
     confidence: float
     vessel_type: Optional[str] = None
-    raw_ml_output: Optional[dict] = None
 
 class DetectionCreate(DetectionBase):
     pass
@@ -119,7 +114,15 @@ def get_db():
 
 # Initialize FastAPI app
 app = FastAPI(title="Radar Tracking System API")
+from fastapi.middleware.cors import CORSMiddleware
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # API Endpoints
 @app.post("/radars/", response_model=RadarResponse)
 def create_radar(radar: RadarCreate, db: Session = Depends(get_db)):
@@ -217,6 +220,14 @@ def get_recent_detections(
     cutoff_time = datetime.utcnow() - timedelta(minutes=minutes)
     query = query.filter(Detection.detection_time >= cutoff_time)
     return query.all()
+
+@app.delete("/detections/by_radar/{radar_id}")
+def delete_detections_by_radar(radar_id: int, db: Session = Depends(get_db)):
+    """Delete all detections for a specific radar"""
+    result = db.query(Detection).filter(Detection.radar_id == radar_id).delete()
+    db.commit()
+    return {"message": f"Deleted {result} detections for radar {radar_id}"}
+
 
 @app.get("/detections/by_area/", response_model=List[DetectionResponse])
 def get_detections_by_area(

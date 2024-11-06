@@ -1,7 +1,31 @@
-import * as React from "react";
-import Map from "react-map-gl";
+import React, { useState, useEffect } from "react";
+import Map, { Marker } from "react-map-gl";
+
+const REFRESH_INTERVAL = 10000; // 10 seconds
 
 export default function App() {
+  const [detections, setDetections] = useState([]);
+
+  // Fetch recent detections
+  const fetchDetections = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:7777/detections/recent/?minutes=30",
+      );
+      const data = await response.json();
+      setDetections(data);
+    } catch (error) {
+      console.error("Error fetching detections:", error);
+    }
+  };
+
+  // Initial fetch and setup interval
+  useEffect(() => {
+    fetchDetections();
+    const interval = setInterval(fetchDetections, REFRESH_INTERVAL);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="w-screen h-screen">
       <Map
@@ -12,7 +36,17 @@ export default function App() {
           zoom: 11,
         }}
         mapStyle="mapbox://styles/mapbox/dark-v9"
-      />
+      >
+        {detections.map((detection) => (
+          <Marker
+            key={detection.detection_id}
+            latitude={detection.latitude}
+            longitude={detection.longitude}
+          >
+            <div className="w-3 h-3 bg-red-500 rounded-full" />
+          </Marker>
+        ))}
+      </Map>
     </div>
   );
 }

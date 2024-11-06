@@ -1,7 +1,7 @@
 import math
 
-CENTER_LAT = 25.3491
-CENTER_LONG = 56.3487
+CENTER_LAT = 25.32600
+CENTER_LONG = 56.38180
 
 
 def getLatLong(x: float, y: float, center_lat=CENTER_LAT, center_long=CENTER_LONG) -> tuple[float, float]:
