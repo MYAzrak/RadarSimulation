@@ -96,3 +96,82 @@ def update_radar_location(
     except requests.exceptions.RequestException as e:
         print(f"Error updating radar location: {str(e)}")
         return None
+import math
+from typing import List, Tuple, Optional
+import sys
+sys.path.append('..')
+from utils.locations import getLatLong
+
+def process_radar_detections(
+    radar_id: int,
+    radar_lat: float,
+    radar_long: float,
+    predictions: List[Tuple[float, float]],  # List of (scaled_distance, azimuth) tuples
+    radar_range: float,
+    ppi_max_distance: float,
+    azimuth_resolution: float,
+    base_url: str = "http://localhost:7777",
+    confidence: float = 0.9,
+    vessel_type: str = "UNKNOWN"
+) -> List[Optional[dict]]:
+    """
+    Process radar detections by converting scaled distances and azimuths to geographic
+    coordinates and adding them to the database.
+    
+    Args:
+        radar_id (int): ID of the radar making the detections
+        radar_lat (float): Latitude of the radar
+        radar_long (float): Longitude of the radar
+        predictions (List[Tuple[float, float]]): List of (scaled_distance, azimuth) tuples
+        radar_range (float): Actual radar range in kilometers
+        ppi_max_distance (float): Maximum distance in the PPI display units
+        azimuth_resolution (float): Angular resolution of the radar in degrees
+        base_url (str, optional): Base URL of the API. Defaults to "http://localhost:7777"
+        confidence (float, optional): Confidence score for detections. Defaults to 0.9
+        vessel_type (str, optional): Type of vessel detected. Defaults to "UNKNOWN"
+    
+    Returns:
+        List[Optional[dict]]: List of API responses for each detection, None for failed detections
+    """
+    results = []
+    
+    for scaled_distance, azimuth_idx in predictions:
+        try:
+            # Scale azimuth by resolution to get actual angle in degrees
+            azimuth = azimuth_idx * azimuth_resolution
+            
+            # Convert scaled distance to actual distance in meters
+            actual_distance = (scaled_distance / ppi_max_distance) * (radar_range * 1000)  # Convert km to meters
+            
+            # Convert polar coordinates (distance, azimuth) to cartesian coordinates (x, y)
+            # Azimuth is in degrees, convert to radians for math functions
+            # Azimuth 0° is North, increases clockwise
+            azimuth_rad = math.radians(90 - azimuth)  # Convert to mathematical angle (0° = East, CCW)
+            
+            x = actual_distance * math.cos(azimuth_rad)  # East-West distance
+            y = actual_distance * math.sin(azimuth_rad)  # North-South distance
+            
+            # Convert to latitude/longitude using the radar position as center
+            lat, long = getLatLong(x, y, radar_lat, radar_long)
+            
+            # Create detection in database
+            payload = {
+                "radar_id": radar_id,
+                "latitude": lat,
+                "longitude": long,
+                "confidence": confidence,
+                "vessel_type": vessel_type
+            }
+            
+            response = requests.post(f"{base_url}/detections/", json=payload)
+            response.raise_for_status()
+            results.append(response.json())
+            
+        except requests.exceptions.RequestException as e:
+            print(f"Error creating detection: {str(e)}")
+            results.append(None)
+        except Exception as e:
+            print(f"Error processing detection: {str(e)}")
+            results.append(None)
+    
+    return results

@@ -7,7 +7,7 @@ import threading
 import argparse
 import time
 from Inference.yolo_infer import run_model
-from utils.api.radar import create_radar_with_id, update_radar_location 
+from utils.api.radar import create_radar_with_id, update_radar_location, process_radar_detections 
 from utils.locations import getLatLong
 
 fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(projection='polar'))
@@ -112,9 +112,7 @@ def on_message(ws, message):
     lat, long = getLatLong(radar_loc_unity['x'], radar_loc_unity['z'])
     print(ppi.shape)
     update_radar_location(radarID, lat, long, r_range//1000, ppi.shape[0]) 
-
-    for ship in ships:
-        print(ship)
+    process_radar_detections(radarID, lat, long, ships, r_range, ppi.shape[1], 360.0/ppi.shape[0])
 
     with data_lock:
         latest_data = ppi

@@ -4,8 +4,7 @@ CENTER_LAT = 25.3491
 CENTER_LONG = 56.3487
 
 
-def getLatLong(x: float, y: float) -> tuple[float, float]:
-    global CENTER_LAT, CENTER_LONG
+def getLatLong(x: float, y: float, center_lat=CENTER_LAT, center_long=CENTER_LONG) -> tuple[float, float]:
     """
     Convert Unity x,y coordinates to latitude/longitude based on a center point.
     
@@ -22,8 +21,8 @@ def getLatLong(x: float, y: float) -> tuple[float, float]:
     EARTH_RADIUS = 6371000  # 6,371 km
 
     # Convert to radians for calculations
-    center_lat_rad = math.radians(CENTER_LAT)
-    center_long_rad = math.radians(CENTER_LONG)
+    center_lat_rad = math.radians(center_lat)
+    center_long_rad = math.radians(center_long)
 
     # Calculate change in latitude
     # Moving north/south along a meridian: 1 meter = 1/Earth_radius radians
