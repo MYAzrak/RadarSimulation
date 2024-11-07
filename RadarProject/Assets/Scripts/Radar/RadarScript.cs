@@ -264,6 +264,14 @@ public class RadarScript : MonoBehaviour
                         float width = bounds.size.x;
                         float height = bounds.size.z;
 
+                        float dot = Vector3.Dot(ship.transform.forward, (radarPosition - ship.transform.position).normalized);
+                        if(dot > 0.6f || dot < -0.4f) {
+                            // Ensure longer value is the width
+                            if (height > width) {
+                                (height, width) = (width, height);
+                            }
+                        }
+
                         // Debug.Log($"{ship.GetComponent<ShipController>().shipInformation.Type} {width} {height}");
 
                         // Bounding box saved per YOLO format (class x_center y_center width height)
