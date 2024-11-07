@@ -15,7 +15,7 @@ def run_model(ppi_array, model):
     output = model.predict(image, conf=0.7)
     
     boxes = output[0].boxes
-    output[0].show()
+    # output[0].show()
 
     # 2D array of [distance, azimuth]
     xy_coordinates = boxes.xywh[:, :2].detach().cpu().numpy()

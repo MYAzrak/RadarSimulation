@@ -111,8 +111,11 @@ def on_message(ws, message):
     
     lat, long = getLatLong(radar_loc_unity['x'], radar_loc_unity['z'])
     print(ppi.shape)
-    update_radar_location(radarID, lat, long, r_range//1000, ppi.shape[0]) 
-    process_radar_detections(radarID, lat, long, ships, r_range, ppi.shape[1], 360.0/ppi.shape[0])
+    try:
+        update_radar_location(radarID, lat, long, r_range//1000, ppi.shape[0]) 
+        process_radar_detections(radarID, lat, long, ships, r_range, ppi.shape[1], 360.0/ppi.shape[0])
+    except:
+        print("Error reaching server")
 
     with data_lock:
         latest_data = ppi
