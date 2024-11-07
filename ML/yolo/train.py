@@ -40,15 +40,15 @@ class PPIDataset(Dataset):
 
         # Convert to PIL Image
         image = Image.fromarray((ppi_array_normalized * 255).astype(np.uint8))
-        draw = ImageDraw.Draw(image)
+        # draw = ImageDraw.Draw(image)
 
         ships = data['ships']
         output_size = ppi_array.shape
 
         yolo_bboxes = []
 
-        minIntensityThreshold = 10
-        maxIntensityThreshold = 230
+        minIntensityThreshold = 6
+        maxIntensityThreshold = 240
 
         # Draw bounding boxes for each ship
         for ship in ships:
@@ -112,14 +112,11 @@ class PPIDataset(Dataset):
         image_file_name = os.path.splitext(os.path.basename(json_path))[0] + '.png'
         image.save(os.path.join(self.save_dir, 'images', save_subdir, image_file_name))
 
-        # If no bboxes detected then no labels
-        # yolo counts these images as background images
-        if yolo_bboxes:
-            # Save the YOLO format bounding boxes to a text file
-            yolo_file_path = os.path.splitext(image_file_name)[0] + '.txt'
-            with open(os.path.join(self.save_dir, 'labels', save_subdir, yolo_file_path), 'w') as yolo_file:
-                for bbox in yolo_bboxes:
-                    yolo_file.write(bbox + '\n')
+        # Save the YOLO format bounding boxes to a text file
+        yolo_file_path = os.path.splitext(image_file_name)[0] + '.txt'
+        with open(os.path.join(self.save_dir, 'labels', save_subdir, yolo_file_path), 'w') as yolo_file:
+            for bbox in yolo_bboxes:
+                yolo_file.write(bbox + '\n')
 
         return image
 
@@ -133,14 +130,14 @@ if __name__ == '__main__':
     #image = dataset[170]
     
     # Create the image and labels in the directories (train and val) for YOLO
-    #for i in range(len(dataset)):
-    #    image = dataset[i]
-    #    print(f"Processed image {i + 1}/{len(dataset)}")
+    for i in range(len(dataset)):
+        image = dataset[i]
+        print(f"Processed image {i + 1}/{len(dataset)}")
 
     model = YOLO("yolo11n.pt")  # Load a pretrained model
 
     # Assuming yaml is in the same directory as this script
     current_directory = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(current_directory, 'ppi_dataset.yaml')
-    results = model.train(data=data_path, epochs=600, patience=100, imgsz=1024, cache=True) 
+    results = model.train(data=data_path, epochs=600, patience=100, cache=True) 
     #model.val()
