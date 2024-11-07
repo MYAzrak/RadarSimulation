@@ -5,7 +5,6 @@ import json
 import matplotlib.pyplot as plt
 from PIL import Image
 from ultralytics import YOLO
-from inference import run_model
 
 def load_random_json(directory):
 
@@ -33,5 +32,5 @@ model = YOLO("./best.pt")
 test = load_random_json('~/Downloads/output')
 test = np.array(test['PPI'], dtype=np.float32)
 
-ships = run_model(test, model)
-print(ships)
+#ships = run_model(test, model)
+#print(ships)
