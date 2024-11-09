@@ -1,5 +1,6 @@
 import subprocess
 import json
+import yaml
 import os
 import signal
 import time
@@ -19,7 +20,7 @@ class SimulationManager:
 
     def load_config(self, config_path):
         with open(config_path, 'r') as f:
-            return json.load(f)
+            return yaml.safe_load(f)
 
     def start_simulation(self):
         cmd = [self.unity_exe_path]

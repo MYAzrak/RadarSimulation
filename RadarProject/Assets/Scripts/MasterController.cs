@@ -34,9 +34,7 @@ public class MasterController : MonoBehaviour
         //CSV Controller Params
         setIntArg("-nships", ref csvController.numberOfShips);
         setIntArg("-nLocations", ref csvController.locationsToCreate);
-        setFloatArg("-minStartingCoords", ref csvController.minStartingCoordinates);
-        setFloatArg("-maxStartingCoords", ref csvController.maxStartingCoordinates);
-        setFloatArg("-randomCoords", ref csvController.randomCoordinates);
+        setFloatArg("-coordinateSquareWidth", ref csvController.coordinateSquareWidth);
         setIntArg("-minSpeed", ref csvController.minSpeed);
         setIntArg("-maxSpeed", ref csvController.maxSpeed);
 

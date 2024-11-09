@@ -14,8 +14,9 @@ public class CSVController : MonoBehaviour
     [Header("Random Ship Parameters")]
     public int numberOfShips;                       // Number of ships to generate
     public int locationsToCreate;                   // Number of locations the ship will visit
-    public float minStartingCoordinates;            // The min value in the range the ships will initially generate at
-    public float maxStartingCoordinates;            // The max value in the range the ships will initially generate at
+    public float coordinateSquareWidth = 30000f;
+    float minStartingCoordinates;            // The min value in the range the ships will initially generate at
+    float maxStartingCoordinates;            // The max value in the range the ships will initially generate at
     public float length;
     public float randomCoordinates;                 // The range added to the previous location the ship will visit
     public int minSpeed;                            // The min value in the speed range
@@ -55,11 +56,16 @@ public class CSVController : MonoBehaviour
             // Initialize ship parameters with random values
             numberOfShips = Random.Range(30, 100);
             locationsToCreate = Random.Range(7, 10);
-            minStartingCoordinates = -15000;
-            maxStartingCoordinates = 15000;
+            float coordinateSquareWidth = 30000;
             randomCoordinates = Random.Range(-1500, 1500);
             minSpeed = 10;
             maxSpeed = 16;
+
+            Vector3 centerPoint = Vector3.zero;
+
+            float halfWidth = coordinateSquareWidth / 2f;
+            minStartingCoordinates = centerPoint.x - halfWidth;
+            maxStartingCoordinates = centerPoint.x + halfWidth;
 
             // Initialize weathers and waves
             waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length);
@@ -74,13 +80,13 @@ public class CSVController : MonoBehaviour
 
             if (direction == RadarGenerationDirection.Left)
             {
-                minStartingCoordinates = -15000;
-                maxStartingCoordinates = 7000;
+                minStartingCoordinates = centerPoint.x - halfWidth;
+                maxStartingCoordinates = centerPoint.x;
             }
             else if (direction == RadarGenerationDirection.Right)
             {
-                minStartingCoordinates = -7000;
-                maxStartingCoordinates = 15000;
+                minStartingCoordinates = centerPoint.x;
+                maxStartingCoordinates = centerPoint.x + halfWidth;
             }
 
             length = Mathf.Abs(minStartingCoordinates + maxStartingCoordinates);
