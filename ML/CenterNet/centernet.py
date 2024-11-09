@@ -51,7 +51,7 @@ def detect_points(heatmap, threshold=0.3, nms_kernel_size=3, eps=20, min_samples
         keep = (heatmap == hmax) & (heatmap > threshold)
         ys, xs = torch.where(keep)
 
-        points = [(x.item(), y.item()) for x, y in zip(xs, ys)]
+        points = np.array([(x.item(), y.item()) for x, y in zip(xs, ys)])
 
         if len(points) == 0:
             return []
