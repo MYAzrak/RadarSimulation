@@ -12,7 +12,7 @@ def run_model(ppi_array, model):
     ppi_array_normalized = (ppi_array - ppi_array.min()) / (ppi_array.max() - ppi_array.min() + 1e-8)
     image = Image.fromarray((ppi_array_normalized * 255).astype(np.uint8))
 
-    output = model.predict(image, imgsz=1024, conf=0.7)
+    output = model.predict(image, imgsz=640, conf=0.3)
     
     boxes = output[0].boxes
     # output[0].show()

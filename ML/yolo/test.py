@@ -29,8 +29,12 @@ def load_random_json(directory):
 
 model = YOLO("./best.pt")
 
-test = load_random_json('~/Downloads/output')
-test = np.array(test['PPI'], dtype=np.float32)
+# Convert to NCNN
+model.export(format="ncnn")
+
+
+#test = load_random_json('~/Downloads/output')
+#test = np.array(test['PPI'], dtype=np.float32)
 
 #ships = run_model(test, model)
 #print(ships)
