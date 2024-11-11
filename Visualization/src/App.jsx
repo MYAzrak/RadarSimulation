@@ -5,6 +5,7 @@ const REFRESH_INTERVAL = 10000; // 10 seconds
 
 export default function App() {
   const [detections, setDetections] = useState([]);
+  const [radars, setRadars] = useState([]);
 
   // Fetch recent detections
   const fetchDetections = async () => {
@@ -16,6 +17,13 @@ export default function App() {
       setDetections(data);
     } catch (error) {
       console.error("Error fetching detections:", error);
+    }
+    try {
+      const response = await fetch("http://localhost:7777/radars");
+      const data = await response.json();
+      setDetections(data);
+    } catch (error) {
+      console.log("Error fetching radars:", error);
     }
   };
 
@@ -44,6 +52,15 @@ export default function App() {
             longitude={detection.longitude}
           >
             <div className="w-3 h-3 bg-red-500 rounded-full" />
+          </Marker>
+        ))}
+        {radars.map((radar) => (
+          <Marker
+            key={radar.radar_id}
+            latitude={radar.latitude}
+            longitude={radar.longitude}
+          >
+            <div className="w-3 h-3 bg-green-500 rounded-full" />
           </Marker>
         ))}
       </Map>
