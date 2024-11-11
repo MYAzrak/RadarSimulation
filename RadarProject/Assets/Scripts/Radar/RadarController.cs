@@ -3,6 +3,7 @@ using System.Linq;
 using System;
 using Crest;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RadarController : MonoBehaviour
 {
@@ -55,6 +56,28 @@ public class RadarController : MonoBehaviour
     {
         parentEmptyObject = new("Radars");
 
+        // Set radars to a different position in demo scene
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (currentScene.name == "KhorfakkanCoastline")
+        {
+            GameObject terrain = GameObject.Find("Terrain");
+            TerrainCollider terrainCollider = terrain.GetComponent<TerrainCollider>();
+
+            if (terrainCollider != null)
+            {
+                Bounds bounds = terrainCollider.bounds;
+
+                float z = bounds.center.z;
+                float depth = bounds.size.z;
+
+                parentEmptyObject.transform.position = new Vector3(0, 0, z + (depth * 1.3f));
+                Logger.Log($"Demo scene detected. Setting radar position to {parentEmptyObject.transform.position}");
+            }
+            else
+            {
+                Logger.Log("TerrainCollider not found on terrain.");
+            }
+        }
 
         numOfRadarsPerRow = new();
 

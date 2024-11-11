@@ -50,7 +50,7 @@
             </ui:Foldout>
         </ui:VisualElement>
         <ui:VisualElement name="CameraView" style="flex-grow: 1; height: auto; display: flex; width: 400px;">
-            <ui:SliderInt label="Camera Speed" high-value="30" show-input-field="true" low-value="5" name="CameraSpeedSlider" focusable="false" page-size="1" direction="Horizontal" inverted="false" class="text" style="height: 50px; display: flex;" />
+            <ui:SliderInt label="Camera Speed" high-value="50" show-input-field="true" low-value="10" name="CameraSpeedSlider" focusable="false" page-size="1" direction="Horizontal" inverted="false" class="text" style="height: 50px; display: flex;" />
             <ui:IntegerField label="Radar ID" value="0" name="RadarIDField" class="text" style="align-self: center; width: 250px;" />
             <ui:Button text="Go To Radar" parse-escape-sequences="true" display-tooltip-when-elided="true" name="GoToRadarBtn" focusable="false" class="btns" style="align-items: stretch; align-self: center;" />
         </ui:VisualElement>

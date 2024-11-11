@@ -15,9 +15,7 @@ public class CSVController : MonoBehaviour
     public int numberOfShips;                       // Number of ships to generate
     public int locationsToCreate;                   // Number of locations the ship will visit
     public float coordinateSquareWidth = 30000f;
-    float minStartingCoordinates;            // The min value in the range the ships will initially generate at
-    float maxStartingCoordinates;            // The max value in the range the ships will initially generate at
-    public float length;
+    public Vector3 centerPoint = Vector3.zero;
     public float randomCoordinates;                 // The range added to the previous location the ship will visit
     public int minSpeed;                            // The min value in the speed range
     public int maxSpeed;                            // The max value in the speed range
@@ -27,6 +25,7 @@ public class CSVController : MonoBehaviour
     public Waves waves;
 
     [Header("Random Procedural land Parameters")]
+    public bool generateProceduralLand = true;
     public bool hasProceduralLand;
     public int proceduralLandSeed;
     public Vector3 proceduralLandLocation;
@@ -56,16 +55,11 @@ public class CSVController : MonoBehaviour
             // Initialize ship parameters with random values
             numberOfShips = Random.Range(30, 100);
             locationsToCreate = Random.Range(7, 10);
-            float coordinateSquareWidth = 30000;
             randomCoordinates = Random.Range(-1500, 1500);
             minSpeed = 10;
             maxSpeed = 16;
 
-            Vector3 centerPoint = Vector3.zero;
-
             float halfWidth = coordinateSquareWidth / 2f;
-            minStartingCoordinates = centerPoint.x - halfWidth;
-            maxStartingCoordinates = centerPoint.x + halfWidth;
 
             // Initialize weathers and waves
             waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length);
@@ -73,23 +67,22 @@ public class CSVController : MonoBehaviour
 
             // Initialize procedural land parameters with random values
             hasProceduralLand = Random.Range(0, 10) < 6;
+
+            // Turn off procedural land in demo scene
+            if (!generateProceduralLand) {
+                hasProceduralLand = false;
+                return;
+            }
+
             proceduralLandSeed = Random.Range(0, 10_000_000);
 
             // Create a point on the boundary of the ship spawn area
-            Vector3 pointOutside = GetRandomPointOnBoundary(Vector3.zero, new Vector2(maxStartingCoordinates, maxStartingCoordinates), ref direction);
+            Vector3 pointOutside = GetRandomPointOnBoundary(Vector3.zero, new Vector2(centerPoint.x + halfWidth, centerPoint.z + halfWidth), ref direction);
 
             if (direction == RadarGenerationDirection.Left)
-            {
-                minStartingCoordinates = centerPoint.x - halfWidth;
-                maxStartingCoordinates = centerPoint.x;
-            }
+                centerPoint.x -= halfWidth;
             else if (direction == RadarGenerationDirection.Right)
-            {
-                minStartingCoordinates = centerPoint.x;
-                maxStartingCoordinates = centerPoint.x + halfWidth;
-            }
-
-            length = Mathf.Abs(minStartingCoordinates + maxStartingCoordinates);
+                centerPoint.x += halfWidth;
 
             proceduralLandLocation = pointOutside;
         }
@@ -100,7 +93,7 @@ public class CSVController : MonoBehaviour
     {
         // Calculate half width and half height
         float width = size.x;
-        float halfHeight = size.y / 2;
+        float Height = size.y;
         float yValue = 0f;
 
         // Randomly choose a side
@@ -125,13 +118,13 @@ public class CSVController : MonoBehaviour
             0 => new Vector3(
                                 center.x + width,
                                 yValue,
-                                center.z + Random.Range(-halfHeight, halfHeight)
+                                center.z + Random.Range(-Height, Height)
                             ),
             // Left
             1 => new Vector3(
                                 center.x - width,
                                 yValue,
-                                center.z + Random.Range(-halfHeight, halfHeight)
+                                center.z + Random.Range(-Height, Height)
                             ),
             _ => Vector3.zero,
         };
@@ -153,9 +146,10 @@ public class CSVController : MonoBehaviour
 
         speed = new int[locationsToCreate];
         speed[0] = Random.Range(minSpeed, maxSpeed);
-
-        float x = Random.Range(-length, length);
-        float z = Random.Range(-length * 2, length * 2);
+        
+        float width = coordinateSquareWidth / 2;
+        float x = centerPoint.x + Random.Range(-width, width);
+        float z = centerPoint.z + Random.Range(-width, width);
         points[0] = new Vector3(x, 0, z);
 
         for (int i = 1; i < locationsToCreate; i++)

@@ -635,14 +635,14 @@ MonoBehaviour:
   generateRandomParameters: 1
   numberOfShips: 5
   locationsToCreate: 10
-  minStartingCoordinates: 0
-  maxStartingCoordinates: 0
-  length: 0
+  coordinateSquareWidth: 30000
+  centerPoint: {x: 0, y: 0, z: 0}
   randomCoordinates: 1000
   minSpeed: 11
   maxSpeed: 21
   weather: 0
   waves: 0
+  generateProceduralLand: 1
   hasProceduralLand: 0
   proceduralLandSeed: 0
   proceduralLandLocation: {x: 0, y: 0, z: 0}

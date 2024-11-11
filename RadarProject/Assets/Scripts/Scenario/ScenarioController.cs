@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ScenarioController : MonoBehaviour
 {
@@ -99,6 +100,30 @@ public class ScenarioController : MonoBehaviour
 
         StartCoroutine(UpdateScenarioLabelAnimation());
         StartCoroutine(RunNextScenario());
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        if (currentScene.name == "KhorfakkanCoastline")
+        {
+                        GameObject terrain = GameObject.Find("Terrain");
+            TerrainCollider terrainCollider = terrain.GetComponent<TerrainCollider>();
+
+            if (terrainCollider != null)
+            {
+                Bounds bounds = terrainCollider.bounds;
+
+                float width = bounds.size.x;
+                float depth = bounds.size.z;
+                
+                csvController.centerPoint = new Vector3(width / 2, 0, depth * 2.5f); 
+                csvController.coordinateSquareWidth = 30000f;
+                csvController.generateProceduralLand = false;
+                Logger.Log($"Demo scene detected. Setting ship coordinate space center to {csvController.centerPoint}");
+            }
+            else
+            {
+                Logger.Log("TerrainCollider not found on terrain.");
+            }
+        }
     }
 
     void Update()

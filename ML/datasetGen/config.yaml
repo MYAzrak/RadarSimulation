@@ -1,20 +1,18 @@
-{
-  nRadars: 2,
-  nScenarios: 100,
-  screen-fullscreen: 0,
-  scenarioTimeLimit: 60,
-  # nships: 50, # Default Random
-  # nLocations: 10, # Default Random
-  minStartingCoords: -15000,
-  maxStartingCoords: 15000, 
-  minSpeed: 10,
-  maxSpeed: 16,
-  radarRows: 3,
-  radarPower: 1000, # Watts
-  radarGain: 30, # dB
-  waveLength: 0.03, # meters
-  radarImageRadius: 1000,
-  verticalAngle: 30,
-  beamWidth: 2,
-  rainRCS: 0.001,
-}
+nRadars: 2
+nScenarios: 100
+screen-fullscreen: 0
+scenarioTimeLimit: 60
+# nships: 50 # Default Random
+# nLocations: 10 # Default Random
+minStartingCoords: -15000
+maxStartingCoords: 15000
+minSpeed: 10
+maxSpeed: 16
+radarRows: 3
+radarPower: 1000 # Watts
+radarGain: 30 # dB
+waveLength: 0.03 # meters
+radarImageRadius: 1000
+verticalAngle: 30
+beamWidth: 2
+rainRCS: 0.001
