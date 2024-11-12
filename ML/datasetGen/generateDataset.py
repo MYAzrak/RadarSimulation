@@ -26,6 +26,7 @@ class SimulationManager:
         cmd = [self.unity_exe_path]
         for key, value in self.config.items():
             cmd.extend([f"-{key}", str(value)])
+            print([f"-{key}", str(value)])
         
         self.simulation_process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 

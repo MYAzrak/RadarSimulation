@@ -104,7 +104,7 @@ public class ScenarioController : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         if (currentScene.name == "KhorfakkanCoastline")
         {
-                        GameObject terrain = GameObject.Find("Terrain");
+            GameObject terrain = GameObject.Find("Terrain");
             TerrainCollider terrainCollider = terrain.GetComponent<TerrainCollider>();
 
             if (terrainCollider != null)

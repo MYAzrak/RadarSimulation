@@ -26,8 +26,6 @@ public class CameraController : MonoBehaviour
         }
     }
 
-
-
     public void Move()
     {
         // Only move or rotate the camera if the user is holding the right button

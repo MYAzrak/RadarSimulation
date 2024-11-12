@@ -8,8 +8,12 @@ public class CSVController : MonoBehaviour
     [Header("Random CSV Generator")]
     public string fileName;
     public bool generateRandomCSV = false;
-
     public bool generateRandomParameters = true;
+
+    [Header("Master Controller Parameters")]
+    public MinMax<int> numOfShips = new MinMax<int>(30, 120);
+    public MinMax<int> locationsToVisit = new MinMax<int>(5, 9);
+    public MinMax<int> speedAtLocations = new MinMax<int>(12, 18);
 
     [Header("Random Ship Parameters")]
     public int numberOfShips;                       // Number of ships to generate
@@ -50,43 +54,39 @@ public class CSVController : MonoBehaviour
 
     public void GenerateRandomParameters()
     {
-        if (generateRandomParameters)
-        {
-            // Initialize ship parameters with random values
-            numberOfShips = Random.Range(30, 100);
-            locationsToCreate = Random.Range(7, 10);
-            randomCoordinates = Random.Range(-1500, 1500);
-            minSpeed = 10;
-            maxSpeed = 16;
+        // Initialize ship parameters with random values
+        numberOfShips = Random.Range(numOfShips.Min, numOfShips.Max);
+        locationsToCreate = Random.Range(locationsToVisit.Min, locationsToVisit.Max);
+        randomCoordinates = Random.Range(-1500, 1500);
+        minSpeed = 10;
+        maxSpeed = 16;
 
-            float halfWidth = coordinateSquareWidth / 2f;
+        float halfWidth = coordinateSquareWidth / 2f;
 
-            // Initialize weathers and waves
-            waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length);
-            weather = (Weather)Random.Range(0, System.Enum.GetNames(typeof(Weather)).Length);
+        // Initialize weathers and waves
+        waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length);
+        weather = (Weather)Random.Range(0, System.Enum.GetNames(typeof(Weather)).Length);
 
-            // Initialize procedural land parameters with random values
-            hasProceduralLand = Random.Range(0, 10) < 6;
+        // Initialize procedural land parameters with random values
+        hasProceduralLand = Random.Range(0, 10) < 6;
 
-            // Turn off procedural land in demo scene
-            if (!generateProceduralLand) {
-                hasProceduralLand = false;
-                return;
-            }
-
-            proceduralLandSeed = Random.Range(0, 10_000_000);
-
-            // Create a point on the boundary of the ship spawn area
-            Vector3 pointOutside = GetRandomPointOnBoundary(Vector3.zero, new Vector2(centerPoint.x + halfWidth, centerPoint.z + halfWidth), ref direction);
-
-            if (direction == RadarGenerationDirection.Left)
-                centerPoint.x -= halfWidth;
-            else if (direction == RadarGenerationDirection.Right)
-                centerPoint.x += halfWidth;
-
-            proceduralLandLocation = pointOutside;
+        // Turn off procedural land in demo scene
+        if (!generateProceduralLand) {
+            hasProceduralLand = false;
+            return;
         }
 
+        proceduralLandSeed = Random.Range(0, 10_000_000);
+
+        // Create a point on the boundary of the ship spawn area
+        Vector3 pointOutside = GetRandomPointOnBoundary(Vector3.zero, new Vector2(centerPoint.x + halfWidth, centerPoint.z + halfWidth), ref direction);
+
+        if (direction == RadarGenerationDirection.Left)
+            centerPoint.x -= halfWidth;
+        else if (direction == RadarGenerationDirection.Right)
+            centerPoint.x += halfWidth;
+
+        proceduralLandLocation = pointOutside;
     }
 
     Vector3 GetRandomPointOnBoundary(Vector3 center, Vector2 size, ref RadarGenerationDirection direction)
@@ -145,7 +145,7 @@ public class CSVController : MonoBehaviour
         Vector3[] points = new Vector3[locationsToCreate];
 
         speed = new int[locationsToCreate];
-        speed[0] = Random.Range(minSpeed, maxSpeed);
+        speed[0] = Random.Range(speedAtLocations.Min, speedAtLocations.Max);
         
         float width = coordinateSquareWidth / 2;
         float x = centerPoint.x + Random.Range(-width, width);
@@ -158,7 +158,7 @@ public class CSVController : MonoBehaviour
             z = points[i - 1].z + Random.Range(-randomCoordinates, randomCoordinates);
             points[i] = new Vector3(x, 0, z);
 
-            speed[i] = Random.Range(minSpeed, maxSpeed);
+            speed[i] = Random.Range(speedAtLocations.Min, speedAtLocations.Max);
         }
 
         return points;
@@ -347,5 +347,17 @@ public class CSVController : MonoBehaviour
     public string GetFilePath()
     {
         return filePath;
+    }
+}
+
+public class MinMax<T> 
+{
+    public T Min { get; set; }
+    public T Max { get; set; }
+
+    public MinMax(T min, T max)
+    {
+        Min = min;
+        Max = max;
     }
 }

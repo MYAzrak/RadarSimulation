@@ -7,6 +7,7 @@ public class MasterController : MonoBehaviour
     CSVController csvController;
     ScenarioController scenarioController;
 
+    string[] scenes = {"OceanMain", "KhorfakkanCoastline"};
 
     void Start()
     {
@@ -31,47 +32,72 @@ public class MasterController : MonoBehaviour
     {
         yield return null;
 
+        // TODO: The below causes null pointer exceptions or the scenarios not loading
+        //string sceneName = "";
+        //if (SetStringArg("-sceneName", ref sceneName))
+        //{
+        //    SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        //}
+
         //CSV Controller Params
-        setIntArg("-nships", ref csvController.numberOfShips);
-        setIntArg("-nLocations", ref csvController.locationsToCreate);
-        setFloatArg("-coordinateSquareWidth", ref csvController.coordinateSquareWidth);
-        setIntArg("-minSpeed", ref csvController.minSpeed);
-        setIntArg("-maxSpeed", ref csvController.maxSpeed);
+        if (SetIntListArg("-nships", out int minShips, out int maxShips))
+        {
+            minShips = Mathf.Clamp(minShips, 0, 120);
+            maxShips = Mathf.Clamp(maxShips, 0, 120);
+            csvController.numOfShips = new MinMax<int>(minShips, maxShips);
+        }
+           
+
+        if (SetIntListArg("-nLocations", out int minLocation, out int maxLocation))
+        {
+            minLocation = Mathf.Clamp(minLocation, 5, 30);
+            maxLocation = Mathf.Clamp(maxLocation, 5, 30);
+            csvController.locationsToVisit = new MinMax<int>(minLocation, maxLocation);
+        }
+
+        SetFloatArg("-coordinateSquareWidth", ref csvController.coordinateSquareWidth);
+
+        if (SetIntListArg("-speed", out int minSpeed, out int maxSpeed))
+        {
+            minSpeed = Mathf.Clamp(minSpeed, 1, 30);
+            maxSpeed = Mathf.Clamp(maxSpeed, 1, 30);
+            csvController.speedAtLocations = new MinMax<int>(minSpeed, maxSpeed);
+        }
 
         //Radar Params
-        setIntArg("-radarRows", ref radarController.rows);
-        setFloatArg("-radarPower", ref radarController.transmittedPowerW);
-        setFloatArg("-radarGain", ref radarController.antennaGainDBi);
-        setFloatArg("-wavelength", ref radarController.wavelengthM);
-        setFloatArg("-radarLoss", ref radarController.systemLossesDB);
-        setIntArg("-radarImageRadius", ref radarController.ImageRadius);
-        setFloatArg("-verticalAngle", ref radarController.VerticalAngle);
-        setFloatArg("-beamWidth", ref radarController.BeamWidth);
-        setFloatArg("-rainRCS", ref radarController.rainRCS);
+        SetIntArg("-radarRows", ref radarController.rows);
+        SetFloatArg("-radarPower", ref radarController.transmittedPowerW);
+        SetFloatArg("-radarGain", ref radarController.antennaGainDBi);
+        SetFloatArg("-wavelength", ref radarController.wavelengthM);
+        SetFloatArg("-radarLoss", ref radarController.systemLossesDB);
+        SetIntArg("-radarImageRadius", ref radarController.ImageRadius);
+        SetFloatArg("-verticalAngle", ref radarController.VerticalAngle);
+        SetFloatArg("-beamWidth", ref radarController.BeamWidth);
+        SetFloatArg("-rainRCS", ref radarController.rainRCS);
 
         int nRadars = 0;
-        if (setIntArg("-nRadars", ref nRadars))
+        if (SetIntArg("-nRadars", ref nRadars))
         {
             radarController.GenerateRadars(nRadars);
         }
 
         //Scenario Params
         int nScenarios = 0;
-        if (setIntArg("-nScenarios", ref nScenarios))
+        if (SetIntArg("-nScenarios", ref nScenarios))
         {
             //TODO: refactor scenario controller UI code to seperate method, callable from here
             //TODO: after generating scenarios automatically load them
             csvController.GenerateScenarios(nScenarios);
             scenarioController.LoadAllScenarios();
         }
-        setFloatArg("-scenarioTimeLimit", ref scenarioController.timeLimit);
+        SetFloatArg("-scenarioTimeLimit", ref scenarioController.timeLimit);
 
         //TODO: Start the simulation
     }
 
-    private bool setIntArg(string argName, ref int parameter)
+    private bool SetIntArg(string argName, ref int parameter)
     {
-        string arg = getArg(argName);
+        string arg = GetArg(argName);
         if (arg != null && int.TryParse(arg, out int value))
         {
             parameter = value;
@@ -80,9 +106,9 @@ public class MasterController : MonoBehaviour
         return false;
     }
 
-    private bool setFloatArg(string argName, ref float parameter)
+    private bool SetFloatArg(string argName, ref float parameter)
     {
-        string arg = getArg(argName);
+        string arg = GetArg(argName);
         if (arg != null && float.TryParse(arg, out float value))
         {
             parameter = value;
@@ -91,7 +117,53 @@ public class MasterController : MonoBehaviour
         return false;
     }
 
-    private static string getArg(string name)
+    private bool SetBoolArg(string argName, ref bool parameter)
+    {
+        string arg = GetArg(argName);
+        if (arg != null && bool.TryParse(arg, out bool value))
+        {
+            parameter = value;
+            return true;
+        }
+        return false;
+    }
+
+    private bool SetStringArg(string argName, ref string parameter)
+    {
+        string arg = GetArg(argName);
+        
+        if (arg.Equals("OceanMain") || arg.Equals("KhorfakkanCoastline"))
+        {
+            parameter = arg;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool SetIntListArg(string argName, out int minShips, out int maxShips)
+    {
+        string arg = GetArg(argName);
+        if (!string.IsNullOrEmpty(arg))
+        {
+            arg = arg.Trim('[', ']');
+            string[] values = arg.Split(',');
+
+            if (values.Length == 2)
+            {
+                if (int.TryParse(values[0].Trim(), out minShips) && int.TryParse(values[1].Trim(), out maxShips))
+                {
+                    return true; 
+                }
+            }
+        }
+        
+        minShips = 0;
+        maxShips = 0;
+        return false;
+    }
+
+    private static string GetArg(string name)
     {
         var args = System.Environment.GetCommandLineArgs();
         for (int i = 0; i < args.Length; i++)
