@@ -1,13 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MasterController : MonoBehaviour
 {
     RadarController radarController;
     CSVController csvController;
     ScenarioController scenarioController;
-
-    string[] scenes = {"OceanMain", "KhorfakkanCoastline"};
 
     void Start()
     {
@@ -25,19 +24,19 @@ public class MasterController : MonoBehaviour
         }
         */
 
+        string sceneName = "";
+        SetStringArg("-sceneName", ref sceneName);
+        if (SceneManager.GetActiveScene().name != sceneName)
+        {
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        }
+
         StartCoroutine(RunArguments());
     }
 
     IEnumerator RunArguments()
     {
         yield return null;
-
-        // TODO: The below causes null pointer exceptions or the scenarios not loading
-        //string sceneName = "";
-        //if (SetStringArg("-sceneName", ref sceneName))
-        //{
-        //    SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-        //}
 
         //CSV Controller Params
         if (SetIntListArg("-nships", out int minShips, out int maxShips))
@@ -128,20 +127,13 @@ public class MasterController : MonoBehaviour
         return false;
     }
 
-    private bool SetStringArg(string argName, ref string parameter)
+    private void SetStringArg(string argName, ref string parameter)
     {
         string arg = GetArg(argName);
-        
-        if (arg.Equals("OceanMain") || arg.Equals("KhorfakkanCoastline"))
-        {
-            parameter = arg;
-            return true;
-        }
-
-        return false;
+        parameter = arg;
     }
 
-    private bool SetIntListArg(string argName, out int minShips, out int maxShips)
+    private bool SetIntListArg(string argName, out int min, out int max)
     {
         string arg = GetArg(argName);
         if (!string.IsNullOrEmpty(arg))
@@ -151,15 +143,15 @@ public class MasterController : MonoBehaviour
 
             if (values.Length == 2)
             {
-                if (int.TryParse(values[0].Trim(), out minShips) && int.TryParse(values[1].Trim(), out maxShips))
+                if (int.TryParse(values[0].Trim(), out min) && int.TryParse(values[1].Trim(), out max))
                 {
                     return true; 
                 }
             }
         }
         
-        minShips = 0;
-        maxShips = 0;
+        min = 0;
+        max = 0;
         return false;
     }
 
