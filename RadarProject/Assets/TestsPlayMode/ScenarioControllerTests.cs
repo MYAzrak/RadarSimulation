@@ -171,7 +171,7 @@ public class ScenarioControllerTests
     {
         CSVController.GenerateRandomParameters();
         CSVController.numberOfShips = 5; // Small number of ships for testing
-        CSVController.hasProceduralLand = proceduralLand;
+        CSVController.generateProceduralLand = new(new bool[] {proceduralLand});
         CSVController.weathers = new LoopArray<Weather> ( new Weather[] {weather} );
         CSVController.waves = new LoopArray<Waves> ( new Waves[] {waves} );
         CSVController.GenerateScenario(Path.Combine(filePath, fileName));
