@@ -21,10 +21,11 @@ And output directory is the directory where you would like to store the dataset.
 
 | Parameter                           | Description                                                |
 | ----------------------------------- | ---------------------------------------------------------- |
-| nships                              | Number of ships in a scenario (Default: randomly chosen)   |
-| nLocations                          | Number of locations a ship visits during scenario          |
-| coordinateSquareWidth               | Width of coordinate generation space                       |
-| minSpeed/maxSpeed                   | Min/Max speeds for ships to move at                        |
+| sceneName                           | Scene to start simulation in (takes "OceanMain" or "KhorfakkanCoastline")    |
+| nships                              | Number of ships in a scenario (takes a range of values [minAmount, maxAmount])   |
+| nLocations                          | Number of locations a ship visits during scenario (takes a range of values [minAmount, maxAmount])          |
+| coordinateSquareWidth               | Width of ship generation space                             |
+| speed                               | Ship movement speed defined by a range [minSpeed, maxSpeed]|
 | radarRows                           | Number of rows in radar lattice network                    |
 | radarPower                          | Power transmitted in W                                     |
 | radarGain                           | Gain of the radar in dB                                    |
