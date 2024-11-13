@@ -16,7 +16,18 @@ beamWidth: 2
 rainRCS: 0.001
 
 # Ship Configurations
-nships: [30, 120]                # Range [0, 120]
+nships: [30, 100]                # Range [0, 120]
 nLocations: [7, 10]             # Range [5, 30]
 speed: [12, 18]   # Knots       # Range [1, 30]
 coordinateSquareWidth: 30000
+
+# Weather and Waves
+# Simulation Loops through these conditions every scenario
+weather: [Clear, LightRain, HeavyRain] # Valid values "Clear", "LightRain", "HeavyRain"
+waves: [Calm, Moderate]                # Valid values "Calm", "Moderate"
+
+# Dataset Generation
+# generateDataset.py ignores the below settings
+generateDataset: true
+unityBuildDirectory: ~/Downloads/project.x86_64
+outputDirectory: ~/Downloads/output

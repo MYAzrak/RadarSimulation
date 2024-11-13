@@ -88,10 +88,21 @@ class SimulationManager:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Simulation Manager")
     parser.add_argument("config_path", help="Path to the configuration file")
-    parser.add_argument("unity_exe_path", help="Path to the Unity executable")
-    parser.add_argument("output_dir", help="Directory to save output data")
     
     args = parser.parse_args()
 
-    manager = SimulationManager(args.config_path, args.unity_exe_path, args.output_dir)
-    manager.run()
+    manager = SimulationManager(args.config_path, "", "")
+
+    run_manager = False
+    for key, value in manager.config.items():
+        if key == "unityBuildDirectory":
+            manager.unity_exe_path = os.path.expanduser(value)
+        elif key == "outputDirectory":
+            manager.output_dir = os.path.expanduser(value)
+        elif key == "generateDataset":
+            run_manager = value
+
+    if run_manager:
+        manager.run()
+    else:
+        manager.start_simulation()

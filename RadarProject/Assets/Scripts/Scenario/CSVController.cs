@@ -11,9 +11,11 @@ public class CSVController : MonoBehaviour
     public bool generateRandomParameters = true;
 
     [Header("Master Controller Parameters")]
-    public MinMax<int> numOfShips = new MinMax<int>(30, 120);
-    public MinMax<int> locationsToVisit = new MinMax<int>(5, 9);
-    public MinMax<int> speedAtLocations = new MinMax<int>(12, 18);
+    public MinMax<int> numOfShips = new(30, 120);
+    public MinMax<int> locationsToVisit = new(5, 9);
+    public MinMax<int> speedAtLocations = new(12, 18);
+    public LoopArray<Weather> weathers = new( new Weather[]{ Weather.Clear, Weather.LightRain, Weather.HeavyRain } );
+    public LoopArray<Waves> waves = new( new Waves[] {Waves.Calm, Waves.Moderate} );
 
     [Header("Random Ship Parameters")]
     public int numberOfShips;                       // Number of ships to generate
@@ -21,12 +23,6 @@ public class CSVController : MonoBehaviour
     public float coordinateSquareWidth = 30000f;
     public Vector3 centerPoint = Vector3.zero;
     public float randomCoordinates;                 // The range added to the previous location the ship will visit
-    public int minSpeed;                            // The min value in the speed range
-    public int maxSpeed;                            // The max value in the speed range
-
-    [Header("Weather & Waves")]
-    public Weather weather;
-    public Waves waves;
 
     [Header("Random Procedural land Parameters")]
     public bool generateProceduralLand = true;
@@ -36,9 +32,9 @@ public class CSVController : MonoBehaviour
     RadarGenerationDirection direction;
 
     string filePath;
-    string fileExtension = ".csv";
-    string shipListEndName = "ShipList";            // The ship list csv ends with ShipList.csv
-    string scenarioSettingsEndName = "Settings.json";
+    const string fileExtension = ".csv";
+    const string shipListEndName = "ShipList";            // The ship list csv ends with ShipList.csv
+    const string scenarioSettingsEndName = "Settings.json";
 
     MainMenuController mainMenuController;
 
@@ -58,14 +54,7 @@ public class CSVController : MonoBehaviour
         numberOfShips = Random.Range(numOfShips.Min, numOfShips.Max);
         locationsToCreate = Random.Range(locationsToVisit.Min, locationsToVisit.Max);
         randomCoordinates = Random.Range(-1500, 1500);
-        minSpeed = 10;
-        maxSpeed = 16;
-
         float halfWidth = coordinateSquareWidth / 2f;
-
-        // Initialize weathers and waves
-        waves = (Waves)Random.Range(0, System.Enum.GetNames(typeof(Waves)).Length);
-        weather = (Weather)Random.Range(0, System.Enum.GetNames(typeof(Weather)).Length);
 
         // Initialize procedural land parameters with random values
         hasProceduralLand = Random.Range(0, 10) < 6;
@@ -195,8 +184,8 @@ public class CSVController : MonoBehaviour
         // Save the settings to a json file
         ScenarioSettings settings = new()
         {
-            waves = waves,
-            weather = weather,
+            waves = waves.GetCurrentElement(),
+            weather = weathers.GetCurrentElement(),
 
             // Procedural land settings
             hasProceduralLand = hasProceduralLand,
@@ -359,5 +348,27 @@ public class MinMax<T>
     {
         Min = min;
         Max = max;
+    }
+}
+
+
+public class LoopArray<T>
+{
+    readonly T[] array;
+    int currentIndex = 0;
+
+    public LoopArray(T[] array)
+    {
+        if (array == null || array.Length == 0) 
+            Logger.Log("Weather or Waves is empty");
+
+        this.array = array;
+    }
+
+    public T GetCurrentElement()
+    {
+        T temp = array[currentIndex];
+        currentIndex = (currentIndex + 1) % array.Length;
+        return temp;
     }
 }

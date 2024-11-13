@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WebSocketSharp;
 
 public class MasterController : MonoBehaviour
 {
@@ -24,9 +27,8 @@ public class MasterController : MonoBehaviour
         }
         */
 
-        string sceneName = "";
-        SetStringArg("-sceneName", ref sceneName);
-        if (SceneManager.GetActiveScene().name != sceneName)
+        string sceneName = GetArg("-sceneName");
+        if (!sceneName.IsNullOrEmpty() && SceneManager.GetActiveScene().name != sceneName)
         {
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }
@@ -62,6 +64,9 @@ public class MasterController : MonoBehaviour
             maxSpeed = Mathf.Clamp(maxSpeed, 1, 30);
             csvController.speedAtLocations = new MinMax<int>(minSpeed, maxSpeed);
         }
+
+        SetEnumListArg("-weather", ref csvController.weathers);
+        SetEnumListArg("-waves", ref csvController.waves);
 
         //Radar Params
         SetIntArg("-radarRows", ref radarController.rows);
@@ -127,12 +132,6 @@ public class MasterController : MonoBehaviour
         return false;
     }
 
-    private void SetStringArg(string argName, ref string parameter)
-    {
-        string arg = GetArg(argName);
-        parameter = arg;
-    }
-
     private bool SetIntListArg(string argName, out int min, out int max)
     {
         string arg = GetArg(argName);
@@ -155,9 +154,39 @@ public class MasterController : MonoBehaviour
         return false;
     }
 
+    private bool SetEnumListArg<TEnum>(string argName, ref LoopArray<TEnum> loopArray) where TEnum : struct, Enum
+    {
+        string arg = GetArg(argName);
+
+        if (!string.IsNullOrEmpty(arg)) 
+        {
+            arg = arg.Trim('[', ']'); 
+            string[] values = arg.Split(',');
+
+            List<TEnum> list = new();
+
+            foreach (string value in values)
+            {
+                string valueTemp = value.Trim();
+                if (Enum.TryParse(valueTemp.Trim('\''), true, out TEnum enumValue))
+                {
+                    Logger.Log(enumValue);
+                    list.Add(enumValue);
+                }
+            }
+
+            if (list.Count == 0) return false;
+            
+            loopArray = new LoopArray<TEnum>(list.ToArray());
+            return true;
+        }
+
+        return false;
+    }
+
     private static string GetArg(string name)
     {
-        var args = System.Environment.GetCommandLineArgs();
+        var args = Environment.GetCommandLineArgs();
         for (int i = 0; i < args.Length; i++)
         {
             if (args[i] == name && args.Length > i + 1)
