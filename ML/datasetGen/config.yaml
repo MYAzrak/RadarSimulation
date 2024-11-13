@@ -23,8 +23,11 @@ coordinateSquareWidth: 30000
 
 # Weather and Waves
 # Simulation Loops through these conditions every scenario
+# The list length do not have to match, 
+# The list will start from the beginning once it reaches the end of the list
 weather: [Clear, LightRain, HeavyRain] # Valid values "Clear", "LightRain", "HeavyRain"
 waves: [Calm, Moderate]                # Valid values "Calm", "Moderate"
+proceduralLand: [True, False]          # Valid values 'True' (Generate Procedural land), 'False' (Do not generate Procedural Land)
 
 # Dataset Generation
 # generateDataset.py ignores the below settings

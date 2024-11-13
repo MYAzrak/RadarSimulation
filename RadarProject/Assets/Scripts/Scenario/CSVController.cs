@@ -16,6 +16,7 @@ public class CSVController : MonoBehaviour
     public MinMax<int> speedAtLocations = new(12, 18);
     public LoopArray<Weather> weathers = new( new Weather[]{ Weather.Clear, Weather.LightRain, Weather.HeavyRain } );
     public LoopArray<Waves> waves = new( new Waves[] {Waves.Calm, Waves.Moderate} );
+    public LoopArray<bool> generateProceduralLand = new( new bool[] { true, false, false } );
 
     [Header("Random Ship Parameters")]
     public int numberOfShips;                       // Number of ships to generate
@@ -25,8 +26,7 @@ public class CSVController : MonoBehaviour
     public float randomCoordinates;                 // The range added to the previous location the ship will visit
 
     [Header("Random Procedural land Parameters")]
-    public bool generateProceduralLand = true;
-    public bool hasProceduralLand;
+    bool hasProceduralLand = false;
     public int proceduralLandSeed;
     public Vector3 proceduralLandLocation;
     RadarGenerationDirection direction;
@@ -57,13 +57,10 @@ public class CSVController : MonoBehaviour
         float halfWidth = coordinateSquareWidth / 2f;
 
         // Initialize procedural land parameters with random values
-        hasProceduralLand = Random.Range(0, 10) < 6;
+        hasProceduralLand = generateProceduralLand.GetCurrentElement();
 
-        // Turn off procedural land in demo scene
-        if (!generateProceduralLand) {
-            hasProceduralLand = false;
+        if (!hasProceduralLand)
             return;
-        }
 
         proceduralLandSeed = Random.Range(0, 10_000_000);
 

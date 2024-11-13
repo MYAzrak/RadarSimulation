@@ -67,6 +67,7 @@ public class MasterController : MonoBehaviour
 
         SetEnumListArg("-weather", ref csvController.weathers);
         SetEnumListArg("-waves", ref csvController.waves);
+        SetBoolListArg("-proceduralLand", ref csvController.generateProceduralLand);
 
         //Radar Params
         SetIntArg("-radarRows", ref radarController.rows);
@@ -178,6 +179,41 @@ public class MasterController : MonoBehaviour
             if (list.Count == 0) return false;
             
             loopArray = new LoopArray<TEnum>(list.ToArray());
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool SetBoolListArg(string argName, ref LoopArray<bool> loopArray)
+    {
+        string arg = GetArg(argName);
+
+        if (!string.IsNullOrEmpty(arg)) 
+        {
+            arg = arg.Trim('[', ']'); 
+            string[] values = arg.Split(',');
+
+            List<bool> list = new();
+
+            foreach (string value in values)
+            {
+                string valueTemp = value.Trim();
+                valueTemp = valueTemp.Trim('\'');
+                valueTemp = valueTemp.ToLower();
+                if (valueTemp.Equals("true"))
+                {
+                    list.Add(true);
+                }
+                else if (valueTemp.Equals("false"))
+                {
+                    list.Add(false);
+                }
+            }
+
+            if (list.Count == 0) return false;
+            
+            loopArray = new LoopArray<bool>(list.ToArray());
             return true;
         }
 
