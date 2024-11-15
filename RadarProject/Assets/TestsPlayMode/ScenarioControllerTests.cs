@@ -143,7 +143,7 @@ public class ScenarioControllerTests
 
         // Test moderate waves and light rain weather
         string test2FileName = "TestScenario2";
-        GenerateTestScenario(test2FileName, false, Weather.LightRain, Waves.Moderate);
+        GenerateTestScenario(test2FileName, false, Weather.ModerateRain, Waves.Moderate);
         scenarioController.LoadScenario(filePath + test2FileName);
 
         yield return null;

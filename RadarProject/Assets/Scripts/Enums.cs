@@ -14,8 +14,11 @@ public enum Waves
 public enum Weather
 {
     Clear,
-    LightRain,
+    ModerateRain,
     HeavyRain,
+    VeryHeavyRain,
+    Shower,
+    CloudBurst,
 }
 
 public enum RadarGenerationDirection

@@ -56,7 +56,7 @@ public class RadarTests
         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sphere.transform.position = new Vector3(0, 10000, 2500);
         sphere.transform.localScale = new Vector3(300, 300, 300);
-        radarController.SetWeather(Weather.Clear, false);
+        radarController.SetWeather(Weather.Clear);
 
         foreach (KeyValuePair<int, GameObject> entry in radarController.radars)
         {

@@ -56,7 +56,6 @@ public class RadarScript : MonoBehaviour
     private ScenarioController scenario;
 
     [Header("Rain Simulation")]
-    [Range(0f, 1f)] public float RainProbability = 0f;
     public float RainRCS = 0.001f; // Typical RCS for rain
     [Range(0f, 100)] public int RainIntensity = 0; // Number of rain drops per angle
 
@@ -417,14 +416,13 @@ public class RadarScript : MonoBehaviour
     private void GenerateRainGPU(int kernelIndex)
     {
         // Clear the rain buffer for the new rotation
-        if (RainProbability == 0)
+        if (RainIntensity == 0)
             return;
         rainBuffer.SetData(new int[ImageRadius]);
         tempRainBuffer = new int[ImageRadius];
 
         // Set compute shader parameters for rain
         radarComputeShader.SetBuffer(kernelIndex, "RainBuffer", rainBuffer);
-        radarComputeShader.SetFloat("RainProbability", RainProbability);
         radarComputeShader.SetInt("RainIntensity", RainIntensity);
         radarComputeShader.SetFloat("MaxDistance", MaxDistance);
         radarComputeShader.SetInt("ImageRadius", ImageRadius);

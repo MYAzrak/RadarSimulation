@@ -638,12 +638,6 @@ MonoBehaviour:
   coordinateSquareWidth: 30000
   centerPoint: {x: 0, y: 0, z: 0}
   randomCoordinates: 1000
-  minSpeed: 11
-  maxSpeed: 21
-  weather: 0
-  waves: 0
-  generateProceduralLand: 1
-  hasProceduralLand: 0
   proceduralLandSeed: 0
   proceduralLandLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &2106282667
@@ -684,6 +678,18 @@ MonoBehaviour:
     prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
     skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
     oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  - weather: 3
+    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  - weather: 4
+    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  - weather: 5
+    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
   timeScale: 1
   loadScenario: 0
   timeLimit: 300
@@ -692,7 +698,6 @@ MonoBehaviour:
   scenarioSettings:
     waves: 0
     weather: 0
-    isFoggy: 0
     hasProceduralLand: 0
     proceduralLandSeed: 0
     proceduralLandLocation: {x: 0, y: 0, z: 0}
@@ -746,11 +751,11 @@ MonoBehaviour:
   parentEmptyObject: {fileID: 0}
   transmittedPowerW: 1000
   antennaGainDBi: 30
-  wavelengthM: 0.03
+  frequency: 0.0031228382
   systemLossesDB: 3
+  antennaVerticalBeamWidth: 22
+  antennaHorizontalBeamWidth: 1.2
   ImageRadius: 1000
-  VerticalAngle: 30
-  BeamWidth: 2
   HeightRes: 1024
   WidthRes: 10
   rainRCS: 0.001

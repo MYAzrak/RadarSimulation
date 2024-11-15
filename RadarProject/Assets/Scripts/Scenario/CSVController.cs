@@ -14,7 +14,7 @@ public class CSVController : MonoBehaviour
     public MinMax<int> numOfShips = new(30, 120);
     public MinMax<int> locationsToVisit = new(5, 9);
     public MinMax<int> speedAtLocations = new(12, 18);
-    public LoopArray<Weather> weathers = new( new Weather[]{ Weather.Clear, Weather.LightRain, Weather.HeavyRain } );
+    public LoopArray<Weather> weathers = new( new Weather[]{ Weather.Clear, Weather.ModerateRain, Weather.HeavyRain, Weather.VeryHeavyRain, Weather.Shower, Weather.CloudBurst } );
     public LoopArray<Waves> waves = new( new Waves[] {Waves.Calm, Waves.Moderate} );
     public LoopArray<bool> generateProceduralLand = new( new bool[] { true, false, false } );
 

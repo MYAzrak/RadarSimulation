@@ -108,25 +108,25 @@ public class DynamicMenuUI
         Button clearWeatherBtn = ui.Q("ClearWeatherBtn") as Button;
         clearWeatherBtn.RegisterCallback((ClickEvent clickEvent) =>
         {
-            scenarioController.SetWeather(Weather.Clear, false);
+            scenarioController.SetWeather(Weather.Clear);
         });
 
-        Button lightRainBtn = ui.Q("LightRainBtn") as Button;
+        Button lightRainBtn = ui.Q("ModerateRainBtn") as Button;
         lightRainBtn.RegisterCallback((ClickEvent clickEvent) =>
         {
-            scenarioController.SetWeather(Weather.LightRain, false);
+            scenarioController.SetWeather(Weather.ModerateRain);
         });
 
         Button heavyRainBtn = ui.Q("HeavyRainBtn") as Button;
         heavyRainBtn.RegisterCallback((ClickEvent clickEvent) =>
         {
-            scenarioController.SetWeather(Weather.HeavyRain, false);
+            scenarioController.SetWeather(Weather.HeavyRain);
         });
         
         Button foggyBtn = ui.Q("FoggyBtn") as Button;
         foggyBtn.RegisterCallback((ClickEvent clickEvent) =>
         {
-            scenarioController.SetWeather(Weather.HeavyRain, true);
+            scenarioController.SetWeather(Weather.HeavyRain);
         });
     }
 

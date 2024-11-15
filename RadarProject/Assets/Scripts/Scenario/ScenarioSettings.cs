@@ -5,7 +5,6 @@ public class ScenarioSettings
 {
     public Waves waves;
     public Weather weather;
-    public bool isFoggy;
 
     // Procedural land settings
     public bool hasProceduralLand;

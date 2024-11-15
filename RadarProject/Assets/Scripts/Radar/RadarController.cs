@@ -39,7 +39,6 @@ public class RadarController : MonoBehaviour
     public int WidthRes = 10;
 
     private Weather currentWeather = Weather.Clear;
-    private bool currentFog = false;
     public float rainRCS = 0.001f;
 
     public RadarGenerationDirection direction = RadarGenerationDirection.Right;
@@ -89,46 +88,51 @@ public class RadarController : MonoBehaviour
         wavesController = FindObjectOfType<WavesController>();
     }
 
-    public void SetWeather(Weather weather, bool isFoggy)
+    public void SetWeather(Weather weather)
     {
-        Tuple<float, int> weatherSettings = GetWeatherParams(weather, isFoggy);
-        SetRadarWeather(weatherSettings.Item1, weatherSettings.Item2);
+        int RainIntensity = GetRainIntensity(weather);
+        SetRadarWeather(RainIntensity);
         currentWeather = weather;
-        currentFog = isFoggy;
     }
 
-    private void SetRadarWeather(float RainProbability, int RainIntensity)
+    private void SetRadarWeather(int RainIntensity)
     {
         foreach (KeyValuePair<int, GameObject> entry in radars)
         {
             RadarScript script = entry.Value.GetComponentInChildren<RadarScript>();
-            script.RainProbability = RainProbability;
             script.RainIntensity = RainIntensity;
         }
     }
 
-    private Tuple<float, int> GetWeatherParams(Weather weather, bool isFoggy)
+    private int GetRainIntensity(Weather weather)
     {
+        int rainMultiplier = 15;
         if (weather == Weather.Clear)
         {
-            return new Tuple<float, int>(0f, 0);
+            return 0;
         }
-        else if (weather == Weather.LightRain)
+        else if (weather == Weather.ModerateRain)
         {
-            return new Tuple<float, int>(UnityEngine.Random.Range(0.01f, 0.07f), 15);
-
+            return UnityEngine.Random.Range(2,7) * rainMultiplier;
         }
-        else if (weather == Weather.HeavyRain && !isFoggy)
+        else if (weather == Weather.HeavyRain)
         {
-            return new Tuple<float, int>(UnityEngine.Random.Range(0.1f, 0.2f), 20);
+            return UnityEngine.Random.Range(6,11) * rainMultiplier;
         }
-
-        else if (weather == Weather.HeavyRain && isFoggy)
+        else if (weather == Weather.VeryHeavyRain)
         {
-            return new Tuple<float, int>(UnityEngine.Random.Range(0.3f, 0.4f), 25);
+            return UnityEngine.Random.Range(10,19) * rainMultiplier;
         }
-        return new Tuple<float, int>(0f, 0);
+        else if (weather == Weather.Shower)
+        {
+            return UnityEngine.Random.Range(18, 31) * rainMultiplier;
+        }
+        else if (weather == Weather.CloudBurst)
+        {
+            return UnityEngine.Random.Range(30, 36) * rainMultiplier;
+        }
 
+        return 0;
     }
 
     public void GenerateRadar()
@@ -153,9 +157,7 @@ public class RadarController : MonoBehaviour
         radarScript.MaxDistance = maxDistance;
         radarScript.RainRCS = rainRCS;
 
-        Tuple<float, int> weatherSettings = GetWeatherParams(currentWeather, currentFog);
-        radarScript.RainProbability = weatherSettings.Item1;
-        radarScript.RainIntensity = weatherSettings.Item2;
+        radarScript.RainIntensity = GetRainIntensity(currentWeather);
 
         // Keep track of created radars
         radars[newRadarID] = instance;
