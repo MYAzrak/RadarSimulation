@@ -73,11 +73,11 @@ public class MasterController : MonoBehaviour
         SetIntArg("-radarRows", ref radarController.rows);
         SetFloatArg("-radarPower", ref radarController.transmittedPowerW);
         SetFloatArg("-radarGain", ref radarController.antennaGainDBi);
-        SetFloatArg("-wavelength", ref radarController.wavelengthM);
+        SetFloatArg("-frequency", ref radarController.frequency);
         SetFloatArg("-radarLoss", ref radarController.systemLossesDB);
         SetIntArg("-radarImageRadius", ref radarController.ImageRadius);
-        SetFloatArg("-verticalAngle", ref radarController.VerticalAngle);
-        SetFloatArg("-beamWidth", ref radarController.BeamWidth);
+        SetFloatArg("-antennaVerticalBeamWidth", ref radarController.antennaVerticalBeamWidth);
+        SetFloatArg("-antennaHorizontalBeamWidth", ref radarController.antennaHorizontalBeamWidth);
         SetFloatArg("-rainRCS", ref radarController.rainRCS);
 
         int nRadars = 0;

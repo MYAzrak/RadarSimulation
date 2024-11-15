@@ -7,12 +7,12 @@ screen-fullscreen: 0
 # Radar Configurations
 nRadars: 2
 radarRows: 3
-radarPower: 1000  # Watts
+radarPower: 50  # Watts
 radarGain: 30     # dB
-waveLength: 0.03  # meters
+frequency: 0.0031228381  # meters (for 9.5 GHz)
+antennaVerticalBeamWidth: 22
+antennaHorizontalBeamWidth: 1.2
 radarImageRadius: 1000
-verticalAngle: 30
-beamWidth: 2
 rainRCS: 0.001
 
 # Ship Configurations

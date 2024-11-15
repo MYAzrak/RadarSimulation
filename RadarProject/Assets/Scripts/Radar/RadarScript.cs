@@ -18,8 +18,8 @@ public class RadarScript : MonoBehaviour
     [Range(0.0f, 1f)] public float resolution = 0.5f;
     [Range(5f, 5000f)] public float MaxDistance = 100F;
     [Range(0.01f, 2f)] public float MinDistance = 0.5F;
-    [Range(5.0f, 90f)] public float VerticalAngle = 30f;
-    [Range(0.5f, 50f)] public float BeamWidth = 2f;
+    [Range(5.0f, 90f)] public float antennaVerticalBeamWidth = 30f;
+    [Range(0.5f, 50f)] public float antennaHorizontalBeamWidth = 2f;
     [HideInInspector] public Camera radarCamera;
     [Range(0.0f, 5f)] public float noise = 10.0f;
     [Range(200, 2000)] public int ImageRadius = 1000;
@@ -41,7 +41,7 @@ public class RadarScript : MonoBehaviour
     [Header("Radar Equation Parameters")]
     public float transmittedPowerW = 1000f; // Watts
     public float antennaGainDBi = 30f; // dBi
-    public float wavelengthM = 0.03f; // meters (for 10 GHz)
+    public float frequency = 0.03f; // meters (for 10 GHz)
     public float systemLossesDB = 3f; // dB
 
     private ComputeBuffer rcsBuffer;
@@ -102,7 +102,7 @@ public class RadarScript : MonoBehaviour
             radarComputeShader = (ComputeShader)Resources.Load("ProcessRadarData");
         }
 
-        cameraObject = SpawnCameras("DepthCamera", WidthRes, HeightRes, VerticalAngle, BeamWidth, RenderTextureFormat.ARGBFloat);
+        cameraObject = SpawnCameras("DepthCamera", WidthRes, HeightRes, antennaVerticalBeamWidth, antennaHorizontalBeamWidth, RenderTextureFormat.ARGBFloat);
         radarCamera = cameraObject.GetComponent<Camera>();
 
         // Initialize compute shader resources
@@ -152,7 +152,7 @@ public class RadarScript : MonoBehaviour
     {
         float G = Mathf.Pow(10f, antennaGainDBi / 10f);
         float Ls = Mathf.Pow(10f, systemLossesDB / 10f);
-        float lambda = wavelengthM;
+        float lambda = frequency;
 
         precalculatedRadarConstant = (transmittedPowerW * Mathf.Pow(G, 2) * Mathf.Pow(lambda, 2)) /
                                      (Mathf.Pow((4 * Mathf.PI), 3) * Ls);
@@ -236,7 +236,7 @@ public class RadarScript : MonoBehaviour
 
     private void DetectShipsInView()
     {
-        float halfBeamWidth = BeamWidth / 2f;
+        float halfantennaHorizontalBeamWidth = antennaHorizontalBeamWidth / 2f;
         Vector3 radarPosition = cameraObject.transform.position;
         Vector3 radarForward = cameraObject.transform.forward;
 

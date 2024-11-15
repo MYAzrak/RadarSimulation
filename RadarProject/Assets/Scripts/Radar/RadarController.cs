@@ -27,15 +27,14 @@ public class RadarController : MonoBehaviour
     WavesController wavesController;
 
     [Header("Radar Equation Parameters")]
-    public float transmittedPowerW = 1000f; // Watts
+    public float transmittedPowerW = 50f; // Watts
     public float antennaGainDBi = 30f; // dBi
-    public float wavelengthM = 0.03f; // meters (for 10 GHz)
+    public float frequency = 0.0031228381f; // meters (for 9.5 GHz)
     public float systemLossesDB = 3f; // dB
-
+    public float antennaVerticalBeamWidth = 22f;
+    public float antennaHorizontalBeamWidth = 1.2f;
+    
     public int ImageRadius = 1000;
-    public float VerticalAngle = 30f;
-    public float BeamWidth = 2f;
-
     public int HeightRes = 1024;
     public int WidthRes = 10;
 
@@ -144,11 +143,11 @@ public class RadarController : MonoBehaviour
         radarScript.radarID = newRadarID;
         radarScript.transmittedPowerW = transmittedPowerW;
         radarScript.antennaGainDBi = antennaGainDBi;
-        radarScript.wavelengthM = wavelengthM;
+        radarScript.frequency = frequency;
         radarScript.systemLossesDB = systemLossesDB;
         radarScript.ImageRadius = ImageRadius;
-        radarScript.VerticalAngle = VerticalAngle;
-        radarScript.BeamWidth = BeamWidth;
+        radarScript.antennaVerticalBeamWidth = antennaVerticalBeamWidth;
+        radarScript.antennaHorizontalBeamWidth = antennaHorizontalBeamWidth;
         radarScript.HeightRes = HeightRes;
         radarScript.WidthRes = WidthRes;
         radarScript.MaxDistance = maxDistance;
