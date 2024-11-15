@@ -1,6 +1,6 @@
 # Simulation Configurations
 sceneName: OceanMain      # [OceanMain, KhorfakkanCoastline]
-nScenarios: 100
+nScenarios: 400
 scenarioTimeLimit: 60
 screen-fullscreen: 0
 
@@ -25,7 +25,9 @@ coordinateSquareWidth: 30000
 # Simulation Loops through these conditions every scenario
 # The list length do not have to match, 
 # The list will start from the beginning once it reaches the end of the list
-weather: [Clear, LightRain, HeavyRain] # Valid values "Clear", "LightRain", "HeavyRain"
+
+# Valid values "Clear", "ModerateRain", "HeavyRain", "VeryHeavyRain", "Shower", "CloudBurst"
+weather: [Clear, ModerateRain, HeavyRain, VeryHeavyRain, Shower, CloudBurst] 
 waves: [Calm, Moderate]                # Valid values "Calm", "Moderate"
 proceduralLand: [True, False]          # Valid values 'True' (Generate Procedural land), 'False' (Do not generate Procedural Land)
 
