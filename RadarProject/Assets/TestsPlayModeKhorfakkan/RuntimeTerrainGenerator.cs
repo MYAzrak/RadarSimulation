@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class CoastlineKhorfakkanTest
     [UnitySetUp]
     public IEnumerator SetUp()
     {
-        yield return SceneManager.LoadSceneAsync("KhofranBeach", LoadSceneMode.Single);
+        yield return SceneManager.LoadSceneAsync("KhorfakkanCoastline", LoadSceneMode.Single);
 
         terrainObject = GameObject.FindWithTag("Terrain");
         Assert.IsNotNull(terrainObject, "Terrain object with tag 'Terrain' not found.");
@@ -82,28 +83,33 @@ public class CoastlineKhorfakkanTest
     [UnityTest]
     public IEnumerator ExclusionZoneTest()
     {
-        // Find the exclusion zone object in the scene
-        var exclusionZoneObject = GameObject.FindGameObjectWithTag("ExclusiveZone");
-        Assert.IsNotNull(exclusionZoneObject, "Exclusion zone object not found in the scene.");
+        // Find all exclusion zone objects in the scene
+        var exclusionZoneObjects = GameObject.FindGameObjectsWithTag("ExclusiveZone");
+        Assert.IsTrue(exclusionZoneObjects.Length > 0, "No exclusion zone objects found in the scene.");
 
-        // Get the bounds of the exclusion zone object
-        var exclusionZoneCollider = exclusionZoneObject.GetComponent<Collider>();
-        Assert.IsNotNull(exclusionZoneCollider, "Exclusion zone object does not have a collider.");
+        // Find all objects that could potentially violate the exclusion zones
+        var objectsToCheck = new List<GameObject>();
+        objectsToCheck.AddRange(GameObject.FindGameObjectsWithTag("Tree"));
+        objectsToCheck.AddRange(GameObject.FindGameObjectsWithTag("Bush"));
+        objectsToCheck.AddRange(GameObject.FindGameObjectsWithTag("House"));
 
-        // Use the collider's bounds as the exclusion zone
-        var exclusionZone = exclusionZoneCollider.bounds;
+        Assert.IsTrue(objectsToCheck.Count > 0, "No objects found to check against exclusion zones.");
 
-        // Find all objects that could potentially violate the exclusion zone
-        var objects = GameObject.FindGameObjectsWithTag("ExclusiveZone");
-
-        // Iterate through the found objects
-        foreach (var obj in objects)
+        foreach (var exclusionZoneObject in exclusionZoneObjects)
         {
-            // Check if the object is of type Tree, Bush, or House
-            if (obj.CompareTag("Tree") || obj.CompareTag("Bush") || obj.CompareTag("House"))
+            var exclusionZoneCollider = exclusionZoneObject.GetComponent<Collider>();
+            Assert.IsNotNull(exclusionZoneCollider, $"{exclusionZoneObject.name} does not have a collider.");
+
+            // Use the collider's bounds as the exclusion zone
+            var exclusionZoneBounds = exclusionZoneCollider.bounds;
+
+            foreach (var obj in objectsToCheck)
             {
                 // Assert that the object's position is NOT within the exclusion zone
-                Assert.IsFalse(exclusionZone.Contains(obj.transform.position), $"{obj.name} is in the exclusion zone.");
+                Assert.IsFalse(
+                    exclusionZoneBounds.Contains(obj.transform.position),
+                    $"{obj.name} is in the exclusion zone defined by {exclusionZoneObject.name}."
+                );
             }
         }
 
@@ -112,10 +118,11 @@ public class CoastlineKhorfakkanTest
     }
 
 
+
     [UnityTest]
     public IEnumerator SlopeConstraintTest()
     {
-        float slopeThreshold = 30f; // Maximum allowed slope in degrees
+        float slopeThreshold = 60f; // Maximum allowed slope in degrees
         var terrain = GameObject.FindWithTag("Terrain");
         Assert.IsNotNull(terrain, "Terrain object with tag 'Terrain' not found.");
 

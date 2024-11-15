@@ -32,7 +32,7 @@ public class RuntimeTerrainGenerator : MonoBehaviour
     private List<Vector3> occupiedPositions = new List<Vector3>();
     public float minimumDistance = 5f;
     public float safeDistanceFromHouses = 10f; //Minimum distance from house positions
-    public GameObject exclusionZoneObject;
+    public List<GameObject> exclusionZoneObjects;
     public float maxSpawnHeight = 100f;
 
 
@@ -324,7 +324,8 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                float pixelHeight = BilinearSample(heightmapTexture, x, y);
+                // Inverting the y-axis by sampling from the opposite row
+                float pixelHeight = BilinearSample(heightmapTexture, x, height - y - 1);
                 heights[x, y] = pixelHeight * heightScale / terrainData.size.y;
             }
         }
@@ -336,8 +337,8 @@ public class RuntimeTerrainGenerator : MonoBehaviour
         }
 
         terrainData.SetHeights(0, 0, heights);
-
     }
+
 
     bool IsFlatArea(Vector3 position)
     {
@@ -347,21 +348,24 @@ public class RuntimeTerrainGenerator : MonoBehaviour
     }
     bool IsInExcludedArea(Vector3 position)
     {
-        if (exclusionZoneObject == null)
+        if (exclusionZoneObjects == null || exclusionZoneObjects.Count == 0)
         {
-            return false; // If there's no exclusion zone object assigned, don't exclude any area
+            return false; // No exclusion zones defined, so no area is excluded
         }
 
-        // Get the bounds of the exclusion zone object
-        Bounds exclusionBounds = exclusionZoneObject.GetComponent<Renderer>().bounds;
-
-        // Check if the given position is within these bounds
-        if (exclusionBounds.Contains(position))
+        // Iterate over each exclusion zone object and check if the position is within any exclusion bounds
+        foreach (GameObject exclusionZoneObject in exclusionZoneObjects)
         {
-            return true; // Position is within the exclusion area
+            if (exclusionZoneObject == null) continue; // Skip null entries in the list
+
+            Bounds exclusionBounds = exclusionZoneObject.GetComponent<Renderer>().bounds;
+            if (exclusionBounds.Contains(position))
+            {
+                return true; // Position is within one of the exclusion areas
+            }
         }
 
-        return false; // Position is outside the exclusion area
+        return false; // Position is outside all exclusion areas
     }
 
     Vector3 GetRandomFlatPositionOnTerrain()
