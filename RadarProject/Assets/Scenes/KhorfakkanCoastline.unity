@@ -1191,12 +1191,6 @@ MonoBehaviour:
   coordinateSquareWidth: 30000
   centerPoint: {x: 0, y: 0, z: 0}
   randomCoordinates: 1000
-  minSpeed: 11
-  maxSpeed: 21
-  weather: 0
-  waves: 0
-  generateProceduralLand: 1
-  hasProceduralLand: 0
   proceduralLandSeed: 0
   proceduralLandLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &983772312
@@ -2144,7 +2138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1721918047
 MonoBehaviour:
   m_ObjectHideFlags: 0
