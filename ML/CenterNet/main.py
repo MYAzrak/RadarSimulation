@@ -7,7 +7,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, random_split
 import matplotlib.pyplot as plt
 from dataset import PPIDataset
-from centernet import CenterNetBackbone, FocalLoss, detect_points
+from centernetresnet import CenterNetBackbone, FocalLoss, detect_points
 import logging
 import datetime
 import numpy as np
@@ -168,6 +168,8 @@ def evaluate_model(model, dataset, device, threshold=0.3):
 def train(model, train_loader, val_loader, criterion, optimizer, scheduler, num_epochs, device, patience):
     best_val_loss = float('inf')
     early_stop_grace = 0
+    prev_lr = optimizer.param_groups[0]['lr']
+    best_model_state = None
 
     for epoch in range(num_epochs):
         # Training phase
@@ -189,7 +191,7 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, num_
             epoch_loss += loss.item()
             batch_count += 1
 
-            if batch_idx % 10 == 0:
+            if batch_idx % 100 == 0:
                 logging.info(f"Epoch {epoch+1}/{num_epochs}, Batch {batch_idx}/{len(train_loader)}, "
                              f"Loss: {loss.item():.4f}")
 
@@ -226,10 +228,21 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, num_
         scheduler.step(avg_val_loss)
         new_lr = optimizer.param_groups[0]['lr']
 
-        # Log if learning rate changed
-        if new_lr != current_lr:
-            logging.info(f'Learning rate decreased from '
-                         f'{current_lr:.6f} to {new_lr:.6f}')
+        # Check if learning rate decreased
+        if new_lr < current_lr:
+            logging.info(f'Learning rate decreased from {current_lr:.6f} to {new_lr:.6f}')
+            
+            # Load the best model state if we have one
+            if best_model_state is not None:
+                logging.info('Loading best model state after learning rate reduction')
+                model.load_state_dict(best_model_state['model_state_dict'])
+                optimizer.load_state_dict(best_model_state['optimizer_state_dict'])
+                # Update the optimizer's learning rate to the new reduced value
+                for param_group in optimizer.param_groups:
+                    param_group['lr'] = new_lr
+                
+                # Reset early stopping counter since we're starting from best point
+                early_stop_grace = 0
 
         # Evaluate detection performance
         if (epoch + 1) % 5 == 0:
@@ -250,23 +263,25 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, num_
         if avg_val_loss < best_val_loss:
             early_stop_grace = 0
             best_val_loss = avg_val_loss
-            torch.save({
+            
+            # Save both to disk and keep in memory
+            best_model_state = {
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'scheduler_state_dict': scheduler.state_dict(),
                 'loss': best_val_loss,
                 'metrics': metrics if (epoch + 1) % 5 == 0 else None,
-            }, 'best_model.pth')
-            logging.info(f'Saved new best model with validation loss: '
-                         f'{best_val_loss:.4f}')
+            }
+            
+            torch.save(best_model_state, 'best_model.pth')
+            logging.info(f'Saved new best model with validation loss: {best_val_loss:.4f}')
         else:
             early_stop_grace += 1
 
         if early_stop_grace > patience:
             logging.info("Reached early stopping criteria")
             return
-
 
 def main():
     # Setup
@@ -275,9 +290,9 @@ def main():
     logging.info(f'Using device: {device}')
 
     # Hyperparameters
-    BATCH_SIZE = 8
+    BATCH_SIZE = 4
     NUM_EPOCHS = 500
-    INITIAL_LR = 1e-4
+    INITIAL_LR = 1e-2
     SIGMA = 2
     PATIENCE = 10
 
@@ -312,7 +327,7 @@ def main():
 
     # Create data loaders
     train_loader = DataLoader(
-        train_dataset,
+        train_dataset_base,
         batch_size=BATCH_SIZE,
         shuffle=True,
         num_workers=2,
