@@ -1,0 +1,3 @@
+2024-11-16 13:26:28,524 - INFO - Using device: cuda
+2024-11-16 13:26:28,919 - INFO - Starting model evaluation...
+2024-11-16 13:27:47,154 - ERROR - Error during testing: Unknown format code 'd' for object of type 'float'

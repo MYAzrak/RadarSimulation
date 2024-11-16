@@ -1,0 +1,11 @@
+2024-11-16 12:54:52,203 - INFO - Using device: cuda
+2024-11-16 12:54:52,597 - INFO - Starting model evaluation...
+2024-11-16 12:56:11,434 - INFO - Evaluation Results:
+2024-11-16 12:56:11,434 - INFO - Precision: 0.931
+2024-11-16 12:56:11,434 - INFO - Recall: 0.945
+2024-11-16 12:56:11,434 - INFO - F1 Score: 0.938
+2024-11-16 12:56:11,434 - INFO - True Positives: 2839
+2024-11-16 12:56:11,434 - INFO - False Positives: 211
+2024-11-16 12:56:11,434 - INFO - False Negatives: 164
+2024-11-16 12:56:11,434 - INFO - Saving prediction examples...
+2024-11-16 12:56:18,019 - INFO - Testing completed successfully!
