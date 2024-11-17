@@ -912,7 +912,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &938334295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1084,7 +1084,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &983772306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1160,11 +1160,11 @@ MonoBehaviour:
   parentEmptyObject: {fileID: 0}
   transmittedPowerW: 1000
   antennaGainDBi: 30
-  wavelengthM: 0.03
+  frequency: 0.0031228382
   systemLossesDB: 3
+  antennaVerticalBeamWidth: 22
+  antennaHorizontalBeamWidth: 1.2
   ImageRadius: 1000
-  VerticalAngle: 30
-  BeamWidth: 2
   HeightRes: 1024
   WidthRes: 10
   rainRCS: 0.001
@@ -1239,7 +1239,6 @@ MonoBehaviour:
   scenarioSettings:
     waves: 0
     weather: 0
-    isFoggy: 0
     hasProceduralLand: 0
     proceduralLandSeed: 0
     proceduralLandLocation: {x: 0, y: 0, z: 0}
@@ -1347,7 +1346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6028083280660833559, guid: 3cf08a18537caccdd93a049e92c57149, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8645792689517359682, guid: 3cf08a18537caccdd93a049e92c57149, type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,5 +1,5 @@
 # Simulation Configurations
-sceneName: OceanMain      # [OceanMain, KhorfakkanCoastline]
+sceneName: KhorfakkanCoastline      # [OceanMain, KhorfakkanCoastline]
 nScenarios: 400
 scenarioTimeLimit: 60
 screen-fullscreen: 0
@@ -33,6 +33,6 @@ proceduralLand: [True, False]          # Valid values 'True' (Generate Procedura
 
 # Dataset Generation
 # generateDataset.py ignores the below settings
-generateDataset: true
+generateDataset: false
 unityBuildDirectory: ~/Downloads/project.x86_64
 outputDirectory: ~/Downloads/output
