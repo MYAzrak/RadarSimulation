@@ -69,6 +69,11 @@ public class MasterController : MonoBehaviour
         SetEnumListArg("-waves", ref csvController.waves);
         SetBoolListArg("-proceduralLand", ref csvController.generateProceduralLand);
 
+        if (SceneManager.GetActiveScene().name == "KhorfakkanCoastline")
+        {
+            csvController.generateProceduralLand = new( new bool[] { false } );
+        }
+
         //Radar Params
         SetIntArg("-radarRows", ref radarController.rows);
         SetFloatArg("-radarPower", ref radarController.transmittedPowerW);
@@ -80,24 +85,36 @@ public class MasterController : MonoBehaviour
         SetFloatArg("-antennaHorizontalBeamWidth", ref radarController.antennaHorizontalBeamWidth);
         SetFloatArg("-rainRCS", ref radarController.rainRCS);
 
+        //Scenario Params
+        int nScenarios = 0;
+        if (SetIntArg("-nScenarios", ref nScenarios))
+        {
+            csvController.GenerateScenarios(nScenarios);
+            scenarioController.LoadAllScenarios();
+        }
+        SetFloatArg("-scenarioTimeLimit", ref scenarioController.timeLimit);
+
         int nRadars = 0;
         if (SetIntArg("-nRadars", ref nRadars))
         {
             radarController.GenerateRadars(nRadars);
         }
 
-        //Scenario Params
-        int nScenarios = 0;
-        if (SetIntArg("-nScenarios", ref nScenarios))
+        if (SceneManager.GetActiveScene().name == "KhorfakkanCoastline")
         {
-            //TODO: refactor scenario controller UI code to seperate method, callable from here
-            //TODO: after generating scenarios automatically load them
-            csvController.GenerateScenarios(nScenarios);
-            scenarioController.LoadAllScenarios();
-        }
-        SetFloatArg("-scenarioTimeLimit", ref scenarioController.timeLimit);
+            GameObject terrain = GameObject.Find("Terrain");
+            TerrainCollider terrainCollider = terrain.GetComponent<TerrainCollider>();
 
-        //TODO: Start the simulation
+            if (terrainCollider != null)
+            {
+                Bounds bounds = terrainCollider.bounds;
+
+                float z = bounds.center.z;
+                float depth = bounds.size.z;
+
+                radarController.parentEmptyObject.transform.position = new Vector3(0, 0, z + (depth / 2));
+            }
+        }
     }
 
     private bool SetIntArg(string argName, ref int parameter)
@@ -115,17 +132,6 @@ public class MasterController : MonoBehaviour
     {
         string arg = GetArg(argName);
         if (arg != null && float.TryParse(arg, out float value))
-        {
-            parameter = value;
-            return true;
-        }
-        return false;
-    }
-
-    private bool SetBoolArg(string argName, ref bool parameter)
-    {
-        string arg = GetArg(argName);
-        if (arg != null && bool.TryParse(arg, out bool value))
         {
             parameter = value;
             return true;
@@ -171,7 +177,6 @@ public class MasterController : MonoBehaviour
                 string valueTemp = value.Trim();
                 if (Enum.TryParse(valueTemp.Trim('\''), true, out TEnum enumValue))
                 {
-                    Logger.Log(enumValue);
                     list.Add(enumValue);
                 }
             }

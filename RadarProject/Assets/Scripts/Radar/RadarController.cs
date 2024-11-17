@@ -68,7 +68,7 @@ public class RadarController : MonoBehaviour
                 float z = bounds.center.z;
                 float depth = bounds.size.z;
 
-                parentEmptyObject.transform.position = new Vector3(0, 0, z + (depth * 1.3f));
+                parentEmptyObject.transform.position = new Vector3(0, 0, z + (depth / 2));
                 Logger.Log($"Demo scene detected. Setting radar position to {parentEmptyObject.transform.position}");
             }
             else
