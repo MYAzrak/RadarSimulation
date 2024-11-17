@@ -925,7 +925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5022f0ed08d64e08a526ac78ba85144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 983772305}
+  manager: {fileID: 2106282665}
 --- !u!114 &938334296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1062,202 +1062,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2121115777601841395, guid: e334e6614ad50f749b0a37528784c614, type: 3}
   m_PrefabInstance: {fileID: 955241751}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &983772305
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 983772313}
-  - component: {fileID: 983772312}
-  - component: {fileID: 983772311}
-  - component: {fileID: 983772310}
-  - component: {fileID: 983772309}
-  - component: {fileID: 983772308}
-  - component: {fileID: 983772307}
-  - component: {fileID: 983772306}
-  m_Layer: 0
-  m_Name: Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &983772306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983772305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 878a61d3dc8639740b94f73d97a81540, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  terrainGeneratorPrefab: {fileID: 2262635441062951885, guid: 639cb1dc935915348b47695143bbad8e, type: 3}
-  seed: 0
-  position: {x: 0, y: 400, z: 0}
-  terrainInstance: {fileID: 0}
---- !u!114 &983772307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983772305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ff9a5ca7c64ebf01a5d8ba7a41221fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentWeather: {fileID: 0}
---- !u!114 &983772308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983772305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 955b231aaf96b795ba7dcaf80056ff84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &983772309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983772305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 457f312617c671e3dad7f2e0c0f6f8ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &983772310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983772305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8096b70869107c48ebcf034ed2b67d3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radarPrefab: {fileID: 1562314535405687953, guid: 3b15d8a37689cf3cdb0844e0ea411b03, type: 3}
-  rows: 3
-  cols: 1
-  maxDistance: 5000
-  locationToCreateRadar: {x: 0, y: 0, z: 0}
-  numOfRadars: 0
-  newRadarID: 0
-  parentEmptyObject: {fileID: 0}
-  transmittedPowerW: 1000
-  antennaGainDBi: 30
-  frequency: 0.0031228382
-  systemLossesDB: 3
-  antennaVerticalBeamWidth: 22
-  antennaHorizontalBeamWidth: 1.2
-  ImageRadius: 1000
-  HeightRes: 1024
-  WidthRes: 10
-  rainRCS: 0.001
-  direction: 1
-  oceanCalm: {fileID: 9068541679767220484, guid: 6de26ad77ed8030f4941781a76036014, type: 3}
-  oceanModerate: {fileID: 9068541679767220484, guid: 48c928c92371461ae894e656f6ace5ab, type: 3}
---- !u!114 &983772311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983772305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40e6f974647688bed8d04e8468aca79b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fileName: 
-  generateRandomCSV: 0
-  generateRandomParameters: 1
-  numberOfShips: 5
-  locationsToCreate: 10
-  coordinateSquareWidth: 30000
-  centerPoint: {x: 0, y: 0, z: 0}
-  randomCoordinates: 1000
-  proceduralLandSeed: 0
-  proceduralLandLocation: {x: 0, y: 0, z: 0}
---- !u!114 &983772312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983772305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a80181dc325513f789e4d2a997d77cd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scenarioFileName: 
-  shipPrefabs:
-  - shipType: 0
-    prefab: {fileID: 6822851038680780235, guid: e14a80e599e6f8e33834926622231b92, type: 3}
-  - shipType: 2
-    prefab: {fileID: 6254869662381877804, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
-  - shipType: 1
-    prefab: {fileID: 1041535636116702463, guid: fdeb717f8e5aa32768883010b2fe4db6, type: 3}
-  wavePrefabs:
-  - waves: 0
-    prefab: {fileID: 6028083280660833559, guid: 3cf08a18537caccdd93a049e92c57149, type: 3}
-  - waves: 1
-    prefab: {fileID: 6911877509165313841, guid: de48c47023fba1ffd9722fc9cecc369d, type: 3}
-  weatherPrefabs:
-  - weather: 0
-    prefab: {fileID: 0}
-    skybox: {fileID: 2100000, guid: e7eea049c36253a96be210a297563790, type: 2}
-    oceanMaterial: {fileID: 2100000, guid: cd1fd0b58097b603e9d3498ff4df5719, type: 2}
-  - weather: 1
-    prefab: {fileID: 9195446969396692483, guid: 51211728ad8524c84a389e2ec9460bc1, type: 3}
-    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
-    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
-  - weather: 2
-    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
-    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
-    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
-  timeScale: 1
-  loadScenario: 0
-  timeLimit: 300
-  loadAllScenarios: 0
-  generatedShips: []
-  scenarioSettings:
-    waves: 0
-    weather: 0
-    hasProceduralLand: 0
-    proceduralLandSeed: 0
-    proceduralLandLocation: {x: 0, y: 0, z: 0}
-    directionToSpawnRadars: 0
---- !u!4 &983772313
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 983772305}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &996271606
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2606,6 +2410,214 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1910536382}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2106282665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2106282668}
+  - component: {fileID: 2106282667}
+  - component: {fileID: 2106282666}
+  - component: {fileID: 2106282670}
+  - component: {fileID: 2106282669}
+  - component: {fileID: 2106282671}
+  - component: {fileID: 2106282672}
+  - component: {fileID: 2106282673}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2106282666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106282665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40e6f974647688bed8d04e8468aca79b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileName: 
+  generateRandomCSV: 0
+  generateRandomParameters: 1
+  numberOfShips: 5
+  locationsToCreate: 10
+  coordinateSquareWidth: 30000
+  centerPoint: {x: 0, y: 0, z: 0}
+  randomCoordinates: 1000
+  proceduralLandSeed: 0
+  proceduralLandLocation: {x: 0, y: 0, z: 0}
+--- !u!114 &2106282667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106282665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80181dc325513f789e4d2a997d77cd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scenarioFileName: 
+  shipPrefabs:
+  - shipType: 0
+    prefab: {fileID: 6822851038680780235, guid: e14a80e599e6f8e33834926622231b92, type: 3}
+  - shipType: 2
+    prefab: {fileID: 6254869662381877804, guid: a43a9b97471b96d43bc0bd307fa7308f, type: 3}
+  - shipType: 1
+    prefab: {fileID: 1041535636116702463, guid: fdeb717f8e5aa32768883010b2fe4db6, type: 3}
+  wavePrefabs:
+  - waves: 0
+    prefab: {fileID: 6028083280660833559, guid: 3cf08a18537caccdd93a049e92c57149, type: 3}
+  - waves: 1
+    prefab: {fileID: 6911877509165313841, guid: de48c47023fba1ffd9722fc9cecc369d, type: 3}
+  weatherPrefabs:
+  - weather: 0
+    prefab: {fileID: 0}
+    skybox: {fileID: 2100000, guid: e7eea049c36253a96be210a297563790, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: cd1fd0b58097b603e9d3498ff4df5719, type: 2}
+  - weather: 1
+    prefab: {fileID: 9195446969396692483, guid: 51211728ad8524c84a389e2ec9460bc1, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  - weather: 2
+    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  - weather: 3
+    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  - weather: 4
+    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  - weather: 5
+    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  timeScale: 1
+  loadScenario: 0
+  timeLimit: 300
+  loadAllScenarios: 0
+  generatedShips: []
+  scenarioSettings:
+    waves: 0
+    weather: 0
+    hasProceduralLand: 0
+    proceduralLandSeed: 0
+    proceduralLandLocation: {x: 0, y: 0, z: 0}
+    directionToSpawnRadars: 0
+--- !u!4 &2106282668
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106282665}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2106282669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106282665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 457f312617c671e3dad7f2e0c0f6f8ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2106282670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106282665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8096b70869107c48ebcf034ed2b67d3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radarPrefab: {fileID: 1562314535405687953, guid: 3b15d8a37689cf3cdb0844e0ea411b03, type: 3}
+  rows: 4
+  cols: 1
+  maxDistance: 5000
+  locationToCreateRadar: {x: 0, y: 0, z: 0}
+  numOfRadars: 0
+  newRadarID: 0
+  parentEmptyObject: {fileID: 0}
+  transmittedPowerW: 1000
+  antennaGainDBi: 30
+  frequency: 0.0031228382
+  systemLossesDB: 3
+  antennaVerticalBeamWidth: 22
+  antennaHorizontalBeamWidth: 1.2
+  ImageRadius: 1000
+  HeightRes: 1024
+  WidthRes: 10
+  rainRCS: 0.001
+  direction: 1
+  oceanCalm: {fileID: 9068541679767220484, guid: 6de26ad77ed8030f4941781a76036014, type: 3}
+  oceanModerate: {fileID: 9068541679767220484, guid: 48c928c92371461ae894e656f6ace5ab, type: 3}
+--- !u!114 &2106282671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106282665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 955b231aaf96b795ba7dcaf80056ff84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2106282672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106282665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ff9a5ca7c64ebf01a5d8ba7a41221fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeather: {fileID: 0}
+--- !u!114 &2106282673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106282665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878a61d3dc8639740b94f73d97a81540, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainGeneratorPrefab: {fileID: 2262635441062951885, guid: 639cb1dc935915348b47695143bbad8e, type: 3}
+  seed: 0
+  position: {x: 0, y: 400, z: 0}
+  terrainInstance: {fileID: 0}
 --- !u!1001 &2138650867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2981,7 +2993,7 @@ SceneRoots:
   - {fileID: 1432633146}
   - {fileID: 705507995}
   - {fileID: 1396629899}
-  - {fileID: 983772313}
+  - {fileID: 2106282668}
   - {fileID: 1721918050}
   - {fileID: 938334297}
   - {fileID: 1024087135}

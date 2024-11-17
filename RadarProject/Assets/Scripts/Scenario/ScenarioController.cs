@@ -114,7 +114,7 @@ public class ScenarioController : MonoBehaviour
                 float width = bounds.size.x;
                 float depth = bounds.size.z;
                 
-                csvController.centerPoint = new Vector3(width / 2, 0, depth * 2.5f); 
+                csvController.centerPoint = new Vector3(width / 2, 0, depth + (csvController.coordinateSquareWidth / 2)); 
                 csvController.coordinateSquareWidth = 30000f;
                 csvController.generateProceduralLand = new( new bool[] { false } );
                 Logger.Log($"Demo scene detected. Setting ship coordinate space center to {csvController.centerPoint}");
