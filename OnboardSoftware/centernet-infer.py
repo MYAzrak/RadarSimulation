@@ -1,0 +1,216 @@
+import websocket
+import json
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+import threading
+import argparse
+import time
+import torch
+from utils.api.radar import create_radar_with_id, update_radar_location, process_radar_detections 
+from utils.locations import getLatLong
+from Inference.centernet.centernetresnet import CenterNetBackbone, detect_points
+
+fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(projection='polar'))
+im = None
+cbar = None
+scatter = None
+scatter_gt = None
+legend = None
+
+radarID = None
+reconnect_delay = 5  # Delay in seconds before attempting to reconnect
+
+color = False
+clip = None
+
+def run_model(ppi_data, model):
+    """
+    Run CenterNet inference on PPI data
+    Returns list of (distance, azimuth) tuples for detected ships
+    """
+    global device
+    # Prepare input tensor
+    image = torch.from_numpy(ppi_data).float().unsqueeze(0).unsqueeze(0)  # Add batch and channel dimensions
+    image = image.to(device)
+    
+    # Get predictions
+    with torch.no_grad():
+        pred_heatmap = model(image)[0, 0]  # Remove batch and channel dimensions
+    
+    # Detect points from heatmap
+    return detect_points(pred_heatmap, threshold=0.3) 
+
+def create_ppi_plot(data, azimuth, range_bins, ships, radar_range, gt):
+    global im, cbar, scatter, color, scatter_gt, legend
+
+    if clip:
+        mean = np.mean(data)
+        std = np.std(data)
+        data = np.clip(data, 0, min(2000, mean + clip * std))
+
+    if color:
+        data = np.where(data != 0, 1, data)
+    vmin = data.min()
+    vmax = data.max()
+
+    # Convert polar coordinates to cartesian
+    theta = np.radians(azimuth)
+    r, theta = np.meshgrid(range_bins, theta)
+
+    # Plot the data
+    if im is None:
+        im = ax.pcolormesh(theta, r, data, cmap='magma', vmin=vmin, vmax=vmax)
+
+        # Customize the plot
+        ax.set_theta_zero_location("N")
+        ax.set_theta_direction(-1)
+        ax.set_rlabel_position(0)
+        ax.set_title("PPI Plot (CenterNet)")
+
+        # Add a colorbar
+        cbar = plt.colorbar(im, ax=ax)
+        cbar.set_label('Intensity')
+    else:
+        im.set_array(data.ravel())
+        im.set_clim(vmin=vmin, vmax=vmax)
+
+    # Plot ship points
+    if len(ships) > 0:
+        ship_thetas = np.radians([ship[1] / 720 * 360 for ship in ships])
+        ship_distances = [ship[0] for ship in ships]
+
+        if scatter is None:
+            scatter = ax.scatter(ship_thetas, ship_distances,
+                               c='cyan', s=10, zorder=5, label="Predicted")
+        else:
+            scatter.set_offsets(np.column_stack((ship_thetas, ship_distances)))
+
+    if len(gt) > 0:
+        ship_thetas = np.radians([ship['Azimuth'] for ship in gt])
+        ship_distances = [ship['Distance'] / int(radar_range) * data.shape[1] for ship in gt]
+
+        if scatter_gt is None:
+            scatter_gt = ax.scatter(ship_thetas, ship_distances,
+                                  c='green', s=5, zorder=5, label="Ground Truth")
+        else:
+            scatter_gt.set_offsets(np.column_stack((ship_thetas, ship_distances)))
+            
+    if legend is None:
+        legend = ax.legend(loc='upper left')
+
+    return im, scatter, scatter_gt
+
+latest_data = None
+latest_ships = None
+latest_gt = None
+data_lock = threading.Lock()
+radar_range = None
+
+def on_message(ws, message):
+    global latest_data, latest_ships, radar_range, model, latest_gt
+    data = json.loads(message)
+    ppi = data.get('PPI', 'NA')
+    radar_loc_unity = data.get('radarLocation', 'NA')
+    ground_truth = data.get('ships', [])
+    r_range = data.get('range', 5000)
+    
+    if ppi == "NA":
+        return
+        
+    ppi = np.array(ppi, dtype=np.float32)
+    
+    ships = run_model(ppi, model)
+    print(ppi.shape)
+    
+    lat, long = getLatLong(radar_loc_unity['x'], radar_loc_unity['z'])
+    try:
+        update_radar_location(radarID, lat, long, r_range//1000, ppi.shape[0]) 
+        process_radar_detections(radarID, lat, long, ships, r_range, ppi.shape[1], 360.0/ppi.shape[0])
+    except:
+        print("Error reaching server")
+
+    with data_lock:
+        latest_data = ppi
+        latest_ships = ships
+        latest_gt = ground_truth
+        radar_range = r_range
+
+def on_error(ws, error):
+    print(f"Error: {error}")
+
+def on_close(ws, close_status_code, close_msg):
+    print("Connection closed")
+
+def on_open(ws):
+    print("Connection opened")
+
+def run_websocket():
+    while True:
+        try:
+            ws = websocket.WebSocketApp(f"ws://localhost:8080/radar{radarID}",
+                                      on_message=on_message,
+                                      on_error=on_error,
+                                      on_close=on_close,
+                                      on_open=on_open)
+            ws.run_forever()
+        except Exception as e:
+            print(f"WebSocket error: {e}")
+
+        print(f"Connection lost. Reconnecting in {reconnect_delay} seconds...")
+        time.sleep(reconnect_delay)
+
+def update_plot(frame):
+    global latest_data, latest_ships, latest_gt
+    with data_lock:
+        if latest_data is not None:
+            num_azimuth, num_range = latest_data.shape
+            azimuth = np.linspace(0, 360, num_azimuth)
+            range_bins = np.linspace(0, num_range, num_range)
+
+            return create_ppi_plot(latest_data, azimuth, range_bins, latest_ships, radar_range, latest_gt)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-r', type=int, default=0, help='Radar ID')
+    parser.add_argument('-c', '--color', action='store_true', help='Enable color output')
+    parser.add_argument('--clip', type=int, default=0, help='Clip standard deviations')
+    parser.add_argument('--model', type=str, default='best_model.pth', help='Path to model weights')
+    args = parser.parse_args()
+
+    if isinstance(args.r, int):
+        radarID = args.r
+        print(radarID)
+    else:
+        print("Invalid Radar ID")
+
+    if isinstance(args.clip, int) and args.clip != 0:
+        clip = args.clip
+
+    if args.color:
+        color = True
+
+    # Load CenterNet model
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = CenterNetBackbone(in_channels=1).to(device)
+    
+    # Load model weights
+    checkpoint = torch.load(args.model, map_location=device)
+    if 'model_state_dict' in checkpoint:
+        model.load_state_dict(checkpoint['model_state_dict'])
+    else:
+        model.load_state_dict(checkpoint)
+    
+    model.eval()
+    print(f"Loaded CenterNet model from {args.model}")
+
+    create_radar_with_id(radar_id=radarID)
+
+    # Start WebSocket connection in a separate thread
+    websocket_thread = threading.Thread(target=run_websocket)
+    websocket_thread.daemon = True
+    websocket_thread.start()
+
+    # Set up the animation
+    ani = FuncAnimation(fig, update_plot, interval=100, blit=False)
+    plt.show()
