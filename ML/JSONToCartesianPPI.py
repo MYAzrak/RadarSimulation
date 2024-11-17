@@ -10,6 +10,9 @@ def load_json_file(file_path):
 
 
 def plot_ppi_and_ships(data):
+    # Set global font size for all text elements
+    plt.rcParams.update({'font.size': 14})  # Default font size for all elements
+    
     # Extract PPI image data
     ppi_image = np.array(data['PPI']).T
     height, width = ppi_image.shape
@@ -29,25 +32,30 @@ def plot_ppi_and_ships(data):
         ship['Distance'] = ship['Distance']/int(data['range']) * height
         ax.plot(ship['Azimuth'], ship['Distance'], 'ro', markersize=5)
         ax.text(ship['Azimuth'], ship['Distance'], str(ship['Id']),
-                fontsize=8, ha='right', va='bottom', color='white')
+                fontsize=12,  # Increased font size for ship IDs
+                ha='right', va='bottom', color='white')
 
-    # Set labels and title
-    ax.set_xlabel('Azimuth (pixels)')
-    ax.set_ylabel('Distance (pixels)')
-    ax.set_title('PPI Visualization with Ship Positions')
+    # Set labels and title with larger font sizes
+    ax.set_xlabel('Azimuth (pixels)', fontsize=16)
+    ax.set_ylabel('Distance (pixels)', fontsize=16)
+    ax.set_title('PPI Visualization', fontsize=18)
 
     # Add Azimuth markings
     Azimuth_ticks = np.linspace(0, width, 9)
     Azimuth_labels = ['0°', '45°', '90°', '135°',
                       '180°', '225°', '270°', '315°', '360°']
     ax.set_xticks(Azimuth_ticks)
-    ax.set_xticklabels(Azimuth_labels)
-
+    ax.set_xticklabels(Azimuth_labels, fontsize=14)  # Increased tick label font size
+    
     # Add Distance markings
     ax.set_yticks(np.linspace(0, height, 6))
+    ax.set_yticklabels(ax.get_yticks(), fontsize=14)  # Increased tick label font size
 
-    # Add colorbar
-    cbar = fig.colorbar(im, ax=ax, label='Intensity')
+    # Add colorbar with larger font
+    cbar = fig.colorbar(im, ax=ax)
+    cbar.set_label('Intensity', fontsize=16)  # Larger colorbar label
+    cbar.ax.tick_labels = plt.getp(cbar.ax.axes, 'yticklabels')
+    plt.setp(cbar.ax.get_yticklabels(), fontsize=14)  # Larger colorbar tick labels
 
     # Show the plot
     plt.tight_layout()
