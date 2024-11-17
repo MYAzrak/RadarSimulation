@@ -96,8 +96,8 @@ def save_predictions(model, dataset, device, save_dir='test_predictions', num_sa
         # Target heatmap
         axes[1].imshow(target_heatmap[0], cmap='hot')
         axes[1].set_title('Target Heatmap')
-        for x, y in target_points:
-            axes[1].plot(x, y, 'r+', markersize=10)
+        # for x, y in target_points:
+        #     axes[1].plot(x, y, 'r+', markersize=10)
         
         # Predicted heatmap
         axes[2].imshow(pred_heatmap.cpu(), cmap='hot')
