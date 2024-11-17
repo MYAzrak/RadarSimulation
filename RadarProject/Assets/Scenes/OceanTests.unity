@@ -183,63 +183,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e14a80e599e6f8e33834926622231b92, type: 3}
---- !u!1 &188005294
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 188005295}
-  - component: {fileID: 188005296}
-  m_Layer: 0
-  m_Name: Spreader
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &188005295
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188005294}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19779.982, y: 127.57203, z: 487.7643}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &188005296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 188005294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7b62f1eaae04c2449c23feeb18ba962, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToSpread:
-  - {fileID: 919132149155446097, guid: d47699c43b0aeb04eb32ee52a8a05c1f, type: 3}
-  - {fileID: 919132149155446097, guid: 9b063a4cb74a33a49b485e7d79cd2701, type: 3}
-  - {fileID: 919132149155446097, guid: 2e33df1e3212e3d4380eea3ab56b1d41, type: 3}
-  - {fileID: 919132149155446097, guid: daf14bdd8d9bec94ca181a921148cc52, type: 3}
-  - {fileID: 919132149155446097, guid: 5a215ff8f47445b4fbccfb1952d5347a, type: 3}
-  parent: {fileID: 0}
-  numObjectsToSpawn: 50
-  itemXSpread: 200
-  itemYSpread: 0
-  itemZSpread: 2500
-  raycast: 1
-  raycastDistance: 100
 --- !u!1 &801338831
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +375,7 @@ GameObject:
   - component: {fileID: 1059646245}
   - component: {fileID: 1059646247}
   - component: {fileID: 1059646248}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ocean
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -462,13 +405,13 @@ MonoBehaviour:
   _material: {fileID: 2100000, guid: cd1fd0b58097b603e9d3498ff4df5719, type: 2}
   _waterTilePrefab: {fileID: 0}
   _layerName: 
-  _layer: 4
+  _layer: 3
   _gravityMultiplier: 1
   _waterBodyCulling: 0
-  _minScale: 8
-  _maxScale: 256
+  _minScale: 0.25
+  _maxScale: -1
   _dropDetailHeightBasedOnWaves: 0.2
-  _lodDataResolution: 384
+  _lodDataResolution: 512
   _geometryDownSampleFactor: 2
   _lodCount: 15
   _extentsSizeMultiplier: 100
@@ -615,7 +558,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 303
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -636,7 +579,7 @@ Transform:
   m_GameObject: {fileID: 1422562296}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 20, z: -20}
+  m_LocalPosition: {x: 0, y: 81.5, z: -155.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -753,14 +696,9 @@ MonoBehaviour:
   generateRandomParameters: 1
   numberOfShips: 5
   locationsToCreate: 10
-  minStartingCoordinates: 0
-  maxStartingCoordinates: 0
+  coordinateSquareWidth: 30000
+  centerPoint: {x: 0, y: 0, z: 0}
   randomCoordinates: 1000
-  minSpeed: 11
-  maxSpeed: 21
-  weather: 0
-  waves: 0
-  hasProceduralLand: 0
   proceduralLandSeed: 0
   proceduralLandLocation: {x: 0, y: 0, z: 0}
 --- !u!114 &2106282667
@@ -801,6 +739,18 @@ MonoBehaviour:
     prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
     skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
     oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  - weather: 3
+    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  - weather: 4
+    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
+  - weather: 5
+    prefab: {fileID: 9195446969396692483, guid: 88bd7952df6640ede81e60fca092d470, type: 3}
+    skybox: {fileID: 2100000, guid: 76f7bf6590184285aa78a75f487f017a, type: 2}
+    oceanMaterial: {fileID: 2100000, guid: f38c77ee76b111fbda98293e1f8bb3ce, type: 2}
   timeScale: 1
   loadScenario: 0
   timeLimit: 300
@@ -809,7 +759,6 @@ MonoBehaviour:
   scenarioSettings:
     waves: 0
     weather: 0
-    isFoggy: 0
     hasProceduralLand: 0
     proceduralLandSeed: 0
     proceduralLandLocation: {x: 0, y: 0, z: 0}
@@ -856,20 +805,24 @@ MonoBehaviour:
   radarPrefab: {fileID: 1562314535405687953, guid: 3b15d8a37689cf3cdb0844e0ea411b03, type: 3}
   rows: 4
   cols: 1
-  distanceBetweenRadars: 50
+  maxDistance: 5000
+  locationToCreateRadar: {x: 0, y: 0, z: 0}
   numOfRadars: 0
   newRadarID: 0
   parentEmptyObject: {fileID: 0}
   transmittedPowerW: 1000
   antennaGainDBi: 30
-  wavelengthM: 0.03
+  frequency: 0.0031228382
   systemLossesDB: 3
+  antennaVerticalBeamWidth: 22
+  antennaHorizontalBeamWidth: 1.2
   ImageRadius: 1000
-  VerticalAngle: 30
-  BeamWidth: 2
   HeightRes: 1024
   WidthRes: 10
+  rainRCS: 0.001
   direction: 1
+  oceanCalm: {fileID: 9068541679767220484, guid: 6de26ad77ed8030f4941781a76036014, type: 3}
+  oceanModerate: {fileID: 9068541679767220484, guid: 48c928c92371461ae894e656f6ace5ab, type: 3}
 --- !u!114 &2106282671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -921,5 +874,4 @@ SceneRoots:
   - {fileID: 2106282668}
   - {fileID: 801338833}
   - {fileID: 1693119283}
-  - {fileID: 188005295}
   - {fileID: 113883338}

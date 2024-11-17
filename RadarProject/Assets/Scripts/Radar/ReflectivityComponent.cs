@@ -21,6 +21,6 @@ public class ReflectivityComponent : MonoBehaviour
 
     void OnDestroy()
     {
-        ReflectivityManager.Instance.RemoveReflectivity(objectId);
+        //ReflectivityManager.Instance.RemoveReflectivity(objectId);
     }
 }

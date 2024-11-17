@@ -23,7 +23,7 @@ public class ScenarioControllerTests
         
         if (SceneManager.GetActiveScene().name != sceneName)
         {
-            SceneManager.LoadScene("Assets/Scenes/OceanTests.unity");
+            SceneManager.LoadScene("OceanTests", LoadSceneMode.Single);
         }
 
         scenarioController = Object.FindObjectOfType<ScenarioController>();
