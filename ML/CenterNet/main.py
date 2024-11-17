@@ -7,7 +7,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, random_split
 import matplotlib.pyplot as plt
 from dataset import PPIDataset
-from centernetresnet import CenterNetBackbone, FocalLoss, detect_points
+from centernetResnet import CenterNetBackbone, FocalLoss, detect_points
 import logging
 import datetime
 import numpy as np
