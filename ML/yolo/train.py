@@ -5,6 +5,8 @@ from PIL import Image, ImageDraw
 import random
 from torch.utils.data import Dataset
 from ultralytics import YOLO
+from ray import tune
+import matplotlib.pyplot as plt
 
 class PPIDataset(Dataset):
     def __init__(self, json_dir, save_dir, val_split=0.2):
@@ -134,10 +136,23 @@ if __name__ == '__main__':
      #   image = dataset[i]
       #  print(f"Processed image {i + 1}/{len(dataset)}")
 
-    model = YOLO("yolo11n.pt")  # Load a pretrained model
+    model = YOLO("./best.pt")  # Load a pretrained model
 
     # Assuming yaml is in the same directory as this script
     current_directory = os.path.dirname(os.path.abspath(__file__))
     data_path = os.path.join(current_directory, 'ppi_dataset.yaml')
-    results = model.train(data=data_path, epochs=600, patience=100, single_cls=True, cache=True) 
+
+    results = model.train(
+        data=data_path, 
+        epochs=300, 
+        imgsz="640", 
+        single_cls=True, 
+        batch=16, 
+        cache=True,
+        hsv_h=0, 
+        hsv_s=0,
+        )
+       
+    #result_grid = model.tune(data=data_path, use_ray=True, gpu_per_trial=1)
+
     #model.val()
