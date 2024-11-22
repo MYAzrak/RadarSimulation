@@ -29,7 +29,7 @@ public class RadarController : MonoBehaviour
     [Header("Radar Equation Parameters")]
     public float transmittedPowerW = 50f; // Watts
     public float antennaGainDBi = 30f; // dBi
-    public float frequency = 0.0031228381f; // meters (for 9.5 GHz)
+    public float waveLength = 0.0031228381f; // meters (for 9.5 GHz)
     public float systemLossesDB = 3f; // dB
     public float antennaVerticalBeamWidth = 22f;
     public float antennaHorizontalBeamWidth = 1.2f;
@@ -147,7 +147,7 @@ public class RadarController : MonoBehaviour
         radarScript.radarID = newRadarID;
         radarScript.transmittedPowerW = transmittedPowerW;
         radarScript.antennaGainDBi = antennaGainDBi;
-        radarScript.frequency = frequency;
+        radarScript.waveLength = waveLength;
         radarScript.systemLossesDB = systemLossesDB;
         radarScript.ImageRadius = ImageRadius;
         radarScript.antennaVerticalBeamWidth = antennaVerticalBeamWidth;

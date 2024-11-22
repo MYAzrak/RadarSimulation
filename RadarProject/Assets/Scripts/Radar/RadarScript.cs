@@ -41,7 +41,7 @@ public class RadarScript : MonoBehaviour
     [Header("Radar Equation Parameters")]
     public float transmittedPowerW = 1000f; // Watts
     public float antennaGainDBi = 30f; // dBi
-    public float frequency = 0.03f; // meters (for 10 GHz)
+    public float waveLength = 0.03f; // meters (for 10 GHz)
     public float systemLossesDB = 3f; // dB
 
     private ComputeBuffer rcsBuffer;
@@ -151,7 +151,7 @@ public class RadarScript : MonoBehaviour
     {
         float G = Mathf.Pow(10f, antennaGainDBi / 10f);
         float Ls = Mathf.Pow(10f, systemLossesDB / 10f);
-        float lambda = frequency;
+        float lambda = waveLength;
 
         precalculatedRadarConstant = (transmittedPowerW * Mathf.Pow(G, 2) * Mathf.Pow(lambda, 2)) /
                                      (Mathf.Pow((4 * Mathf.PI), 3) * Ls);

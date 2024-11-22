@@ -9,7 +9,7 @@ nRadars: 2
 radarRows: 3
 radarPower: 50  # Watts
 radarGain: 30     # dB
-frequency: 0.0031228381  # meters (for 9.5 GHz)
+waveLength: 0.0031228381  # meters (for 9.5 GHz)
 antennaVerticalBeamWidth: 22
 antennaHorizontalBeamWidth: 1.2
 radarImageRadius: 1000

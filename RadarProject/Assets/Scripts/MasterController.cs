@@ -78,7 +78,7 @@ public class MasterController : MonoBehaviour
         SetIntArg("-radarRows", ref radarController.rows);
         SetFloatArg("-radarPower", ref radarController.transmittedPowerW);
         SetFloatArg("-radarGain", ref radarController.antennaGainDBi);
-        SetFloatArg("-frequency", ref radarController.frequency);
+        SetFloatArg("-waveLength", ref radarController.waveLength);
         SetFloatArg("-radarLoss", ref radarController.systemLossesDB);
         SetIntArg("-radarImageRadius", ref radarController.ImageRadius);
         SetFloatArg("-antennaVerticalBeamWidth", ref radarController.antennaVerticalBeamWidth);
