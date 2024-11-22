@@ -29,7 +29,7 @@ And output directory is the directory where you would like to store the dataset.
 | radarRows                           | Number of rows in radar lattice network                    |
 | radarPower                          | Power transmitted in W                                     |
 | radarGain                           | Gain of the radar in dB                                    |
-| frequency                           | Wavelength of radar in m                                   |
+| waveLength                          | Wavelength of radar in m                                   |
 | radarImageRadius                    | Width of the output data array (pixels)                    |
 | antennaVerticalBeamWidth            | Vertical angle of radar beam                               |
 | antennaHorizontalBeamWidth          | Horizontal angle of radar beam                             |
