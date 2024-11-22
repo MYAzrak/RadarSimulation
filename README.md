@@ -29,10 +29,10 @@ And output directory is the directory where you would like to store the dataset.
 | radarRows                           | Number of rows in radar lattice network                    |
 | radarPower                          | Power transmitted in W                                     |
 | radarGain                           | Gain of the radar in dB                                    |
-| waveLength                          | Wavelength of radar in m                                   |
+| frequency                           | Wavelength of radar in m                                   |
 | radarImageRadius                    | Width of the output data array (pixels)                    |
-| verticalAngle                       | Vertical angle of radar beam                               |
-| beamWidth                           | Horizontal angle of radar beam                             |
+| antennaVerticalBeamWidth            | Vertical angle of radar beam                               |
+| antennaHorizontalBeamWidth          | Horizontal angle of radar beam                             |
 | rainRCS                             | RCS value for a rain drop                                  |
 | nRadars                             | Number of radars in a scenario                             |
 | nScenarios                          | Number of scenarios to generate                            |
