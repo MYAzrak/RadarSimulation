@@ -26,12 +26,12 @@ def getLatLong(x: float, y: float, center_lat=CENTER_LAT, center_long=CENTER_LON
 
     # Calculate change in latitude
     # Moving north/south along a meridian: 1 meter = 1/Earth_radius radians
-    delta_lat_rad = y / EARTH_RADIUS  # y is north-south distance
+    delta_lat_rad = x / EARTH_RADIUS  # y is north-south distance
     
     # Calculate change in longitude
     # At given latitude, the radius of the parallel circle is R * cos(lat)
     # This affects how much a given east-west distance changes longitude
-    delta_long_rad = x / (EARTH_RADIUS * math.cos(center_lat_rad))  # x is east-west distance
+    delta_long_rad = y / (EARTH_RADIUS * math.cos(center_lat_rad))  # x is east-west distance
 
     # Calculate new coordinates in radians
     new_lat_rad = center_lat_rad + delta_lat_rad

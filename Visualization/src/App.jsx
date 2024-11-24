@@ -11,7 +11,7 @@ export default function App() {
   const fetchDetections = async () => {
     try {
       const response = await fetch(
-        "http://localhost:7777/detections/recent/?minutes=30",
+        "http://localhost:7777/detections/recent/?minutes=10000",
       );
       const data = await response.json();
       setDetections(data);
@@ -21,7 +21,7 @@ export default function App() {
     try {
       const response = await fetch("http://localhost:7777/radars");
       const data = await response.json();
-      setDetections(data);
+      setRadars(data);
     } catch (error) {
       console.log("Error fetching radars:", error);
     }
