@@ -73,6 +73,9 @@ public class ScenarioController : MonoBehaviour
     public const float METERS_PER_SECOND_TO_KNOTS = 1.943844f;          // 1 Meter/second = 1.943844 Knot
     public const float KNOTS_TO_METERS_PER_SECOND = 0.5144444f;         // 1 Knot = 0.5144444 Meter/second
 
+    // If the below is true disable movement of radar when scenario change
+    bool khorfakkanSceneActive = false;
+
     void Awake()
     {
         Logger.SetFilePath("Simulation Started");
@@ -123,6 +126,8 @@ public class ScenarioController : MonoBehaviour
             {
                 Logger.Log("TerrainCollider not found on terrain.");
             }
+
+            khorfakkanSceneActive = true;
         }
     }
 
@@ -188,39 +193,42 @@ public class ScenarioController : MonoBehaviour
 
         UnloadAllObjects();
 
-        // Set procedural land
-        if (scenarioSettings.hasProceduralLand)
+        if (!khorfakkanSceneActive)
         {
-            procTerrainController.seed = scenarioSettings.proceduralLandSeed;
-            procTerrainController.position = scenarioSettings.proceduralLandLocation;
-            procTerrainController.GenerateTerrain();
-            
-            // Set radars direction
-            radarController.direction = scenarioSettings.directionToSpawnRadars;
-            
-            // Set radars position to be close to the land
-            float x = procTerrainController.position.x;
-            float y = 0;
-            float z = procTerrainController.position.z - 10000;
-
-            switch (scenarioSettings.directionToSpawnRadars)
+            // Set procedural land
+            if (scenarioSettings.hasProceduralLand)
             {
-                case RadarGenerationDirection.Right:
-                    x += 15000;
-                    break;
-                case RadarGenerationDirection.Left:
-                    x -= 15000;
-                    break;
-                default:
-                    break;
-            }
+                procTerrainController.seed = scenarioSettings.proceduralLandSeed;
+                procTerrainController.position = scenarioSettings.proceduralLandLocation;
+                procTerrainController.GenerateTerrain();
 
-            radarController.parentEmptyObject.transform.position = new Vector3(x, y, z);
-        }
-        else
-        {
-            radarController.direction = RadarGenerationDirection.Right;
-            radarController.parentEmptyObject.transform.position = Vector3.zero;
+                // Set radars direction
+                radarController.direction = scenarioSettings.directionToSpawnRadars;
+
+                // Set radars position to be close to the land
+                float x = procTerrainController.position.x;
+                float y = 0;
+                float z = procTerrainController.position.z - 10000;
+
+                switch (scenarioSettings.directionToSpawnRadars)
+                {
+                    case RadarGenerationDirection.Right:
+                        x += 15000;
+                        break;
+                    case RadarGenerationDirection.Left:
+                        x -= 15000;
+                        break;
+                    default:
+                        break;
+                }
+
+                radarController.parentEmptyObject.transform.position = new Vector3(x, y, z);
+            }
+            else
+            {
+                radarController.direction = RadarGenerationDirection.Right;
+                radarController.parentEmptyObject.transform.position = Vector3.zero;
+            }
         }
 
         // Set waves
@@ -232,11 +240,14 @@ public class ScenarioController : MonoBehaviour
         //radarController.UpdateRadarsPositions();
         GenerateShips();
 
-        int numOfRadars = radarController.radars.Count;
-        if (numOfRadars > 0)
+        if (!khorfakkanSceneActive)
         {
-            radarController.UnloadRadars();
-            radarController.GenerateRadars(numOfRadars);
+            int numOfRadars = radarController.radars.Count;
+            if (numOfRadars > 0)
+            {
+                radarController.UnloadRadars();
+                radarController.GenerateRadars(numOfRadars);
+            }
         }
 
         mainMenuController.SetShipsLabel(generatedShips.Count);
