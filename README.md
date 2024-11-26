@@ -19,27 +19,34 @@ And output directory is the directory where you would like to store the dataset.
 
 ### Config Parameters
 
-| Parameter                           | Description                                                |
-| ----------------------------------- | ---------------------------------------------------------- |
-| sceneName                           | Scene to start simulation in ("OceanMain" or "KhorfakkanCoastline") |
-| nships                              | Number of ships in a scenario defined by a range [minAmount, maxAmount] |
-| nLocations                          | Number of locations a ship visits during a scenario defined by a range [minAmount, maxAmount]) |
-| coordinateSquareWidth               | Width of ship generation space                             |
-| speed                               | Ship movement speed (in knots) defined by a range [minSpeed, maxSpeed]|
-| radarRows                           | Number of rows in radar lattice network                    |
-| radarPower                          | Power transmitted in W                                     |
-| radarGain                           | Gain of the radar in dB                                    |
-| waveLength                          | Wavelength of radar in m                                   |
-| radarImageRadius                    | Width of the output data array (pixels)                    |
-| antennaVerticalBeamWidth            | Vertical angle of radar beam                               |
-| antennaHorizontalBeamWidth          | Horizontal angle of radar beam                             |
-| rainRCS                             | RCS value for a rain drop                                  |
-| nRadars                             | Number of radars in a scenario                             |
-| nScenarios                          | Number of scenarios to generate                            |
-| scenarioTimeLimit                   | Time limit for a scenario before ending and moving to next |
-| weather                             | List of Weather conditions to cycle through for each scenario      |
-| waves                               | List of Wave conditions to cycle through for each scenario |
-| proceduralLand                      | List of bool to cycle through (whether procedural land is generated or not) |
-| generateDataset                     | Flag to generate a dataset                                 |
-| unityBuildDirectory                 | Directory for Unity build                                  |
-| outputDirectory                     | Directory for output files                                 |
+| Parameter                  | Description                                                                                    |
+| -------------------------- | ---------------------------------------------------------------------------------------------- |
+| sceneName                  | Scene to start simulation in ("OceanMain" or "KhorfakkanCoastline")                            |
+| nships                     | Number of ships in a scenario defined by a range [minAmount, maxAmount]                        |
+| nLocations                 | Number of locations a ship visits during a scenario defined by a range [minAmount, maxAmount]) |
+| coordinateSquareWidth      | Width of ship generation space                                                                 |
+| speed                      | Ship movement speed (in knots) defined by a range [minSpeed, maxSpeed]                         |
+| radarRows                  | Number of rows in radar lattice network                                                        |
+| radarPower                 | Power transmitted in W                                                                         |
+| radarGain                  | Gain of the radar in dB                                                                        |
+| waveLength                 | Wavelength of radar in m                                                                       |
+| radarImageRadius           | Width of the output data array (pixels)                                                        |
+| antennaVerticalBeamWidth   | Vertical angle of radar beam                                                                   |
+| antennaHorizontalBeamWidth | Horizontal angle of radar beam                                                                 |
+| rainRCS                    | RCS value for a rain drop                                                                      |
+| nRadars                    | Number of radars in a scenario                                                                 |
+| nScenarios                 | Number of scenarios to generate                                                                |
+| scenarioTimeLimit          | Time limit for a scenario before ending and moving to next                                     |
+| weather                    | List of Weather conditions to cycle through for each scenario                                  |
+| waves                      | List of Wave conditions to cycle through for each scenario                                     |
+| proceduralLand             | List of bool to cycle through (whether procedural land is generated or not)                    |
+| generateDataset            | Flag to generate a dataset                                                                     |
+| unityBuildDirectory        | Directory for Unity build                                                                      |
+| outputDirectory            | Directory for output files                                                                     |
+
+## Run the Test Scene
+
+1. Change the config.yaml to have use the test scene
+2. Run `python run.py ./path/to/config`
+3. Create a copy of service_config.yaml with your own paths
+4. Run `python start_services.py service_config.yaml`
