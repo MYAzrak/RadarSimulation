@@ -249,6 +249,10 @@ public class ScenarioController : MonoBehaviour
                 radarController.GenerateRadars(numOfRadars);
             }
         }
+        else
+        {
+            mainMenuController.SetRadarsLabel(radarController.numOfRadars);
+        }
 
         mainMenuController.SetShipsLabel(generatedShips.Count);
 
