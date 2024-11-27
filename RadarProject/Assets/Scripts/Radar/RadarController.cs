@@ -230,7 +230,7 @@ public class RadarController : MonoBehaviour
         mainMenuController.SetRadarsLabel(newRadarID);
     }
 
-    public void GenerateRadars(int numOfRadars = 1, RadarGenerationDirection direction = RadarGenerationDirection.Left)
+    public void GenerateRadars(int numOfRadars = 1, RadarGenerationDirection direction = RadarGenerationDirection.Right)
     {
         UnloadRadars();
 

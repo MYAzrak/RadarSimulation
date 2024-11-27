@@ -72,6 +72,7 @@ public class MasterController : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "KhorfakkanCoastline")
         {
             csvController.generateProceduralLand = new( new bool[] { false } );
+            radarController.direction = RadarGenerationDirection.Right;
         }
 
         //Radar Params
