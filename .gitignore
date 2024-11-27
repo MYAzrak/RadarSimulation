@@ -12,6 +12,7 @@
 /runs/
 
 service_config.yaml
+sim-config.yaml
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
