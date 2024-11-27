@@ -99,8 +99,34 @@ def update_radar_location(
 import math
 from typing import List, Tuple, Optional
 import sys
-sys.path.append('..')
-from utils.locations import getLatLong
+from OnboardSoftware.utils.locations import getLatLong
+
+def clearall(base_url: str = "http://localhost:7777") -> bool:
+    """
+    Helper function to clear all radars and their associated detections from the database.
+    
+    Args:
+        base_url (str, optional): Base URL of the API. Defaults to "http://localhost:7777"
+    
+    Returns:
+        bool: True if successful, False if failed
+    """
+    try:
+        # Get all radars first
+        radar_response = requests.get(f"{base_url}/radars/")
+        radar_response.raise_for_status()
+        radars = radar_response.json()
+        
+        # Delete detections for each radar
+        for radar in radars:
+            del_response = requests.delete(f"{base_url}/detections/by_radar/{radar['radar_id']}")
+            del_response.raise_for_status()
+            
+        return True
+        
+    except requests.exceptions.RequestException as e:
+        print(f"Error clearing database: {str(e)}")
+        return False
 
 def process_radar_detections(
     radar_id: int,
