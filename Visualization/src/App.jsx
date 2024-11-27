@@ -43,7 +43,8 @@ export default function App() {
           longitude: 56.3487,
           zoom: 11,
         }}
-        mapStyle="mapbox://styles/mapbox/dark-v9"
+        mapStyle='mapbox://styles/mapbox/standard-satellite'
+        projection= 'globe'
       >
         {detections.map((detection) => (
           <Marker
