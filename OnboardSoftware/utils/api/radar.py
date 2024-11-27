@@ -112,15 +112,10 @@ def clearall(base_url: str = "http://localhost:7777") -> bool:
         bool: True if successful, False if failed
     """
     try:
-        # Get all radars first
-        radar_response = requests.get(f"{base_url}/radars/")
-        radar_response.raise_for_status()
-        radars = radar_response.json()
+        # Get all radars
+        del_detections = requests.delete(f"{base_url}/radars")
         
-        # Delete detections for each radar
-        for radar in radars:
-            del_response = requests.delete(f"{base_url}/detections/by_radar/{radar['radar_id']}")
-            del_response.raise_for_status()
+        del_detections.raise_for_status()
             
         return True
         

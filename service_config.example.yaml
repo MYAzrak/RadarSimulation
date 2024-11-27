@@ -1,7 +1,7 @@
 # Configuration for service startup
 onboard_path: "/home/yousif/Projects/Uni/RadarSimulation/OnboardSoftware"
-onboard_name: "centernet-infer.py"
-model_path: "/home/yousif/Projects/Uni/RadarSimulation/ML/CenterNet/BestCenterNetModelResults/best_model.pth"
+onboard_name: "onboard-yolo.py"
+model_path: "/home/yousif/Projects/Uni/RadarSimulation/ML/yolo/best.pt"
 viz_path: "/home/yousif/Projects/Uni/RadarSimulation/Visualization/"
 api_path: "/home/yousif/Projects/Uni/RadarSimulation/Visualization/DB_API/main.py"
 db_path: "/home/yousif/Projects/Uni/RadarSimulation/Visualization/DB_API/"

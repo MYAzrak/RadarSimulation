@@ -176,6 +176,19 @@ def update_radar_location(
     
     return radar
 
+@app.delete("/radars/")
+def delete_radar(radar_id: int, db: Session = Depends(get_db)):
+    """Delete a radar and its associated detections"""
+    # Delete associated detections first
+    db.query(Detection).delete()
+    
+    # Delete the radar
+    result = db.query(Radar).delete()
+    if not result:
+        raise HTTPException(status_code=404, detail="Radar not found")
+        
+    db.commit()
+    return {"message": f"Deleted radar {radar_id} and its detections"}
 
 @app.get("/radars/{radar_id}", response_model=RadarResponse)
 def get_radar(radar_id: int, db: Session = Depends(get_db)):
