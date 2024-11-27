@@ -16,19 +16,17 @@ def run_model(ppi_array, model):
     output = model.predict(image, imgsz=640, conf=0.2)
     
     boxes = output[0].boxes
-    # Instead of output[0].show(), create custom visualization
-    '''
-    img_array = np.array(image)
-    for box in boxes.xyxy:  # Use xyxy format for drawing rectangles
-        x1, y1, x2, y2 = map(int, box[:4].tolist())
-        cv2.rectangle(img_array, (x1, y1), (x2, y2), (255, 0, 0), 2)  # Draw rectangle without labels
-    
-    # Display the image in a larger window
-    cv2.namedWindow('Detection Result', cv2.WINDOW_NORMAL)
-    cv2.imshow('Detection Result', img_array)
-    cv2.waitKey(1)  # Update the window
-    '''
-    # output[0].show()
+    # # Instead of output[0].show(), create custom visualization
+    # img_array = np.array(image)
+    # for box in boxes.xyxy:  # Use xyxy format for drawing rectangles
+    #     x1, y1, x2, y2 = map(int, box[:4].tolist())
+    #     cv2.rectangle(img_array, (x1, y1), (x2, y2), (255, 0, 0), 2)  # Draw rectangle without labels
+    # 
+    # # Display the image in a larger window
+    # cv2.namedWindow('Detection Result', cv2.WINDOW_NORMAL)
+    # cv2.imshow('Detection Result', img_array)
+    # cv2.waitKey(1)  # Update the window
+    # # output[0].show()
 
     # 2D array of [distance, azimuth]
     xy_coordinates = boxes.xywh[:, :2].detach().cpu().numpy()

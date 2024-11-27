@@ -1,6 +1,7 @@
 # Configuration for service startup
 onboard_path: "/home/yousif/Projects/Uni/RadarSimulation/OnboardSoftware"
 onboard_name: "onboard-yolo.py"
+model_path: "/home/yousif/Projects/Uni/RadarSimulation/ML/yolo/best.pt"
 viz_path: "/home/yousif/Projects/Uni/RadarSimulation/Visualization/"
 api_path: "/home/yousif/Projects/Uni/RadarSimulation/Visualization/DB_API/main.py"
 db_path: "/home/yousif/Projects/Uni/RadarSimulation/Visualization/DB_API/"
@@ -8,6 +9,7 @@ conda_env: "deep_learning"
 
 # Optional configuration (not yet implemented, for future use)
 db_startup_delay: 1 # seconds to wait for DB initialization
+plot_ppi: false
 enable_services:
   db: true
   api: true

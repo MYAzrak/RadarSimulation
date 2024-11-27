@@ -8,7 +8,7 @@ import time
 import argparse
 import shutil
 from datetime import datetime
-
+from OnboardSoftware.utils.api.radar import clearall
 
 
 class ProcessManager:
@@ -173,9 +173,12 @@ def main():
     python_path = get_python_cmd(config['conda_env'])
     print(f"Using Python from: {python_path}")
     
-    # Initialize process manager
-    pm = ProcessManager(log_dir=args.log_dir)
+    # Set PYTHONPATH
+    project_root = os.path.dirname(os.path.abspath(__file__))
+    os.environ['PYTHONPATH'] = f"{project_root}:{os.environ.get('PYTHONPATH', '')}"
     
+    # Initialize process manager
+    pm = ProcessManager(log_dir=args.log_dir)    
     # Start database
     if not pm.start_process(
         'database',
@@ -194,12 +197,16 @@ def main():
         f"{python_path} {config['api_path']}",
     ):
         sys.exit(1)
+
+    time.sleep(2)
+    clearall()
     
+
     # Start onboard instances
     for i in range(args.num_instances):
         if not pm.start_process(
             f'onboard_{i}',
-            f"{python_path} {config['onboard_name']} -r {i}",
+            f"{python_path} {config['onboard_name']} -r {i} {'-v' if config['plot_ppi'] else ' '} {'--model ' + config['model_path'] if config['model_path'] else ''}",
             f"{config['onboard_path']}"
         ):
             pm.stop_all()
