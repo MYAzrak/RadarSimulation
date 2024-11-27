@@ -5,9 +5,9 @@ import threading
 import argparse
 import time
 from ultralytics import YOLO
-from Inference.yolo_infer import run_model
-from utils.api.radar import create_radar_with_id, update_radar_location, process_radar_detections 
-from utils.locations import getLatLong
+from yolo_infer import run_model
+from radar import create_radar_with_id, update_radar_location, process_radar_detections 
+from locations import getLatLong
 
 # Only import matplotlib-related code if plotting is enabled
 def setup_plotting():

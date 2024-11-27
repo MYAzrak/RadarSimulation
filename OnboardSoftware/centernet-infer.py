@@ -5,9 +5,9 @@ import threading
 import argparse
 import time
 import torch
-from utils.api.radar import create_radar_with_id, update_radar_location, process_radar_detections 
-from utils.locations import getLatLong
-from Inference.centernet.centernetresnet import CenterNetBackbone, detect_points
+from radar import create_radar_with_id, update_radar_location, process_radar_detections 
+from locations import getLatLong
+from centernetresnet import CenterNetBackbone, detect_points
 
 # Only import matplotlib-related code if plotting is enabled
 def setup_plotting():
