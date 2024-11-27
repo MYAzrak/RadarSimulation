@@ -8,7 +8,7 @@ import time
 import argparse
 import shutil
 from datetime import datetime
-from OnboardSoftware.utils.api.radar import clearall
+from OnboardSoftware.radar import clearall
 
 
 class ProcessManager:
