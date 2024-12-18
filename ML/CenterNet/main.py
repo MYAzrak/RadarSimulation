@@ -303,7 +303,7 @@ def main():
     LR_THRESHOLD = 1e-4   # Minimum change in validation loss to qualify as an improvement
 
     # Dataset setup
-    json_directory = os.path.expanduser('~/RadarDataset/')
+    json_directory = os.path.expanduser(r'D:\Datasets\MYA')
     base_dataset = PPIDataset(json_directory, sigma=SIGMA)
 
     # Split dataset before augmentation

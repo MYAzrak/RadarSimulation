@@ -1,4 +1,4 @@
-path: /home/kkp/Downloads/yolo_dataset/
+path: # Insert dataset path 
 train: images/train
 val: images/val
 names:

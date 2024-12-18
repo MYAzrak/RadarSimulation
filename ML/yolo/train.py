@@ -132,11 +132,11 @@ if __name__ == '__main__':
     #image = dataset[170]
     
     # Create the image and labels in the directories (train and val) for YOLO
-    #for i in range(len(dataset)):
-     #   image = dataset[i]
-      #  print(f"Processed image {i + 1}/{len(dataset)}")
+    for i in range(len(dataset)):
+       image = dataset[i]
+       print(f"Processed image {i + 1}/{len(dataset)}")
 
-    model = YOLO("./best.pt")  # Load a pretrained model
+    model = YOLO("./yolo11n.pt")  # Load a pretrained model
 
     # Assuming yaml is in the same directory as this script
     current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -153,6 +153,3 @@ if __name__ == '__main__':
         hsv_s=0,
         )
        
-    #result_grid = model.tune(data=data_path, use_ray=True, gpu_per_trial=1)
-
-    #model.val()
