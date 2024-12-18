@@ -1,3 +1,4 @@
+# This file is only used when running a scene in Unity to visualize the PPI images
 import websocket
 import json
 import numpy as np
