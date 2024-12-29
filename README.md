@@ -23,7 +23,7 @@ c-  Use version `2022.3.40f1`.
 ## Usage
 The project can be used to generate a dataset of radar PPI images, train the DL model, or test the model on a test scence of a simulated Khorfakkan scene. You can generate your own dataset through the steps below, or get a dataset we generated that can be found in this [repository](https://github.com/yal77/radar_dataset).
 
-1. Generate Dataset
+### Generate Dataset
 
 1. Create a config file in json format
 2. Include the relevant parameters
@@ -69,6 +69,39 @@ And output directory is the directory where you would like to store the dataset.
 4. Run `python start_services.py service_config.yaml`
 
 ## Project Structure
+
+Below is an overview of the key folders and their purposes:
+
+### **ML/**
+Contains machine learning models and scripts for dataset generation, training, and inference.
+- **`CenterNet/`**: Implements the CenterNet model for vessel detection.
+- **`datasetGen/`**: Script for generating datasets.
+- **`yolo/`**: YOLO-based model implementation.
+
+### **OnboardSoftware/**
+Handles radar image processing and vessel detection onboard.
+- **Key scripts**:
+  - **`centernet-infer.py`**: Performs inference using the CenterNet model.
+  - **`onboard-yolo.py`**: Handles onboard YOLO model operations.
+  - **`radar.py`**: Core radar processing logic.
+  - **`radarWebSocketVisualizer.py`**: Visualizes radar data via WebSockets.
+  - **`yolo_infer.py`**: Inference script for YOLO.
+
+### **RadarProject/**
+Unity project for radar simulation.
+- **`Assets/`**:
+  - **`Materials/`**: Contains material configurations for land and ocean.
+  - **`Models/`**: Includes 3D models for ships, buoys, and other objects.
+  - **`Oceans/`**: Ocean generation and environmental settings.
+  - **`Scenes/`**: Unity scenes for simulation:
+    - **`KhorfakkanCoastline.unity`**: Scene representing the Khorfakkan coastline used for testing.
+    - **`OceanMain.unity`**: Radnomized scene used for training.
+  - **`Scripts/`**: Contains Unity C# scripts for simulation behavior.
+
+### **Visualization/**
+Web-based visualization platform for plotting detected vessels on a map.
+- **`DB_API/`**: Backend API for database interactions.
+- **`src/`**: Frontend source code for the visualization interface.
 
 ## Configuration Files
 
