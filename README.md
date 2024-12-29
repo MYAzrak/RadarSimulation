@@ -1,6 +1,31 @@
-# RadarSimulation
+# Maritime Vessel Detection Using a Network of Marine Radars via a Simulation
 
-CMP Senior Project - Simulation of maritime radar detection
+This is our senior project where we explore the development of a maritime vessel detection system using a network of marine radars simulated through Unity. The objective is to enhance maritime surveillance capabilities in the UAE by addressing limitations in traditional radar systems such as range and coverage constraints and adding an extra data layer for maritime surveillance. By integrating deep learning with a network of buoy-mounted radars, this project aims to provide un-manned, real-time maritime situational awareness. We propose a cost-effective, scalable solution that utilizes a simulated environment to train and test radars and marine vessels detection, which is a proof of concept that, if implemented in real-life, would improve national security and economic stability in maritime domains. Our trained model achieved an F1-score of 0.938. Additionally, our network of radars sends the detected ships' locations to the database, which are then retrieved for visualization.
+
+## Table of Contents
+
+## Project's Subsystems
+
+This block diagram shows the various subsystems of our project. The user begins the simulation by inputting the simulation settings, radar settings, simulation scenario, and radar locations. The simulation system creates the needed radar and vessels according to the settings and scenario provided and stores the radar locations in the database. The simulated radar will detect the simulated vessels and export its output as a PPI image, which is communicated to the onboard software and stored in the database. The radar onboard software detects the vessels in the PPI images, converts the vessel locations from the relative position of the radar to the absolute position on a map and stores the vessel locations in the database. These vessel locations are then sent to the visualization platform for plotting onto a map, where the user can input specific map parameters such as scale and orientation.
+
+![BlockDiagram](https://github.com/user-attachments/assets/20220313-1b22-448a-b863-1957eff8b442)
+
+
+
+## Installation
+
+## Usage
+
+## Project Structure
+
+## Configuration Files
+
+Here is a brief overview of each configuration file role:
+
+
+## Collaborators
+
+This project was done by [arcarum](https://github.com/arcarum), [Yousif Alhosani](https://github.com/yal77), [Mohammad Yaser Azrak](https://github.com/MYAzrak) and [Ibrahim Baig](https://github.com/darkwing-30).
 
 ## Clone Repo
 
