@@ -1,6 +1,6 @@
 # Maritime Vessel Detection Using a Network of Marine Radars via a Simulation
 
-This is our senior project where we explore the development of a maritime vessel detection system using a network of marine radars simulated through Unity. The objective is to enhance maritime surveillance capabilities in the UAE by addressing limitations in traditional radar systems such as range and coverage constraints and adding an extra data layer for maritime surveillance. By integrating deep learning with a network of buoy-mounted radars, this project aims to provide un-manned, real-time maritime situational awareness. We propose a cost-effective, scalable solution that utilizes a simulated environment to train and test radars and marine vessels detection, which is a proof of concept that, if implemented in real-life, would improve national security and economic stability in maritime domains. Our trained model achieved an F1-score of 0.938. Additionally, our network of radars sends the detected ships' locations to the database, which are then retrieved for visualization.
+This is our senior project where we explore the development of a maritime vessel detection system using a network of marine radars simulated through Unity. The objective is to enhance maritime surveillance capabilities in the UAE by addressing limitations in traditional radar systems such as range and coverage constraints and adding an extra data layer for maritime surveillance. By integrating deep learning with a network of buoy-mounted radars, this project aims to provide un-manned, real-time maritime situational awareness. We propose a cost-effective, scalable solution that utilizes a simulated environment to train and test radars and marine vessels detection, which is a proof of concept that, if implemented in real-life, would improve national security and economic stability in maritime domains. Our trained model, CenterNet, achieved an F1-score of 0.938. Additionally, our network of radars sends the detected ships' locations to the database, which are then retrieved for visualization.
 
 ## Table of Contents
 
@@ -10,30 +10,20 @@ This block diagram shows the various subsystems of our project. The user begins 
 
 ![BlockDiagram](https://github.com/user-attachments/assets/20220313-1b22-448a-b863-1957eff8b442)
 
-
-
 ## Installation
 
+System Requirements: Unity (version 2022.3.40f1), Docker, and Python.
+1- Clone repo (git clone https://github.com/yal77/RadarSimulation.git)
+2- Install dependacies: (pip install -r requirements.txt) 
+3- In Unity:
+a- Add project from disk.
+b- Choose `RadarSimulation -> RadarProject`.
+c-  Use version `2022.3.40f1`.
+
 ## Usage
+The project can be used to generate a dataset of radar PPI images, train the DL model, or test the model on a test scence of a simulated Khorfakkan scene. You can generate your own dataset through the steps below, or get a dataset we generated that can be found in this [repository](https://github.com/yal77/radar_dataset).
 
-## Project Structure
-
-## Configuration Files
-
-Here is a brief overview of each configuration file role:
-
-
-## Collaborators
-
-This project was done by [arcarum](https://github.com/arcarum), [Yousif Alhosani](https://github.com/yal77), [Mohammad Yaser Azrak](https://github.com/MYAzrak) and [Ibrahim Baig](https://github.com/darkwing-30).
-
-## Clone Repo
-
-1. Add project from disk.
-2. Choose `RadarSimulation -> RadarProject`.
-3. Use version `2022.3.40f1`.
-
-## Generate Dataset
+1. Generate Dataset
 
 1. Create a config file in json format
 2. Include the relevant parameters
@@ -69,9 +59,22 @@ And output directory is the directory where you would like to store the dataset.
 | unityBuildDirectory        | Directory for Unity build                                                                      |
 | outputDirectory            | Directory for output files                                                                     |
 
-## Run the Test Scene
+### Train the DL Model
+
+### Run the Test Scene
 
 1. Change the config.yaml to have use the test scene
 2. Run `python run.py ./path/to/config`
 3. Create a copy of service_config.yaml with your own paths
 4. Run `python start_services.py service_config.yaml`
+
+## Project Structure
+
+## Configuration Files
+
+Here is a brief overview of each configuration file role:
+
+
+## Collaborators
+
+This project was done by [arcarum](https://github.com/arcarum), [Yousif Alhosani](https://github.com/yal77), [Mohammad Yaser Azrak](https://github.com/MYAzrak) and [Ibrahim Baig](https://github.com/darkwing-30).
