@@ -152,7 +152,7 @@ Unity project for radar simulation.
   - **`Oceans/`**: Ocean generation and environmental settings.
   - **`Scenes/`**: Unity scenes for simulation:
     - **`KhorfakkanCoastline.unity`**: Scene representing the Khorfakkan coastline used for testing.
-    - **`OceanMain.unity`**: Radnomized scene used for training.
+    - **`OceanMain.unity`**: Randomized scene used for training.
   - **`Scripts/`**: Contains Unity C# scripts for simulation behavior.
     - **`Buoyancy/`**: Implements ship buoyancy physics by simulating interactions with water surfaces.
     - **`Camera/`**: Manages camera control and perspective for navigating the simulation environment.

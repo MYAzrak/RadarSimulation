@@ -1,5 +1,5 @@
 # Simulation Configurations
-sceneName: KhorfakkanCoastline # [OceanMain, KhorfakkanCoastline]
+sceneName: KhorfakkanCoastline # [OceanMain, KhorfakkanCoastline] Choose OceanMain when generating a dataset
 nScenarios: 400
 scenarioTimeLimit: 120
 screen-fullscreen: 0
