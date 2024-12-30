@@ -1,8 +1,21 @@
 # Maritime Vessel Detection Using a Network of Marine Radars via a Simulation
 
-This is our senior project where we explore the development of a maritime vessel detection system using a network of marine radars simulated through Unity. The objective is to enhance maritime surveillance capabilities in the UAE by addressing limitations in traditional radar systems such as range and coverage constraints and adding an extra data layer for maritime surveillance. By integrating deep learning with a network of buoy-mounted radars, this project aims to provide un-manned, real-time maritime situational awareness. We propose a cost-effective, scalable solution that utilizes a simulated environment to train and test radars and marine vessels detection, which is a proof of concept that, if implemented in real-life, would improve national security and economic stability in maritime domains. Our trained model, CenterNet, achieved an F1-score of 0.938. Additionally, our network of radars sends the detected ships' locations to the database, which are then retrieved for visualization.
+This is our senior project where we explore the development of a maritime vessel detection system using a network of marine radars simulated through Unity. The objective is to enhance maritime surveillance capabilities in the UAE by addressing limitations in traditional radar systems such as range and coverage constraints and adding an extra data layer for maritime surveillance. By integrating deep learning with a network of buoy-mounted radars, this project aims to provide un-manned, real-time maritime situational awareness. We propose a cost-effective, scalable solution that utilizes a simulated environment to train and test radars and marine vessels detection, which is a proof of concept that, if implemented in real-life, would improve national security and economic stability in maritime domains. Our trained model, CenterNet, achieved an F1-score of 0.938. Additionally, our network of radars sends the detected ships' locations to the database, which are then retrieved for visualization. For detailed technical information, refer to the accompanying `Project's Report.pdf`.
 
 ## Table of Contents
+
+1. [Introduction](#maritime-vessel-detection-using-a-network-of-marine-radars-via-a-simulation)
+2. [Project's Subsystems](#projects-subsystems)
+3. [Installation](#installation)
+4. [Usage](#usage)
+   - [Generate a Dataset](#1-generate-a-dataset)
+        - [Simulation Configuration Parameters](#simulation-configuration-parameters)
+   - [Train the DL Model](#2-train-the-dl-model)
+   - [Run the Entire System](#3-run-the-entire-system)
+5. [Project Structure](#project-structure)
+6. [Configuration Files](#configuration-files)
+7. [Future Work](#future-work)
+8. [Collaborators](#collaborators)
 
 ## Project's Subsystems
 
@@ -12,27 +25,60 @@ This block diagram shows the various subsystems of our project. The user begins 
 
 ## Installation
 
-System Requirements: Unity (version 2022.3.40f1), Docker, and Python.
-1- Clone repo (git clone https://github.com/yal77/RadarSimulation.git)
-2- Install dependacies: (pip install -r requirements.txt) 
-3- In Unity:
-a- Add project from disk.
-b- Choose `RadarSimulation -> RadarProject`.
-c-  Use version `2022.3.40f1`.
+### System Requirements
+
+- **Unity**: Version 2022.3.40f1  
+- **Docker**  
+- **Python**
+
+### Steps to Install
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/yal77/RadarSimulation.git
+   
+2. **Navigate to the Cloned Directory**:
+
+   ```bash
+   cd RadarSimulation
+
+3. **Install Dependencies**:
+
+   ```bash
+   pip install -r requirements.txt
+
+4. **Set Up Unity**:
+
+   - Add project from disk.
+   - Choose `RadarSimulation -> RadarProject`.
+   - Use version `2022.3.40f1`.
 
 ## Usage
-The project can be used to generate a dataset of radar PPI images, train the DL model, or test the model on a test scence of a simulated Khorfakkan scene. You can generate your own dataset through the steps below, or get a dataset we generated that can be found in this [repository](https://github.com/yal77/radar_dataset).
 
-### Generate Dataset
+This project can be used to:
 
-1. Create a config file in json format
-2. Include the relevant parameters
-3. Run `python ML/datasetGen/generateDataset.py path/to/config.json path/to/unity/executable path/to/output/directory`
+- Generate a dataset of radar PPI images.
+- Train deep learning models for vessel detection.
+- Run the entire system (Simulation System, Onboard Software, and Visualization Platform) to simulate the Khorfakkan scene, predict vessel locations, and visualize them in the web application.
+Follow the steps below to generate your own dataset or use the pre-generated dataset available in this [repository](https://github.com/yal77/radar_dataset).
 
-Where the unity executable is the build executable of the project (you have to generate it on your own).
-And output directory is the directory where you would like to store the dataset.
+### 1. Generate a Dataset
 
-### Config Parameters
+1. **Create a Configuration File**:
+Create a YAML file specifying the desired simulation parameters (refer to the table below). You can use the example file `sim-config-example.yaml` as a template, but ensure that the `sceneName` is set to `OceanMain` when generating a dataset.
+
+2. **Run the Dataset Generation Script**:
+
+   ```bash
+   python ML/datasetGen/generateDataset.py path/to/config.json path/to/unity/executable path/to/output/directory
+   ```
+
+- Replace `path/to/config.yaml` with the path to your configuration file.
+- Replace `path/to/unity/executable` with the path to the Unity build executable of the project (you need to create this executable).
+- Replace `path/to/output/directory` with the directory where the dataset will be saved.
+
+#### Simulation Configuration Parameters
 
 | Parameter                  | Description                                                                                    |
 | -------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -59,16 +105,16 @@ And output directory is the directory where you would like to store the dataset.
 | unityBuildDirectory        | Directory for Unity build                                                                      |
 | outputDirectory            | Directory for output files                                                                     |
 
-### Train the DL Model
+### 2. Train the DL Model
+
 We implemented two models that you can train, [CenterNet](https://arxiv.org/abs/1904.08189) and YOLO from [ultraytics](https://docs.ultralytics.com/).
 
 1. Train CenterNet:
    - Change `json_directory` to your dataset's location in ML/CenterNet/main.py and run main.py.
-     
-2. Train YOLO:
-   - 
 
-### Run the Test Scene
+2. Train YOLO:
+
+### 3. Run the Entire System
 
 1. Change the config.yaml to have use the test scene
 2. Run `python run.py ./path/to/config`
@@ -80,20 +126,26 @@ We implemented two models that you can train, [CenterNet](https://arxiv.org/abs/
 Below is an overview of the key folders and their purposes:
 
 ### **ML/**
+
 Contains machine learning models and scripts for dataset generation, training, and inference.
+
 - **`CenterNet/`**: Implements the CenterNet model for vessel detection.
 - **`datasetGen/`**: Script for generating datasets.
 - **`yolo/`**: YOLO-based model implementation.
 
 ### **OnboardSoftware/**
+
 Handles radar image processing and vessel detection onboard.
+
 - **Key scripts**:
   - **`centernet-infer.py`**: Performs inference using the CenterNet model.
   - **`onboard-yolo.py`**: Handles onboard YOLO model operations.
   - **`yolo_infer.py`**: Inference script for YOLO.
 
 ### **RadarProject/**
+
 Unity project for radar simulation.
+
 - **`Assets/`**:
   - **`Materials/`**: Contains material configurations for land and ocean.
   - **`Models/`**: Includes 3D models for ships, buoys, and other objects.
@@ -113,7 +165,9 @@ Unity project for radar simulation.
     - **`Weather & Waves/`**: Simulates environmental conditions such as weather and ocean wave dynamics.
 
 ### **Visualization/**
+
 Web-based visualization platform for plotting detected vessels on a map.
+
 - **`DB_API/`**: Backend API for database interactions.
 - **`src/`**: Frontend source code for the visualization interface.
 
@@ -122,9 +176,9 @@ Web-based visualization platform for plotting detected vessels on a map.
 Here is a brief overview of each configuration file role:
 
 1. ppi_dataset.yaml: Defines the dataset structure for training the YOLO model, specifying the paths to training and validation data along with class labels (e.g., ship). It ensures the model correctly locates and processes the data during training.
-2. sim-config-example.yaml
+2. sim-config-example.yaml: A template for defining the simulation configuration parameters mentioned in the earlier table allowing users to customize scenarios for generating radar PPI datasets or testing.
 3. service_config-example.yaml
-   
+
 ## Future Work
 
 - Enhance system security with encrypted data transmission and storage.  
