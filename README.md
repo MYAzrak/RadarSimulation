@@ -60,6 +60,13 @@ And output directory is the directory where you would like to store the dataset.
 | outputDirectory            | Directory for output files                                                                     |
 
 ### Train the DL Model
+We implemented two models that you can train, [CenterNet](https://arxiv.org/abs/1904.08189) and YOLO from [ultraytics](https://docs.ultralytics.com/).
+
+1. Train CenterNet:
+   - Change `json_directory` to your dataset's location in ML/CenterNet/main.py and run main.py.
+     
+2. Train YOLO:
+   - 
 
 ### Run the Test Scene
 
@@ -114,6 +121,20 @@ Web-based visualization platform for plotting detected vessels on a map.
 
 Here is a brief overview of each configuration file role:
 
+1. ppi_dataset.yaml: Defines the dataset structure for training the YOLO model, specifying the paths to training and validation data along with class labels (e.g., ship). It ensures the model correctly locates and processes the data during training.
+2. sim-config-example.yaml
+3. service_config-example.yaml
+   
+## Future Work
+
+- Enhance system security with encrypted data transmission and storage.  
+- Address the limitation of reflectivity by integrating material-specific radar reflections instead of treating all materials uniformly.  
+- Expand the simulation system to include more diverse weather scenarios.  
+- Focus on the following aspects for real-world deployment:
+  - Hardware integration.  
+  - Power solutions.  
+  - Reducing radar interference.  
+  - Ensuring long-term system durability.  
 
 ## Collaborators
 
