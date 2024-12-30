@@ -83,8 +83,6 @@ Handles radar image processing and vessel detection onboard.
 - **Key scripts**:
   - **`centernet-infer.py`**: Performs inference using the CenterNet model.
   - **`onboard-yolo.py`**: Handles onboard YOLO model operations.
-  - **`radar.py`**: Core radar processing logic.
-  - **`radarWebSocketVisualizer.py`**: Visualizes radar data via WebSockets.
   - **`yolo_infer.py`**: Inference script for YOLO.
 
 ### **RadarProject/**
@@ -97,6 +95,15 @@ Unity project for radar simulation.
     - **`KhorfakkanCoastline.unity`**: Scene representing the Khorfakkan coastline used for testing.
     - **`OceanMain.unity`**: Radnomized scene used for training.
   - **`Scripts/`**: Contains Unity C# scripts for simulation behavior.
+    - **`Buoyancy/`**: Implements ship buoyancy physics by simulating interactions with water surfaces.
+    - **`Camera/`**: Manages camera control and perspective for navigating the simulation environment.
+    - **`Khorfakkan Coastline/`**: Generates and manages terrain data for the Khorfakkan Coastline simulation scene.
+    - **`Procedural Land Generation/`**: Creates dynamic, procedurally generated terrain for simulation scenarios. Implemented following parts of [Sebastian Lague's tutorial](https://www.youtube.com/watch?v=wbpMiKiSKm8&list=PLFt_AvWsXl0eBW2EiBtl_sxmDtSgZBxB3).
+    - **`Radar/`**: Handles core radar operations.
+    - **`Scenario/`**: Manages simulation scenarios, including settings, configurations, and data import/export.
+    - **`Shaders/`**: Defines GPU-accelerated operations for radar data processing and visualization.
+    - **`Ship Movement/`**: Controls ship movements and manages their positions within the simulation.
+    - **`Weather & Waves/`**: Simulates environmental conditions such as weather and ocean wave dynamics.
 
 ### **Visualization/**
 Web-based visualization platform for plotting detected vessels on a map.
