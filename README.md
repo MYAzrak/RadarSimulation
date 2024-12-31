@@ -21,7 +21,7 @@ This is our senior project where we explore the development of a maritime vessel
 
 This block diagram shows the various subsystems of our project. The user begins the simulation by inputting the simulation settings, radar settings, simulation scenario, and radar locations. The simulation system creates the needed radar and vessels according to the settings and scenario provided and stores the radar locations in the database. The simulated radar will detect the simulated vessels and export its output as a PPI image, which is communicated to the onboard software and stored in the database. The radar onboard software detects the vessels in the PPI images, converts the vessel locations from the relative position of the radar to the absolute position on a map and stores the vessel locations in the database. These vessel locations are then sent to the visualization platform for plotting onto a map, where the user can input specific map parameters such as scale and orientation.
 
-![BlockDiagram](https://github.com/user-attachments/assets/20220313-1b22-448a-b863-1957eff8b442)
+![BlockDiagram](https://github.com/user-attachments/assets/194fa881-f83c-4250-ad58-da6448344240)
 
 ## Installation
 
