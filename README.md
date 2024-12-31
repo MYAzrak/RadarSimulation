@@ -113,7 +113,9 @@ We implemented two models that you can train, [CenterNet](https://arxiv.org/abs/
    - Change `json_directory` to your dataset's location in ML/CenterNet/main.py and run main.py.
 
 2. Train YOLO:
-   - Change the dataset path directory in `ppi_dataset.yaml` and run `train.py`. The training script will convert the JSON files into the format expected by YOLO, place them in the dataset directory, and train the model.
+   - Change the dataset path directory in `ppi_dataset.yaml`. This is the directory with the images the model will train on.
+   - Modify `json_directory` and `save_directory` in `train.py` (`save_directory` should match the dataset directory in `ppi_dataset.yaml`) and run `train.py`.
+   - The training script will convert the JSON files into the format expected by YOLO, place them in the dataset directory, and train the model.
 
 ### 3. Run the Entire System
 
