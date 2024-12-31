@@ -1,4 +1,4 @@
-path: # Insert dataset path 
+path:  # Insert dataset's directory path (the one with images, labels, train, and val subdirectories. We named it yolo_dataset and put it in Downloads by default) 
 train: images/train
 val: images/val
 names:

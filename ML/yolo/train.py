@@ -5,7 +5,6 @@ from PIL import Image, ImageDraw
 import random
 from torch.utils.data import Dataset
 from ultralytics import YOLO
-from ray import tune
 import matplotlib.pyplot as plt
 
 class PPIDataset(Dataset):
@@ -123,7 +122,7 @@ class PPIDataset(Dataset):
         return image
 
 if __name__ == '__main__':
-    json_directory = os.path.expanduser('~/Downloads/output')
+    json_directory = os.path.expanduser('~/Downloads/output') # Dataset's directory path (that contains the JSON files only with no subdirectories)
     
     save_directory = os.path.expanduser('~/Downloads/yolo_dataset')
     os.makedirs(save_directory, exist_ok=True)
