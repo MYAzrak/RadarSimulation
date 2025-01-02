@@ -119,7 +119,7 @@ We implemented two models that you can train, [CenterNet](https://arxiv.org/abs/
 
 ### 3. Run the Entire System
 
-1. Change the config.yaml to have use the test scene
+1. Change `sim-config-example.yaml` (or your version of it) to have use `KhorfakkanCoastline` scene.
 2. Run `python run.py ./path/to/config`
 3. Create a copy of service_config.yaml with your own paths
 4. Run `python start_services.py service_config.yaml`
@@ -180,7 +180,7 @@ Here is a brief overview of each configuration file role:
 
 1. ppi_dataset.yaml: Defines the dataset structure for training the YOLO model, specifying the paths to training and validation data along with class labels (e.g., ship). It ensures the model correctly locates and processes the data during training.
 2. sim-config-example.yaml: A template for defining the simulation configuration parameters mentioned in the earlier table allowing users to customize scenarios for generating radar PPI datasets or testing.
-3. service_config-example.yaml
+3. service_config-example.yaml: 
 
 ## Future Work
 
