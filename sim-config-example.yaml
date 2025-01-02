@@ -1,5 +1,5 @@
 # Simulation Configurations
-sceneName: KhorfakkanCoastline # [OceanMain, KhorfakkanCoastline] Choose OceanMain when generating a dataset
+sceneName: KhorfakkanCoastline # [OceanMain, KhorfakkanCoastline] Choose OceanMain when generating a dataset and KhorfakkanCoastline when running the entire system.
 nScenarios: 400
 scenarioTimeLimit: 120
 screen-fullscreen: 0
@@ -22,9 +22,9 @@ speed: [12, 18] # Knots       # Range [1, 30]
 coordinateSquareWidth: 30000
 
 # Weather and Waves
-# Simulation Loops through these conditions every scenario
-# The list length do not have to match,
-# The list will start from the beginning once it reaches the end of the list
+# The simulation loops through these conditions every scenario.
+# The list length does not have to match the number of scenarios.
+# Once the list reaches its end, it will restart picking the conditions from its beginning.
 
 # Valid values "Clear", "ModerateRain", "HeavyRain", "VeryHeavyRain", "Shower", "CloudBurst"
 weather: [Clear, ModerateRain, HeavyRain, VeryHeavyRain, Shower, CloudBurst]
@@ -32,7 +32,7 @@ waves: [Calm, Moderate] # Valid values "Calm", "Moderate"
 proceduralLand: [True, False] # Valid values 'True' (Generate Procedural land), 'False' (Do not generate Procedural Land)
 
 # Dataset Generation
-# generateDataset.py ignores the below settings
-generateDataset: false
-unityBuildDirectory: ~/Documents/RadarProject_Builds/cmd_args/prod.x86_64
-outputDirectory: ~/Downloads/out # The dataset JSON files output directory 
+# This is for generating a dataset while running the entire system. generateDataset.py ignores the below settings.
+generateDataset: True
+unityBuildDirectory: C:\Users\monsi\Downloads\ProjectBuild\RadarProject.exe
+outputDirectory: C:\Users\monsi\Downloads\output # The dataset JSON files output directory 
