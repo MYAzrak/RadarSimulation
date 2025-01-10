@@ -180,9 +180,9 @@ Web-based visualization platform for plotting detected vessels on a map.
 
 Here is a brief overview of each configuration file role:
 
-1. ppi_dataset.yaml: Defines the dataset structure for training the YOLO model, specifying the paths to training and validation data along with class labels (e.g., ship). It ensures the model correctly locates and processes the data during training.
-2. sim-config-example.yaml: A template for defining the simulation configuration parameters mentioned in the earlier table allowing users to customize scenarios for generating radar PPI datasets or testing.
-3. service_config-example.yaml: Defines the paths, environment, and settings required to initialize and manage the various components of the entire system, including the database, API, onboard software, and visualization platform.
+1. `ppi_dataset.yaml`: Defines the dataset structure for training the YOLO model, specifying the paths to training and validation data along with class labels (e.g., ship). It ensures the model correctly locates and processes the data during training.
+2. `sim-config-example.yaml`: A template for defining the simulation configuration parameters mentioned in the earlier table allowing users to customize scenarios for generating radar PPI datasets or testing.
+3. `service_config-example.yaml`: Defines the paths, environment, and settings required to initialize and manage the various components of the entire system, including the database, API, onboard software, and visualization platform.
 
 ## Future Work
 
