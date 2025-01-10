@@ -1,5 +1,7 @@
 # Maritime Vessel Detection Using a Network of Marine Radars via a Simulation
 
+🎓 Senior Project | AUS 2024
+
 This is our senior project where we explore the development of a maritime vessel detection system using a network of marine radars simulated through Unity. The objective is to enhance maritime surveillance capabilities in the UAE by addressing limitations in traditional radar systems such as range and coverage constraints and adding an extra data layer for maritime surveillance. By integrating deep learning with a network of buoy-mounted radars, this project aims to provide un-manned, real-time maritime situational awareness. We propose a cost-effective, scalable solution that utilizes a simulated environment to train and test radars and marine vessels detection, which is a proof of concept that, if implemented in real-life, would improve national security and economic stability in maritime domains. Our trained model, CenterNet, achieved an F1-score of 0.938. Additionally, our network of radars sends the detected ships' locations to the database, which are then retrieved for visualization. For detailed technical information, refer to the accompanying `Project's Report.pdf`.
 
 ## Table of Contents
@@ -180,7 +182,7 @@ Here is a brief overview of each configuration file role:
 
 1. ppi_dataset.yaml: Defines the dataset structure for training the YOLO model, specifying the paths to training and validation data along with class labels (e.g., ship). It ensures the model correctly locates and processes the data during training.
 2. sim-config-example.yaml: A template for defining the simulation configuration parameters mentioned in the earlier table allowing users to customize scenarios for generating radar PPI datasets or testing.
-3. service_config-example.yaml: 
+3. service_config-example.yaml: Defines the paths, environment, and settings required to initialize and manage the various components of the entire system, including the database, API, onboard software, and visualization platform.
 
 ## Future Work
 
