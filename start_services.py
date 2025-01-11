@@ -81,7 +81,8 @@ def find_conda():
     # conda_path = shutil.which('conda')
     # if conda_path:
         # return conda_path
-        
+    
+    # Add your own path here
     possible_paths = [
         os.path.expanduser('~/anaconda3/bin/conda'),
         os.path.expanduser('~/miniconda3/bin/conda'),
@@ -92,6 +93,7 @@ def find_conda():
         '/opt/conda/bin/conda',
         'C:\\ProgramData\\Anaconda3\\Scripts\\conda.exe',
         'C:\\ProgramData\\Miniconda3\\Scripts\\conda.exe',
+        'D:\\anaconda3\\Scripts\\conda.exe'
     ]
     
     for path in possible_paths:

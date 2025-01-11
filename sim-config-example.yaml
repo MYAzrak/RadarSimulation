@@ -33,6 +33,6 @@ proceduralLand: [True, False] # Valid values 'True' (Generate Procedural land), 
 
 # Dataset Generation
 # This is for generating a dataset while running the entire system. generateDataset.py ignores the below settings.
-generateDataset: True
+generateDataset: False
 unityBuildDirectory: C:\Users\monsi\Downloads\ProjectBuild\RadarProject.exe
 outputDirectory: C:\Users\monsi\Downloads\output # The dataset JSON files output directory 

@@ -4,7 +4,7 @@ CENTER_LAT = 25.32600
 CENTER_LONG = 56.38180
 
 
-def getLatLong(x: float, y: float, center_lat=CENTER_LAT, center_long=CENTER_LONG) -> tuple[float, float]:
+def getLatLong(x: float, y: float, center_lat=CENTER_LAT, center_long=CENTER_LONG):
     """
     Convert Unity x,y coordinates to latitude/longitude based on a center point.
     

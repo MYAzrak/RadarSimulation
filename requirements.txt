@@ -17,6 +17,3 @@ requests # HTTP requests
 ultralytics # YOLO model
 torch # PyTorch for deep learning
 scikit-learn # Machine learning library
-
-# Optional libraries
-logging

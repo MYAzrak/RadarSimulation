@@ -1,11 +1,11 @@
 # Configuration for service startup
-onboard_path: "/home/yousif/Projects/Uni/RadarSimulation/OnboardSoftware"
-onboard_name: "onboard-yolo.py"
-model_path: "/home/yousif/Projects/Uni/RadarSimulation/ML/yolo/best.pt"
-viz_path: "/home/yousif/Projects/Uni/RadarSimulation/Visualization/"
-api_path: "/home/yousif/Projects/Uni/RadarSimulation/Visualization/DB_API/main.py"
-db_path: "/home/yousif/Projects/Uni/RadarSimulation/Visualization/DB_API/"
-conda_env: "deep_learning"
+onboard_path: "D:/UnityProjects/RadarSimulation/OnboardSoftware" # Path to OnboardSoftware directory
+onboard_name: "onboard-yolo.py" # Name of the onboard software script
+model_path: "D:/UnityProjects/RadarSimulation/ML/yolo/best_model.pt" # Path to the model file
+viz_path: "D:/UnityProjects/RadarSimulation/Visualization" # Path to Visualization directory
+api_path: "D:/UnityProjects/RadarSimulation/Visualization/DB_API/main.py" # Path to the API main file
+db_path: "D:/UnityProjects/RadarSimulation/Visualization/DB_API" # Path to the DB_API directory
+conda_env: "deep_learning" # Name of the conda environment
 
 # Optional configuration (not yet implemented, for future use)
 db_startup_delay: 1 # seconds to wait for DB initialization

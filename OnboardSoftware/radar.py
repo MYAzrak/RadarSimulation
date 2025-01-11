@@ -99,7 +99,7 @@ def update_radar_location(
 import math
 from typing import List, Tuple, Optional
 import sys
-from OnboardSoftware.utils.locations import getLatLong
+from OnboardSoftware.locations import getLatLong
 
 def clearall(base_url: str = "http://localhost:7777") -> bool:
     """
