@@ -15,7 +15,7 @@ This is our senior project where we explore the development of a maritime vessel
 5. [Project Structure](#project-structure)
 6. [Configuration Files](#configuration-files)
 7. [Future Work](#future-work)
-8. [Collaborators](#collaborators)
+8. [Senior Project Team](#senior-project-team)
 
 ## Project's Subsystems
 
@@ -30,6 +30,7 @@ This block diagram shows the various subsystems of our project. The user begins 
 - **Unity**: Version 2022.3.40f1  
 - **Docker**  
 - **Python**
+- **Conda**
 
 ### Steps to Install
 
@@ -37,22 +38,39 @@ This block diagram shows the various subsystems of our project. The user begins 
 
    ```bash
    git clone https://github.com/yal77/RadarSimulation.git
-   
+   ```
+
 2. **Navigate to the Cloned Directory**:
 
    ```bash
    cd RadarSimulation
+   ```
 
-3. **Install Dependencies**:
+3. **Create and Activate Conda Environment**:
+
+   ```bash
+   conda create --name deep_learning python
+   conda activate deep_learning
+   ```
+
+4. **Install Dependencies**:
 
    ```bash
    pip install -r requirements.txt
+   ```
 
-4. **Set Up Unity**:
+5. **Set Up Unity**:
 
    - Add project from disk.
    - Choose `RadarSimulation -> RadarProject`.
    - Use version `2022.3.40f1`.
+
+6. **Set Up Visualization Platform**:
+
+   ```bash
+   cd Visualization
+   npm install
+   ```
 
 ## Usage
 
@@ -71,7 +89,7 @@ Create a YAML file specifying the desired simulation parameters (refer to the ta
 2. **Run the Dataset Generation Script**:
 
    ```bash
-   python ML/datasetGen/generateDataset.py path/to/config.json path/to/unity/executable path/to/output/directory
+   python ML/datasetGen/generateDataset.py path/to/config.yaml path/to/unity/executable path/to/output/directory
    ```
 
 - Replace `path/to/config.yaml` with the path to your configuration file.
@@ -110,7 +128,7 @@ Create a YAML file specifying the desired simulation parameters (refer to the ta
 We implemented two models that you can train, [CenterNet](https://arxiv.org/abs/1904.08189) and YOLO from [ultraytics](https://docs.ultralytics.com/).
 
 1. Train CenterNet:
-   - Change `json_directory` to your dataset's location in ML/CenterNet/main.py and run main.py.
+   - Change `json_directory` to your dataset's location in `ML/CenterNet/main.py` and run `main.py`.
 
 2. Train YOLO:
    - Change the dataset path directory in `ppi_dataset.yaml`. This is the directory with the images the model will train on.
@@ -120,9 +138,11 @@ We implemented two models that you can train, [CenterNet](https://arxiv.org/abs/
 ### 3. Run the Entire System
 
 1. Change `sim-config-example.yaml` (or your version of it) to have use `KhorfakkanCoastline` scene.
-2. Run `python run.py ./path/to/config`
-3. Create a copy of service_config.yaml with your own paths
-4. Run `python start_services.py service_config.yaml`
+2. Add your Conda path to `possible_paths` in `start_services.py`.
+3. Ensure Docker is running.
+4. Create a copy of `service_config-example.yaml` with your own paths.
+5. Run `python run.py sim-config-example.yaml`.
+6. Run `python start_services.py service_config-example.yaml`.
 
 ## Project Structure
 
@@ -193,6 +213,6 @@ Here is a brief overview of each configuration file role:
   - Reducing radar interference.  
   - Ensuring long-term system durability.  
 
-## Collaborators
+## Senior Project Team
 
 This project was done by [arcarum](https://github.com/arcarum), [Yousif Alhosani](https://github.com/yal77), [Mohammad Yaser Azrak](https://github.com/MYAzrak) and [Ibrahim Baig](https://github.com/darkwing-30).
