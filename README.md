@@ -4,7 +4,7 @@ This is our senior project where we explore the development of a maritime vessel
 
 ## Table of Contents
 
-1. [Introduction](#maritime-vessel-detection-using-a-network-of-marine-radars-via-a-simulation)
+1. [Introduction](#maritime-vessel-detection-using-a-network-of-marine-radars-via-a-simulation-in-unity)
 2. [Project's Subsystems](#projects-subsystems)
 3. [Installation](#installation)
 4. [Usage](#usage)
