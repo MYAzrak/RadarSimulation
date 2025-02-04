@@ -81,7 +81,7 @@ This project can be used to:
 - Generate a dataset of radar PPI images.
 - Train deep learning models for vessel detection.
 - Run the entire system (Simulation System, Onboard Software, and Visualization Platform) to simulate the Khorfakkan scene, predict vessel locations, and visualize them in the web application.
-Follow the steps below to generate your own dataset or use the pre-generated dataset available in this [repository](https://github.com/yal77/radar_dataset).
+Follow the steps below to generate your own dataset or use the pre-generated dataset available in this [repository](https://github.com/MYAzrak/RadarPPIImagesDataset).
 
 ### 1. Generate a Dataset
 
