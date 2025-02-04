@@ -2,6 +2,8 @@
 
 This is our senior project where we explore the development of a maritime vessel detection system using a network of marine radars simulated through Unity. The objective is to enhance maritime surveillance capabilities in the UAE by addressing limitations in traditional radar systems such as range and coverage constraints and adding an extra data layer for maritime surveillance. By integrating deep learning with a network of buoy-mounted radars, this project aims to provide un-manned, real-time maritime situational awareness. We propose a cost-effective, scalable solution that utilizes a simulated environment to train and test radars and marine vessels detection, which is a proof of concept that, if implemented in real-life, would improve national security and economic stability in maritime domains. Our trained model, CenterNet, achieved an F1-score of 0.938. Additionally, our network of radars sends the detected ships' locations to the database, which are then retrieved for visualization. For detailed technical information, refer to the accompanying `Project's Report.pdf`.
 
+https://github.com/user-attachments/assets/38ba3ba5-b015-4be6-bc4a-f7929e18c3e0
+
 ## Table of Contents
 
 1. [Introduction](#maritime-vessel-detection-using-a-network-of-marine-radars-via-a-simulation-in-unity)
